@@ -1,0 +1,5 @@
+FreetronicsLCD	KEYWORD1
+getButton	KEYWORD2
+enableScreenSaver	KEYWORD2
+disableScreenSaver	KEYWORD2
+isScreenSaved	KEYWORD2
