@@ -1,5 +1,21 @@
 FreetronicsLCD	KEYWORD1
+Form	KEYWORD1
+Field	KEYWORD1
+BoolField	KEYWORD1
+IntField	KEYWORD1
+TextField	KEYWORD1
+TimeField	KEYWORD1
+
 getButton	KEYWORD2
 enableScreenSaver	KEYWORD2
 disableScreenSaver	KEYWORD2
 isScreenSaved	KEYWORD2
+
+show	KEYWORD2
+hide	KEYWORD2
+dispatch	KEYWORD2
+isCurrent	KEYWORD2
+
+setLabel	KEYWORD2
+setValue	KEYWORD2
+value	KEYWORD2
