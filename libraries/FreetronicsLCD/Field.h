@@ -16,7 +16,7 @@ public:
     virtual void enterField(bool reverse);
     virtual void exitField();
 
-    String label() const { return _label; }
+    const String &label() const { return _label; }
     void setLabel(const String &label);
 
     bool isCurrent() const;

@@ -11,6 +11,80 @@
 #define LCD_BUTTON_LEFT_VALUE   505
 #define LCD_BUTTON_SELECT_VALUE 741
 
+/**
+ * \class FreetronicsLCD FreetronicsLCD.h <FreetronicsLCD.h>
+ * \brief Enhanced library for Freetronics 16x2 LCD shields
+ *
+ * This class extends the standard Arduino LiquidCrystal library with
+ * extra functionality for the Freetronics 16x2 LCD shield:
+ *
+ * http://www.freetronics.com/pages/16x2-lcd-shield-quickstart-guide
+ *
+ * The Freetronics LCD has an additional back light, which is turned
+ * on and off with the display() and noDisplay() functions.  The user
+ * can also call enableScreenSaver() to cause the display and back light
+ * to automatically turn off after a specific timeout.
+ *
+ * The Freetronics LCD also has 5 push buttons for Left, Right, Up, Down,
+ * and Select, to assist with the creation of interactive sketches.
+ * The user can call getButton() to get the current button state.
+ * One of the following values may be returned:
+ *
+ * \li LCD_BUTTON_NONE - No button has been pressed, or a button has been
+ * pressed but not yet released.
+ * \li LCD_BUTTON_LEFT - Left button was pressed.
+ * \li LCD_BUTTON_RIGHT - Right button was pressed.
+ * \li LCD_BUTTON_UP - Up button was pressed.
+ * \li LCD_BUTTON_DOWN - Down button was pressed.
+ * \li LCD_BUTTON_SELECT - Select button was pressed.
+ * \li LCD_BUTTON_LEFT_RELEASED - Left button was released.
+ * \li LCD_BUTTON_RIGHT_RELEASED - Right button was released.
+ * \li LCD_BUTTON_UP_RELEASED - Up button was released.
+ * \li LCD_BUTTON_DOWN_RELEASED - Down button was released.
+ * \li LCD_BUTTON_SELECT_RELEASED - Select button was released.
+ *
+ * For convenience, all RELEASED button codes are the negation of their
+ * pressed counterparts.  That is, LCD_BUTTON_LEFT_RELEASED == -LCD_BUTTON_LEFT.
+ * LCD_BUTTON_NONE is defined to be zero.  Thus, you can check if a
+ * generic button has been pressed with <tt>button &gt; 0</tt> and if a
+ * generic button has been released with <tt>button &lt; 0</tt>.
+ *
+ * \sa Form
+ */
+
+/**
+ * \fn FreetronicsLCD::FreetronicsLCD()
+ * \brief Initialize the Freetronics LCD display with the default
+ * pin assignment.
+ *
+ * The following example shows how to initialize the Freetronics
+ * LCD shield:
+ *
+ * \code
+ * FreetronicsLCD lcd;
+ * \endcode
+ */
+
+/**
+ * \fn FreetronicsLCD::FreetronicsLCD(uint8_t pin9)
+ * \brief Initialize the Freetronics LCD display for USBDroid.
+ *
+ * On the USBDroid, the D9 pin is used for USB Host functionality.
+ * Either the USB Host's use of D9 must be reassigned to another pin,
+ * or the Freetronics LCD shield must be modified.  The following Web
+ * page describes the modifications that are necessary:
+ * http://www.freetronics.com/pages/combining-the-lcd-keypad-shield-and-the-usbdroid
+ *
+ * If you choose to modify the LCD shield, then you must use this version
+ * of the constructor to initialize the shield, passing the alternative
+ * pin as the \a pin9 parameter.  Using the recommended pin from the above
+ * Web page of A1, you would initialize the LCD as follows:
+ *
+ * \code
+ * FreetronicsLCD lcd(A1);
+ * \endcode
+ */
+
 void FreetronicsLCD::init()
 {
     // The Freetronics display is 16x2.
@@ -32,6 +106,15 @@ void FreetronicsLCD::init()
     screenSaved = false;
 }
 
+/**
+ * \brief Turns on the display of text on the LCD and the back light.
+ *
+ * If the screen saver is active, then calling this function will
+ * deactivate the screen saver and reset the timeout.  Thus, this
+ * function can be called for force the screen to restore.
+ *
+ * \sa noDisplay(), enableScreenSaver()
+ */
 void FreetronicsLCD::display()
 {
     LiquidCrystal::display();
@@ -41,6 +124,13 @@ void FreetronicsLCD::display()
     lastRestore = millis();
 }
 
+/**
+ * \brief Turns off the display of text on the LCD and the back light.
+ *
+ * This function can be called to force the screen saver to activate.
+ *
+ * \sa display(), enableScreenSaver()
+ */
 void FreetronicsLCD::noDisplay()
 {
     LiquidCrystal::noDisplay();
@@ -48,6 +138,21 @@ void FreetronicsLCD::noDisplay()
     screenSaved = true;
 }
 
+/**
+ * \brief Enables the screen saver and causes it to activate after
+ * \a timeoutSecs of inactivity on the buttons.
+ *
+ * If \a timeoutSecs is less than or equal to zero, then the call
+ * is equivalent to calling disableScreenSaver().
+ *
+ * For the screen saver to work, the application must regularly call
+ * getButton() to fetch the LCD's button state even if no buttons
+ * are pressed.
+ *
+ * If the \a timeoutSecs parameter is not supplied, the default is 10 seconds.
+ *
+ * \sa disableScreenSaver(), display(), getButton(), isScreenSaved()
+ */
 void FreetronicsLCD::enableScreenSaver(int timeoutSecs)
 {
     if (timeoutSecs < 0)
@@ -57,12 +162,45 @@ void FreetronicsLCD::enableScreenSaver(int timeoutSecs)
     display();
 }
 
+/**
+ * \brief Disables the screen saver.
+ *
+ * \sa enableScreenSaver(), display(), isScreenSaved()
+ */
 void FreetronicsLCD::disableScreenSaver()
 {
     timeout = 0;
     display();
 }
 
+/**
+ * \fn bool FreetronicsLCD::isScreenSaved() const
+ * \brief Returns true if the screen has been saved; false otherwise.
+ *
+ * \sa enableScreenSaver()
+ */
+
+/**
+ * \brief Gets the next button press, release, or idle event.
+ *
+ * If no buttons are pressed, this function will return LCD_BUTTON_NONE.
+ *
+ * When a button is pressed, this function will return one of
+ * LCD_BUTTON_LEFT, LCD_BUTTON_RIGHT, LCD_BUTTON_UP, LCD_BUTTON_DOWN,
+ * or LCD_BUTTON_SELECT.  While the button is pressed, this function
+ * will return LCD_BUTTON_NONE until the button is released.  When the
+ * button is released, this function will return one of
+ * LCD_BUTTON_LEFT_RELEASED, LCD_BUTTON_RIGHT_RELEASED,
+ * LCD_BUTTON_UP_RELEAED, LCD_BUTTON_DOWN_RELEASED,
+ * or LCD_BUTTON_SELECT_RELEASED.
+ *
+ * If the screen saver is currently active, then it will be deactivated
+ * by this function whenever a button is pressed.  In that case, the function
+ * will "eat" the button press and return LCD_BUTTON_NONE.  The scrren saver
+ * can also be deactivated under program control by calling display()
+ *
+ * \sa enableScreenSaver(), display(), Form::dispatch()
+ */
 int FreetronicsLCD::getButton()
 {
     int value = analogRead(LCD_BUTTON_PIN);

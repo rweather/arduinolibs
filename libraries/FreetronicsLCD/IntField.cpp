@@ -1,5 +1,49 @@
 #include "IntField.h"
 
+/**
+ * \class IntField IntField.h <IntField.h>
+ * \brief Field that manages the input of an integer value.
+ *
+ * IntField is intended for field values that are modifiable by the user.
+ * Pressing Up adds stepValue() to the current value and pressing Down
+ * subtracts stepValue() from the current value.  The value is clamped to
+ * the range minValue() to maxValue().
+ *
+ * The following example creates an integer field with the label "Iterations",
+ * that ranges between 1 and 5, with a stepValue() of 1, and an initial
+ * default value() of 2:
+ *
+ * \code
+ * Form mainForm(lcd);
+ * IntField iterField(mainForm, "Iterations", 1, 5, 1, 2);
+ * \endcode
+ *
+ * IntField can be configured to show a suffix() on the screen after the
+ * integer value().  This is intended for communicating the units in which
+ * the value is expressed.  For example:
+ *
+ * \code
+ * IntField volumeField(mainForm, "Volume", 0, 100, 5, 85, "%");
+ * IntField speedField(mainForm, "Speed", 0, 2000, 15, 450, " rpm");
+ * \endcode
+ *
+ * Use TextField for read-only fields that report integer values but
+ * which are not modifiable by the user.
+ *
+ * \sa Field, TextField
+ */
+
+/**
+ * \brief Constructs a new integer field with a specific \a label.
+ *
+ * The field is initially not associated with a Form.  The field can be
+ * added to a form later using Form::addField().
+ *
+ * Initially, value() is 0, minValue() is 0, maxValue() is 100,
+ * stepValue() is 1, and suffix() is an empty string.
+ *
+ * \sa Form::addField()
+ */
 IntField::IntField(const String &label)
     : Field(label)
     , _minValue(0)
@@ -10,37 +54,28 @@ IntField::IntField(const String &label)
 {
 }
 
-IntField::IntField(Form &form, const String &label)
-    : Field(form, label)
-    , _minValue(0)
-    , _maxValue(100)
-    , _stepValue(1)
-    , _value(0)
-    , _printLen(0)
-{
-}
-
-IntField::IntField(Form &form, const String &label, int minValue, int maxValue, int value)
+/**
+ * \brief Constructs a new integer field with a specific \a label,
+ * \a minValue, \a maxValue, \a stepValue, and \a value, and attaches
+ * it to a \a form.
+ *
+ * The suffix() is initially set to an empty string.
+ */
+IntField::IntField(Form &form, const String &label, int minValue, int maxValue, int stepValue, int value)
     : Field(form, label)
     , _minValue(minValue)
     , _maxValue(maxValue)
-    , _stepValue(1)
+    , _stepValue(stepValue)
     , _value(value)
     , _printLen(0)
 {
 }
 
-IntField::IntField(Form &form, const String &label, int minValue, int maxValue, int value, const String &suffix)
-    : Field(form, label)
-    , _minValue(minValue)
-    , _maxValue(maxValue)
-    , _stepValue(1)
-    , _value(value)
-    , _printLen(0)
-    , _suffix(suffix)
-{
-}
-
+/**
+ * \brief Constructs a new integer field with a specific \a label,
+ * \a minValue, \a maxValue, \a stepValue, \a value, and \a suffix
+ * and attaches it to a \a form.
+ */
 IntField::IntField(Form &form, const String &label, int minValue, int maxValue, int stepValue, int value, const String &suffix)
     : Field(form, label)
     , _minValue(minValue)
@@ -70,6 +105,72 @@ void IntField::enterField(bool reverse)
     printValue();
 }
 
+/**
+ * \fn int IntField::minValue() const
+ * \brief Returns the minimum value for the input field.
+ *
+ * \sa setMinValue(), maxValue(), stepValue(), value()
+ */
+
+/**
+ * \fn void IntField::setMinValue(int value)
+ * \brief Sets the minimum \a value for the input field.
+ *
+ * The new minimum \a value will be used to clamp the field's value the
+ * next time setValue() is called.
+ *
+ * \sa minValue(), setMaxValue(), setStepValue(), setValue()
+ */
+
+/**
+ * \fn int IntField::maxValue() const
+ * \brief Returns the maximum value for the input field.
+ *
+ * \sa setMaxValue(), minValue(), stepValue(), value()
+ */
+
+/**
+ * \fn void IntField::setMaxValue(int value)
+ * \brief Sets the maximum \a value for the input field.
+ *
+ * The new maximum \a value will be used to clamp the field's value the
+ * next time setValue() is called.
+ *
+ * \sa maxValue(), setMinValue(), setStepValue(), setValue()
+ */
+
+/**
+ * \fn int IntField::stepValue() const
+ * \brief Returns the step value to use when increasing or decreasing the
+ * value() due to Up and Down button presses.
+ *
+ * \sa setStepValue(), minValue(), maxValue(), value()
+ */
+
+/**
+ * \fn void IntField::setStepValue(int value)
+ * \brief Sets the step value \a value to use when increasing or decreasing
+ * the value() due to Up and Down button presses.
+ *
+ * \sa stepValue(), setMinValue(), setMaxValue(), setValue()
+ */
+
+/**
+ * \fn int IntField::value() const
+ * \brief Returns the current value of this field.
+ *
+ * \sa setValue(), minValue(), maxValue(), stepValue()
+ */
+
+/**
+ * \fn void IntField::setValue(int value)
+ * \brief Sets the current \a value of this field.
+ *
+ * The \a value will be clamped to the range defined by minValue()
+ * and maxValue().
+ *
+ * \sa value(), setMinValue(), setMaxValue(), setStepValue()
+ */
 void IntField::setValue(int value)
 {
     if (value < _minValue)
@@ -83,6 +184,26 @@ void IntField::setValue(int value)
     }
 }
 
+/**
+ * \fn const String &IntField::suffix() const
+ * \brief Returns the suffix string to be displayed after the field's value.
+ *
+ * \sa setSuffix()
+ */
+
+/**
+ * \brief Sets the \a suffix string to be displayed after the field's value.
+ *
+ * Suffixes are typically used to indicate the units that the value() is
+ * expressed in.  For example:
+ *
+ * \code
+ * field.setSuffix("%");
+ * field.setSuffix(" rpm");
+ * \endcode
+ *
+ * \sa suffix()
+ */
 void IntField::setSuffix(const String &suffix)
 {
     _suffix = suffix;

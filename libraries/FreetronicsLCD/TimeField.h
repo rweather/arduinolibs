@@ -9,7 +9,6 @@
 class TimeField : public Field {
 public:
     explicit TimeField(const String &label);
-    TimeField(Form &form, const String &label);
     TimeField(Form &form, const String &label, int maxHours, bool readOnly);
 
     int dispatch(int event);
@@ -23,7 +22,7 @@ public:
     int maxHours() const { return _maxHours; }
     void setMaxHours(int maxHours) { _maxHours = maxHours; }
 
-    bool isReadOnly() const { return _readOnly; }
+    bool readOnly() const { return _readOnly; }
     void setReadOnly(bool value);
 
 private:

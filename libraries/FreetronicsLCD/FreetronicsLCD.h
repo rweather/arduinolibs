@@ -26,34 +26,15 @@
 class FreetronicsLCD : public LiquidCrystal {
 public:
     FreetronicsLCD() : LiquidCrystal(8, 9, 4, 5, 6, 7) { init(); }
-
-    // For USBDroid where D9 needs to be reassigned to some other pin.
     FreetronicsLCD(uint8_t pin9) : LiquidCrystal(8, pin9, 4, 5, 6, 7) { init(); }
 
-    // Turn on the display, including the back light and the text.
-    // This will also reset the screen saver timeout.
     void display();
-
-    // Turn off the display, including the back light and the text,
-    // effectively forcing the screen saver to activate immediately.
     void noDisplay();
 
-    // Enable the screen saver and activate it after timeout seconds
-    // of inactivity on the buttons.  Note: the screen saver is activated
-    // during the call to getButton() so it must be polled regularly.
     void enableScreenSaver(int timeoutSecs = 10);
-
-    // Disable the screen saver and turn the screen back on.
     void disableScreenSaver();
-
-    // Determine if the screen saver is active.
     bool isScreenSaved() const { return screenSaved; }
 
-    // Get the next button event, or LCD_BUTTON_NONE if no change
-    // since the last event.  If the screen saver is active, then
-    // pressing a button will disable the screen saver and return
-    // LCD_BUTTON_NONE as the button code.  Thus, any button can
-    // be used to wake up the screen.
     int getButton();
 
 private:

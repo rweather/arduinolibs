@@ -6,9 +6,7 @@
 class IntField : public Field {
 public:
     explicit IntField(const String &label);
-    IntField(Form &form, const String &label);
-    IntField(Form &form, const String &label, int minValue, int maxValue, int value);
-    IntField(Form &form, const String &label, int minValue, int maxValue, int value, const String &suffix);
+    IntField(Form &form, const String &label, int minValue, int maxValue, int stepValue, int value);
     IntField(Form &form, const String &label, int minValue, int maxValue, int stepValue, int value, const String &suffix);
 
     int dispatch(int event);
@@ -27,7 +25,7 @@ public:
     int value() const { return _value; }
     void setValue(int value);
 
-    String suffix() const { return _suffix; }
+    const String &suffix() const { return _suffix; }
     void setSuffix(const String &suffix);
 
 private:

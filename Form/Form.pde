@@ -47,8 +47,8 @@ void loop() {
   timeField.setValue(millis() / 1000);
 
   // Dispatch button events to the main form.
-  int button = lcd.getButton();
-  if (mainForm.dispatch(button) == FORM_CHANGED) {
+  int event = lcd.getButton();
+  if (mainForm.dispatch(event) == FORM_CHANGED) {
     if (mainForm.isCurrent(ledField)) {
       if (ledField.value())
         digitalWrite(STATUS_LED, HIGH);
