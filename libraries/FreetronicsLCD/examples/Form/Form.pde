@@ -1,6 +1,8 @@
 /*
 This example demonstrates how to use the Form and Field classes from the
 FreetronicsLCD library to provide a simple UI on the 16x2 LCD display.
+
+This example is placed into the public domain.
 */
 
 // include the library code:

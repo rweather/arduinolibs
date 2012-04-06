@@ -4,6 +4,8 @@ standard LiquidCrystal library to provide support for the Freetronics back light
 and Up/Down/Left/Right/Select buttons.  More information on the shield here:
 
 http://www.freetronics.com/pages/16x2-lcd-shield-quickstart-guide
+
+This example is placed into the public domain.
 */
 
 // include the library code:
