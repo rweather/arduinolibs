@@ -27,6 +27,8 @@ Nacelle lights with a 3 LED chase will have 4 LED's on each output - two in
 each nacelle.
 */
 
+#include <BlinkLED.h>
+
 #define NAV_LIGHTS    A2    // Red/green navigational lights
 #define STROBE_LIGHT  A3    // Strobe light
 #define NACELLE_1     3     // Nacelle twirl chase LED 1
@@ -37,11 +39,10 @@ each nacelle.
 #define NACELLE_6     11    // Nacelle twirl chase LED 6
 #define NACELLE_RATE  A0    // Analog input that defines the rate of the nacelle chase
 
-#define NAV_LIGHTS_PERIOD    2000
+#define NAV_LIGHTS_ON        1000
 #define NAV_LIGHTS_OFF       1000
-#define STROBE_LIGHT_PERIOD  900
+#define STROBE_LIGHT_ON      70
 #define STROBE_LIGHT_OFF     830
-#define NACELLE_PERIOD       500
 #define NACELLE_MIN_PERIOD   25
 #define NACELLE_MAX_PERIOD   250
 #define NACELLE_DIM_VALUE    32    // Value for dimming previous LED in chase, 0..255
@@ -61,12 +62,11 @@ unsigned long lastNacelleTime = 0;
 unsigned long nacellePeriod = 0;
 byte index = 0;
 
+BlinkLED navLights(NAV_LIGHTS, NAV_LIGHTS_ON, NAV_LIGHTS_OFF);
+BlinkLED strobeLight(STROBE_LIGHT, STROBE_LIGHT_ON, STROBE_LIGHT_OFF);
+
 void setup() {
   // Configure the outputs and set them to be initially LOW.
-  pinMode(NAV_LIGHTS, OUTPUT);
-  digitalWrite(NAV_LIGHTS, LOW);
-  pinMode(STROBE_LIGHT, OUTPUT);
-  digitalWrite(STROBE_LIGHT, LOW);
   for (int index = 0; index < nacelleChaseLen; ++index) {
     byte pin = nacelleChase[index];
     pinMode(pin, OUTPUT);
@@ -93,17 +93,9 @@ void loop() {
   // How long since the application started?
   unsigned long sinceStart = millis() - startTime;
   
-  // Update the navigation lights.
-  if ((sinceStart % NAV_LIGHTS_PERIOD) >= NAV_LIGHTS_OFF)
-    digitalWrite(NAV_LIGHTS, HIGH);
-  else
-    digitalWrite(NAV_LIGHTS, LOW);
-
-  // Update the strobe light.
-  if ((sinceStart % STROBE_LIGHT_PERIOD) >= STROBE_LIGHT_OFF)
-    digitalWrite(STROBE_LIGHT, HIGH);
-  else
-    digitalWrite(STROBE_LIGHT, LOW);
+  // Update the navigation and strobe lights.
+  navLights.loop();
+  strobeLight.loop();
 
   // Update the nacelle lights - uniform LED chase of length 1 to 6.
   if ((sinceStart - lastNacelleTime) >= nacellePeriod) {

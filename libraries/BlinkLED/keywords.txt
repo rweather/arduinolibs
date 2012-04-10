@@ -1,0 +1,12 @@
+BlinkLED	KEYWORD1
+
+onTime	KEYWORD2
+offTime	KEYWORD2
+setBlinkRate	KEYWORD2
+
+state	KEYWORD2
+setState	KEYWORD2
+
+pause	KEYWORD2
+resume	KEYWORD2
+isPaused	KEYWORD2
