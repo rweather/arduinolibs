@@ -28,6 +28,7 @@ each nacelle.
 */
 
 #include <BlinkLED.h>
+#include <ChaseLEDs.h>
 
 #define NAV_LIGHTS    A2    // Red/green navigational lights
 #define STROBE_LIGHT  A3    // Strobe light
@@ -43,11 +44,12 @@ each nacelle.
 #define NAV_LIGHTS_OFF       1000
 #define STROBE_LIGHT_ON      70
 #define STROBE_LIGHT_OFF     830
+#define NACELLE_CHASE_LEN    6     // Length of nacelle chase, 1..6
 #define NACELLE_MIN_PERIOD   25
 #define NACELLE_MAX_PERIOD   250
 #define NACELLE_DIM_VALUE    32    // Value for dimming previous LED in chase, 0..255
 
-byte nacelleChase[6] = {
+byte nacelleChasePins[6] = {
   NACELLE_1,
   NACELLE_2,
   NACELLE_3,
@@ -55,63 +57,55 @@ byte nacelleChase[6] = {
   NACELLE_5,
   NACELLE_6
 };
-byte nacelleChaseLen = 6; // Select the length of the nacelle chase: 1 to 6.
 
-unsigned long startTime;
-unsigned long lastNacelleTime = 0;
-unsigned long nacellePeriod = 0;
-byte index = 0;
+class NacelleChaseLEDs : public ChaseLEDs
+{
+public:
+  NacelleChaseLEDs(const byte *pins, int num);
+
+protected:
+  void advance(byte prevPin, byte nextPin);
+
+private:
+  void readChaseTime();
+};
 
 BlinkLED navLights(NAV_LIGHTS, NAV_LIGHTS_ON, NAV_LIGHTS_OFF);
 BlinkLED strobeLight(STROBE_LIGHT, STROBE_LIGHT_ON, STROBE_LIGHT_OFF);
+NacelleChaseLEDs nacelleChase(nacelleChasePins, NACELLE_CHASE_LEN);
 
 void setup() {
-  // Configure the outputs and set them to be initially LOW.
-  for (int index = 0; index < nacelleChaseLen; ++index) {
-    byte pin = nacelleChase[index];
-    pinMode(pin, OUTPUT);
-    digitalWrite(pin, LOW);
-  }
-  
   // Turn off the status LED on the Arduino board (we don't need it).
   pinMode(13, OUTPUT);
   digitalWrite(13, LOW);
+}
 
+void loop() {
+  navLights.loop();
+  strobeLight.loop();
+  nacelleChase.loop();
+}
+
+NacelleChaseLEDs::NacelleChaseLEDs(const byte *pins, int num)
+  : ChaseLEDs(pins, num, 0)
+{
   // Initialize the analog input for the nacelle chaser rate.
   pinMode(NACELLE_RATE, INPUT);
   digitalWrite(NACELLE_RATE, LOW);
-  
-  // Record the starting time, for controlling the chase and blinks.
-  startTime = millis();
-  index = nacelleChaseLen - 1;
+  readChaseTime();
 }
 
-// Note: there will be discontinuity in the chase/blink rate when millis()
-// wraps around after 49 days.  Should automatically resync after a second or two.
+void NacelleChaseLEDs::advance(byte prevPin, byte nextPin)
+{
+  digitalWrite(previousPin(2), LOW);
+  analogWrite(prevPin, NACELLE_DIM_VALUE);
+  digitalWrite(nextPin, HIGH);
+  readChaseTime();
+}
 
-void loop() {
-  // How long since the application started?
-  unsigned long sinceStart = millis() - startTime;
-  
-  // Update the navigation and strobe lights.
-  navLights.loop();
-  strobeLight.loop();
-
-  // Update the nacelle lights - uniform LED chase of length 1 to 6.
-  if ((sinceStart - lastNacelleTime) >= nacellePeriod) {
-    // Advance to the next pin in sequence.
-    index = (index + 1) % nacelleChaseLen;
-    int currentPin = nacelleChase[index];
-    int prevPin1 = nacelleChase[(index + nacelleChaseLen - 1) % nacelleChaseLen];
-    int prevPin2 = nacelleChase[(index + nacelleChaseLen - 2) % nacelleChaseLen];
-    digitalWrite(prevPin2, LOW);
-    analogWrite(prevPin1, NACELLE_DIM_VALUE);
-    digitalWrite(currentPin, HIGH);
-    
-    // Read the chase rate from the trimpot on A0 and determine the next timeout period.
-    lastNacelleTime = sinceStart;
-    int val = analogRead(NACELLE_RATE);
-    nacellePeriod = map(val, 0, 1023, NACELLE_MIN_PERIOD, NACELLE_MAX_PERIOD);
-  }
+void NacelleChaseLEDs::readChaseTime()
+{
+  int val = analogRead(NACELLE_RATE);
+  setAdvanceTime(map(val, 0, 1023, NACELLE_MIN_PERIOD, NACELLE_MAX_PERIOD));
 }
 

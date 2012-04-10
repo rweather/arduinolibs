@@ -1,4 +1,5 @@
 BlinkLED	KEYWORD1
+ChaseLEDs	KEYWORD1
 
 onTime	KEYWORD2
 offTime	KEYWORD2
@@ -10,3 +11,7 @@ setState	KEYWORD2
 pause	KEYWORD2
 resume	KEYWORD2
 isPaused	KEYWORD2
+
+advanceTime	KEYWORD2
+setAdvanceTime	KEYWORD2
+previousPin	KEYWORD2
