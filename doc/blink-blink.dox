@@ -1,0 +1,80 @@
+/*
+ * Copyright (C) 2012 Southern Storm Software, Pty Ltd.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a
+ * copy of this software and associated documentation files (the "Software"),
+ * to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included
+ * in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+ * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
+ */
+
+/**
+\file blink-blink.dox
+\page blink_blink Blinking LED Example
+
+The BlinkLED class provides support logic for blinking a LED connected
+to an output pin.  The traditional way to blink a LED uses a delay loop:
+
+\code
+void loop() {
+    digitalWrite(13, HIGH);
+    delay(1000);
+    digitalWrite(13, LOW);
+    delay(1000);
+}
+\endcode
+
+The problem with this code is that the entire application is blocked
+during the <tt>delay()</tt>.  No other activities can be serviced.
+BlinkLED provides a re-entrant timer-based implementation that is
+simple to use in any application and which won't block other activities.
+
+We start this example by including the BlinkLED class and instantiating an
+object instance:
+
+\dontinclude BlinkLED/examples/Blink/Blink.pde
+\skip #include
+\until statusBlink
+
+In this example we have specified that the LED is on pin D13, the LED
+should be on for 70 milliseconds, and off for 930 milliseconds.  This
+will cause the status LED to "strobe" once per second.  The LED will
+be initially off for 930 milliseconds after device reset.  To start
+with the LED on, use the following initialization code instead:
+
+\code
+BlinkLED statusBlink(13, 70, 930, true);
+\endcode
+
+The remaining code we need is a call to BlinkLED::loop() every time around
+the main application loop:
+
+\dontinclude BlinkLED/examples/Blink/Blink.pde
+\skip loop()
+\until }
+
+As can be seen, BlinkLED simplifies the process of blinking a LED quite
+considerably.  It is also possible to \ref BlinkLED::pause() "pause()"
+and \ref BlinkLED::resume() "resume()" the blinking.  This is useful in
+applications where a blinking LED indicates a certain state such as
+an error condition or a long-running operation that is in progress;
+with the LED off at other times.  The on/off blink rate can be modified at
+runtime using BlinkLED::setBlinkRate(), and the LED can be set to a
+specific value using BlinkLED::setState().
+
+The full source code for the example follows:
+
+\include BlinkLED/examples/Blink/Blink.pde
+*/

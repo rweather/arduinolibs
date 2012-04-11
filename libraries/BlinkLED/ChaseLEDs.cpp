@@ -46,6 +46,9 @@
  * uint8_t pins[] = {3, 5, 6, 9, 10, 11, 10, 9, 6, 5};
  * ChaseLEDs chaser(pins, sizeof(pins), 150);
  * \endcode
+ *
+ * See the \ref blink_cylon "Cylon" example for more information on
+ * how to use the ChaseLEDs class in a practical application.
  */
 
 /**
