@@ -71,6 +71,9 @@
  * generic button has been pressed with <tt>button &gt; 0</tt> and if a
  * generic button has been released with <tt>button &lt; 0</tt>.
  *
+ * See the \ref lcd_hello_world "Hello World" example for more
+ * information on using the FreetronicsLCD class.
+ *
  * \sa Form
  */
 

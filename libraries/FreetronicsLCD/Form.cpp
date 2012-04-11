@@ -26,6 +26,9 @@
 /**
  * \class Form Form.h <Form.h>
  * \brief Manager for a form containing data input/output fields.
+ *
+ * See the \ref lcd_form "Form example" for more information on
+ * creating an application that uses forms and fields.
  */
 
 /**

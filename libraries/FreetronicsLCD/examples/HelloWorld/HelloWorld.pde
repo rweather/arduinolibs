@@ -8,10 +8,7 @@ http://www.freetronics.com/pages/16x2-lcd-shield-quickstart-guide
 This example is placed into the public domain.
 */
 
-// include the library code:
 #include <FreetronicsLCD.h>
-
-// initialize the library
 FreetronicsLCD lcd;
 
 // Note: if you are using the USBDroid and have reassigned pin D9 on the LCD shield to some
@@ -20,22 +17,14 @@ FreetronicsLCD lcd;
 // See also: http://www.freetronics.com/pages/combining-the-lcd-keypad-shield-and-the-usbdroid
 
 void setup() {
-  // Enable the screen saver, which will automatically blank the screen after 10 seconds.
-  // The screen will wake up again when a button is pressed or lcd.display() is called.
   lcd.enableScreenSaver();
-  
-  // Print a message to the LCD.
   lcd.print("hello, world!");
 }
 
 void loop() {
-  // set the cursor to column 0, line 1
-  // (note: line 1 is the second row, since counting begins with 0):
   lcd.setCursor(0, 1);
-  // print the number of seconds since reset:
-  lcd.print(millis()/1000);
+  lcd.print(millis() / 1000);
 
-  // print the name of the button that is currently pressed  
   lcd.setCursor(8, 1);
   int button = lcd.getButton();
   if (button == LCD_BUTTON_LEFT)
