@@ -44,5 +44,7 @@ over several output pins.
 \li \ref blink_blink "Blink" example of using BlinkLED.
 \li \ref blink_cylon "Cylon" example of using ChaseLEDs to simulate
 the Cylon eye effect from Battlestar Galactica.
+\li \ref blink_startrek "StarTrek" example for lighting a starship
+Enterprise model kit.
 
 */
