@@ -39,6 +39,8 @@
  * BoolField ledField(mainForm, "Status LED", "On", "Off", true);
  * \endcode
  *
+ * \image html FormBool.png
+ *
  * To actually toggle the LED, the application's main loop() function
  * should contain the following code:
  *

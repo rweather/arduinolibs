@@ -48,12 +48,16 @@
  * }
  * \endcode
  *
+ * \image html FormTimeRO.png
+ *
  * A read-write field can be used to ask the user for the duration of an
  * application count-down timer:
  *
  * \code
  * TimeField durationField(mainForm, "Timer duration", 24, TIMEFIELD_READ_WRITE);
  * \endcode
+ *
+ * \image html FormTimeRW.png
  *
  * \sa Field
  */

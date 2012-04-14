@@ -49,6 +49,8 @@
  * IntField speedField(mainForm, "Speed", 0, 2000, 15, 450, " rpm");
  * \endcode
  *
+ * \image html FormInt.png
+ *
  * Use TextField for read-only fields that report integer values but
  * which are not modifiable by the user.
  *

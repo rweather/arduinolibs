@@ -41,6 +41,8 @@
  * Form mainForm(lcd);
  * TextField welcomeField(mainForm, "Form example", "v1.0");
  * \endcode
+ *
+ * \image html FormText.png
  */
 Form::Form(LiquidCrystal &lcd)
     : _lcd(&lcd)

@@ -34,6 +34,8 @@
  * TextField welcomeField(mainForm, "Form example", "v1.0");
  * \endcode
  *
+ * \image html FormText.png
+ *
  * As well as static messages, TextField can be used to display read-only
  * information that is computed at runtime:
  *

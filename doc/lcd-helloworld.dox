@@ -29,10 +29,12 @@ Arduino <a href="http://arduino.cc/en/Reference/LiquidCrystal">LiquidCrystal</a>
 library that supports the additional features of the
 <a href="http://www.freetronics.com/pages/16x2-lcd-shield-quickstart-guide">Freetronics LCD</a> shield;
 namely the back light and the Up, Down, Left, Right, and Select buttons.
-
 This tutorial explains how to use the FreetronicsLCD class to perform
-basic text output and to use the enhanced shield features.  We start by
-including the library and initializing it:
+basic text output and to use the enhanced shield features.
+
+\image html HelloWorld.png
+
+We start by including the library and initializing it:
 
 \dontinclude FreetronicsLCD/examples/HelloWorld/HelloWorld.pde
 \skip FreetronicsLCD.h

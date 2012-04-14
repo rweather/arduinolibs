@@ -33,6 +33,8 @@ The user interface is organised as a "form" which consists of one or more
 Right buttons are used to navigate between fields, and the Up and Down
 buttons are used to modify the value of the currently-displayed field.
 
+\image html FormText.png
+
 We start by including the classes from the library that we will need:
 
 \dontinclude FreetronicsLCD/examples/Form/Form.pde
