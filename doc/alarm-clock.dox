@@ -1,0 +1,86 @@
+/*
+ * Copyright (C) 2012 Southern Storm Software, Pty Ltd.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a
+ * copy of this software and associated documentation files (the "Software"),
+ * to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included
+ * in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+ * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
+ */
+
+/**
+\file alarm-clock.dox
+\page alarm_clock Wind-Up Alarm Clock
+
+\section clock_power Power supply
+
+This section describes the power supply for the wind-up alarm clock,
+which consists of a hand-cranked dynamo, a 3.6 volt NiMH battery, and a
+charge pump DC-to-DC converter to boost the voltage up to 5 volts.
+Here is the circuit:
+
+\image html dynamo_power_supply.png
+
+The dynamo must be based on a DC motor rather than AC (bicycle light dynamos
+are typically AC).  If you are using an AC dynamo, then replace D1 with a
+full 4-diode rectifier bridge to convert the AC into DC first.
+In Australia, <a href="http://www.jaycar.com.au">Jaycar</a> sells a suitable
+<a href="http://www.jaycar.com.au/productView.asp?ID=MD7000">DC dynamo</a>.
+
+Diode D1 stops the voltage in the battery from flowing backwards into
+the motor.  If you hook things up the wrong way around, then the motor
+will spin without being cranked!  In this case, reverse the + and - leads
+on the dynamo and try again.
+
+After D1, the main energy storage for the circuit is the 3.6 volt NiMH
+battery (at least 1000 mAh capacity).  These are commonly used in
+cordless phones and can be obtained from most consumer electronics stores:
+
+\image html battery.jpg
+
+The main part of the circuit is next, consisting of a MAX619 regulated 5 volt
+charge pump DC-to-DC converter chip.  This chip boosts an input voltage of
+between 2 and 3.6 volts up to 5 volts and regulates it into a nice flat
+supply for the rest of the alarm clock.
+
+Note: the MAX619 has a maximum rating of 3.6 volts, but when the dynamo is
+being cranked rapidly the voltage at the cathode of D1 can spike to 4 volts
+or more.  The battery is fine with this for short periods of time,
+but the MAX619 won't be happy.  Hence the forward voltage drop on D2
+is used to drop the supply down by 0.7 volts which will keep it within
+the MAX619's input range.
+
+For normal uncranked operation the battery will need to be between 2.7 and
+3.6 volts.  If it falls below 2.7, then the battery is considered "empty".
+A diode with a smaller voltage drop can be substituted for D2 for longer
+operation times as long as the maximum dynamo output minus the voltage
+drop is less than or equal to 3.6 volts.  The "Sense Battery Status" output
+is hooked up to an analog input pin on the Arduino to let it monitor
+the battery voltage and display the current status to the user.
+
+\section clock_arduino_board Arduino board
+
+Because we want to keep power consumption low, we actually don't want a full
+Arduino Uno or similar board.  The USB interface is unnecessary, as is the
+on-board power supply.  We also don't want the power and D13 status LED's
+to be draining power.  Therefore, a cut-down version of the Arduino is
+recommended.  We used the <a href="http://www.freetronics.com/collections/arduino/products/kitten">KitTen</a>
+kit from <a href="http://www.freetronics.com/">Freetronics</a>, and didn't
+solder up anything that wasn't strictly necessary.  A
+<a href="http://www.freetronics.com/ftdi-cable">5v FTDI USB-to-Serial cable</a>
+is necessary for programming.  Similar minimalistic built-it-yourself
+Arduino designs should also work.
+
+*/

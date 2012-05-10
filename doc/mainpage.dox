@@ -34,6 +34,7 @@ LCD shield.
 \li Form and Field classes to build simple property sheet UI's on LCD displays.
 \li \ref lcd_hello_world "Hello World" example for the Freetronics LCD shield.
 \li \ref lcd_form "Form" example for LCD displays.
+\li \ref alarm_clock "Wind-Up Alarm Clock".
 
 \section main_BlinkLED BlinkLED Utility Library
 
