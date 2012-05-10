@@ -61,8 +61,10 @@ public:
 
 private:
     int prevButton;
+    int debounceButton;
     unsigned long timeout;
     unsigned long lastRestore;
+    unsigned long lastDebounce;
     bool screenSaved;
     bool eatRelease;
 

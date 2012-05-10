@@ -33,6 +33,8 @@
 #define LCD_BUTTON_LEFT_VALUE   505
 #define LCD_BUTTON_SELECT_VALUE 741
 
+#define DEBOUNCE_DELAY          10      // Delay in ms to debounce buttons
+
 /**
  * \class FreetronicsLCD FreetronicsLCD.h <FreetronicsLCD.h>
  * \brief Enhanced library for Freetronics 16x2 LCD shields
@@ -123,6 +125,8 @@ void FreetronicsLCD::init()
     pinMode(LCD_BUTTON_PIN, INPUT);
     digitalWrite(LCD_BUTTON_PIN, LOW);
     prevButton = LCD_BUTTON_NONE;
+    debounceButton = LCD_BUTTON_NONE;
+    lastDebounce = 0;
     eatRelease = false;
 
     // Initialize screen saver.
@@ -224,10 +228,14 @@ void FreetronicsLCD::disableScreenSaver()
  * will "eat" the button press and return LCD_BUTTON_NONE.  The scrren saver
  * can also be deactivated under program control by calling display()
  *
+ * This function debounces the button state automatically so there is no
+ * need for the caller to worry about spurious button events.
+ *
  * \sa enableScreenSaver(), display(), Form::dispatch()
  */
 int FreetronicsLCD::getButton()
 {
+    // Read the currently pressed button.
     int value = analogRead(LCD_BUTTON_PIN);
     int button;
     if (value < (LCD_BUTTON_RIGHT_VALUE + LCD_BUTTON_VALUE_GAP))
@@ -246,6 +254,16 @@ int FreetronicsLCD::getButton()
         button = LCD_BUTTON_SELECT;
     else
         button = LCD_BUTTON_NONE;
+
+    // Debounce the button state.
+    unsigned long currentTime = millis();
+    if (button != debounceButton)
+        lastDebounce = currentTime;
+    debounceButton = button;
+    if ((currentTime - lastDebounce) < DEBOUNCE_DELAY)
+        button = prevButton;
+
+    // Process the button event if the state has changed.
     if (prevButton == LCD_BUTTON_NONE && button != LCD_BUTTON_NONE) {
         prevButton = button;
         if (screenSaved) {
@@ -255,12 +273,12 @@ int FreetronicsLCD::getButton()
             return LCD_BUTTON_NONE;
         }
         eatRelease = false;
-        lastRestore = millis();
+        lastRestore = currentTime;
         return button;
     } else if (prevButton != LCD_BUTTON_NONE && button == LCD_BUTTON_NONE) {
         button = -prevButton;
         prevButton = LCD_BUTTON_NONE;
-        lastRestore = millis();
+        lastRestore = currentTime;
         if (eatRelease) {
             eatRelease = false;
             return LCD_BUTTON_NONE;
@@ -268,7 +286,7 @@ int FreetronicsLCD::getButton()
         return button;
     } else {
         if (!screenSaved && prevButton == LCD_BUTTON_NONE &&
-                timeout != 0 && (millis() - lastRestore) >= timeout)
+                timeout != 0 && (currentTime - lastRestore) >= timeout)
             noDisplay();    // Activate screen saver.
         return LCD_BUTTON_NONE;
     }
