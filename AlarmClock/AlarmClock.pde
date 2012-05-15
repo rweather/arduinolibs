@@ -24,9 +24,17 @@
 #include <FreetronicsLCD.h>
 #include <Form.h>
 #include <Field.h>
+#include <DS1307RTC.h>
 
-// Initialize the LCD
-FreetronicsLCD lcd;
+// I/O pins that are used by this sketch.
+#define BUZZER                  12
+#define SENSE_BATTERY           A1
+#define RTC_DATA                A3
+#define RTC_CLOCK               A4
+#define RTC_ONE_HZ              A5
+
+// Value to adjust for the voltage drop on D2.
+#define VOLTAGE_DROP_ADJUST     70  // 0.7 volts
 
 // Special characters for indicators.
 #define IND_BATTERY_EMPTY       0
@@ -35,6 +43,17 @@ FreetronicsLCD lcd;
 #define IND_BATTERY_60PCT       3
 #define IND_BATTERY_80PCT       4
 #define IND_BATTERY_FULL        5
+#define IND_ALARM_ACTIVE1       6
+#define IND_ALARM_ACTIVE2       7
+
+// Initialize the LCD
+FreetronicsLCD lcd;
+
+// Activate the realtime clock chip.
+BitBangI2C bus(RTC_DATA, RTC_CLOCK);
+DS1307RTC rtc(bus, RTC_ONE_HZ);
+
+bool isAlarmOn = false;
 
 // Specialized time/date display field for the front screen of the clock.
 class FrontScreenField : public Field
@@ -45,35 +64,45 @@ public:
 
     void enterField(bool reverse);
 
-    int day() const { return _day; }
-    int month() const { return _month; }
-    int year() const { return _year; }
-    void setDate(int day, int month, int year);
+    RTCDate date() const { return _date; }
+    void setDate(const RTCDate &date);
 
-    unsigned long time() const { return _time; }
-    void setTime(unsigned long time);
+    RTCTime time() const { return _time; }
+    void setTime(const RTCTime &time);
 
-    int batteryStatus() const { return _batteryStatus; }
-    void setBatteryStatus(int batteryStatus);
+    int voltage() const { return _voltage; }
+    void setVoltage(int voltage);
+
+    bool isAlarmActive() const { return _alarmActive; }
+    void setAlarmActive(bool active);
 
 private:
-    int _day, _month, _year;
-    unsigned long _time;
-    int _batteryStatus;
+    RTCDate _date;
+    RTCTime _time;
+    int _voltage;
+    int _voltageTrunc;
     int _batteryBars;
+    bool _alarmActive;
 
     void updateDate();
     void updateTime();
-    void updateBatteryStatus();
+    void updateVoltage();
+    void updateAlarm();
 };
 
 FrontScreenField::FrontScreenField(Form &form)
     : Field(form, "")
-    , _day(1), _month(1), _year(2012)
-    , _time(9 * 60 * 60)
-    , _batteryStatus(100)
+    , _voltage(360)
+    , _voltageTrunc(36)
     , _batteryBars(IND_BATTERY_FULL)
+    , _alarmActive(false)
 {
+    _date.day = 1;
+    _date.month = 1;
+    _date.year = 2012;
+    _time.hour = 9;
+    _time.minute = 0;
+    _time.second = 0;
 }
 
 FrontScreenField::~FrontScreenField()
@@ -83,140 +112,133 @@ FrontScreenField::~FrontScreenField()
 void FrontScreenField::enterField(bool reverse)
 {
     updateDate();
-    updateBatteryStatus();
+    updateVoltage();
     updateTime();
+    updateAlarm();
 }
 
 const char *months[] = {
     " Jan ", " Feb ", " Mar ", " Apr ", " May ", " Jun ",
     " Jul ", " Aug ", " Sep ", " Oct ", " Nov ", " Dec "
 };
-uint8_t monthLengths[] = {
-    31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31
-};
 
-inline bool isLeapYear(int year)
-{
-    if ((year % 100) == 0)
-        return (year % 400) == 0;
-    else
-        return (year % 4) == 0;
-}
+uint8_t prevHour = 24;
 
-void FrontScreenField::setDate(int day, int month, int year)
+void FrontScreenField::setDate(const RTCDate &date)
 {
-    if (day != _day || month != _month || year != _year) {
-        if (day < 1) {
-            // Rolled back into the previous month.
-            if (month == 1)
-                month = 12;
-            else
-                --month;
-            if (month == 2 && isLeapYear(year))
-                day = 29 + day;
-            else
-                day = monthLengths[month - 1] + day;
-        } if (month == 2 && isLeapYear(year)) {
-            if (day > 29) {
-                // Rolled forward from Feb into Mar in a leap year.
-                month = 3;
-                day -= 29;
-            }
-        } else if (day > monthLengths[month - 1]) {
-            // Rolled forward into the next month.
-            day -= monthLengths[month - 1];
-            if (month == 12)
-                month = 1;
-            else
-                ++month;
-        }
-        _day = day;
-        _month = month;
-        _year = year;
+    if (date.day != _date.day || date.month != _date.month ||
+            date.year != _date.year) {
+        _date = date;
         if (isCurrent())
             updateDate();
     }
 }
 
-void FrontScreenField::setTime(unsigned long time)
+void FrontScreenField::setTime(const RTCTime &time)
 {
-    if (time != _time) {
+    if (time.hour != _time.hour || time.minute != _time.minute ||
+            time.second != _time.second) {
         _time = time;
         if (isCurrent())
             updateTime();
     }
 }
 
-void FrontScreenField::setBatteryStatus(int batteryStatus)
+void FrontScreenField::setVoltage(int voltage)
 {
-    _batteryStatus = batteryStatus;
+    // Normal voltage ranges between 2.7 and 3.6.  The power supply
+    // for the clock will no longer function below 2.7 volts.
+    if (_voltage == voltage)
+        return;
+    _voltage = voltage;
     int ind;
-    if (batteryStatus >= 85)
+    if (voltage > 355)
         ind = IND_BATTERY_FULL;
-    else if (batteryStatus >= 75)
+    else if (voltage > 345)
         ind = IND_BATTERY_80PCT;
-    else if (batteryStatus >= 55)
+    else if (voltage > 325)
         ind = IND_BATTERY_60PCT;
-    else if (batteryStatus >= 35)
+    else if (voltage > 305)
         ind = IND_BATTERY_40PCT;
-    else if (batteryStatus >= 15)
+    else if (voltage > 285)
         ind = IND_BATTERY_20PCT;
     else
         ind = IND_BATTERY_EMPTY;
-    if (ind != _batteryBars) {
+    int trunc = voltage / 10;
+    if (ind != _batteryBars || trunc != _voltageTrunc) {
         _batteryBars = ind;
-        updateBatteryStatus();
+        _voltageTrunc = trunc;
+        updateVoltage();
+    }
+}
+
+void FrontScreenField::setAlarmActive(bool active)
+{
+    if (_alarmActive != active) {
+        _alarmActive = active;
+        if (isCurrent())
+            updateAlarm();
     }
 }
 
 void FrontScreenField::updateDate()
 {
     lcd()->setCursor(0, 0);
-    if (_day < 10) {
-        lcd()->write('0' + _day);
+    if (_date.day < 10) {
+        lcd()->write('0' + _date.day);
     } else {
-        lcd()->write('0' + _day / 10);
-        lcd()->write('0' + _day % 10);
+        lcd()->write('0' + _date.day / 10);
+        lcd()->write('0' + _date.day % 10);
     }
-    lcd()->print(months[_month - 1]);
-    lcd()->print(_year);
+    lcd()->print(months[_date.month - 1]);
+    lcd()->print(_date.year);
     lcd()->write(' ');
 }
 
 void FrontScreenField::updateTime()
 {
     lcd()->setCursor(0, 1);
-    int hour = (int)(_time / (60 * 60));
-    int minute = ((int)(_time / 60)) % 60;
-    int second = (int)(_time % 60);
     bool pm;
-    if (hour == 0 || hour == 12) {
+    if (_time.hour == 0 || _time.hour == 12) {
         lcd()->write('1');
         lcd()->write('2');
-        pm = (hour == 12);
-    } else if (hour < 12) {
-        lcd()->write('0' + hour / 10);
-        lcd()->write('0' + hour % 10);
+        pm = (_time.hour == 12);
+    } else if (_time.hour < 12) {
+        lcd()->write('0' + _time.hour / 10);
+        lcd()->write('0' + _time.hour % 10);
         pm = false;
     } else {
-        hour -= 12;
+        int hour = _time.hour - 12;
         lcd()->write('0' + hour / 10);
         lcd()->write('0' + hour % 10);
         pm = true;
     }
     lcd()->write(':');
-    lcd()->write('0' + minute / 10);
-    lcd()->write('0' + minute % 10);
+    lcd()->write('0' + _time.minute / 10);
+    lcd()->write('0' + _time.minute % 10);
     lcd()->write(':');
-    lcd()->write('0' + second / 10);
-    lcd()->write('0' + second % 10);
-    lcd()->print(pm ? " PM" : " AM");
+    lcd()->write('0' + _time.second / 10);
+    lcd()->write('0' + _time.second % 10);
+    lcd()->print(pm ? "pm" : "am");
 }
 
-void FrontScreenField::updateBatteryStatus()
+void FrontScreenField::updateVoltage()
 {
     lcd()->setCursor(15, 0);
     lcd()->write(_batteryBars);
+
+    lcd()->setCursor(12, 1);
+    lcd()->write('0' + _voltageTrunc / 10);
+    lcd()->write('.');
+    lcd()->write('0' + _voltageTrunc % 10);
+    lcd()->write('v');
+}
+
+void FrontScreenField::updateAlarm()
+{
+    lcd()->setCursor(13, 0);
+    lcd()->write(_alarmActive ? IND_ALARM_ACTIVE1 : ' ');
+    lcd()->write(_alarmActive ? IND_ALARM_ACTIVE2 : ' ');
 }
 
 // Create the main form and its fields.
@@ -224,12 +246,6 @@ Form mainForm(lcd);
 FrontScreenField frontScreen(mainForm);
 
 #define STATUS_LED 13
-
-#define MILLIS_PER_DAY      86400000UL
-#define MILLIS_PER_SECOND   1000UL
-#define MILLIS_PER_HOUR     3600000UL
-
-unsigned long midnightTime;
 
 byte batteryEmpty[8] = {
     B01110,
@@ -291,6 +307,26 @@ byte batteryFull[8] = {
     B11111,
     B00000
 };
+byte alarmActive1[8] = {
+    B00100,
+    B01001,
+    B10010,
+    B00000,
+    B10010,
+    B01001,
+    B00100,
+    B00000
+};
+byte alarmActive2[8] = {
+    B11000,
+    B10100,
+    B10011,
+    B10011,
+    B10011,
+    B10100,
+    B11000,
+    B00000
+};
 
 void setup() {
     // Turn off the status LED.  Don't need it.
@@ -304,34 +340,46 @@ void setup() {
     lcd.createChar(IND_BATTERY_60PCT, battery60Pct);
     lcd.createChar(IND_BATTERY_80PCT, battery80Pct);
     lcd.createChar(IND_BATTERY_FULL,  batteryFull);
+    lcd.createChar(IND_ALARM_ACTIVE1, alarmActive1);
+    lcd.createChar(IND_ALARM_ACTIVE2, alarmActive2);
 
     //lcd.enableScreenSaver();
-
-    // At startup, make "now" be 9am.  TODO: Read from an RTC chip instead.
-    midnightTime = millis() - MILLIS_PER_HOUR * 9;
 
     // Show the main form for the first time.
     mainForm.show();
 }
 
 void loop() {
-    // Update the number of seconds since the last midnight event.
-    unsigned long sinceMidnight = millis() - midnightTime;
-    if (sinceMidnight >= MILLIS_PER_DAY) {
-        // We have overflowed into the next day.  Readjust midnight.
-        midnightTime += MILLIS_PER_DAY;
-        sinceMidnight -= MILLIS_PER_DAY;
+    // Update the time and date every second based on the 1 Hz RTC output.
+    if (rtc.hasUpdates() || prevHour >= 24) {
+        RTCTime time;
+        rtc.readTime(&time);
+        frontScreen.setTime(time);
+        if (time.hour < prevHour) {
+            // Time has wrapped around, or date update has been forced.
+            RTCDate date;
+            rtc.readDate(&date);
+            frontScreen.setDate(date);
+        }
+        prevHour = time.hour;
 
-        // Increment the date using the rollover logic.
-        frontScreen.setDate(frontScreen.day() + 1,
-                            frontScreen.month(),
-                            frontScreen.year());
+        // Update the battery status once a second also.
+        int status = analogRead(SENSE_BATTERY);
+        int voltage = (int)((status * 500L) / 1024L);   // e.g. 2.81V = 281
+        voltage += VOLTAGE_DROP_ADJUST;
+        if (voltage > 500)
+            voltage = 500;
+        frontScreen.setVoltage(voltage);
     }
-    frontScreen.setTime(sinceMidnight / MILLIS_PER_SECOND);
 
     // Dispatch button events to the main form.
     int event = lcd.getButton();
     if (mainForm.dispatch(event) == FORM_CHANGED) {
+        prevHour = 24;      // Force an update of the main screen.
+    }
+
+    // If the alarm is on and a button was pressed, then turn off the alarm.
+    if (event != LC_BUTTON_NONE && isAlarmOn) {
         // TODO
     }
 }
