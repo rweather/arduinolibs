@@ -1,0 +1,21 @@
+BitBangI2C	KEYWORD1
+DS1307RTC	KEYWORD1
+
+start	KEYWORD2
+stop	KEYWORD2
+startRead	KEYWORD2
+startWrite	KEYWORD2
+read	KEYWORD2
+write	KEYWORD2
+
+isRealTime	KEYWORD2
+hasUpdates	KEYWORD2
+readTime	KEYWORD2
+readDate	KEYWORD2
+writeTime	KEYWORD2
+writeDate	KEYWORD2
+alarmCount	KEYWORD2
+readAlarm	KEYWORD2
+writeAlarm	KEYWORD2
+readByte	KEYWORD2
+writeByte	KEYWORD2
