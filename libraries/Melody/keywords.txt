@@ -1,0 +1,8 @@
+Melody	KEYWORD1
+
+play	KEYWORD2
+stop	KEYWORD2
+setMelody	KEYWORD2
+loopCount	KEYWORD2
+setLoopCount	KEYWORD2
+isPlaying	KEYWORD2
