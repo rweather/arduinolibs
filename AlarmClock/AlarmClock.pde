@@ -25,6 +25,7 @@
 #include <Form.h>
 #include <Field.h>
 #include <DS1307RTC.h>
+#include <Melody.h>
 
 // I/O pins that are used by this sketch.
 #define BUZZER                  12
@@ -53,7 +54,10 @@ FreetronicsLCD lcd;
 BitBangI2C bus(RTC_DATA, RTC_CLOCK);
 DS1307RTC rtc(bus, RTC_ONE_HZ);
 
-bool isAlarmOn = false;
+// Melody to play when the alarm sounds.
+int alarmNotes[] = {NOTE_C6, NOTE_C6, NOTE_C6, NOTE_C6, NOTE_REST};
+byte alarmLengths[] = {8, 8, 8, 8, 2};
+Melody alarmMelody(BUZZER);
 
 // Specialized time/date display field for the front screen of the clock.
 class FrontScreenField : public Field
@@ -345,6 +349,11 @@ void setup() {
 
     //lcd.enableScreenSaver();
 
+    // Initialize the alarm melody.
+    alarmMelody.setMelody(alarmNotes, alarmLengths, sizeof(alarmLengths));
+    alarmMelody.setLoopDuration(120000UL);
+    //alarmMelody.play();
+
     // Show the main form for the first time.
     mainForm.show();
 }
@@ -378,8 +387,8 @@ void loop() {
         prevHour = 24;      // Force an update of the main screen.
     }
 
-    // If the alarm is on and a button was pressed, then turn off the alarm.
-    if (event != LC_BUTTON_NONE && isAlarmOn) {
-        // TODO
-    }
+    // If the alarm is playing and a button was pressed, then turn it off.
+    if (event != LCD_BUTTON_NONE)
+        alarmMelody.stop();
+    alarmMelody.run();
 }

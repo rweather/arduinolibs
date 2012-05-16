@@ -60,7 +60,9 @@ being cranked rapidly the voltage at the cathode of D1 can spike to 4 volts
 or more.  The battery is fine with this for short periods of time,
 but the MAX619 won't be happy.  Hence the forward voltage drop on D2
 is used to drop the supply down by 0.7 volts which will keep it within
-the MAX619's input range.
+the MAX619's input range.  If the dynamo is rated higher than 5VDC,
+then add extra diodes at D1 to drop the voltage down before it
+hits the battery.
 
 For normal uncranked operation the battery will need to be between 2.7 and
 3.6 volts.  If it falls below 2.7, then the battery is considered "empty".
@@ -68,7 +70,10 @@ A diode with a smaller voltage drop can be substituted for D2 for longer
 operation times as long as the maximum dynamo output minus the voltage
 drop is less than or equal to 3.6 volts.  The "Sense Battery Status" output
 is hooked up to an analog input pin on the Arduino to let it monitor
-the battery voltage and display the current status to the user.
+the battery voltage and display the current status to the user (after
+adding 0.7 to account for the voltage drop on D2).
+
+If you don't have 1N4001 diodes to hand, then 1N4004 will work just as well.
 
 \section clock_arduino_board Arduino board
 
@@ -82,5 +87,38 @@ solder up anything that wasn't strictly necessary.  A
 <a href="http://www.freetronics.com/ftdi-cable">5v FTDI USB-to-Serial cable</a>
 is necessary for programming.  Similar minimalistic built-it-yourself
 Arduino designs should also work.
+
+\section clock_main_circuit Main circuit
+
+The main clock circuit consists of an Arduino Uno compatible board, a 16x2
+LCD module, a realtime clock chip, and a piezo buzzer for the alarm:
+
+\image html alarm_circuit.png
+
+Some of the components can be purchased ready-made as the
+<a href="http://www.freetronics.com/pages/16x2-lcd-shield-quickstart-guide">Freetronics
+16x2 LCD Shield</a> and the <a href="http://www.sparkfun.com/products/99">SparkFun
+Realtime Clock Module</a>.  I used the ready-made realtime clock module,
+but made my own equivalent to the LCD shield from parts to aid in spacing
+out the LCD and pushbuttons on the exterior of the box.
+
+The clock module is based on the DS1307 chip and has an on-board coin battery
+to keep the time and date ticking over even if the main circuit loses power.
+The chip is I2C-based and has an auxillary SQW output that can be configured
+to provide a 1 Hz squarewave signal.  This signal is used by the software
+running on the Arduino to detect when a new time or date is available for
+display on the LCD.  The DS1307RTC class takes care of the details of
+talking to the chip via I2C.
+
+Note: the above circuit works just as well for a non-wind-up clock powered
+from batteries or mains power.  The only difference will be the "Sense
+Battery Status" input on A1.  Either remove the battery monitoring logic
+from the source code or tie A1 to 5V via a 10K resistor.
+
+I had a spare 2N7000 FET from the KitTen kit that I wasn't using on the
+Arduino board, so I used that for the back light control.  If you don't
+have a FET, then you can use a regular NPN transistor instead:
+
+\image html transistor_back_light.png
 
 */
