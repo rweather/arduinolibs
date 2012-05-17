@@ -21,7 +21,7 @@
  */
 
 #include "DS1307RTC.h"
-#include "../I2C/BitBangI2C.h"
+#include "../I2C/I2CMaster.h"
 #include <WProgram.h>
 
 /**
@@ -76,38 +76,29 @@
  *
  * \sa hasUpdates()
  */
-DS1307RTC::DS1307RTC(BitBangI2C &bus, uint8_t oneHzPin)
+DS1307RTC::DS1307RTC(I2CMaster &bus, uint8_t oneHzPin)
     : _bus(&bus)
     , _oneHzPin(oneHzPin)
     , prevOneHz(false)
     , _isRealTime(true)
 {
     // Make sure the CH bit in register 0 is off or the clock won't update.
-    if (_bus->startWrite(DS1307_I2C_ADDRESS) == BitBangI2C::ACK) {
-        _bus->write(DS1307_SECOND);
-        _bus->startRead(DS1307_I2C_ADDRESS);
-        uint8_t value = _bus->read(BitBangI2C::NACK);
-        _bus->stop();
-        if ((value & 0x80) != 0) {
-            _bus->startWrite(DS1307_I2C_ADDRESS);
-            _bus->write(DS1307_SECOND);
-            _bus->write(value & 0x7F);
-            _bus->stop();
-        }
+    _bus->startWrite(DS1307_I2C_ADDRESS);
+    _bus->write(DS1307_SECOND);
+    if (_bus->startRead(DS1307_I2C_ADDRESS, 1)) {
+        uint8_t value = _bus->read();
+        if ((value & 0x80) != 0)
+            writeRegister(DS1307_SECOND, value & 0x7F);
     } else {
         // Did not get an acknowledgement from the RTC chip.
         _isRealTime = false;
-        _bus->stop();
     }
 
     // Turn on the 1 Hz square wave signal if required.
     if (oneHzPin != 255 && _isRealTime) {
         pinMode(oneHzPin, INPUT);
         digitalWrite(oneHzPin, HIGH);
-        _bus->startWrite(DS1307_I2C_ADDRESS);
-        _bus->write(DS1307_CONTROL);
-        _bus->write(0x10);
-        _bus->stop();
+        writeRegister(DS1307_CONTROL, 0x10);
     }
 
     // Initialize the alarms in the RTC chip's NVRAM.
@@ -168,11 +159,16 @@ void DS1307RTC::readTime(RTCTime *value)
     if (_isRealTime) {
         _bus->startWrite(DS1307_I2C_ADDRESS);
         _bus->write(DS1307_SECOND);
-        _bus->startRead(DS1307_I2C_ADDRESS);
-        value->second = fromBCD(_bus->read() & 0x7F);
-        value->minute = fromBCD(_bus->read());
-        value->hour = fromHourBCD(_bus->read(BitBangI2C::NACK));
-        _bus->stop();
+        if (_bus->startRead(DS1307_I2C_ADDRESS, 3)) {
+            value->second = fromBCD(_bus->read() & 0x7F);
+            value->minute = fromBCD(_bus->read());
+            value->hour = fromHourBCD(_bus->read());
+        } else {
+            // RTC chip is not responding.
+            value->second = 0;
+            value->minute = 0;
+            value->hour = 0;
+        }
     } else {
         RTC::readTime(value);
     }
@@ -186,11 +182,16 @@ void DS1307RTC::readDate(RTCDate *value)
     }
     _bus->startWrite(DS1307_I2C_ADDRESS);
     _bus->write(DS1307_DATE);
-    _bus->startRead(DS1307_I2C_ADDRESS);
-    value->day = fromBCD(_bus->read());
-    value->month = fromBCD(_bus->read());
-    value->year = fromBCD(_bus->read(BitBangI2C::NACK)) + 2000;
-    _bus->stop();
+    if (_bus->startRead(DS1307_I2C_ADDRESS, 3)) {
+        value->day = fromBCD(_bus->read());
+        value->month = fromBCD(_bus->read());
+        value->year = fromBCD(_bus->read()) + 2000;
+    } else {
+        // RTC chip is not responding.
+        value->day = 1;
+        value->month = 1;
+        value->year = 2012;
+    }
 }
 
 inline uint8_t toBCD(uint8_t value)
@@ -206,7 +207,7 @@ void DS1307RTC::writeTime(const RTCTime *value)
         _bus->write(toBCD(value->second));
         _bus->write(toBCD(value->minute));
         _bus->write(toBCD(value->hour));    // Changes mode to 24-hour clock.
-        _bus->stop();
+        _bus->endWrite();
     } else {
         RTC::writeTime(value);
     }
@@ -220,7 +221,7 @@ void DS1307RTC::writeDate(const RTCDate *value)
         _bus->write(toBCD(value->day));
         _bus->write(toBCD(value->month));
         _bus->write(toBCD(value->year % 100));
-        _bus->stop();
+        _bus->endWrite();
     } else {
         RTC::writeDate(value);
     }
@@ -231,11 +232,16 @@ void DS1307RTC::readAlarm(uint8_t alarmNum, RTCAlarm *value)
     if (_isRealTime) {
         _bus->startWrite(DS1307_I2C_ADDRESS);
         _bus->write(DS1307_ALARMS + alarmNum * DS1307_ALARM_SIZE);
-        _bus->startRead(DS1307_I2C_ADDRESS);
-        value->hour = fromBCD(_bus->read());
-        value->minute = fromBCD(_bus->read());
-        value->flags = _bus->read(BitBangI2C::NACK);
-        _bus->stop();
+        if (_bus->startRead(DS1307_I2C_ADDRESS, 3)) {
+            value->hour = fromBCD(_bus->read());
+            value->minute = fromBCD(_bus->read());
+            value->flags = _bus->read();
+        } else {
+            // RTC chip is not responding.
+            value->hour = 0;
+            value->minute = 0;
+            value->flags = 0;
+        }
     } else {
         RTC::readAlarm(alarmNum, value);
     }
@@ -249,7 +255,7 @@ void DS1307RTC::writeAlarm(uint8_t alarmNum, const RTCAlarm *value)
         _bus->write(toBCD(value->hour));
         _bus->write(toBCD(value->minute));
         _bus->write(value->flags);
-        _bus->stop();
+        _bus->endWrite();
     } else {
         RTC::writeAlarm(alarmNum, value);
     }
@@ -257,37 +263,23 @@ void DS1307RTC::writeAlarm(uint8_t alarmNum, const RTCAlarm *value)
 
 uint8_t DS1307RTC::readByte(uint8_t offset)
 {
-    if (_isRealTime) {
-        _bus->startWrite(DS1307_I2C_ADDRESS);
-        _bus->write(DS1307_NVRAM + offset);
-        _bus->startRead(DS1307_I2C_ADDRESS);
-        uint8_t value = _bus->read(BitBangI2C::NACK);
-        _bus->stop();
-        return value;
-    } else {
+    if (_isRealTime)
+        return readRegister(DS1307_NVRAM + offset);
+    else
         return RTC::readByte(offset);
-    }
 }
 
 void DS1307RTC::writeByte(uint8_t offset, uint8_t value)
 {
-    if (_isRealTime) {
-        _bus->startWrite(DS1307_I2C_ADDRESS);
-        _bus->write(DS1307_NVRAM + offset);
-        _bus->write(value);
-        _bus->stop();
-    } else {
+    if (_isRealTime)
+        writeRegister(DS1307_NVRAM + offset, value);
+    else
         RTC::writeByte(offset, value);
-    }
 }
 
 void DS1307RTC::initAlarms()
 {
-    _bus->startWrite(DS1307_I2C_ADDRESS);
-    _bus->write(DS1307_ALARM_MAGIC);
-    _bus->startRead(DS1307_I2C_ADDRESS);
-    uint8_t value = _bus->read(BitBangI2C::NACK);
-    _bus->stop();
+    uint8_t value = readRegister(DS1307_ALARM_MAGIC);
     if (value != (0xB0 + ALARM_COUNT)) {
         // This is the first time we have used this clock chip,
         // so initialize all alarms to their default state.
@@ -297,10 +289,7 @@ void DS1307RTC::initAlarms()
         alarm.flags = 0;
         for (uint8_t index = 0; index < ALARM_COUNT; ++index)
             writeAlarm(index, &alarm);
-        _bus->startWrite(DS1307_I2C_ADDRESS);
-        _bus->write(DS1307_ALARM_MAGIC);
-        _bus->write(0xB0 + ALARM_COUNT);
-        _bus->stop();
+        writeRegister(DS1307_I2C_ADDRESS, 0xB0 + ALARM_COUNT);
 
         // Also clear the rest of NVRAM so that it is in a known state.
         // Otherwise we'll have whatever garbage was present at power-on.
@@ -308,6 +297,23 @@ void DS1307RTC::initAlarms()
         _bus->write(DS1307_NVRAM);
         for (uint8_t index = DS1307_NVRAM; index < DS1307_ALARMS; ++index)
             _bus->write(0);
-        _bus->stop();
+        _bus->endWrite();
     }
+}
+
+uint8_t DS1307RTC::readRegister(uint8_t reg)
+{
+    _bus->startWrite(DS1307_I2C_ADDRESS);
+    _bus->write(reg);
+    if (!_bus->startRead(DS1307_I2C_ADDRESS, 1))
+        return 0;   // RTC chip is not responding.
+    return _bus->read();
+}
+
+bool DS1307RTC::writeRegister(uint8_t reg, uint8_t value)
+{
+    _bus->startWrite(DS1307_I2C_ADDRESS);
+    _bus->write(reg);
+    _bus->write(value);
+    return _bus->endWrite();
 }

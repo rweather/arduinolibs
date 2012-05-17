@@ -20,44 +20,22 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-#ifndef DS1307RTC_h
-#define DS1307RTC_h
+#ifndef I2CMaster_h
+#define I2CMaster_h
 
-#include "RTC.h"
+#include <inttypes.h>
 
-class I2CMaster;
-
-class DS1307RTC : public RTC {
+class I2CMaster {
 public:
-    DS1307RTC(I2CMaster &bus, uint8_t oneHzPin = 255);
-    ~DS1307RTC();
+    virtual unsigned int maxTransferSize() const = 0;
 
-    bool isRealTime() const { return _isRealTime; }
+    virtual void startWrite(unsigned int address);
+    virtual void write(uint8_t value) = 0;
+    virtual bool endWrite() = 0;
 
-    bool hasUpdates();
-
-    void readTime(RTCTime *value);
-    void readDate(RTCDate *value);
-
-    void writeTime(const RTCTime *value);
-    void writeDate(const RTCDate *value);
-
-    void readAlarm(uint8_t alarmNum, RTCAlarm *value);
-    void writeAlarm(uint8_t alarmNum, const RTCAlarm *value);
-
-    uint8_t readByte(uint8_t offset);
-    void writeByte(uint8_t offset, uint8_t value);
-
-private:
-    I2CMaster *_bus;
-    uint8_t _oneHzPin;
-    bool prevOneHz;
-    bool _isRealTime;
-
-    void initAlarms();
-
-    uint8_t readRegister(uint8_t reg);
-    bool writeRegister(uint8_t reg, uint8_t value);
+    virtual bool startRead(unsigned int address, unsigned int count) = 0;
+    virtual unsigned int available() = 0;
+    virtual uint8_t read() = 0;
 };
 
 #endif

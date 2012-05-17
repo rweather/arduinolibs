@@ -23,31 +23,32 @@
 #ifndef BitBangI2C_h
 #define BitBangI2C_h
 
-#include <inttypes.h>
+#include "I2CMaster.h"
 
-class BitBangI2C {
+class BitBangI2C : public I2CMaster {
 public:
     BitBangI2C(uint8_t dataPin, uint8_t clockPin);
 
-    typedef bool ack_t;
+    unsigned int maxTransferSize() const;
 
-    static const ack_t ACK = false;
-    static const ack_t NACK = true;
+    void startWrite(unsigned int address);
+    void write(uint8_t value);
+    bool endWrite();
 
-    void start();
-    void stop();
-
-    ack_t startWrite(unsigned int address);
-    ack_t startRead(unsigned int address);
-
-    ack_t write(uint8_t value);
-    uint8_t read(ack_t ack = ACK);
+    bool startRead(unsigned int address, unsigned int count);
+    unsigned int available();
+    uint8_t read();
 
 private:
     uint8_t _dataPin;
     uint8_t _clockPin;
     bool started;
+    bool acked;
+    bool inWrite;
+    unsigned int readCount;
 
+    void start();
+    void stop();
     void writeBit(bool bit);
     bool readBit();
 };
