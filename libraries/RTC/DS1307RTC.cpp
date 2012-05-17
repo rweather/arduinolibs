@@ -21,6 +21,7 @@
  */
 
 #include "DS1307RTC.h"
+#include "../I2C/BitBangI2C.h"
 #include <WProgram.h>
 
 /**

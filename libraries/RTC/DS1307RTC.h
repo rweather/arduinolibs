@@ -24,7 +24,8 @@
 #define DS1307RTC_h
 
 #include "RTC.h"
-#include "BitBangI2C.h"
+
+class BitBangI2C;
 
 class DS1307RTC : public RTC {
 public:

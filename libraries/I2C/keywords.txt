@@ -1,0 +1,8 @@
+BitBangI2C	KEYWORD1
+
+start	KEYWORD2
+stop	KEYWORD2
+startRead	KEYWORD2
+startWrite	KEYWORD2
+read	KEYWORD2
+write	KEYWORD2

@@ -34,7 +34,6 @@ LCD shield.
 \li Form and Field classes to build simple property sheet UI's on LCD displays.
 \li \ref lcd_hello_world "Hello World" example for the Freetronics LCD shield.
 \li \ref lcd_form "Form" example for LCD displays.
-\li \ref alarm_clock "Wind-Up Alarm Clock".
 
 \section main_BlinkLED BlinkLED Utility Library
 
@@ -47,5 +46,28 @@ over several output pins.
 the Cylon eye effect from Battlestar Galactica.
 \li \ref blink_startrek "StarTrek" example for lighting a starship
 Enterprise model kit.
+
+\section main_I2C I2C Utility Library
+
+\li I2CMaster abstract class that provides an improved API for implementing an
+I2C master.  The following two classes inherit from I2CMaster:
+\li BitBangI2C class that implements the master side of the I2C protocol
+using "bit-banging" on any arbitrary pair of pins for DATA and CLOCK.
+This class supports both 7-bit and 10-bit I2C addresses.
+\li WireI2C class that uses the Arduino Wire library to implement the
+master side of the I2C protocol.  This class only supports 7-bit addresses
+and runs on predefined DATA and CLOCK pins (A4 and A5 on most boards,
+D20 and D21 for Arduino Mega).
+
+\section main_RTC Realtime Clock Library
+
+\li RTC class that acts as a base for all realtime clock implementations,
+including support for configuring alarms and storing clock settings.
+The default implementation simulates the time and date based on the value of
+<tt>millis()</tt>.
+\li DS1307RTC class that talks to the DS1307 realtime clock chip via I2C.
+\li \ref alarm_clock "Wind-Up Alarm Clock" example that uses the DS1307
+realtime clock and the FreetronicsLCD library to implement an alarm clock
+where the internal battery is charged by hand-cranking a dynamo.
 
 */

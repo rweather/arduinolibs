@@ -24,6 +24,7 @@
 #include <FreetronicsLCD.h>
 #include <Form.h>
 #include <Field.h>
+#include <BitBangI2C.h>
 #include <DS1307RTC.h>
 #include <Melody.h>
 
