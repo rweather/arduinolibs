@@ -23,30 +23,10 @@
 #ifndef DS1307RTC_h
 #define DS1307RTC_h
 
+#include "RTC.h"
 #include "BitBangI2C.h"
 
-struct RTCTime
-{
-    uint8_t hour;
-    uint8_t minute;
-    uint8_t second;
-};
-
-struct RTCDate
-{
-    unsigned int year;
-    uint8_t month;
-    uint8_t day;
-};
-
-struct RTCAlarm
-{
-    uint8_t hour;
-    uint8_t minute;
-    uint8_t flags;
-};
-
-class DS1307RTC {
+class DS1307RTC : public RTC {
 public:
     DS1307RTC(BitBangI2C &bus, uint8_t oneHzPin = 255);
     ~DS1307RTC();
@@ -61,33 +41,17 @@ public:
     void writeTime(const RTCTime *value);
     void writeDate(const RTCDate *value);
 
-    uint8_t alarmCount();
     void readAlarm(uint8_t alarmNum, RTCAlarm *value);
     void writeAlarm(uint8_t alarmNum, const RTCAlarm *value);
 
     uint8_t readByte(uint8_t offset);
     void writeByte(uint8_t offset, uint8_t value);
 
-    // Flags for adjustDays(), adjustMonths(), and adjustYears().
-    static const uint8_t INCREMENT      = 0x0000;
-    static const uint8_t DECREMENT      = 0x0001;
-    static const uint8_t WRAP           = 0x0002;
-
-    static void adjustDays(RTCDate *date, uint8_t flags);
-    static void adjustMonths(RTCDate *date, uint8_t flags);
-    static void adjustYears(RTCDate *date, uint8_t flags);
-
 private:
     BitBangI2C *_bus;
     uint8_t _oneHzPin;
-    uint8_t _alarmCount;
-    uint8_t _alarmOffset;
     bool prevOneHz;
     bool _isRealTime;
-    unsigned long midnight;
-    RTCDate date;
-    RTCAlarm *alarms;
-    uint8_t *nvram;
 
     void initAlarms();
 };
