@@ -29,11 +29,13 @@
  *
  * This class implements the I2C master protocol on any arbitrary pair
  * of data and clock pins.  It is not restricted to pre-defined pins as
- * is the case for the standard \c Wire library.
+ * is the case for WireI2C.
  *
  * This implementation only implements the master side of the protocol.
  * It assumes that there is a single bus master, no arbitration, and
  * no clock stretching.
+ *
+ * \sa I2CMaster, WireI2C
  */
 
 #define i2cDelay()  delayMicroseconds(5)
