@@ -100,7 +100,8 @@ Some of the components can be purchased ready-made as the
 16x2 LCD Shield</a> and the <a href="http://www.sparkfun.com/products/99">SparkFun
 Realtime Clock Module</a>.  I used the ready-made realtime clock module,
 but made my own equivalent to the LCD shield from parts to aid in spacing
-out the LCD and pushbuttons on the exterior of the box.
+out the LCD and pushbuttons on the exterior of the box.  The value of the 33R
+resistor may need to be adjusted for different types of back light LED's.
 
 The clock module is based on the DS1307 chip and has an on-board coin battery
 to keep the time and date ticking over even if the main circuit loses power.
@@ -114,11 +115,5 @@ Note: the above circuit works just as well for a non-wind-up clock powered
 from batteries or mains power.  The only difference will be the "Sense
 Battery Status" input on A1.  Either remove the battery monitoring logic
 from the source code or tie A1 to 5V via a 10K resistor.
-
-I had a spare 2N7000 FET from the KitTen kit that I wasn't using on the
-Arduino board, so I used that for the back light control.  If you don't
-have a FET, then you can use a regular NPN transistor instead:
-
-\image html transistor_back_light.png
 
 */
