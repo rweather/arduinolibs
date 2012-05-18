@@ -20,11 +20,11 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-#include "BitBangI2C.h"
+#include "SoftI2C.h"
 #include <WProgram.h>
 
 /**
- * \class BitBangI2C BitBangI2C.h <BitBangI2C.h>
+ * \class SoftI2C SoftI2C.h <SoftI2C.h>
  * \brief Bit-banged implementation of an I2C master.
  *
  * This class implements the I2C master protocol on any arbitrary pair
@@ -41,9 +41,9 @@
 #define i2cDelay()  delayMicroseconds(5)
 
 /**
- * \brief Constructs a new bit-banged I2C master on \a dataPin and \a clockPin.
+ * \brief Constructs a new software I2C master on \a dataPin and \a clockPin.
  */
-BitBangI2C::BitBangI2C(uint8_t dataPin, uint8_t clockPin)
+SoftI2C::SoftI2C(uint8_t dataPin, uint8_t clockPin)
     : _dataPin(dataPin)
     , _clockPin(clockPin)
     , started(false)
@@ -58,12 +58,12 @@ BitBangI2C::BitBangI2C(uint8_t dataPin, uint8_t clockPin)
     digitalWrite(_dataPin, HIGH);
 }
 
-unsigned int BitBangI2C::maxTransferSize() const
+unsigned int SoftI2C::maxTransferSize() const
 {
     return 0xFFFF;
 }
 
-void BitBangI2C::start()
+void SoftI2C::start()
 {
     pinMode(_dataPin, OUTPUT);
     if (started) {
@@ -80,7 +80,7 @@ void BitBangI2C::start()
     acked = true;
 }
 
-void BitBangI2C::stop()
+void SoftI2C::stop()
 {
     pinMode(_dataPin, OUTPUT);
     digitalWrite(_dataPin, LOW);
@@ -97,7 +97,7 @@ void BitBangI2C::stop()
 #define I2C_READ    0x01
 #define I2C_READ10  0xF1
 
-void BitBangI2C::startWrite(unsigned int address)
+void SoftI2C::startWrite(unsigned int address)
 {
     start();
     inWrite = true;
@@ -111,7 +111,7 @@ void BitBangI2C::startWrite(unsigned int address)
     }
 }
 
-void BitBangI2C::write(uint8_t value)
+void SoftI2C::write(uint8_t value)
 {
     uint8_t mask = 0x80;
     while (mask != 0) {
@@ -122,13 +122,13 @@ void BitBangI2C::write(uint8_t value)
         acked = false;
 }
 
-bool BitBangI2C::endWrite()
+bool SoftI2C::endWrite()
 {
     stop();
     return acked;
 }
 
-bool BitBangI2C::startRead(unsigned int address, unsigned int count)
+bool SoftI2C::startRead(unsigned int address, unsigned int count)
 {
     start();
     inWrite = false;
@@ -148,12 +148,12 @@ bool BitBangI2C::startRead(unsigned int address, unsigned int count)
     return true;
 }
 
-unsigned int BitBangI2C::available()
+unsigned int SoftI2C::available()
 {
     return readCount;
 }
 
-uint8_t BitBangI2C::read()
+uint8_t SoftI2C::read()
 {
     uint8_t value = 0;
     for (uint8_t bit = 0; bit < 8; ++bit)
@@ -171,7 +171,7 @@ uint8_t BitBangI2C::read()
     return value;
 }
 
-void BitBangI2C::writeBit(bool bit)
+void SoftI2C::writeBit(bool bit)
 {
     pinMode(_dataPin, OUTPUT);
     if (bit)
@@ -185,7 +185,7 @@ void BitBangI2C::writeBit(bool bit)
     i2cDelay();
 }
 
-bool BitBangI2C::readBit()
+bool SoftI2C::readBit()
 {
     pinMode(_dataPin, INPUT);
     digitalWrite(_dataPin, HIGH);

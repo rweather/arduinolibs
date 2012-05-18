@@ -46,12 +46,12 @@ namespace wireI2C {
  *
  * This class implements the I2C master protocol on pre-defined DATA and
  * CLOCK pins (A4 and A5 on most boards, D20 and D21 for Arduino Mega).
- * For other non-standard pins, use the BitBangI2C class instead.
+ * For other non-standard pins, use the SoftI2C class instead.
  *
  * This implementation only implements the master side of the protocol.
  * Use the standard Arduino Wire library for slave I2C implementations.
  *
- * \sa I2CMaster, BitBangI2C
+ * \sa I2CMaster, SoftI2C
  */
 
 /**

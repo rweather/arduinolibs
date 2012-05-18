@@ -1,8 +1,11 @@
-BitBangI2C	KEYWORD1
+I2CMaster	KEYWORD1
+SoftI2C	KEYWORD1
+WireI2C	KEYWORD1
 
-start	KEYWORD2
-stop	KEYWORD2
-startRead	KEYWORD2
+maxTransferSize	KEYWORD2
 startWrite	KEYWORD2
-read	KEYWORD2
 write	KEYWORD2
+endWrite	KEYWORD2
+startRead	KEYWORD2
+available	KEYWORD2
+read	KEYWORD2

@@ -20,14 +20,14 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-#ifndef BitBangI2C_h
-#define BitBangI2C_h
+#ifndef SoftI2C_h
+#define SoftI2C_h
 
 #include "I2CMaster.h"
 
-class BitBangI2C : public I2CMaster {
+class SoftI2C : public I2CMaster {
 public:
-    BitBangI2C(uint8_t dataPin, uint8_t clockPin);
+    SoftI2C(uint8_t dataPin, uint8_t clockPin);
 
     unsigned int maxTransferSize() const;
 

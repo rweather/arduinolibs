@@ -24,16 +24,16 @@
 #include <FreetronicsLCD.h>
 #include <Form.h>
 #include <Field.h>
-#include <BitBangI2C.h>
+#include <SoftI2C.h>
 #include <DS1307RTC.h>
 #include <Melody.h>
 
 // I/O pins that are used by this sketch.
 #define BUZZER                  12
 #define SENSE_BATTERY           A1
-#define RTC_DATA                A3
-#define RTC_CLOCK               A4
-#define RTC_ONE_HZ              A5
+#define RTC_DATA                A4
+#define RTC_CLOCK               A5
+#define RTC_ONE_HZ              A3
 
 // Value to adjust for the voltage drop on D2.
 #define VOLTAGE_DROP_ADJUST     70  // 0.7 volts
@@ -52,7 +52,7 @@
 FreetronicsLCD lcd;
 
 // Activate the realtime clock chip.
-BitBangI2C bus(RTC_DATA, RTC_CLOCK);
+SoftI2C bus(RTC_DATA, RTC_CLOCK);
 DS1307RTC rtc(bus, RTC_ONE_HZ);
 
 // Melody to play when the alarm sounds.
