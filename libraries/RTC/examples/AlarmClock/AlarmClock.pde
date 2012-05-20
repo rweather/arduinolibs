@@ -58,7 +58,9 @@ Form mainForm(lcd);
 FrontScreenField frontScreen(mainForm);
 
 void setup() {
-    //lcd.enableScreenSaver();
+    // Enable the screen saver.
+    lcd.setScreenSaverMode(FreetronicsLCD::BacklightOnSelect);
+    lcd.enableScreenSaver(3);
 
     // Initialize the alarm melody.
     alarmMelody.setMelody(alarmNotes, alarmLengths, sizeof(alarmLengths));

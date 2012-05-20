@@ -53,6 +53,16 @@ public:
     void display();
     void noDisplay();
 
+    enum ScreenSaverMode
+    {
+        DisplayOff,
+        BacklightOff,
+        BacklightOnSelect
+    };
+
+    ScreenSaverMode screenSaverMode() const { return mode; }
+    void setScreenSaverMode(ScreenSaverMode mode);
+
     void enableScreenSaver(int timeoutSecs = 10);
     void disableScreenSaver();
     bool isScreenSaved() const { return screenSaved; }
@@ -67,6 +77,7 @@ private:
     unsigned long lastDebounce;
     bool screenSaved;
     bool eatRelease;
+    ScreenSaverMode mode;
 
     void init();
 };

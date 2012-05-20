@@ -48,6 +48,8 @@
  * on and off with the display() and noDisplay() functions.  The user
  * can also call enableScreenSaver() to cause the display and back light
  * to automatically turn off after a specific timeout.
+ * The setScreenSaverMode() function controls which of the display and
+ * back light are disabled when the screen saver activates.
  *
  * The Freetronics LCD also has 5 push buttons for Left, Right, Up, Down,
  * and Select, to assist with the creation of interactive sketches.
@@ -133,6 +135,7 @@ void FreetronicsLCD::init()
     timeout = 0;
     lastRestore = millis();
     screenSaved = false;
+    mode = DisplayOff;
 }
 
 /**
@@ -142,13 +145,15 @@ void FreetronicsLCD::init()
  * deactivate the screen saver and reset the timeout.  Thus, this
  * function can be called for force the screen to restore.
  *
- * \sa noDisplay(), enableScreenSaver()
+ * \sa noDisplay(), enableScreenSaver(), setScreenSaverMode()
  */
 void FreetronicsLCD::display()
 {
     LiquidCrystal::display();
-    digitalWrite(LCD_BACK_LIGHT, HIGH);
-
+    if (mode != BacklightOnSelect)
+        digitalWrite(LCD_BACK_LIGHT, HIGH);
+    else
+        digitalWrite(LCD_BACK_LIGHT, LOW);
     screenSaved = false;
     lastRestore = millis();
 }
@@ -158,13 +163,60 @@ void FreetronicsLCD::display()
  *
  * This function can be called to force the screen saver to activate.
  *
- * \sa display(), enableScreenSaver()
+ * \sa display(), enableScreenSaver(), setScreenSaverMode()
  */
 void FreetronicsLCD::noDisplay()
 {
-    LiquidCrystal::noDisplay();
+    if (mode == DisplayOff)
+        LiquidCrystal::noDisplay();
     digitalWrite(LCD_BACK_LIGHT, LOW);
     screenSaved = true;
+}
+
+/**
+ * \enum FreetronicsLCD::ScreenSaverMode
+ * \brief Screen saver mode that controls the display and back light.
+ */
+
+/**
+ * \var FreetronicsLCD::DisplayOff
+ * \brief Turn off both the display and the backlight when the screen saver
+ * is activated.
+ */
+
+/**
+ * \var FreetronicsLCD::BacklightOff
+ * \brief Turn off the back light but leave the display on when the screen
+ * saver is activated.
+ */
+
+/**
+ * \var FreetronicsLCD::BacklightOnSelect
+ * \brief Same as BacklightOff but the screen saver is only deactivated when
+ * Select is pressed; other buttons have no effect.
+ */
+
+/**
+ * \fn ScreenSaverMode FreetronicsLCD::screenSaverMode() const
+ * \brief Returns the current screen saver mode; default is DisplayOff.
+ *
+ * \sa setScreenSaverMode(), enableScreenSaver()
+ */
+
+/**
+ * \brief Sets the current screen saver \a mode.
+ *
+ * \sa screenSaverMode(), enableScreenSaver()
+ */
+void FreetronicsLCD::setScreenSaverMode(ScreenSaverMode mode)
+{
+    if (this->mode != mode) {
+        this->mode = mode;
+        if (screenSaved)
+            noDisplay();
+        else
+            display();
+    }
 }
 
 /**
@@ -224,9 +276,10 @@ void FreetronicsLCD::disableScreenSaver()
  * or LCD_BUTTON_SELECT_RELEASED.
  *
  * If the screen saver is currently active, then it will be deactivated
- * by this function whenever a button is pressed.  In that case, the function
- * will "eat" the button press and return LCD_BUTTON_NONE.  The scrren saver
- * can also be deactivated under program control by calling display()
+ * by this function whenever a button is pressed.  If screenSaverMode() is
+ * DisplayOff, the function will "eat" the button press and return
+ * LCD_BUTTON_NONE.  The scrren saver can also be deactivated under
+ * program control by calling display().
  *
  * This function debounces the button state automatically so there is no
  * need for the caller to worry about spurious button events.
@@ -269,8 +322,10 @@ int FreetronicsLCD::getButton()
         if (screenSaved) {
             // Button pressed when screen saver active.
             display();
-            eatRelease = true;
-            return LCD_BUTTON_NONE;
+            if (mode == DisplayOff) {
+                eatRelease = true;
+                return LCD_BUTTON_NONE;
+            }
         }
         eatRelease = false;
         lastRestore = currentTime;
