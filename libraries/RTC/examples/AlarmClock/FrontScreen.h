@@ -46,6 +46,9 @@ public:
     bool isAlarmActive() const { return _alarmActive; }
     void setAlarmActive(bool active);
 
+    bool is24HourMode() const { return _hourMode; }
+    void set24HourMode(bool value);
+
 private:
     RTCDate _date;
     RTCTime _time;
@@ -53,6 +56,7 @@ private:
     int _voltageTrunc;
     int _batteryBars;
     bool _alarmActive;
+    bool _hourMode;
 
     void updateDate();
     void updateTime();

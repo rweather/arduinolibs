@@ -39,6 +39,7 @@ FrontScreenField::FrontScreenField(Form &form)
     , _voltageTrunc(36)
     , _batteryBars(IND_BATTERY_FULL)
     , _alarmActive(false)
+    , _hourMode(false)
 {
     _date.day = 1;
     _date.month = 1;
@@ -123,6 +124,15 @@ void FrontScreenField::setAlarmActive(bool active)
     }
 }
 
+void FrontScreenField::set24HourMode(bool value)
+{
+    if (_hourMode != value) {
+        _hourMode = value;
+        if (isCurrent())
+            updateTime();
+    }
+}
+
 void FrontScreenField::updateDate()
 {
     lcd()->setCursor(0, 0);
@@ -141,7 +151,11 @@ void FrontScreenField::updateTime()
 {
     lcd()->setCursor(0, 1);
     bool pm;
-    if (_time.hour == 0 || _time.hour == 12) {
+    if (_hourMode) {
+        lcd()->write('0' + _time.hour / 10);
+        lcd()->write('0' + _time.hour % 10);
+        pm = false;
+    } else if (_time.hour == 0 || _time.hour == 12) {
         lcd()->write('1');
         lcd()->write('2');
         pm = (_time.hour == 12);
@@ -161,7 +175,8 @@ void FrontScreenField::updateTime()
     lcd()->write(':');
     lcd()->write('0' + _time.second / 10);
     lcd()->write('0' + _time.second % 10);
-    lcd()->print(pm ? "pm" : "am");
+    if (!_hourMode)
+        lcd()->print(pm ? "pm" : "am");
 }
 
 void FrontScreenField::updateVoltage()

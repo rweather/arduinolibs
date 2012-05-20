@@ -24,6 +24,7 @@
 #include <FreetronicsLCD.h>
 #include <Form.h>
 #include <Field.h>
+#include <BoolField.h>
 #include <SoftI2C.h>
 #include <DS1307RTC.h>
 #include <Melody.h>
@@ -38,6 +39,9 @@
 
 // Value to adjust for the voltage drop on D2.
 #define VOLTAGE_DROP_ADJUST     70  // 0.7 volts
+
+// Offsets of settings in the realtime clock's NVRAM.
+#define SETTING_24HOUR          0   // 0: 12 hour, 1: 24 hour
 
 // Initialize the LCD
 FreetronicsLCD lcd;
@@ -56,6 +60,7 @@ uint8_t prevHour = 24;
 // Create the main form and its fields.
 Form mainForm(lcd);
 FrontScreenField frontScreen(mainForm);
+BoolField hourMode(mainForm, "Hour display", "24 hour clock", "12 hour clock", false);
 
 void setup() {
     // Enable the screen saver.
@@ -66,6 +71,10 @@ void setup() {
     alarmMelody.setMelody(alarmNotes, alarmLengths, sizeof(alarmLengths));
     alarmMelody.setLoopDuration(120000UL);
     //alarmMelody.play();
+
+    // Read the clock settings from the realtime clock's NVRAM.
+    hourMode.setValue(rtc.readByte(SETTING_24HOUR) != 0);
+    frontScreen.set24HourMode(hourMode.value());
 
     // Show the main form for the first time.
     mainForm.show();
@@ -97,6 +106,10 @@ void loop() {
     // Dispatch button events to the main form.
     int event = lcd.getButton();
     if (mainForm.dispatch(event) == FORM_CHANGED) {
+        if (hourMode.isCurrent()) {
+            frontScreen.set24HourMode(hourMode.value());
+            rtc.writeByte(SETTING_24HOUR, (byte)hourMode.value());
+        }
         prevHour = 24;      // Force an update of the main screen.
     }
 
