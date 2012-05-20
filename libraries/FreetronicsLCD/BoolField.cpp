@@ -27,7 +27,7 @@
  * \brief Field that manages the input of a boolean value.
  *
  * BoolField is intended for field values that are modifiable by the user.
- * Pressing one of Up, Down, or Select will toggle the field's current value.
+ * Pressing one of Up or Down will toggle the field's current value.
  *
  * The following example creates a boolean field that shows the state
  * of the status LED on D13.  When the LED is on (the default), the string
@@ -100,8 +100,7 @@ BoolField::BoolField(Form &form, const String &label, const String &trueLabel, c
 
 int BoolField::dispatch(int event)
 {
-    if (event == LCD_BUTTON_UP || event == LCD_BUTTON_DOWN ||
-            event == LCD_BUTTON_SELECT) {
+    if (event == LCD_BUTTON_UP || event == LCD_BUTTON_DOWN) {
         setValue(!_value);
         return FORM_CHANGED;
     } else {
