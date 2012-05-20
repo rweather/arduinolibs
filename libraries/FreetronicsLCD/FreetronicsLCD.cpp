@@ -321,11 +321,22 @@ int FreetronicsLCD::getButton()
         prevButton = button;
         if (screenSaved) {
             // Button pressed when screen saver active.
-            display();
-            if (mode == DisplayOff) {
+            if (mode == BacklightOnSelect) {
+                // Turn on the back light only if Select was pressed.
+                if (button == LCD_BUTTON_SELECT) {
+                    digitalWrite(LCD_BACK_LIGHT, HIGH);
+                    screenSaved = false;
+                }
+            } else if (mode == DisplayOff) {
+                display();
                 eatRelease = true;
                 return LCD_BUTTON_NONE;
+            } else {
+                display();
             }
+        } else if (mode == BacklightOnSelect && button != LCD_BUTTON_SELECT) {
+            eatRelease = false;
+            return button;
         }
         eatRelease = false;
         lastRestore = currentTime;
