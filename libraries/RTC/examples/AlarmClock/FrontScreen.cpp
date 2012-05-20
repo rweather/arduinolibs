@@ -111,7 +111,8 @@ void FrontScreenField::setVoltage(int voltage)
     if (ind != _batteryBars || trunc != _voltageTrunc) {
         _batteryBars = ind;
         _voltageTrunc = trunc;
-        updateVoltage();
+        if (isCurrent())
+            updateVoltage();
     }
 }
 
