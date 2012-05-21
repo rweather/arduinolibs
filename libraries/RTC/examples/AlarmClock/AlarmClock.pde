@@ -29,8 +29,10 @@
 #include <DS1307RTC.h>
 #include <Melody.h>
 #include <PowerSave.h>
+#include <avr/power.h>
 #include "FrontScreen.h"
 #include "EditTime.h"
+#include "LowPowerMelody.h"
 
 // I/O pins that are used by this sketch.
 #define BUZZER                  12
@@ -55,7 +57,7 @@ DS1307RTC rtc(bus, RTC_ONE_HZ);
 // Melody to play when the alarm sounds.
 int alarmNotes[] = {NOTE_C6, NOTE_C6, NOTE_C6, NOTE_C6, NOTE_REST};
 byte alarmLengths[] = {8, 8, 8, 8, 2};
-Melody alarmMelody(BUZZER);
+LowPowerMelody alarmMelody(BUZZER);
 
 uint8_t prevHour = 24;
 
@@ -78,6 +80,12 @@ void setup() {
     unusedPin(11);
     unusedPin(13);
 
+    // Turn off peripherals we don't need.
+    power_spi_disable();
+    power_usart0_disable();
+    power_twi_disable();
+    power_timer1_disable();
+
     // Enable the screen saver.
     lcd.setScreenSaverMode(FreetronicsLCD::BacklightOnSelect);
     lcd.enableScreenSaver(3);
@@ -86,6 +94,7 @@ void setup() {
     alarmMelody.setMelody(alarmNotes, alarmLengths, sizeof(alarmLengths));
     alarmMelody.setLoopDuration(120000UL);
     //alarmMelody.play();
+    alarmMelody.stop();     // Force Timer2 to be disabled.
 
     // Read the clock settings from the realtime clock's NVRAM.
     hourMode.setValue(rtc.readByte(SETTING_24HOUR) != 0);
@@ -139,7 +148,7 @@ void loop() {
 
     // If the alarm is playing and a button was pressed, then turn it off.
     if (alarmMelody.isPlaying()) {
-        if (event != LCD_BUTTON_NONE)
+        if (event > 0)
             alarmMelody.stop();
         alarmMelody.run();
     } else {
