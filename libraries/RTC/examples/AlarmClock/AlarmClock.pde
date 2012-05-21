@@ -28,6 +28,7 @@
 #include <SoftI2C.h>
 #include <DS1307RTC.h>
 #include <Melody.h>
+#include <PowerSave.h>
 #include "FrontScreen.h"
 #include "EditTime.h"
 
@@ -68,6 +69,15 @@ EditTime alarm3(mainForm, "Alarm 3");
 EditTime alarm4(mainForm, "Alarm 4");
 
 void setup() {
+    // Reduce power consumption on I/O pins we don't need.
+    unusedPin(A2);
+    unusedPin(0);
+    unusedPin(1);
+    unusedPin(2);
+    unusedPin(10);
+    unusedPin(11);
+    unusedPin(13);
+
     // Enable the screen saver.
     lcd.setScreenSaverMode(FreetronicsLCD::BacklightOnSelect);
     lcd.enableScreenSaver(3);
@@ -128,7 +138,12 @@ void loop() {
     }
 
     // If the alarm is playing and a button was pressed, then turn it off.
-    if (event != LCD_BUTTON_NONE)
-        alarmMelody.stop();
-    alarmMelody.run();
+    if (alarmMelody.isPlaying()) {
+        if (event != LCD_BUTTON_NONE)
+            alarmMelody.stop();
+        alarmMelody.run();
+    } else {
+        // No alarm playing, so put the device to sleep to save power.
+        sleepFor(SLEEP_15_MS);
+    }
 }

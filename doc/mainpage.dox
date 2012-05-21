@@ -70,4 +70,8 @@ The default implementation simulates the time and date based on the value of
 realtime clock and the FreetronicsLCD library to implement an alarm clock
 where the internal battery is charged by hand-cranking a dynamo.
 
+\section main_other Other
+
+\li \ref power_save "Power saving utility functions"
+
 */
