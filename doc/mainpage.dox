@@ -72,6 +72,7 @@ where the internal battery is charged by hand-cranking a dynamo.
 
 \section main_other Other
 
+\li Melody plays a melody on a digital output pin using <tt>tone()</tt>.
 \li \ref power_save "Power saving utility functions"
 
 */

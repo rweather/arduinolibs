@@ -59,7 +59,7 @@
  *
  * The run() method must be called from the application's main
  * <tt>loop()</tt> method to ensure that the melody advances from
- * one note to the next.  It will not * block the application while
+ * one note to the next.  It will not block the application while
  * notes are playing.
  *
  * The number of loops can also be specified with setLoopDuration() which
