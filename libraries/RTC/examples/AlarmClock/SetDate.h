@@ -20,34 +20,31 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-#ifndef EditTime_h
-#define EditTime_h
+#ifndef SetDate_h
+#define SetDate_h
 
 #include "Field.h"
 #include <RTC.h>
 
-class EditTime : public Field {
+class SetDate : public Field {
 public:
-    EditTime(Form &form, const String &label);
+    SetDate(Form &form, const String &label);
 
     int dispatch(int event);
 
     void enterField(bool reverse);
     void exitField();
 
-    RTCTime value() const { return _value; }
-    void setValue(const RTCTime &value);
+    RTCDate value() const { return _value; }
+    void setValue(const RTCDate &value);
 
-    RTCAlarm alarmValue() const;
-    void setAlarmValue(const RTCAlarm &value);
+    void updateCurrentDate();
 
-protected:
-    bool isAlarm;
-    bool alarmEnabled;
-    RTCTime _value;
+private:
+    RTCDate _value;
     uint8_t editField;
 
-    void printTime();
+    void printDate();
 };
 
 #endif

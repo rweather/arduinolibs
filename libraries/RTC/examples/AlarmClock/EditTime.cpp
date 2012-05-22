@@ -28,6 +28,8 @@
 #define EDIT_MINUTE_TENS    2
 #define EDIT_MINUTE         3
 
+extern bool is24HourClock;
+
 EditTime::EditTime(Form &form, const String &label)
     : Field(form, label)
     , isAlarm(false)
@@ -76,6 +78,7 @@ int EditTime::dispatch(int event)
             printTime();
             return FORM_CHANGED;
         }
+        newValue.second = 0;
         _value = newValue;
         printTime();
         return FORM_CHANGED;
@@ -185,7 +188,7 @@ void EditTime::printTime()
             return;
         }
     }
-    if (0) { //_hourMode) {
+    if (is24HourClock) {
         lcd()->write('0' + hour / 10);
         lcd()->write('0' + hour % 10);
         pm = false;
@@ -206,7 +209,7 @@ void EditTime::printTime()
     lcd()->write(':');
     lcd()->write('0' + minute / 10);
     lcd()->write('0' + minute % 10);
-    if (1) // if (!_hourMode)
+    if (!is24HourClock)
         lcd()->print(pm ? "pm" : "am");
     if (editField == EDIT_ENABLED)
         lcd()->setCursor(0, 1);

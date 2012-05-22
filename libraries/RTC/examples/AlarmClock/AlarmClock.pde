@@ -32,6 +32,8 @@
 #include <avr/power.h>
 #include "FrontScreen.h"
 #include "EditTime.h"
+#include "SetTime.h"
+#include "SetDate.h"
 #include "LowPowerMelody.h"
 
 // I/O pins that are used by this sketch.
@@ -60,10 +62,13 @@ byte alarmLengths[] = {8, 8, 8, 8, 2};
 LowPowerMelody alarmMelody(BUZZER);
 
 uint8_t prevHour = 24;
+bool is24HourClock = false;
 
 // Create the main form and its fields.
 Form mainForm(lcd);
 FrontScreenField frontScreen(mainForm);
+SetTime setTime(mainForm, "Set current time");
+SetDate setDate(mainForm, "Set current date");
 BoolField hourMode(mainForm, "Hour display", "24 hour clock", "12 hour clock", false);
 EditTime alarm1(mainForm, "Alarm 1");
 EditTime alarm2(mainForm, "Alarm 2");
@@ -97,8 +102,9 @@ void setup() {
     alarmMelody.stop();     // Force Timer2 to be disabled.
 
     // Read the clock settings from the realtime clock's NVRAM.
-    hourMode.setValue(rtc.readByte(SETTING_24HOUR) != 0);
-    frontScreen.set24HourMode(hourMode.value());
+    is24HourClock = rtc.readByte(SETTING_24HOUR) != 0;
+    hourMode.setValue(is24HourClock);
+    frontScreen.set24HourMode(is24HourClock);
     RTCAlarm alarm;
     rtc.readAlarm(0, &alarm);
     alarm1.setAlarmValue(alarm);
@@ -124,8 +130,10 @@ void loop() {
             RTCDate date;
             rtc.readDate(&date);
             frontScreen.setDate(date);
+            setDate.updateCurrentDate();
         }
         prevHour = time.hour;
+        setTime.updateCurrentTime();
 
         // Update the battery status once a second also.
         int status = analogRead(SENSE_BATTERY);
@@ -140,8 +148,9 @@ void loop() {
     int event = lcd.getButton();
     if (mainForm.dispatch(event) == FORM_CHANGED) {
         if (hourMode.isCurrent()) {
-            frontScreen.set24HourMode(hourMode.value());
-            rtc.writeByte(SETTING_24HOUR, (byte)hourMode.value());
+            is24HourClock = hourMode.value();
+            frontScreen.set24HourMode(is24HourClock);
+            rtc.writeByte(SETTING_24HOUR, (byte)is24HourClock);
         }
         prevHour = 24;      // Force an update of the main screen.
     }

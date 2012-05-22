@@ -20,34 +20,42 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-#ifndef EditTime_h
-#define EditTime_h
+#include "SetTime.h"
+#include <DS1307RTC.h>
 
-#include "Field.h"
-#include <RTC.h>
+extern DS1307RTC rtc;
 
-class EditTime : public Field {
-public:
-    EditTime(Form &form, const String &label);
+SetTime::SetTime(Form &form, const String &label)
+    : EditTime(form, label)
+{
+}
 
-    int dispatch(int event);
+int SetTime::dispatch(int event)
+{
+    int result = EditTime::dispatch(event);
+    if (result == FORM_CHANGED) {
+        // Update the realtime clock with the new value.
+        RTCTime time = value();
+        rtc.writeTime(&time);
+    }
+    return result;
+}
 
-    void enterField(bool reverse);
-    void exitField();
+void SetTime::enterField(bool reverse)
+{
+    // Read the current time when the field is entered.
+    rtc.readTime(&_value);
+    EditTime::enterField(reverse);
+}
 
-    RTCTime value() const { return _value; }
-    void setValue(const RTCTime &value);
-
-    RTCAlarm alarmValue() const;
-    void setAlarmValue(const RTCAlarm &value);
-
-protected:
-    bool isAlarm;
-    bool alarmEnabled;
-    RTCTime _value;
-    uint8_t editField;
-
-    void printTime();
-};
-
-#endif
+void SetTime::updateCurrentTime()
+{
+    if (isCurrent()) {
+        RTCTime time;
+        rtc.readTime(&time);
+        if (time.hour != _value.hour || time.minute != _value.minute) {
+            _value = time;
+            printTime();
+        }
+    }
+}
