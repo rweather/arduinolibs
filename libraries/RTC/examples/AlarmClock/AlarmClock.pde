@@ -31,7 +31,7 @@
 #include <PowerSave.h>
 #include <avr/power.h>
 #include "FrontScreen.h"
-#include "EditTime.h"
+#include "SetAlarm.h"
 #include "SetTime.h"
 #include "SetDate.h"
 #include "LowPowerMelody.h"
@@ -70,10 +70,10 @@ FrontScreenField frontScreen(mainForm);
 SetTime setTime(mainForm, "Set current time");
 SetDate setDate(mainForm, "Set current date");
 BoolField hourMode(mainForm, "Hour display", "24 hour clock", "12 hour clock", false);
-EditTime alarm1(mainForm, "Alarm 1");
-EditTime alarm2(mainForm, "Alarm 2");
-EditTime alarm3(mainForm, "Alarm 3");
-EditTime alarm4(mainForm, "Alarm 4");
+SetAlarm alarm1(mainForm, "Alarm 1", 0);
+SetAlarm alarm2(mainForm, "Alarm 2", 1);
+SetAlarm alarm3(mainForm, "Alarm 3", 2);
+SetAlarm alarm4(mainForm, "Alarm 4", 3);
 
 void setup() {
     // Reduce power consumption on I/O pins we don't need.
@@ -105,15 +105,6 @@ void setup() {
     is24HourClock = rtc.readByte(SETTING_24HOUR) != 0;
     hourMode.setValue(is24HourClock);
     frontScreen.set24HourMode(is24HourClock);
-    RTCAlarm alarm;
-    rtc.readAlarm(0, &alarm);
-    alarm1.setAlarmValue(alarm);
-    rtc.readAlarm(1, &alarm);
-    alarm2.setAlarmValue(alarm);
-    rtc.readAlarm(2, &alarm);
-    alarm3.setAlarmValue(alarm);
-    rtc.readAlarm(3, &alarm);
-    alarm4.setAlarmValue(alarm);
 
     // Show the main form for the first time.
     mainForm.show();

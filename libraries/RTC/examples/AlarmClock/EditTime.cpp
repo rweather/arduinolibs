@@ -158,6 +158,7 @@ RTCAlarm EditTime::alarmValue() const
     alarm.hour = _value.hour;
     alarm.minute = _value.minute;
     alarm.flags = alarmEnabled ? 1 : 0;
+    return alarm;
 }
 
 void EditTime::setAlarmValue(const RTCAlarm &value)
