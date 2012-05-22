@@ -45,6 +45,6 @@ enum SleepDuration
     SLEEP_8_SEC
 };
 
-void sleepFor(SleepDuration duration);
+void sleepFor(SleepDuration duration, uint8_t mode = 0);
 
 #endif

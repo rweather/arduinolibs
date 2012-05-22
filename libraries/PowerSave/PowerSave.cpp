@@ -125,8 +125,11 @@ ISR(WDT_vect)
  *
  * The analog to digital converter and the brown out detector will
  * be disabled during sleep mode.
+ *
+ * The \a mode parameter indicates the mode to use when the device is
+ * sleeping.  The default is SLEEP_MODE_IDLE.
  */
-void sleepFor(SleepDuration duration)
+void sleepFor(SleepDuration duration, uint8_t mode)
 {
     // Turn off the analog to digital converter.
     ADCSRA &= ~(1 << ADEN);
@@ -137,7 +140,7 @@ void sleepFor(SleepDuration duration)
     WDTCSR |= (1 << WDIE);
 
     // Put the device to sleep, including turning off the Brown Out Detector.
-    set_sleep_mode(SLEEP_MODE_IDLE);
+    set_sleep_mode(mode);
     cli();
     sleep_enable();
 #if defined(sleep_bod_disable)
