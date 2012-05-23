@@ -25,6 +25,7 @@
 #include <Form.h>
 #include <Field.h>
 #include <BoolField.h>
+#include <IntField.h>
 #include <SoftI2C.h>
 #include <DS1307RTC.h>
 #include <Melody.h>
@@ -48,6 +49,7 @@
 
 // Offsets of settings in the realtime clock's NVRAM.
 #define SETTING_24HOUR          0   // 0: 12 hour, 1: 24 hour
+#define SETTING_ALARM_TIMEOUT   1   // Timeout in minutes for the alarm
 
 // Initialize the LCD
 FreetronicsLCD lcd;
@@ -75,6 +77,7 @@ SetAlarm alarm1(mainForm, "Alarm 1", 0);
 SetAlarm alarm2(mainForm, "Alarm 2", 1);
 SetAlarm alarm3(mainForm, "Alarm 3", 2);
 SetAlarm alarm4(mainForm, "Alarm 4", 3);
+IntField alarmTimeout(mainForm, "Alarm timeout", 2, 10, 1, 2, " minutes");
 
 void setup() {
     // Reduce power consumption on I/O pins we don't need.
@@ -98,14 +101,14 @@ void setup() {
 
     // Initialize the alarm melody.
     alarmMelody.setMelody(alarmNotes, alarmLengths, sizeof(alarmLengths));
-    alarmMelody.setLoopDuration(120000UL);
-    //alarmMelody.play();
     alarmMelody.stop();     // Force Timer2 to be disabled.
 
     // Read the clock settings from the realtime clock's NVRAM.
     is24HourClock = rtc.readByte(SETTING_24HOUR) != 0;
     hourMode.setValue(is24HourClock);
     frontScreen.set24HourMode(is24HourClock);
+    alarmTimeout.setValue(rtc.readByte(SETTING_ALARM_TIMEOUT));
+    alarmMelody.setLoopDuration(60000UL * alarmTimeout.value());
 
     // Set the initial time and date and find the next alarm to be triggered.
     RTCTime time;
@@ -160,6 +163,9 @@ void loop() {
             is24HourClock = hourMode.value();
             frontScreen.set24HourMode(is24HourClock);
             rtc.writeByte(SETTING_24HOUR, (byte)is24HourClock);
+        } else if (alarmTimeout.isCurrent()) {
+            rtc.writeByte(SETTING_ALARM_TIMEOUT, (byte)alarmTimeout.value());
+            alarmMelody.setLoopDuration(60000UL * alarmTimeout.value());
         }
         prevHour = 24;      // Force an update of the main screen.
         findNextAlarm();    // Update the time of the next alarm event.
