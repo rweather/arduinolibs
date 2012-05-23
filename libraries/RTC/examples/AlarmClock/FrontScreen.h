@@ -47,8 +47,15 @@ public:
     void setVoltage(int voltage);
 #endif
 
-    bool isAlarmActive() const { return _alarmActive; }
-    void setAlarmActive(bool active);
+    enum AlarmMode
+    {
+        AlarmOff,
+        AlarmOn,
+        Snooze
+    };
+
+    AlarmMode isAlarmMode() const { return _alarmMode; }
+    void setAlarmMode(AlarmMode mode);
 
     bool is24HourMode() const { return _hourMode; }
     void set24HourMode(bool value);
@@ -61,7 +68,7 @@ private:
     int _voltageTrunc;
     int _batteryBars;
 #endif
-    bool _alarmActive;
+    AlarmMode _alarmMode;
     bool _hourMode;
 
     void updateDate();

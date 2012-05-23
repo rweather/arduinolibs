@@ -50,6 +50,7 @@
 // Offsets of settings in the realtime clock's NVRAM.
 #define SETTING_24HOUR          0   // 0: 12 hour, 1: 24 hour
 #define SETTING_ALARM_TIMEOUT   1   // Timeout in minutes for the alarm
+#define SETTING_SNOOZE          2   // 0: no snooze, 1: snooze
 
 // Initialize the LCD
 FreetronicsLCD lcd;
@@ -75,6 +76,7 @@ SetAlarm alarm2(mainForm, "Alarm 2", 1);
 SetAlarm alarm3(mainForm, "Alarm 3", 2);
 SetAlarm alarm4(mainForm, "Alarm 4", 3);
 IntField alarmTimeout(mainForm, "Alarm timeout", 2, 10, 1, 2, " minutes");
+BoolField snooze(mainForm, "Snooze alarm", "On", "Off", false);
 SetTime setTime(mainForm, "Set current time");
 SetDate setDate(mainForm, "Set current date");
 BoolField hourMode(mainForm, "Hour display", "24 hour clock", "12 hour clock", false);
@@ -112,6 +114,7 @@ void setup() {
     frontScreen.set24HourMode(is24HourClock);
     alarmTimeout.setValue(rtc.readByte(SETTING_ALARM_TIMEOUT));
     alarmMelody.setLoopDuration(60000UL * alarmTimeout.value());
+    snooze.setValue(rtc.readByte(SETTING_SNOOZE) != 0);
 
     // Set the initial time and date and find the next alarm to be triggered.
     RTCTime time;
@@ -171,6 +174,8 @@ void loop() {
         } else if (alarmTimeout.isCurrent()) {
             rtc.writeByte(SETTING_ALARM_TIMEOUT, (byte)alarmTimeout.value());
             alarmMelody.setLoopDuration(60000UL * alarmTimeout.value());
+        } else if (snooze.isCurrent()) {
+            rtc.writeByte(SETTING_SNOOZE, (byte)snooze.value());
         }
         prevHour = 24;      // Force an update of the main screen.
         findNextAlarm();    // Update the time of the next alarm event.
@@ -191,10 +196,26 @@ inline int timeToAlarm(const RTCTime &currentTime, const RTCAlarm &alarm)
 {
     int mins1 = currentTime.hour * 60 + currentTime.minute;
     int mins2 = alarm.hour * 60 + alarm.minute;
-    if (mins1 < mins2)
+    if (mins1 <= mins2)
         return mins2 - mins1;
     else
         return 24 * 60 + mins2 - mins1;
+}
+
+// Add 9 minutes to an alarm to get its snooze time.
+RTCAlarm adjustForSnooze(const RTCAlarm &alarm)
+{
+    if (!alarm.flags)
+        return alarm;
+    RTCAlarm snooze;
+    snooze.hour = alarm.hour;
+    snooze.minute = alarm.minute + 9;
+    if (snooze.minute >= 60) {
+        snooze.hour = (snooze.hour + 1) % 24;
+        snooze.minute %= 60;
+    }
+    snooze.flags = alarm.flags;
+    return snooze;
 }
 
 // Find the time of the next alarm to be triggered.
@@ -215,9 +236,22 @@ void findNextAlarm()
     findNextAlarm(currentTime, alarm2.alarmValue());
     findNextAlarm(currentTime, alarm3.alarmValue());
     findNextAlarm(currentTime, alarm4.alarmValue());
+    if (snooze.value()) {
+        findNextAlarm(currentTime, adjustForSnooze(alarm1.alarmValue()));
+        findNextAlarm(currentTime, adjustForSnooze(alarm2.alarmValue()));
+        findNextAlarm(currentTime, adjustForSnooze(alarm3.alarmValue()));
+        findNextAlarm(currentTime, adjustForSnooze(alarm4.alarmValue()));
+    }
 
     // Set the alarm indicator on the front screen.
-    frontScreen.setAlarmActive(nextAlarm.flags != 0);
+    if (nextAlarm.flags) {
+        if (snooze.value())
+            frontScreen.setAlarmMode(FrontScreenField::Snooze);
+        else
+            frontScreen.setAlarmMode(FrontScreenField::AlarmOn);
+    } else {
+        frontScreen.setAlarmMode(FrontScreenField::AlarmOff);
+    }
 }
 void findNextAlarm(const RTCTime &currentTime, const RTCAlarm &alarm)
 {

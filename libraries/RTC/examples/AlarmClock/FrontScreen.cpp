@@ -40,7 +40,7 @@ FrontScreenField::FrontScreenField(Form &form)
     , _voltageTrunc(36)
     , _batteryBars(IND_BATTERY_FULL)
 #endif
-    , _alarmActive(false)
+    , _alarmMode(FrontScreenField::AlarmOff)
     , _hourMode(false)
 {
     _date.day = 1;
@@ -124,10 +124,45 @@ void FrontScreenField::setVoltage(int voltage)
 
 #endif
 
-void FrontScreenField::setAlarmActive(bool active)
+static uint8_t alarmActive1[8] = {
+    B00100,
+    B01001,
+    B10010,
+    B00000,
+    B10010,
+    B01001,
+    B00100,
+    B00000
+};
+static uint8_t alarmActive2[8] = {
+    B11000,
+    B10100,
+    B10011,
+    B10011,
+    B10011,
+    B10100,
+    B11000,
+    B00000
+};
+static uint8_t alarmSnooze[8] = {
+    B11110,
+    B00100,
+    B01000,
+    B11110,
+    B00000,
+    B00000,
+    B00000,
+    B00000
+};
+
+void FrontScreenField::setAlarmMode(AlarmMode mode)
 {
-    if (_alarmActive != active) {
-        _alarmActive = active;
+    if (_alarmMode != mode) {
+        _alarmMode = mode;
+        if (mode == Snooze)
+            lcd()->createChar(IND_ALARM_ACTIVE1, alarmSnooze);
+        else
+            lcd()->createChar(IND_ALARM_ACTIVE1, alarmActive1);
         if (isCurrent())
             updateAlarm();
     }
@@ -211,8 +246,8 @@ void FrontScreenField::updateAlarm()
 #else
     lcd()->setCursor(14, 0);
 #endif
-    lcd()->write(_alarmActive ? IND_ALARM_ACTIVE1 : ' ');
-    lcd()->write(_alarmActive ? IND_ALARM_ACTIVE2 : ' ');
+    lcd()->write(_alarmMode != AlarmOff ? IND_ALARM_ACTIVE1 : ' ');
+    lcd()->write(_alarmMode != AlarmOff ? IND_ALARM_ACTIVE2 : ' ');
 }
 
 #ifdef USE_VOLTAGE_MONITOR
@@ -277,26 +312,6 @@ static uint8_t batteryFull[8] = {
     B00000
 };
 #endif
-static uint8_t alarmActive1[8] = {
-    B00100,
-    B01001,
-    B10010,
-    B00000,
-    B10010,
-    B01001,
-    B00100,
-    B00000
-};
-static uint8_t alarmActive2[8] = {
-    B11000,
-    B10100,
-    B10011,
-    B10011,
-    B10011,
-    B10100,
-    B11000,
-    B00000
-};
 
 void FrontScreenField::registerIndicators()
 {
