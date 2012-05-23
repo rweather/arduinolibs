@@ -70,14 +70,14 @@ RTCAlarm nextAlarm;
 // Create the main form and its fields.
 Form mainForm(lcd);
 FrontScreenField frontScreen(mainForm);
-SetTime setTime(mainForm, "Set current time");
-SetDate setDate(mainForm, "Set current date");
-BoolField hourMode(mainForm, "Hour display", "24 hour clock", "12 hour clock", false);
 SetAlarm alarm1(mainForm, "Alarm 1", 0);
 SetAlarm alarm2(mainForm, "Alarm 2", 1);
 SetAlarm alarm3(mainForm, "Alarm 3", 2);
 SetAlarm alarm4(mainForm, "Alarm 4", 3);
 IntField alarmTimeout(mainForm, "Alarm timeout", 2, 10, 1, 2, " minutes");
+SetTime setTime(mainForm, "Set current time");
+SetDate setDate(mainForm, "Set current date");
+BoolField hourMode(mainForm, "Hour display", "24 hour clock", "12 hour clock", false);
 
 void setup() {
     // Reduce power consumption on I/O pins we don't need.
