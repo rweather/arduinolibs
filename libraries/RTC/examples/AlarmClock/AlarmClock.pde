@@ -63,6 +63,7 @@ LowPowerMelody alarmMelody(BUZZER);
 
 uint8_t prevHour = 24;
 bool is24HourClock = false;
+RTCAlarm nextAlarm;
 
 // Create the main form and its fields.
 Form mainForm(lcd);
@@ -106,6 +107,15 @@ void setup() {
     hourMode.setValue(is24HourClock);
     frontScreen.set24HourMode(is24HourClock);
 
+    // Set the initial time and date and find the next alarm to be triggered.
+    RTCTime time;
+    RTCDate date;
+    rtc.readTime(&time);
+    rtc.readDate(&date);
+    frontScreen.setTime(time);
+    frontScreen.setDate(date);
+    findNextAlarm();
+
     // Show the main form for the first time.
     mainForm.show();
 }
@@ -133,6 +143,14 @@ void loop() {
         if (voltage > 500)
             voltage = 500;
         frontScreen.setVoltage(voltage);
+
+        // Trigger an alarm if necessary.
+        if (time.second == 0 && nextAlarm.flags && !alarmMelody.isPlaying()) {
+            if (time.hour == nextAlarm.hour && time.minute == nextAlarm.minute) {
+                findNextAlarm();
+                alarmMelody.play();
+            }
+        }
     }
 
     // Dispatch button events to the main form.
@@ -144,6 +162,7 @@ void loop() {
             rtc.writeByte(SETTING_24HOUR, (byte)is24HourClock);
         }
         prevHour = 24;      // Force an update of the main screen.
+        findNextAlarm();    // Update the time of the next alarm event.
     }
 
     // If the alarm is playing and a button was pressed, then turn it off.
@@ -154,5 +173,53 @@ void loop() {
     } else {
         // No alarm playing, so put the device to sleep to save power.
         sleepFor(SLEEP_15_MS);
+    }
+}
+
+inline int timeToAlarm(const RTCTime &currentTime, const RTCAlarm &alarm)
+{
+    int mins1 = currentTime.hour * 60 + currentTime.minute;
+    int mins2 = alarm.hour * 60 + alarm.minute;
+    if (mins1 < mins2)
+        return mins2 - mins1;
+    else
+        return 24 * 60 + mins2 - mins1;
+}
+
+// Find the time of the next alarm to be triggered.
+void findNextAlarm()
+{
+    // Get the current time plus 1 minute, to avoid repeating the same alarm.
+    RTCTime currentTime = frontScreen.time();
+    if (++(currentTime.minute) >= 60) {
+        currentTime.minute = 0;
+        currentTime.hour = (currentTime.hour + 1) % 24;
+    }
+
+    // Process each of the alarms to find the closest.
+    nextAlarm.hour = 0;
+    nextAlarm.minute = 0;
+    nextAlarm.flags = 0;
+    findNextAlarm(currentTime, alarm1.alarmValue());
+    findNextAlarm(currentTime, alarm2.alarmValue());
+    findNextAlarm(currentTime, alarm3.alarmValue());
+    findNextAlarm(currentTime, alarm4.alarmValue());
+
+    // Set the alarm indicator on the front screen.
+    frontScreen.setAlarmActive(nextAlarm.flags != 0);
+}
+void findNextAlarm(const RTCTime &currentTime, const RTCAlarm &alarm)
+{
+    if (!alarm.flags)
+        return;     // Alarm is disabled.
+    if (!nextAlarm.flags) {
+        // First valid alarm.
+        nextAlarm = alarm;
+        return;
+    }
+    if (timeToAlarm(currentTime, nextAlarm) >
+            timeToAlarm(currentTime, alarm)) {
+        // Found an alarm that is closer in time.
+        nextAlarm = alarm;
     }
 }

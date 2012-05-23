@@ -23,6 +23,8 @@
 #include "LowPowerMelody.h"
 #include <avr/power.h>
 
+extern void findNextAlarm();
+
 void LowPowerMelody::play()
 {
     // Turn on Timer2.
@@ -39,4 +41,7 @@ void LowPowerMelody::stop()
 
     // Turn off Timer2.
     power_timer2_disable();
+
+    // Find the next alarm to be triggered.
+    findNextAlarm();
 }
