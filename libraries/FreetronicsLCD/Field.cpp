@@ -26,7 +26,7 @@
  * \class Field Field.h <Field.h>
  * \brief Manages a single data input/output field within a Form.
  *
- * \sa Form, BoolField, IntField, TextField, TimeField
+ * \sa Form, BoolField, IntField, ListField, TextField, TimeField
  */
 
 /**

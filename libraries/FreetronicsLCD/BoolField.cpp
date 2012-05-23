@@ -59,7 +59,9 @@
  * Use TextField for read-only fields that report boolean values but
  * which are not modifiable by the user.
  *
- * \sa Field, TextField
+ * ListField can be used to select between more than two items.
+ *
+ * \sa Field, ListField, TextField
  */
 
 /**
