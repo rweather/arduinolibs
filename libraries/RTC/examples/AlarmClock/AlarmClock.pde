@@ -179,6 +179,9 @@ void loop() {
         }
         prevHour = 24;      // Force an update of the main screen.
         findNextAlarm();    // Update the time of the next alarm event.
+    } else if (event == LCD_BUTTON_SELECT) {
+        // Pressing select will quickly return to the front screen.
+        mainForm.setCurrentField(&frontScreen);
     }
 
     // If the alarm is playing and a button was pressed, then turn it off.
