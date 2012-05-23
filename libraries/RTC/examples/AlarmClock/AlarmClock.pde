@@ -81,6 +81,9 @@ IntField alarmTimeout(mainForm, "Alarm timeout", 2, 10, 1, 2, " minutes");
 
 void setup() {
     // Reduce power consumption on I/O pins we don't need.
+#ifndef USE_VOLTAGE_MONITOR
+    unusedPin(A1);
+#endif
     unusedPin(A2);
     unusedPin(0);
     unusedPin(1);
@@ -139,6 +142,7 @@ void loop() {
         prevHour = time.hour;
         setTime.updateCurrentTime();
 
+#ifdef USE_VOLTAGE_MONITOR
         // Update the battery status once a second also.
         int status = analogRead(SENSE_BATTERY);
         int voltage = (int)((status * 500L) / 1024L);   // e.g. 2.81V = 281
@@ -146,6 +150,7 @@ void loop() {
         if (voltage > 500)
             voltage = 500;
         frontScreen.setVoltage(voltage);
+#endif
 
         // Trigger an alarm if necessary.
         if (time.second == 0 && nextAlarm.flags && !alarmMelody.isPlaying()) {

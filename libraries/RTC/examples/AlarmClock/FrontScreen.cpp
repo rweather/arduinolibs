@@ -35,9 +35,11 @@
 
 FrontScreenField::FrontScreenField(Form &form)
     : Field(form, "")
+#ifdef USE_VOLTAGE_MONITOR
     , _voltage(360)
     , _voltageTrunc(36)
     , _batteryBars(IND_BATTERY_FULL)
+#endif
     , _alarmActive(false)
     , _hourMode(false)
 {
@@ -57,7 +59,9 @@ FrontScreenField::~FrontScreenField()
 void FrontScreenField::enterField(bool reverse)
 {
     updateDate();
+#ifdef USE_VOLTAGE_MONITOR
     updateVoltage();
+#endif
     updateTime();
     updateAlarm();
 }
@@ -87,6 +91,8 @@ void FrontScreenField::setTime(const RTCTime &time)
     }
 }
 
+#ifdef USE_VOLTAGE_MONITOR
+
 void FrontScreenField::setVoltage(int voltage)
 {
     // Normal voltage ranges between 2.7 and 3.6.  The power supply
@@ -115,6 +121,8 @@ void FrontScreenField::setVoltage(int voltage)
             updateVoltage();
     }
 }
+
+#endif
 
 void FrontScreenField::setAlarmActive(bool active)
 {
@@ -180,6 +188,8 @@ void FrontScreenField::updateTime()
         lcd()->print(pm ? "pm" : "am");
 }
 
+#ifdef USE_VOLTAGE_MONITOR
+
 void FrontScreenField::updateVoltage()
 {
     lcd()->setCursor(15, 0);
@@ -192,13 +202,20 @@ void FrontScreenField::updateVoltage()
     lcd()->write('v');
 }
 
+#endif
+
 void FrontScreenField::updateAlarm()
 {
+#ifdef USE_VOLTAGE_MONITOR
     lcd()->setCursor(13, 0);
+#else
+    lcd()->setCursor(14, 0);
+#endif
     lcd()->write(_alarmActive ? IND_ALARM_ACTIVE1 : ' ');
     lcd()->write(_alarmActive ? IND_ALARM_ACTIVE2 : ' ');
 }
 
+#ifdef USE_VOLTAGE_MONITOR
 static uint8_t batteryEmpty[8] = {
     B01110,
     B10001,
@@ -259,6 +276,7 @@ static uint8_t batteryFull[8] = {
     B11111,
     B00000
 };
+#endif
 static uint8_t alarmActive1[8] = {
     B00100,
     B01001,
@@ -282,12 +300,14 @@ static uint8_t alarmActive2[8] = {
 
 void FrontScreenField::registerIndicators()
 {
+#ifdef USE_VOLTAGE_MONITOR
     lcd()->createChar(IND_BATTERY_EMPTY, batteryEmpty);
     lcd()->createChar(IND_BATTERY_20PCT, battery20Pct);
     lcd()->createChar(IND_BATTERY_40PCT, battery40Pct);
     lcd()->createChar(IND_BATTERY_60PCT, battery60Pct);
     lcd()->createChar(IND_BATTERY_80PCT, battery80Pct);
     lcd()->createChar(IND_BATTERY_FULL,  batteryFull);
+#endif
     lcd()->createChar(IND_ALARM_ACTIVE1, alarmActive1);
     lcd()->createChar(IND_ALARM_ACTIVE2, alarmActive2);
 }
