@@ -144,10 +144,7 @@ void FreetronicsLCD::init()
 void FreetronicsLCD::display()
 {
     LiquidCrystal::display();
-    if (mode != BacklightOnSelect)
-        digitalWrite(LCD_BACK_LIGHT, HIGH);
-    else
-        digitalWrite(LCD_BACK_LIGHT, LOW);
+    digitalWrite(LCD_BACK_LIGHT, HIGH);
     screenSaved = false;
     lastRestore = millis();
 }
