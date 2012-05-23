@@ -137,7 +137,7 @@ void Melody::setLoopDuration(unsigned long ms)
 /**
  * \brief Starts playing the melody, or restarts it if already playing.
  *
- * \sa setMelody(), stop(), loopCount()
+ * \sa playOnce(), setMelody(), stop(), loopCount()
  */
 void Melody::play()
 {
@@ -145,6 +145,22 @@ void Melody::play()
     if (size == 0)
         return;         // No melody to play.
     loopsLeft = _loopCount;
+    posn = 0;
+    playing = true;
+    nextNote();
+}
+
+/**
+ * \brief Plays the melody once and then stops.
+ *
+ * \sa play(), stop()
+ */
+void Melody::playOnce()
+{
+    stop();
+    if (size == 0)
+        return;         // No melody to play.
+    loopsLeft = 1;
     posn = 0;
     playing = true;
     nextNote();

@@ -35,6 +35,7 @@
 #include "SetAlarm.h"
 #include "SetTime.h"
 #include "SetDate.h"
+#include "SetMelody.h"
 #include "LowPowerMelody.h"
 
 // I/O pins that are used by this sketch.
@@ -51,6 +52,7 @@
 #define SETTING_24HOUR          0   // 0: 12 hour, 1: 24 hour
 #define SETTING_ALARM_TIMEOUT   1   // Timeout in minutes for the alarm
 #define SETTING_SNOOZE          2   // 0: no snooze, 1: snooze
+#define SETTING_MELODY          3   // Melody to play for the alarm
 
 // Initialize the LCD
 FreetronicsLCD lcd;
@@ -60,8 +62,8 @@ SoftI2C bus(RTC_DATA, RTC_CLOCK);
 DS1307RTC rtc(bus, RTC_ONE_HZ);
 
 // Melody to play when the alarm sounds.
-int alarmNotes[] = {NOTE_C6, NOTE_C6, NOTE_C6, NOTE_C6, NOTE_REST};
-byte alarmLengths[] = {8, 8, 8, 8, 2};
+int defaultMelodyNotes[5] = {NOTE_C6, NOTE_C6, NOTE_C6, NOTE_C6, NOTE_REST};
+byte defaultMelodyLengths[5] = {8, 8, 8, 8, 2};
 LowPowerMelody alarmMelody(BUZZER);
 
 uint8_t prevHour = 24;
@@ -77,6 +79,7 @@ SetAlarm alarm3(mainForm, "Alarm 3", 2);
 SetAlarm alarm4(mainForm, "Alarm 4", 3);
 IntField alarmTimeout(mainForm, "Alarm timeout", 2, 10, 1, 2, " minutes");
 BoolField snooze(mainForm, "Snooze alarm", "On", "Off", false);
+SetMelody alarmSound(mainForm, "Alarm sound");
 SetTime setTime(mainForm, "Set current time");
 SetDate setDate(mainForm, "Set current date");
 BoolField hourMode(mainForm, "Hour display", "24 hour clock", "12 hour clock", false);
@@ -105,7 +108,7 @@ void setup() {
     lcd.enableScreenSaver(3);
 
     // Initialize the alarm melody.
-    alarmMelody.setMelody(alarmNotes, alarmLengths, sizeof(alarmLengths));
+    alarmMelody.setMelody(defaultMelodyNotes, defaultMelodyLengths, sizeof(defaultMelodyLengths));
     alarmMelody.stop();     // Force Timer2 to be disabled.
 
     // Read the clock settings from the realtime clock's NVRAM.
@@ -115,6 +118,8 @@ void setup() {
     alarmTimeout.setValue(rtc.readByte(SETTING_ALARM_TIMEOUT));
     alarmMelody.setLoopDuration(60000UL * alarmTimeout.value());
     snooze.setValue(rtc.readByte(SETTING_SNOOZE) != 0);
+    alarmSound.setValue(rtc.readByte(SETTING_MELODY));
+    alarmSound.updateMelody();
 
     // Set the initial time and date and find the next alarm to be triggered.
     RTCTime time;
@@ -176,6 +181,8 @@ void loop() {
             alarmMelody.setLoopDuration(60000UL * alarmTimeout.value());
         } else if (snooze.isCurrent()) {
             rtc.writeByte(SETTING_SNOOZE, (byte)snooze.value());
+        } else if (alarmSound.isCurrent()) {
+            rtc.writeByte(SETTING_MELODY, (byte)alarmSound.value());
         }
         prevHour = 24;      // Force an update of the main screen.
         findNextAlarm();    // Update the time of the next alarm event.

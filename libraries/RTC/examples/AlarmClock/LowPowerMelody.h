@@ -30,6 +30,7 @@ public:
     LowPowerMelody(uint8_t pin) : Melody(pin) {}
 
     void play();
+    void playOnce();
     void stop();
 };
 

@@ -20,37 +20,21 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-#include "LowPowerMelody.h"
-#include <avr/power.h>
+#ifndef SetMelody_h
+#define SetMelody_h
 
-extern void findNextAlarm();
+#include <ListField.h>
 
-void LowPowerMelody::play()
-{
-    // Turn on Timer2.
-    power_timer2_enable();
+class SetMelody : public ListField {
+public:
+    SetMelody(Form &form, const String &label);
 
-    // Start the melody playing.
-    Melody::play();
-}
+    int dispatch(int event);
 
-void LowPowerMelody::playOnce()
-{
-    // Turn on Timer2.
-    power_timer2_enable();
+    void updateMelody();
 
-    // Start the melody playing.
-    Melody::playOnce();
-}
+private:
+    bool needsPlay;
+};
 
-void LowPowerMelody::stop()
-{
-    // Stop the melody playing.
-    Melody::stop();
-
-    // Turn off Timer2.
-    power_timer2_disable();
-
-    // Find the next alarm to be triggered.
-    findNextAlarm();
-}
+#endif

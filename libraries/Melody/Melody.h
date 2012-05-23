@@ -131,6 +131,7 @@ public:
     void setLoopDuration(unsigned long ms);
 
     void play();
+    void playOnce();
     void stop();
 
     void setMelody(const int *notes, const uint8_t *lengths, unsigned int size);
