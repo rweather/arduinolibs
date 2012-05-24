@@ -22,7 +22,74 @@
 
 /**
 \file alarm-clock.dox
-\page alarm_clock Wind-Up Alarm Clock
+\page alarm_clock Alarm Clock
+
+\section clock_features Features
+
+The alarm clock described on this page is a large example application that
+uses many of the classes in the provided libraries: FreetronicsLCD, Form,
+Field, SoftI2C, DS1307RTC, Melody and \ref power_save "PowerSave".
+The clock has the following features:
+
+\li Displays both the time and date.
+\li 12 hour and 24 hour time display modes.
+\li Up to 4 configurable alarm times, plus a snooze alarm.
+\li Three alarm sounds to choose from.
+\li Configurable alarm timeout between 2 and 10 seconds.
+\li Single button to activate the back light and/or stop the alarm.
+\li Up, down, left, and right buttons to change clock settings.
+
+\section clock_main_circuit Main circuit
+
+The main clock circuit consists of an Arduino Uno compatible board, a 16x2
+LCD module, a realtime clock chip, and a piezo buzzer for the alarm:
+
+\image html alarm_circuit.png
+
+Some of the components can be purchased ready-made as the
+<a href="http://www.freetronics.com/pages/16x2-lcd-shield-quickstart-guide">Freetronics
+16x2 LCD Shield</a> and the <a href="http://www.sparkfun.com/products/99">SparkFun
+Realtime Clock Module</a>.  I used the ready-made realtime clock module,
+but made my own equivalent to the LCD shield from parts to aid in spacing
+out the LCD and pushbuttons on the exterior of the box.  The value of the 33R
+resistor may need to be adjusted for different types of back light LED's.
+
+The whole circuit is built on a prototyping shield, with ribbon cables
+connecting to the LCD.  The Stop Alarm button and piezo buzzer are not
+shown in this picture and some of the components are soldered to the bottom
+of the shield:
+
+\image html clock_shield.jpg
+
+The clock module is based on the DS1307 chip and has an on-board coin battery
+to keep the time and date ticking over even if the main circuit loses power.
+The chip is I2C-based and has an auxillary SQW output that can be configured
+to provide a 1 Hz squarewave signal.  This signal is used by the software
+running on the Arduino to detect when a new time or date is available for
+display on the LCD.  The DS1307RTC class takes care of the details of
+talking to the chip via I2C.
+
+\section clock_arduino_board Arduino board
+
+To keep power consumption low, say for being powered by batteries, we don't
+need a full Arduino Uno or similar board.  The USB interface is unnecessary,
+as is the on-board power supply if there is an external source of 5 volt power.
+We also don't want the power and D13 status LED's to be draining power.
+Therefore, a cut-down version of the Arduino is recommended.  We used the
+<a href="http://www.freetronics.com/collections/arduino/products/kitten">KitTen</a>
+kit from <a href="http://www.freetronics.com/">Freetronics</a>, and didn't
+solder up anything that wasn't strictly necessary.  A
+<a href="http://www.freetronics.com/ftdi-cable">5v FTDI USB-to-Serial cable</a>
+is necessary for programming.  Similar minimalistic built-it-yourself
+Arduino designs should also work.
+
+\image html kitten_minimal.jpg
+
+*/
+
+/*
+NOTE: The following has been commented out for now.  More work is needed
+on the wind-up power supply.
 
 \section clock_power Power supply
 
@@ -74,46 +141,4 @@ the battery voltage and display the current status to the user (after
 adding 0.7 to account for the voltage drop on D2).
 
 If you don't have 1N4001 diodes to hand, then 1N4004 will work just as well.
-
-\section clock_arduino_board Arduino board
-
-Because we want to keep power consumption low, we actually don't want a full
-Arduino Uno or similar board.  The USB interface is unnecessary, as is the
-on-board power supply.  We also don't want the power and D13 status LED's
-to be draining power.  Therefore, a cut-down version of the Arduino is
-recommended.  We used the <a href="http://www.freetronics.com/collections/arduino/products/kitten">KitTen</a>
-kit from <a href="http://www.freetronics.com/">Freetronics</a>, and didn't
-solder up anything that wasn't strictly necessary.  A
-<a href="http://www.freetronics.com/ftdi-cable">5v FTDI USB-to-Serial cable</a>
-is necessary for programming.  Similar minimalistic built-it-yourself
-Arduino designs should also work.
-
-\section clock_main_circuit Main circuit
-
-The main clock circuit consists of an Arduino Uno compatible board, a 16x2
-LCD module, a realtime clock chip, and a piezo buzzer for the alarm:
-
-\image html alarm_circuit.png
-
-Some of the components can be purchased ready-made as the
-<a href="http://www.freetronics.com/pages/16x2-lcd-shield-quickstart-guide">Freetronics
-16x2 LCD Shield</a> and the <a href="http://www.sparkfun.com/products/99">SparkFun
-Realtime Clock Module</a>.  I used the ready-made realtime clock module,
-but made my own equivalent to the LCD shield from parts to aid in spacing
-out the LCD and pushbuttons on the exterior of the box.  The value of the 33R
-resistor may need to be adjusted for different types of back light LED's.
-
-The clock module is based on the DS1307 chip and has an on-board coin battery
-to keep the time and date ticking over even if the main circuit loses power.
-The chip is I2C-based and has an auxillary SQW output that can be configured
-to provide a 1 Hz squarewave signal.  This signal is used by the software
-running on the Arduino to detect when a new time or date is available for
-display on the LCD.  The DS1307RTC class takes care of the details of
-talking to the chip via I2C.
-
-Note: the above circuit works just as well for a non-wind-up clock powered
-from batteries or mains power.  The only difference will be the "Sense
-Battery Status" input on A1.  Either remove the battery monitoring logic
-from the source code or tie A1 to 5V via a 10K resistor.
-
 */
