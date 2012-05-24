@@ -20,7 +20,7 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-#include "FreetronicsLCD.h"
+#include "LCD.h"
 #include <avr/pgmspace.h>
 #include <WProgram.h>
 
@@ -30,7 +30,7 @@
 #define DEBOUNCE_DELAY          10      // Delay in ms to debounce buttons
 
 /**
- * \class FreetronicsLCD FreetronicsLCD.h <FreetronicsLCD.h>
+ * \class LCD LCD.h <LCD.h>
  * \brief Enhanced library for Freetronics 16x2 LCD shields
  *
  * This class extends the standard Arduino LiquidCrystal library with
@@ -70,13 +70,13 @@
  * generic button has been released with <tt>button &lt; 0</tt>.
  *
  * See the \ref lcd_hello_world "Hello World" example for more
- * information on using the FreetronicsLCD class.
+ * information on using the LCD class.
  *
  * \sa Form
  */
 
 /**
- * \fn FreetronicsLCD::FreetronicsLCD()
+ * \fn LCD::LCD()
  * \brief Initialize the Freetronics LCD display with the default
  * pin assignment.
  *
@@ -84,12 +84,12 @@
  * LCD shield:
  *
  * \code
- * FreetronicsLCD lcd;
+ * LCD lcd;
  * \endcode
  */
 
 /**
- * \fn FreetronicsLCD::FreetronicsLCD(uint8_t pin9)
+ * \fn LCD::LCD(uint8_t pin9)
  * \brief Initialize the Freetronics LCD display for USBDroid.
  *
  * On the USBDroid, the D9 pin is used for USB Host functionality.
@@ -104,11 +104,11 @@
  * Web page of A1, you would initialize the LCD as follows:
  *
  * \code
- * FreetronicsLCD lcd(A1);
+ * LCD lcd(A1);
  * \endcode
  */
 
-void FreetronicsLCD::init()
+void LCD::init()
 {
     // The Freetronics display is 16x2.
     begin(16, 2);
@@ -141,7 +141,7 @@ void FreetronicsLCD::init()
  *
  * \sa noDisplay(), enableScreenSaver(), setScreenSaverMode()
  */
-void FreetronicsLCD::display()
+void LCD::display()
 {
     LiquidCrystal::display();
     digitalWrite(LCD_BACK_LIGHT, HIGH);
@@ -156,7 +156,7 @@ void FreetronicsLCD::display()
  *
  * \sa display(), enableScreenSaver(), setScreenSaverMode()
  */
-void FreetronicsLCD::noDisplay()
+void LCD::noDisplay()
 {
     if (mode == DisplayOff)
         LiquidCrystal::noDisplay();
@@ -165,30 +165,30 @@ void FreetronicsLCD::noDisplay()
 }
 
 /**
- * \enum FreetronicsLCD::ScreenSaverMode
+ * \enum LCD::ScreenSaverMode
  * \brief Screen saver mode that controls the display and back light.
  */
 
 /**
- * \var FreetronicsLCD::DisplayOff
+ * \var LCD::DisplayOff
  * \brief Turn off both the display and the backlight when the screen saver
  * is activated.
  */
 
 /**
- * \var FreetronicsLCD::BacklightOff
+ * \var LCD::BacklightOff
  * \brief Turn off the back light but leave the display on when the screen
  * saver is activated.
  */
 
 /**
- * \var FreetronicsLCD::BacklightOnSelect
+ * \var LCD::BacklightOnSelect
  * \brief Same as BacklightOff but the screen saver is only deactivated when
  * Select is pressed; other buttons have no effect.
  */
 
 /**
- * \fn ScreenSaverMode FreetronicsLCD::screenSaverMode() const
+ * \fn ScreenSaverMode LCD::screenSaverMode() const
  * \brief Returns the current screen saver mode; default is DisplayOff.
  *
  * \sa setScreenSaverMode(), enableScreenSaver()
@@ -199,7 +199,7 @@ void FreetronicsLCD::noDisplay()
  *
  * \sa screenSaverMode(), enableScreenSaver()
  */
-void FreetronicsLCD::setScreenSaverMode(ScreenSaverMode mode)
+void LCD::setScreenSaverMode(ScreenSaverMode mode)
 {
     if (this->mode != mode) {
         this->mode = mode;
@@ -225,7 +225,7 @@ void FreetronicsLCD::setScreenSaverMode(ScreenSaverMode mode)
  *
  * \sa disableScreenSaver(), display(), getButton(), isScreenSaved()
  */
-void FreetronicsLCD::enableScreenSaver(int timeoutSecs)
+void LCD::enableScreenSaver(int timeoutSecs)
 {
     if (timeoutSecs < 0)
         timeout = 0;
@@ -239,14 +239,14 @@ void FreetronicsLCD::enableScreenSaver(int timeoutSecs)
  *
  * \sa enableScreenSaver(), display(), isScreenSaved()
  */
-void FreetronicsLCD::disableScreenSaver()
+void LCD::disableScreenSaver()
 {
     timeout = 0;
     display();
 }
 
 /**
- * \fn bool FreetronicsLCD::isScreenSaved() const
+ * \fn bool LCD::isScreenSaved() const
  * \brief Returns true if the screen has been saved; false otherwise.
  *
  * \sa enableScreenSaver()
@@ -284,7 +284,7 @@ static prog_uint8_t const buttonMappings[] PROGMEM = {
  *
  * \sa enableScreenSaver(), display(), Form::dispatch()
  */
-int FreetronicsLCD::getButton()
+int LCD::getButton()
 {
     // Read the currently pressed button.
     int button = mapButton(analogRead(LCD_BUTTON_PIN));

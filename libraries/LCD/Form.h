@@ -23,7 +23,7 @@
 #ifndef Form_h
 #define Form_h
 
-#include "FreetronicsLCD.h"
+#include "LCD.h"
 
 class Field;
 

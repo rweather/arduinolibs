@@ -78,7 +78,7 @@ Field::~Field()
 /**
  * \brief Dispatches \a event via this field.
  *
- * The \a event is usually obtained from FreetronicsLCD::getButton().
+ * The \a event is usually obtained from LCD::getButton().
  *
  * Returns zero if the \a event has been handled and no further action
  * is required.
@@ -91,7 +91,7 @@ Field::~Field()
  * be handled by the Form itself (particularly for Left and Right buttons).
  * The default implementation returns -1 for all events.
  *
- * \sa Form::dispatch(), FreetronicsLCD::getButton()
+ * \sa Form::dispatch(), LCD::getButton()
  */
 int Field::dispatch(int event)
 {

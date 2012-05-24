@@ -610,7 +610,7 @@ WARN_LOGFILE           =
 # directories like "/usr/src/myproject". Separate the files or directories
 # with spaces.
 
-INPUT                  = ../libraries/FreetronicsLCD ../libraries/BlinkLED ../libraries/I2C ../libraries/RTC ../libraries/Melody ../libraries/PowerSave .
+INPUT                  = ../libraries/LCD ../libraries/BlinkLED ../libraries/I2C ../libraries/RTC ../libraries/Melody ../libraries/PowerSave .
 
 # This tag can be used to specify the character encoding of the source files
 # that doxygen parses. Internally doxygen uses the UTF-8 encoding, which is
@@ -688,7 +688,7 @@ EXAMPLE_RECURSIVE      = NO
 # directories that contain image that are included in the documentation (see
 # the \image command).
 
-IMAGE_PATH             = ../libraries/BlinkLED/examples/Cylon ../libraries/BlinkLED/examples/Cylon4 ../libraries/BlinkLED/examples/StarTrek ../libraries/FreetronicsLCD/examples/HelloWorld ../libraries/FreetronicsLCD/examples/Form ../libraries/RTC/examples/AlarmClock
+IMAGE_PATH             = ../libraries/BlinkLED/examples/Cylon ../libraries/BlinkLED/examples/Cylon4 ../libraries/BlinkLED/examples/StarTrek ../libraries/LCD/examples/HelloWorld ../libraries/LCD/examples/Form ../libraries/RTC/examples/AlarmClock
 
 # The INPUT_FILTER tag can be used to specify a program that doxygen should
 # invoke to filter for each input file. Doxygen will invoke the filter program

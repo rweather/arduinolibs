@@ -20,8 +20,8 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-#ifndef FreetronicsLCD_h
-#define FreetronicsLCD_h
+#ifndef LCD_h
+#define LCD_h
 
 // Extended version of the LiquidCrystal library that works specifically
 // with Freetronics' 16x2 LCD display, including support for the back
@@ -45,10 +45,10 @@
 #define LCD_BUTTON_DOWN_RELEASED    -4
 #define LCD_BUTTON_SELECT_RELEASED  -5
 
-class FreetronicsLCD : public LiquidCrystal {
+class LCD : public LiquidCrystal {
 public:
-    FreetronicsLCD() : LiquidCrystal(8, 9, 4, 5, 6, 7) { init(); }
-    FreetronicsLCD(uint8_t pin9) : LiquidCrystal(8, pin9, 4, 5, 6, 7) { init(); }
+    LCD() : LiquidCrystal(8, 9, 4, 5, 6, 7) { init(); }
+    LCD(uint8_t pin9) : LiquidCrystal(8, pin9, 4, 5, 6, 7) { init(); }
 
     void display();
     void noDisplay();

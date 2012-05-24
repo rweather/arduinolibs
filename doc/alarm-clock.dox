@@ -27,7 +27,7 @@
 \section clock_features Features
 
 The alarm clock described on this page is a large example application that
-uses many of the classes in the provided libraries: FreetronicsLCD, Form,
+uses many of the classes in the provided libraries: LCD, Form,
 Field, SoftI2C, DS1307RTC, Melody and \ref power_save "PowerSave".
 The clock has the following features:
 

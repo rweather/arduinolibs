@@ -1,12 +1,12 @@
 /*
 This example demonstrates how to use the Form and Field classes from the
-FreetronicsLCD library to provide a simple UI on the 16x2 LCD display.
+LCD library to provide a simple UI on the 16x2 LCD display.
 
 This example is placed into the public domain.
 */
 
 // include the library code:
-#include <FreetronicsLCD.h>
+#include <LCD.h>
 #include <Form.h>
 #include <TextField.h>
 #include <TimeField.h>
@@ -14,11 +14,11 @@ This example is placed into the public domain.
 #include <BoolField.h>
 
 // Initialize the LCD
-FreetronicsLCD lcd;
+LCD lcd;
 
 // Note: if you are using the USBDroid and have reassigned pin D9 on the LCD shield to some
 // other pin (e.g. A1), then you will need to initialize the shield with something like:
-// FreetronicsLCD lcd(A1);
+// LCD lcd(A1);
 // See also: http://www.freetronics.com/pages/combining-the-lcd-keypad-shield-and-the-usbdroid
 
 // Create the main form and its fields.

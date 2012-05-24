@@ -21,7 +21,7 @@
  */
 
 // include the library code:
-#include <FreetronicsLCD.h>
+#include <LCD.h>
 #include <Form.h>
 #include <Field.h>
 #include <BoolField.h>
@@ -55,7 +55,7 @@
 #define SETTING_MELODY          3   // Melody to play for the alarm
 
 // Initialize the LCD
-FreetronicsLCD lcd;
+LCD lcd;
 
 // Activate the realtime clock chip.
 SoftI2C bus(RTC_DATA, RTC_CLOCK);
@@ -104,7 +104,7 @@ void setup() {
     power_timer1_disable();
 
     // Enable the screen saver.
-    lcd.setScreenSaverMode(FreetronicsLCD::BacklightOnSelect);
+    lcd.setScreenSaverMode(LCD::BacklightOnSelect);
     lcd.enableScreenSaver(3);
 
     // Initialize the alarm melody.

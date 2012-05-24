@@ -72,7 +72,7 @@ Form::~Form()
  * \brief Dispatches \a event to the currently active field using
  * Field::dispatch().
  *
- * The \a event is usually obtained from FreetronicsLCD::getButton().
+ * The \a event is usually obtained from LCD::getButton().
  *
  * Returns zero if the \a event has been handled and no further action
  * is required.
@@ -94,7 +94,7 @@ Form::~Form()
  *
  * This function handles the Left and Right buttons to navigate between fields.
  *
- * \sa Field::dispatch(), FreetronicsLCD::getButton(), currentField(), isCurrent()
+ * \sa Field::dispatch(), LCD::getButton(), currentField(), isCurrent()
  */
 int Form::dispatch(int event)
 {

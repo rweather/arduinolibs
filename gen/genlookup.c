@@ -20,7 +20,7 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-// Utility for generating the button mapping table in FreetronicsLCD.cpp.
+// Utility for generating the button mapping table in LCD.cpp.
 
 #include <stdio.h>
 

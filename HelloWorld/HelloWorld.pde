@@ -1,5 +1,5 @@
 /*
-This example demonstrates how to use the FreetronicsLCD library, which extends the
+This example demonstrates how to use the LCD library, which extends the
 standard LiquidCrystal library to provide support for the Freetronics back light
 and Up/Down/Left/Right/Select buttons.  More information on the shield here:
 
@@ -9,14 +9,14 @@ This example is placed into the public domain.
 */
 
 // include the library code:
-#include <FreetronicsLCD.h>
+#include <LCD.h>
 
 // initialize the library
-FreetronicsLCD lcd;
+LCD lcd;
 
 // Note: if you are using the USBDroid and have reassigned pin D9 on the LCD shield to some
 // other pin (e.g. A1), then you will need to initialize the shield with something like:
-// FreetronicsLCD lcd(A1);
+// LCD lcd(A1);
 // See also: http://www.freetronics.com/pages/combining-the-lcd-keypad-shield-and-the-usbdroid
 
 void setup() {
