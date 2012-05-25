@@ -21,13 +21,11 @@
  */
 
 #include "SetDate.h"
-#include <DS1307RTC.h>
+#include "Clock.h"
 
 #define EDIT_DAY    0
 #define EDIT_MONTH  1
 #define EDIT_YEAR   2
-
-extern DS1307RTC rtc;
 
 SetDate::SetDate(Form &form, const String &label)
     : Field(form, label)

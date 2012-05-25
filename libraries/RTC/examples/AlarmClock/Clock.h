@@ -20,40 +20,16 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-#include "SetTime.h"
-#include "Clock.h"
+#ifndef Clock_h
+#define Clock_h
 
-SetTime::SetTime(Form &form, const String &label)
-    : EditTime(form, label)
-{
-}
+#include <DS1307RTC.h>
+#include <DS3232RTC.h>
 
-int SetTime::dispatch(int event)
-{
-    int result = EditTime::dispatch(event);
-    if (result == FORM_CHANGED) {
-        // Update the realtime clock with the new value.
-        RTCTime time = value();
-        rtc.writeTime(&time);
-    }
-    return result;
-}
+// Select the specific type of realtime clock chip to use.
+typedef DS1307RTC Clock;
+//typedef DS3232RTC Clock;
 
-void SetTime::enterField(bool reverse)
-{
-    // Read the current time when the field is entered.
-    rtc.readTime(&_value);
-    EditTime::enterField(reverse);
-}
+extern Clock rtc;
 
-void SetTime::updateCurrentTime()
-{
-    if (isCurrent()) {
-        RTCTime time;
-        rtc.readTime(&time);
-        if (time.hour != _value.hour || time.minute != _value.minute) {
-            _value = time;
-            printTime();
-        }
-    }
-}
+#endif

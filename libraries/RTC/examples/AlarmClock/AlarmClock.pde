@@ -27,10 +27,11 @@
 #include <BoolField.h>
 #include <IntField.h>
 #include <SoftI2C.h>
-#include <DS1307RTC.h>
+#include <RTC.h>
 #include <Melody.h>
 #include <PowerSave.h>
 #include <avr/power.h>
+#include "Clock.h"
 #include "FrontScreen.h"
 #include "SetAlarm.h"
 #include "SetTime.h"
@@ -59,7 +60,7 @@ LCD lcd;
 
 // Activate the realtime clock chip.
 SoftI2C bus(RTC_DATA, RTC_CLOCK);
-DS1307RTC rtc(bus, RTC_ONE_HZ);
+Clock rtc(bus, RTC_ONE_HZ);
 
 // Melody to play when the alarm sounds.
 int defaultMelodyNotes[5] = {NOTE_C6, NOTE_C6, NOTE_C6, NOTE_C6, NOTE_REST};

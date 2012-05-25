@@ -21,9 +21,7 @@
  */
 
 #include "SetAlarm.h"
-#include <DS1307RTC.h>
-
-extern DS1307RTC rtc;
+#include "Clock.h"
 
 SetAlarm::SetAlarm(Form &form, const String &label, uint8_t alarmNum)
     : EditTime(form, label)

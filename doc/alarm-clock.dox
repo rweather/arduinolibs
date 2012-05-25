@@ -28,8 +28,8 @@
 
 The alarm clock described on this page is a large example application that
 uses many of the classes in the provided libraries: LCD, Form,
-Field, SoftI2C, DS1307RTC, Melody and \ref power_save "PowerSave".
-The clock has the following features:
+Field, SoftI2C, DS1307RTC (or DS3232RTC), Melody and
+\ref power_save "PowerSave".  The clock has the following features:
 
 \li Displays both the time and date.
 \li 12 hour and 24 hour time display modes.
@@ -53,6 +53,8 @@ Realtime Clock Module</a>.  I used the ready-made realtime clock module,
 but made my own equivalent to the LCD shield from parts to aid in spacing
 out the LCD and pushbuttons on the exterior of the box.  The value of the 33R
 resistor may need to be adjusted for different types of back light LED's.
+See \ref clock_ds3232 "below" for information on using a DS3232-based
+clock module instead of a DS1307-based module.
 
 The whole circuit is built on a prototyping shield, with ribbon cables
 connecting to the LCD.  The Stop Alarm button and piezo buzzer are not
@@ -84,6 +86,25 @@ is necessary for programming.  Similar minimalistic built-it-yourself
 Arduino designs should also work.
 
 \image html kitten_minimal.jpg
+
+\section clock_ds3232 Using DS3232 instead of DS1307
+
+For clock modules based on the DS3232 chip, such as the
+<a href="http://www.freetronics.com/products/real-time-clock-rtc-module">Freetronics Real Time Clock Module</a>, change the \c Clock typedef
+in <tt>Clock.h</tt> to the following:
+
+\code
+typedef DS3232RTC Clock;
+\endcode
+
+The pads on the Freetronics module should be connected to the Arduino
+as follows:
+
+\li VCC and GND connected to 5V and GND on the Arduino.
+\li SQI connected to A3.
+\li SDA connected to A4.
+\li SCL connected to A5.
+\li BAT, 32K, and RST left unconnected.
 
 */
 
