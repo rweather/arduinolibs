@@ -80,7 +80,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </pre></div></p>
 <p>Each field has a specific type, which may be one of the following classes:</p>
 <ul>
-<li><a class="el" href="classBoolField.html" title="Field that manages the input of a boolean value.">BoolField</a> displays a boolean on/off value with the Up, Down, or Select buttons used to toggle its state. </li>
+<li><a class="el" href="classBoolField.html" title="Field that manages the input of a boolean value.">BoolField</a> displays a boolean on/off value with the Up and Down buttons used to toggle its state. </li>
 <li><a class="el" href="classIntField.html" title="Field that manages the input of an integer value.">IntField</a> displays an integer value within a specified range, with the Up and Down buttons used to modify the value. </li>
 <li><a class="el" href="classTextField.html" title="Field that displays a read-only text value.">TextField</a> displays a read-only value, which is typically used for status messages and program results. </li>
 <li><a class="el" href="classTimeField.html" title="Field that manages the display and editing of a time value.">TimeField</a> displays a time in hours, minutes, and seconds. The field may be either read-only or writable. Writable time fields can be modified with the Up, Down, Left, and Right buttons to select a specific duration.</li>
@@ -93,7 +93,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <li><code>ledField</code> which displays the current boolean state of the status LED on D13; the LED will change state when the user toggles the field's value. </li>
 <li><code>durationField</code> which displays a read-write time field for selecting a duration between 0 and 24 hours.</li>
 </ul>
-<p>Now that we have defined our form, we need to initialize the program and show it for the first time:</p>
+<p>Now that we have defined our form, we need to initialize the program and show the form for the first time:</p>
  <div class="fragment"><pre class="fragment"><span class="preprocessor">#define STATUS_LED 13</span>
 <span class="preprocessor"></span>
 <span class="keywordtype">void</span> setup() {
@@ -205,7 +205,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Fri May 25 2012 15:10:50 for ArduinoLibs by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Fri May 25 2012 16:23:36 for ArduinoLibs by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>
