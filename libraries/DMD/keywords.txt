@@ -1,0 +1,43 @@
+DMD	KEYWORD1
+Bitmap	KEYWORD1
+
+doubleBuffer	KEYWORD2
+setDoubleBuffer	KEYWORD2
+swapBuffers	KEYWORD2
+swapBuffersAndCopy	KEYWORD2
+refresh	KEYWORD2
+enableTimer1	KEYWORD2
+disableTimer1	KEYWORD2
+
+isValid	KEYWORD2
+width	KEYWORD2
+height	KEYWORD2
+stride	KEYWORD2
+bitsPerPixel	KEYWORD2
+clear	KEYWORD2
+pixel	KEYWORD2
+setPixel	KEYWORD2
+drawLine	KEYWORD2
+drawRect	KEYWORD2
+drawFilledRect	KEYWORD2
+drawCircle	KEYWORD2
+drawFilledCircle	KEYWORD2
+drawBitmap	KEYWORD2
+drawInvertedBitmap	KEYWORD2
+font	KEYWORD2
+setFont	KEYWORD2
+textColor	KEYWORD2
+setTextColor	KEYWORD2
+drawText	KEYWORD2
+drawChar	KEYWORD2
+charWidth	KEYWORD2
+textWidth	KEYWORD2
+textHeight	KEYWORD2
+copy	KEYWORD2
+fill	KEYWORD2
+scroll	KEYWORD2
+invert	KEYWORD2
+
+Black	LITERAL1
+White	LITERAL1
+NoFill	LITERAL1

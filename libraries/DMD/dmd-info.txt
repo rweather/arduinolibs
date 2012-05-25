@@ -1,0 +1,53 @@
+Description of the interface to the Freetronics Dot Matrix Display (DMD)
+========================================================================
+
+Pins:
+    D6: A - interleave phase select LSB
+    D7: B - interleave phase select MSB (set the MSB first)
+    D8: SCLK - this is the "latch" pin that copies all previously transferred
+        data from the shift register to the actual display.  Normally low,
+        then flip to high and then low again to latch the data.
+    D9: nOE - Output enable (when low).
+    D10: Conflict detect (if it goes low, something else is using SPI)
+         This is the standard SPI SS - Slave select - pin.
+    D11: R - this is the standard SPI MOSI - Master out, slave in - pin.
+    D12: MISO - master in, slave out - unused
+    D13: CLK - standard Serial Clock pin for SPI
+
+Initialisation:
+    SPI: bit order = MSB-first, data mode = 0, clock divider = 128
+        (use a smaller clock divider, such as 2, for better performance
+        when driving multiple displays)
+
+    Set A, B, CLK, SCLK, and nOE to LOW outputs
+    Set R to HIGH output
+
+    phase = 0
+
+Every 5ms, do the following to refresh the display:
+    Send the bytes for 4 interleaved rows based on phase, via SPI:
+        phase == 0: 0, 4, 8, 12 (actually sent in the order 12, 8, 4, 0)
+        phase == 1: 1, 5, 9, 13
+        phase == 2: 2, 6, 10, 14
+        phase == 3: 3, 7, 11, 15
+    Then latch the data for the rows as follows:
+        Set nOE to LOW
+        Set SCLK to HIGH and then back to LOW
+        Set A and B to indicate the current phase
+        Set nOE to HIGH
+    Finally, increment the phase, wrapping around from 3 to 0
+    The above code assumes the following memory organisation:
+        The display is W panels wide and H panels high.
+        Each panel is 32 pixels wide (4 bytes) and 16 pixels high.
+        Memory is organised as W * H * 4 bytes for each row, and 16 rows.
+        That is, the 2D arrangement of panels is flattened into 1D for
+        clocking the data out.
+        In addition, a 1 bit in memory is a LED that is *off*.
+
+Other things:
+    Multiple panels need to be daisy-chained in the order N, ..., 1 with N
+    plugged into the connector board on the Arduino and 1 at the end of
+    the daisy-chain.  Because the shipped cables are short, multiple rows
+    can be oriented in alternating order with odd-numbered rows
+    (counting from 1) upside-down and reversed.  More details here:
+    http://www.adebenham.com/category/arduino/dmd/
