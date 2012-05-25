@@ -22,7 +22,11 @@
 
 #include "DS1307RTC.h"
 #include "../I2C/I2CMaster.h"
+#if defined(ARDUINO) && ARDUINO >= 100
+#include <Arduino.h>
+#else
 #include <WProgram.h>
+#endif
 
 /**
  * \class DS1307RTC DS1307RTC.h <DS1307RTC.h>

@@ -22,7 +22,11 @@
 
 #include "LCD.h"
 #include <avr/pgmspace.h>
+#if defined(ARDUINO) && ARDUINO >= 100
+#include <Arduino.h>
+#else
 #include <WProgram.h>
+#endif
 
 #define LCD_BACK_LIGHT          3        // LCD backlight is on D3
 #define LCD_BUTTON_PIN          A0       // Button state is on A0

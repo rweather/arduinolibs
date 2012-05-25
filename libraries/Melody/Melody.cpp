@@ -21,7 +21,11 @@
  */
 
 #include "Melody.h"
+#if defined(ARDUINO) && ARDUINO >= 100
+#include <Arduino.h>
+#else
 #include <WProgram.h>
+#endif
 
 /**
  * \class Melody Melody.h <Melody.h>

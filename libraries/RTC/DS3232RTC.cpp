@@ -22,7 +22,11 @@
 
 #include "DS3232RTC.h"
 #include "../I2C/I2CMaster.h"
+#if defined(ARDUINO) && ARDUINO >= 100
+#include <Arduino.h>
+#else
 #include <WProgram.h>
+#endif
 
 /**
  * \class DS3232RTC DS3232RTC.h <DS3232RTC.h>

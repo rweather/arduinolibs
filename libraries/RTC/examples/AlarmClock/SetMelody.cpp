@@ -22,7 +22,11 @@
 
 #include "SetMelody.h"
 #include "LowPowerMelody.h"
+#if defined(ARDUINO) && ARDUINO >= 100
+#include <Arduino.h>
+#else
 #include <WProgram.h>
+#endif
 
 extern LowPowerMelody alarmMelody;
 extern int defaultMelodyNotes[5];

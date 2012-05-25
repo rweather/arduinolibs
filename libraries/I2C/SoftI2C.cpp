@@ -21,7 +21,11 @@
  */
 
 #include "SoftI2C.h"
+#if defined(ARDUINO) && ARDUINO >= 100
+#include <Arduino.h>
+#else
 #include <WProgram.h>
+#endif
 
 /**
  * \class SoftI2C SoftI2C.h <SoftI2C.h>

@@ -21,7 +21,11 @@
  */
 
 #include "FrontScreen.h"
+#if defined(ARDUINO) && ARDUINO >= 100
+#include <Arduino.h>
+#else
 #include <WProgram.h>
+#endif
 
 // Special characters for indicators.
 #define IND_BATTERY_EMPTY       0

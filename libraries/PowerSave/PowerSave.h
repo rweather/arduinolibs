@@ -23,7 +23,11 @@
 #ifndef PowerSave_h
 #define PowerSave_h
 
+#if defined(ARDUINO) && ARDUINO >= 100
+#include <Arduino.h>
+#else
 #include <WProgram.h>
+#endif
 
 inline void unusedPin(uint8_t pin)
 {

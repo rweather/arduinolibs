@@ -3,7 +3,11 @@
 #include <stdio.h>
 #include <string.h>
 #include <inttypes.h>
-#include "WProgram.h"
+#if defined(ARDUINO) && ARDUINO >= 100
+#include <Arduino.h>
+#else
+#include <WProgram.h>
+#endif
 
 // When the display powers up, it is configured as follows:
 //
