@@ -52,7 +52,7 @@ it with fields:
 
 Each field has a specific type, which may be one of the following classes:
 
-\li BoolField displays a boolean on/off value with the Up, Down, or Select
+\li BoolField displays a boolean on/off value with the Up and Down
 buttons used to toggle its state.
 \li IntField displays an integer value within a specified range, with the
 Up and Down buttons used to modify the value.
@@ -75,7 +75,7 @@ D13; the LED will change state when the user toggles the field's value.
 duration between 0 and 24 hours.
 
 Now that we have defined our form, we need to initialize the program and
-show it for the first time:
+show the form for the first time:
 
 \dontinclude LCD/examples/Form/Form.pde
 \skip STATUS_LED
