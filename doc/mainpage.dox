@@ -66,6 +66,7 @@ including support for configuring alarms and storing clock settings.
 The default implementation simulates the time and date based on the value of
 <tt>millis()</tt>.
 \li DS1307RTC class that talks to the DS1307 realtime clock chip via I2C.
+\li DS3232RTC class that talks to the DS3232 realtime clock chip via I2C.
 \li \ref alarm_clock "Alarm Clock" example that uses the DS1307
 realtime clock and the LCD library to implement an alarm clock.
 

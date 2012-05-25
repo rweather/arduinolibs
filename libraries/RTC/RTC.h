@@ -65,8 +65,7 @@ public:
     virtual void readAlarm(uint8_t alarmNum, RTCAlarm *value);
     virtual void writeAlarm(uint8_t alarmNum, const RTCAlarm *value);
 
-    static const uint8_t BYTE_COUNT = 43;
-
+    virtual int byteCount() const;
     virtual uint8_t readByte(uint8_t offset);
     virtual void writeByte(uint8_t offset, uint8_t value);
 

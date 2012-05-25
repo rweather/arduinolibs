@@ -44,7 +44,7 @@
  * then the contents of NVRAM will be cleared.  Any previous contents
  * will be lost.
  *
- * \sa RTC
+ * \sa RTC, DS3232RTC
  */
 
 // I2C address of the RTC chip (7-bit).
@@ -104,10 +104,6 @@ DS1307RTC::DS1307RTC(I2CMaster &bus, uint8_t oneHzPin)
     // Initialize the alarms in the RTC chip's NVRAM.
     if (_isRealTime)
         initAlarms();
-}
-
-DS1307RTC::~DS1307RTC()
-{
 }
 
 /**
@@ -190,7 +186,7 @@ void DS1307RTC::readDate(RTCDate *value)
         // RTC chip is not responding.
         value->day = 1;
         value->month = 1;
-        value->year = 2012;
+        value->year = 2000;
     }
 }
 
@@ -261,6 +257,11 @@ void DS1307RTC::writeAlarm(uint8_t alarmNum, const RTCAlarm *value)
     }
 }
 
+int DS1307RTC::byteCount() const
+{
+    return DS1307_ALARMS - DS1307_NVRAM;
+}
+
 uint8_t DS1307RTC::readByte(uint8_t offset)
 {
     if (_isRealTime)
@@ -289,7 +290,7 @@ void DS1307RTC::initAlarms()
         alarm.flags = 0;
         for (uint8_t index = 0; index < ALARM_COUNT; ++index)
             writeAlarm(index, &alarm);
-        writeRegister(DS1307_I2C_ADDRESS, 0xB0 + ALARM_COUNT);
+        writeRegister(DS1307_ALARM_MAGIC, 0xB0 + ALARM_COUNT);
 
         // Also clear the rest of NVRAM so that it is in a known state.
         // Otherwise we'll have whatever garbage was present at power-on.

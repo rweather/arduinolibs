@@ -39,10 +39,11 @@
  * implementation in RTC simulates a clock based on the value of millis(),
  * with alarms and clock settings stored in main memory.
  *
- * Because the common DS1307 realtime clock chip uses a 2-digit year,
- * this class is also limited to dates between 2000 and 2099 inclusive.
+ * Because the common DS1307 and DS3232 realtime clock chips use a
+ * 2-digit year, this class is also limited to dates between 2000
+ * and 2099 inclusive.
  *
- * \sa RTCTime, RTCDate, RTCAlarm, DS1307RTC
+ * \sa RTCTime, RTCDate, RTCAlarm, DS1307RTC, DS3232RTC
  */
 
 /**
@@ -50,10 +51,7 @@
  * \brief Number of alarms that are supported by RTC::readAlarm() and RTC::writeAlarm().
  */
 
-/**
- * \var RTC::BYTE_COUNT
- * \brief Number of bytes that are supported by RTC::readByte() and RTC::writeByte().
- */
+#define DEFAULT_BYTE_COUNT  43  // Default simulates DS1307 NVRAM size.
 
 #define MILLIS_PER_DAY      86400000UL
 #define MILLIS_PER_SECOND   1000UL
@@ -89,10 +87,10 @@ RTC::RTC()
     : midnight(millis() - 9 * MILLIS_PER_HOUR) // Simulated clock starts at 9am
     , nvram(0)
 {
-    // Start the simulated date at 1 Jan, 2012.
+    // Start the simulated date at 1 Jan, 2000.
     date.day = 1;
     date.month = 1;
-    date.year = 2012;
+    date.year = 2000;
 
     // Set all simulated alarms to 6am by default.
     for (uint8_t index = 0; index < ALARM_COUNT; ++index) {
@@ -210,11 +208,22 @@ void RTC::writeAlarm(uint8_t alarmNum, const RTCAlarm *value)
 }
 
 /**
+ * \brief Returns the number of bytes of non-volatile memory that can be
+ * used for storage of arbitrary settings, excluding storage used by alarms.
+ *
+ * \sa readByte(), writeByte()
+ */
+int RTC::byteCount() const
+{
+    return DEFAULT_BYTE_COUNT;
+}
+
+/**
  * \brief Reads the byte at \a offset within the realtime clock's non-volatile memory.
  *
- * The \a offset parameter must be between 0 and \ref BYTE_COUNT - 1.
+ * The \a offset parameter must be between 0 and byteCount() - 1.
  *
- * \sa writeByte()
+ * \sa writeByte(), byteCount()
  */
 uint8_t RTC::readByte(uint8_t offset)
 {
@@ -227,18 +236,18 @@ uint8_t RTC::readByte(uint8_t offset)
 /**
  * \brief Writes \a value to \a offset within the realtime clock's non-volatile memory.
  *
- * The \a offset parameter must be between 0 and \ref BYTE_COUNT - 1.
+ * The \a offset parameter must be between 0 and byteCount() - 1.
  *
- * \sa readByte()
+ * \sa readByte(), byteCount()
  */
 void RTC::writeByte(uint8_t offset, uint8_t value)
 {
     if (nvram) {
         nvram[offset] = value;
     } else {
-        nvram = (uint8_t *)malloc(BYTE_COUNT);
+        nvram = (uint8_t *)malloc(DEFAULT_BYTE_COUNT);
         if (nvram) {
-            memset(nvram, 0, BYTE_COUNT);
+            memset(nvram, 0, DEFAULT_BYTE_COUNT);
             nvram[offset] = value;
         }
     }

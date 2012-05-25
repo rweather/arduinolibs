@@ -20,16 +20,16 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-#ifndef DS1307RTC_h
-#define DS1307RTC_h
+#ifndef DS3232RTC_h
+#define DS3232RTC_h
 
 #include "RTC.h"
 
 class I2CMaster;
 
-class DS1307RTC : public RTC {
+class DS3232RTC : public RTC {
 public:
-    DS1307RTC(I2CMaster &bus, uint8_t oneHzPin = 255);
+    DS3232RTC(I2CMaster &bus, uint8_t oneHzPin = 255);
 
     bool isRealTime() const { return _isRealTime; }
 
@@ -48,16 +48,26 @@ public:
     uint8_t readByte(uint8_t offset);
     void writeByte(uint8_t offset, uint8_t value);
 
+    void enableAlarmInterrupts();
+    void disableAlarmInterrupts();
+    int firedAlarm();
+
+    void enable32kHzOutput();
+    void disable32kHzOutput();
+
 private:
     I2CMaster *_bus;
     uint8_t _oneHzPin;
     bool prevOneHz;
     bool _isRealTime;
+    bool alarmInterrupts;
 
     void initAlarms();
 
     uint8_t readRegister(uint8_t reg);
     bool writeRegister(uint8_t reg, uint8_t value);
+
+    void updateAlarmInterrupts();
 };
 
 #endif
