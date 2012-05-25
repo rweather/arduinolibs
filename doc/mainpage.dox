@@ -50,14 +50,10 @@ Enterprise model kit.
 \section main_I2C I2C Utility Library
 
 \li I2CMaster abstract class that provides an improved API for implementing an
-I2C master.  The following two classes inherit from I2CMaster:
+I2C master.
 \li SoftI2C class that implements the master side of the I2C protocol
 in software on any arbitrary pair of pins for DATA and CLOCK.
 This class supports both 7-bit and 10-bit I2C addresses.
-\li WireI2C class that uses the Arduino Wire library to implement the
-master side of the I2C protocol.  This class only supports 7-bit addresses
-and runs on predefined DATA and CLOCK pins (A4 and A5 on most boards,
-D20 and D21 for Arduino Mega).
 
 \section main_RTC Realtime Clock Library
 

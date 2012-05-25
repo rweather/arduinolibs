@@ -1,6 +1,5 @@
 I2CMaster	KEYWORD1
 SoftI2C	KEYWORD1
-WireI2C	KEYWORD1
 
 maxTransferSize	KEYWORD2
 startWrite	KEYWORD2

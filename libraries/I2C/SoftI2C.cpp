@@ -29,13 +29,13 @@
  *
  * This class implements the I2C master protocol on any arbitrary pair
  * of data and clock pins.  It is not restricted to pre-defined pins as
- * is the case for WireI2C.
+ * is the case for the standard Arduino two-wire interface.
  *
  * This implementation only implements the master side of the protocol.
  * It assumes that there is a single bus master, no arbitration, and
  * no clock stretching.
  *
- * \sa I2CMaster, WireI2C
+ * \sa I2CMaster
  */
 
 #define i2cDelay()  delayMicroseconds(5)

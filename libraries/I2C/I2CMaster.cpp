@@ -26,7 +26,7 @@
  * \class I2CMaster I2CMaster.h <I2CMaster.h>
  * \brief Abstract base class for I2C master implementations.
  *
- * \sa SoftI2C, WireI2C
+ * \sa SoftI2C
  */
 
 /**
