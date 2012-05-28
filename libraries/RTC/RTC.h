@@ -69,6 +69,10 @@ public:
     virtual uint8_t readByte(uint8_t offset);
     virtual void writeByte(uint8_t offset, uint8_t value);
 
+    static const int NO_TEMPERATURE = 32767;
+
+    virtual int readTemperature();
+
     // Flags for adjustDays(), adjustMonths(), and adjustYears().
     static const uint8_t INCREMENT = 0x0000;
     static const uint8_t DECREMENT = 0x0001;

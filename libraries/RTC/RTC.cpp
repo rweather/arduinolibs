@@ -258,6 +258,24 @@ void RTC::writeByte(uint8_t offset, uint8_t value)
 }
 
 /**
+ * \var RTC::NO_TEMPERATURE
+ * \brief Value that is returned from readTemperature() if the realtime
+ * clock chip cannot determine the temperature.
+ */
+
+/**
+ * \brief Reads the value of the temperature sensor and returns the
+ * temperature in quarters of a degree celcius.
+ *
+ * Returns the value NO_TEMPERATURE if the realtime clock chip cannot
+ * determine the temperature.
+ */
+int RTC::readTemperature()
+{
+    return NO_TEMPERATURE;
+}
+
+/**
  * \var RTC::INCREMENT
  * \brief Increment the day, month, or year in a call to adjustDays(), adjustMonths(), or adjustYears().
  */

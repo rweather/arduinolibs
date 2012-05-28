@@ -353,6 +353,16 @@ void DS3232RTC::writeByte(uint8_t offset, uint8_t value)
         RTC::writeByte(offset, value);
 }
 
+int DS3232RTC::readTemperature()
+{
+    if (_isRealTime) {
+        return (((int)(signed char)readRegister(DS3232_TEMP_MSB)) << 2) |
+               (readRegister(DS3232_TEMP_LSB) >> 6);
+    } else {
+        return NO_TEMPERATURE;
+    }
+}
+
 /**
  * \brief Enables the generation of interrupts for alarms 0 and 1.
  *

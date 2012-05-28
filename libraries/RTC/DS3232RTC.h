@@ -48,6 +48,8 @@ public:
     uint8_t readByte(uint8_t offset);
     void writeByte(uint8_t offset, uint8_t value);
 
+    int readTemperature();
+
     void enableAlarmInterrupts();
     void disableAlarmInterrupts();
     int firedAlarm();
