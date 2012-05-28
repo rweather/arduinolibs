@@ -110,6 +110,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads the byte at <em>offset</em> within the realtime clock's non-volatile memory.  <a href="#a5ba83a3ef7d65d45c2f3241afdd8fef7"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDS3232RTC.html#a9acebf12c5cecdd6d84e0ff9ed41765a">writeByte</a> (uint8_t offset, uint8_t value)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes <em>value</em> to <em>offset</em> within the realtime clock's non-volatile memory.  <a href="#a9acebf12c5cecdd6d84e0ff9ed41765a"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDS3232RTC.html#a0faf40c25ab019a326a60f301c2bb41b">readTemperature</a> ()</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads the value of the temperature sensor and returns the temperature in quarters of a degree celcius.  <a href="#a0faf40c25ab019a326a60f301c2bb41b"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDS3232RTC.html#ab91e79271a1f8e75b07bddbb04445dc9">enableAlarmInterrupts</a> ()</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Enables the generation of interrupts for alarms 0 and 1.  <a href="#ab91e79271a1f8e75b07bddbb04445dc9"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDS3232RTC.html#a225b8c62d617aa1b7be7d20e8a033be9">disableAlarmInterrupts</a> ()</td></tr>
@@ -207,7 +209,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Disables the 32 kHz output on the DS3232 chip. </p>
 <dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="classDS3232RTC.html#a3966de6f4241d86f198a8b9dd5e7e59a" title="Enables the 32 kHz output on the DS3232 chip.">enable32kHzOutput()</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="DS3232RTC_8cpp_source.html#l00448">448</a> of file <a class="el" href="DS3232RTC_8cpp_source.html">DS3232RTC.cpp</a>.</p>
+<p>Definition at line <a class="el" href="DS3232RTC_8cpp_source.html#l00458">458</a> of file <a class="el" href="DS3232RTC_8cpp_source.html">DS3232RTC.cpp</a>.</p>
 
 </div>
 </div>
@@ -228,7 +230,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Disables the generation of interrupts for alarms 0 and 1. </p>
 <dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="classDS3232RTC.html#ab91e79271a1f8e75b07bddbb04445dc9" title="Enables the generation of interrupts for alarms 0 and 1.">enableAlarmInterrupts()</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="DS3232RTC_8cpp_source.html#l00383">383</a> of file <a class="el" href="DS3232RTC_8cpp_source.html">DS3232RTC.cpp</a>.</p>
+<p>Definition at line <a class="el" href="DS3232RTC_8cpp_source.html#l00393">393</a> of file <a class="el" href="DS3232RTC_8cpp_source.html">DS3232RTC.cpp</a>.</p>
 
 </div>
 </div>
@@ -249,7 +251,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Enables the 32 kHz output on the DS3232 chip. </p>
 <dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="classDS3232RTC.html#ada732bae42fc2833e59ae293aa27ddcb" title="Disables the 32 kHz output on the DS3232 chip.">disable32kHzOutput()</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="DS3232RTC_8cpp_source.html#l00434">434</a> of file <a class="el" href="DS3232RTC_8cpp_source.html">DS3232RTC.cpp</a>.</p>
+<p>Definition at line <a class="el" href="DS3232RTC_8cpp_source.html#l00444">444</a> of file <a class="el" href="DS3232RTC_8cpp_source.html">DS3232RTC.cpp</a>.</p>
 
 </div>
 </div>
@@ -272,7 +274,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Note: this function does nothing if the 1 Hz pin was enabled in the constructor, but <a class="el" href="classDS3232RTC.html#a79649f100a4562b9c1ba7c69e85cbca3" title="Determines which of alarms 0 or 1 have fired since the last call.">firedAlarm()</a> can still be used to determine which alarm has fired when <a class="el" href="classDS3232RTC.html#a619ffee1bc013c9ddf4ae415115798bc" title="Returns true if the realtime clock has updated since the last call to this function.">hasUpdates()</a> reports that there is an update available.</p>
 <dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="classDS3232RTC.html#a225b8c62d617aa1b7be7d20e8a033be9" title="Disables the generation of interrupts for alarms 0 and 1.">disableAlarmInterrupts()</a>, <a class="el" href="classDS3232RTC.html#a79649f100a4562b9c1ba7c69e85cbca3" title="Determines which of alarms 0 or 1 have fired since the last call.">firedAlarm()</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="DS3232RTC_8cpp_source.html#l00370">370</a> of file <a class="el" href="DS3232RTC_8cpp_source.html">DS3232RTC.cpp</a>.</p>
+<p>Definition at line <a class="el" href="DS3232RTC_8cpp_source.html#l00380">380</a> of file <a class="el" href="DS3232RTC_8cpp_source.html">DS3232RTC.cpp</a>.</p>
 
 </div>
 </div>
@@ -296,7 +298,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>This function cannot be used to determine if alarms 2 or 3 have fired as they are stored in NVRAM and are not handled specially by the DS3232.</p>
 <dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="classDS3232RTC.html#ab91e79271a1f8e75b07bddbb04445dc9" title="Enables the generation of interrupts for alarms 0 and 1.">enableAlarmInterrupts()</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="DS3232RTC_8cpp_source.html#l00406">406</a> of file <a class="el" href="DS3232RTC_8cpp_source.html">DS3232RTC.cpp</a>.</p>
+<p>Definition at line <a class="el" href="DS3232RTC_8cpp_source.html#l00416">416</a> of file <a class="el" href="DS3232RTC_8cpp_source.html">DS3232RTC.cpp</a>.</p>
 
 </div>
 </div>
@@ -406,6 +408,29 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Reimplemented from <a class="el" href="classRTC.html#aa1e21bf42ebd4456919744ae0f4f631e">RTC</a>.</p>
 
 <p>Definition at line <a class="el" href="DS3232RTC_8cpp_source.html#l00225">225</a> of file <a class="el" href="DS3232RTC_8cpp_source.html">DS3232RTC.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a0faf40c25ab019a326a60f301c2bb41b"></a><!-- doxytag: member="DS3232RTC::readTemperature" ref="a0faf40c25ab019a326a60f301c2bb41b" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int DS3232RTC::readTemperature </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td><code> [virtual]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Reads the value of the temperature sensor and returns the temperature in quarters of a degree celcius. </p>
+<p>Returns the value NO_TEMPERATURE if the realtime clock chip cannot determine the temperature. </p>
+
+<p>Reimplemented from <a class="el" href="classRTC.html#aeca3c8387332e8cabfd09c1806276e5a">RTC</a>.</p>
+
+<p>Definition at line <a class="el" href="DS3232RTC_8cpp_source.html#l00356">356</a> of file <a class="el" href="DS3232RTC_8cpp_source.html">DS3232RTC.cpp</a>.</p>
 
 </div>
 </div>
@@ -571,7 +596,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Fri May 25 2012 16:23:36 for ArduinoLibs by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Mon May 28 2012 20:55:51 for ArduinoLibs by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

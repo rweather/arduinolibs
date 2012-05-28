@@ -110,29 +110,31 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00048"></a>00048     uint8_t <a class="code" href="classDS3232RTC.html#a5ba83a3ef7d65d45c2f3241afdd8fef7" title="Reads the byte at offset within the realtime clock&#39;s non-volatile memory.">readByte</a>(uint8_t offset);
 <a name="l00049"></a>00049     <span class="keywordtype">void</span> <a class="code" href="classDS3232RTC.html#a9acebf12c5cecdd6d84e0ff9ed41765a" title="Writes value to offset within the realtime clock&#39;s non-volatile memory.">writeByte</a>(uint8_t offset, uint8_t value);
 <a name="l00050"></a>00050 
-<a name="l00051"></a>00051     <span class="keywordtype">void</span> <a class="code" href="classDS3232RTC.html#ab91e79271a1f8e75b07bddbb04445dc9" title="Enables the generation of interrupts for alarms 0 and 1.">enableAlarmInterrupts</a>();
-<a name="l00052"></a>00052     <span class="keywordtype">void</span> <a class="code" href="classDS3232RTC.html#a225b8c62d617aa1b7be7d20e8a033be9" title="Disables the generation of interrupts for alarms 0 and 1.">disableAlarmInterrupts</a>();
-<a name="l00053"></a>00053     <span class="keywordtype">int</span> <a class="code" href="classDS3232RTC.html#a79649f100a4562b9c1ba7c69e85cbca3" title="Determines which of alarms 0 or 1 have fired since the last call.">firedAlarm</a>();
-<a name="l00054"></a>00054 
-<a name="l00055"></a>00055     <span class="keywordtype">void</span> <a class="code" href="classDS3232RTC.html#a3966de6f4241d86f198a8b9dd5e7e59a" title="Enables the 32 kHz output on the DS3232 chip.">enable32kHzOutput</a>();
-<a name="l00056"></a>00056     <span class="keywordtype">void</span> <a class="code" href="classDS3232RTC.html#ada732bae42fc2833e59ae293aa27ddcb" title="Disables the 32 kHz output on the DS3232 chip.">disable32kHzOutput</a>();
-<a name="l00057"></a>00057 
-<a name="l00058"></a>00058 <span class="keyword">private</span>:
-<a name="l00059"></a>00059     <a class="code" href="classI2CMaster.html" title="Abstract base class for I2C master implementations.">I2CMaster</a> *_bus;
-<a name="l00060"></a>00060     uint8_t _oneHzPin;
-<a name="l00061"></a>00061     <span class="keywordtype">bool</span> prevOneHz;
-<a name="l00062"></a>00062     <span class="keywordtype">bool</span> _isRealTime;
-<a name="l00063"></a>00063     <span class="keywordtype">bool</span> alarmInterrupts;
-<a name="l00064"></a>00064 
-<a name="l00065"></a>00065     <span class="keywordtype">void</span> initAlarms();
+<a name="l00051"></a>00051     <span class="keywordtype">int</span> <a class="code" href="classDS3232RTC.html#a0faf40c25ab019a326a60f301c2bb41b" title="Reads the value of the temperature sensor and returns the temperature in quarters of a degree celcius...">readTemperature</a>();
+<a name="l00052"></a>00052 
+<a name="l00053"></a>00053     <span class="keywordtype">void</span> <a class="code" href="classDS3232RTC.html#ab91e79271a1f8e75b07bddbb04445dc9" title="Enables the generation of interrupts for alarms 0 and 1.">enableAlarmInterrupts</a>();
+<a name="l00054"></a>00054     <span class="keywordtype">void</span> <a class="code" href="classDS3232RTC.html#a225b8c62d617aa1b7be7d20e8a033be9" title="Disables the generation of interrupts for alarms 0 and 1.">disableAlarmInterrupts</a>();
+<a name="l00055"></a>00055     <span class="keywordtype">int</span> <a class="code" href="classDS3232RTC.html#a79649f100a4562b9c1ba7c69e85cbca3" title="Determines which of alarms 0 or 1 have fired since the last call.">firedAlarm</a>();
+<a name="l00056"></a>00056 
+<a name="l00057"></a>00057     <span class="keywordtype">void</span> <a class="code" href="classDS3232RTC.html#a3966de6f4241d86f198a8b9dd5e7e59a" title="Enables the 32 kHz output on the DS3232 chip.">enable32kHzOutput</a>();
+<a name="l00058"></a>00058     <span class="keywordtype">void</span> <a class="code" href="classDS3232RTC.html#ada732bae42fc2833e59ae293aa27ddcb" title="Disables the 32 kHz output on the DS3232 chip.">disable32kHzOutput</a>();
+<a name="l00059"></a>00059 
+<a name="l00060"></a>00060 <span class="keyword">private</span>:
+<a name="l00061"></a>00061     <a class="code" href="classI2CMaster.html" title="Abstract base class for I2C master implementations.">I2CMaster</a> *_bus;
+<a name="l00062"></a>00062     uint8_t _oneHzPin;
+<a name="l00063"></a>00063     <span class="keywordtype">bool</span> prevOneHz;
+<a name="l00064"></a>00064     <span class="keywordtype">bool</span> _isRealTime;
+<a name="l00065"></a>00065     <span class="keywordtype">bool</span> alarmInterrupts;
 <a name="l00066"></a>00066 
-<a name="l00067"></a>00067     uint8_t readRegister(uint8_t reg);
-<a name="l00068"></a>00068     <span class="keywordtype">bool</span> writeRegister(uint8_t reg, uint8_t value);
-<a name="l00069"></a>00069 
-<a name="l00070"></a>00070     <span class="keywordtype">void</span> updateAlarmInterrupts();
-<a name="l00071"></a>00071 };
-<a name="l00072"></a>00072 
-<a name="l00073"></a>00073 <span class="preprocessor">#endif</span>
+<a name="l00067"></a>00067     <span class="keywordtype">void</span> initAlarms();
+<a name="l00068"></a>00068 
+<a name="l00069"></a>00069     uint8_t readRegister(uint8_t reg);
+<a name="l00070"></a>00070     <span class="keywordtype">bool</span> writeRegister(uint8_t reg, uint8_t value);
+<a name="l00071"></a>00071 
+<a name="l00072"></a>00072     <span class="keywordtype">void</span> updateAlarmInterrupts();
+<a name="l00073"></a>00073 };
+<a name="l00074"></a>00074 
+<a name="l00075"></a>00075 <span class="preprocessor">#endif</span>
 </pre></div></div>
 </div>
 <!-- window showing the filter options -->
@@ -149,7 +151,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Fri May 25 2012 16:23:36 for ArduinoLibs by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Mon May 28 2012 20:55:50 for ArduinoLibs by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

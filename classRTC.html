@@ -110,6 +110,8 @@ Public Member Functions</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads the byte at <em>offset</em> within the realtime clock's non-volatile memory.  <a href="#a0f47b10b436e3f9d36e04ec907579431"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRTC.html#a1cab6397ec04b1e2b3feea5b3cd1f749">writeByte</a> (uint8_t offset, uint8_t value)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes <em>value</em> to <em>offset</em> within the realtime clock's non-volatile memory.  <a href="#a1cab6397ec04b1e2b3feea5b3cd1f749"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRTC.html#aeca3c8387332e8cabfd09c1806276e5a">readTemperature</a> ()</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads the value of the temperature sensor and returns the temperature in quarters of a degree celcius.  <a href="#aeca3c8387332e8cabfd09c1806276e5a"></a><br/></td></tr>
 <tr><td colspan="2"><h2><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRTC.html#adc29d7c43efc5a192d21965da5c3ee1d">adjustDays</a> (<a class="el" href="structRTCDate.html">RTCDate</a> *date, uint8_t flags)</td></tr>
@@ -123,6 +125,9 @@ Static Public Attributes</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aee5ae8f600ee5296e65635c0d836fca3"></a><!-- doxytag: member="RTC::ALARM_COUNT" ref="aee5ae8f600ee5296e65635c0d836fca3" args="" -->
 static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRTC.html#aee5ae8f600ee5296e65635c0d836fca3">ALARM_COUNT</a> = 4</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of alarms that are supported by <a class="el" href="classRTC.html#ade282d7a60147c3f0269f1fcd59c8d66" title="Reads the details of the alarm with index alarmNum into value.">RTC::readAlarm()</a> and <a class="el" href="classRTC.html#a0e96c91efd9e7a6340effdae3eadf17e" title="Updates the details of the alarm with index alarmNum from value.">RTC::writeAlarm()</a>. <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9ed5480b362a83f1f45c4d3bcf7c3bf8"></a><!-- doxytag: member="RTC::NO_TEMPERATURE" ref="a9ed5480b362a83f1f45c4d3bcf7c3bf8" args="" -->
+static const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRTC.html#a9ed5480b362a83f1f45c4d3bcf7c3bf8">NO_TEMPERATURE</a> = 32767</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Value that is returned from <a class="el" href="classRTC.html#aeca3c8387332e8cabfd09c1806276e5a" title="Reads the value of the temperature sensor and returns the temperature in quarters of a degree celcius...">readTemperature()</a> if the realtime clock chip cannot determine the temperature. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aacbe3ebbf893685950b05327c11d5c37"></a><!-- doxytag: member="RTC::INCREMENT" ref="aacbe3ebbf893685950b05327c11d5c37" args="" -->
 static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRTC.html#aacbe3ebbf893685950b05327c11d5c37">INCREMENT</a> = 0x0000</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Increment the day, month, or year in a call to <a class="el" href="classRTC.html#adc29d7c43efc5a192d21965da5c3ee1d" title="Adjusts date up or down one day according to flags.">adjustDays()</a>, <a class="el" href="classRTC.html#aeca597e6e37a05716e664242f9cfc5f4" title="Adjusts date up or down one month according to flags.">adjustMonths()</a>, or <a class="el" href="classRTC.html#a31d10cb2f7cac8839bd4be2d858b802d" title="Adjusts date up or down one year according to flags.">adjustYears()</a>. <br/></td></tr>
@@ -192,7 +197,7 @@ static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class
 <p>Adjusts <em>date</em> up or down one day according to <em>flags</em>. </p>
 <dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="classRTC.html#aeca597e6e37a05716e664242f9cfc5f4" title="Adjusts date up or down one month according to flags.">adjustMonths()</a>, <a class="el" href="classRTC.html#a31d10cb2f7cac8839bd4be2d858b802d" title="Adjusts date up or down one year according to flags.">adjustYears()</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="RTC_8cpp_source.html#l00280">280</a> of file <a class="el" href="RTC_8cpp_source.html">RTC.cpp</a>.</p>
+<p>Definition at line <a class="el" href="RTC_8cpp_source.html#l00298">298</a> of file <a class="el" href="RTC_8cpp_source.html">RTC.cpp</a>.</p>
 
 </div>
 </div>
@@ -224,7 +229,7 @@ static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class
 <p>Adjusts <em>date</em> up or down one month according to <em>flags</em>. </p>
 <dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="classRTC.html#adc29d7c43efc5a192d21965da5c3ee1d" title="Adjusts date up or down one day according to flags.">adjustDays()</a>, <a class="el" href="classRTC.html#a31d10cb2f7cac8839bd4be2d858b802d" title="Adjusts date up or down one year according to flags.">adjustYears()</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="RTC_8cpp_source.html#l00310">310</a> of file <a class="el" href="RTC_8cpp_source.html">RTC.cpp</a>.</p>
+<p>Definition at line <a class="el" href="RTC_8cpp_source.html#l00328">328</a> of file <a class="el" href="RTC_8cpp_source.html">RTC.cpp</a>.</p>
 
 </div>
 </div>
@@ -256,7 +261,7 @@ static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class
 <p>Adjusts <em>date</em> up or down one year according to <em>flags</em>. </p>
 <dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="classRTC.html#adc29d7c43efc5a192d21965da5c3ee1d" title="Adjusts date up or down one day according to flags.">adjustDays()</a>, <a class="el" href="classRTC.html#aeca597e6e37a05716e664242f9cfc5f4" title="Adjusts date up or down one month according to flags.">adjustMonths()</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="RTC_8cpp_source.html#l00337">337</a> of file <a class="el" href="RTC_8cpp_source.html">RTC.cpp</a>.</p>
+<p>Definition at line <a class="el" href="RTC_8cpp_source.html#l00355">355</a> of file <a class="el" href="RTC_8cpp_source.html">RTC.cpp</a>.</p>
 
 </div>
 </div>
@@ -389,6 +394,29 @@ static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class
 <p>Reimplemented in <a class="el" href="classDS1307RTC.html#a6fb56d1690bc30e7995961a5b5e5fdc4">DS1307RTC</a>, and <a class="el" href="classDS3232RTC.html#ab03358e3b5996e38d766e2f9f6ab62ca">DS3232RTC</a>.</p>
 
 <p>Definition at line <a class="el" href="RTC_8cpp_source.html#l00154">154</a> of file <a class="el" href="RTC_8cpp_source.html">RTC.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aeca3c8387332e8cabfd09c1806276e5a"></a><!-- doxytag: member="RTC::readTemperature" ref="aeca3c8387332e8cabfd09c1806276e5a" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int RTC::readTemperature </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td><code> [virtual]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Reads the value of the temperature sensor and returns the temperature in quarters of a degree celcius. </p>
+<p>Returns the value NO_TEMPERATURE if the realtime clock chip cannot determine the temperature. </p>
+
+<p>Reimplemented in <a class="el" href="classDS3232RTC.html#a0faf40c25ab019a326a60f301c2bb41b">DS3232RTC</a>.</p>
+
+<p>Definition at line <a class="el" href="RTC_8cpp_source.html#l00273">273</a> of file <a class="el" href="RTC_8cpp_source.html">RTC.cpp</a>.</p>
 
 </div>
 </div>
@@ -554,7 +582,7 @@ static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Fri May 25 2012 16:23:36 for ArduinoLibs by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Mon May 28 2012 20:55:51 for ArduinoLibs by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>
