@@ -107,6 +107,10 @@ Public Member Functions</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Enables Timer1 overflow interrupts for updating this display.  <a href="#a4c3b04b384f3d656a9b59690836775e2"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDMD.html#a39af27e216f654ecc7e60b0614cb6b33">disableTimer1</a> ()</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Disables Timer1 overflow interrupts.  <a href="#a39af27e216f654ecc7e60b0614cb6b33"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDMD.html#a5469775db7fafebca2cdbc6a6372fb97">enableTimer2</a> ()</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Enables Timer2 overflow interrupts for updating this display.  <a href="#a5469775db7fafebca2cdbc6a6372fb97"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDMD.html#a52fe885bfb380b74df54c96221811cff">disableTimer2</a> ()</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Disables Timer2 overflow interrupts.  <a href="#a52fe885bfb380b74df54c96221811cff"></a><br/></td></tr>
 <tr><td colspan="2"><h2><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classBitmap.html#a88d386944a7017aa776a177b10d8b2ba">Color</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDMD.html#a557412f734fc4596e1102bf71e110ea0">fromRGB</a> (uint8_t r, uint8_t g, uint8_t b)</td></tr>
@@ -145,6 +149,19 @@ Interrupt-driven display refresh</h2>
 
  <span class="keywordtype">void</span> setup() {
      display.<a class="code" href="classDMD.html#a4c3b04b384f3d656a9b59690836775e2" title="Enables Timer1 overflow interrupts for updating this display.">enableTimer1</a>();
+ }
+</pre></div><p>If Timer1 is already in use by some other part of your application, then Timer2 can be used as an alternative interrupt source:</p>
+<div class="fragment"><pre class="fragment"><span class="preprocessor"> #include &lt;DMD.h&gt;</span>
+
+ <a class="code" href="classDMD.html" title="Handle large dot matrix displays composed of LED&#39;s.">DMD</a> display;
+
+ ISR(TIMER2_OVF_vect)
+ {
+     display.<a class="code" href="classDMD.html#a9e4bf2a9d247312d35c1401ff61261c8" title="Refresh the display.">refresh</a>();
+ }
+
+ <span class="keywordtype">void</span> setup() {
+     display.<a class="code" href="classDMD.html#a5469775db7fafebca2cdbc6a6372fb97" title="Enables Timer2 overflow interrupts for updating this display.">enableTimer2</a>();
  }
 </pre></div><p><a class="el" href="classDMD.html" title="Handle large dot matrix displays composed of LED&#39;s.">DMD</a> can also be used with third-party timer libraries such as <a href="http://code.google.com/p/arduino-timerone/downloads/list">TimerOne</a>:</p>
 <div class="fragment"><pre class="fragment"><span class="preprocessor"> #include &lt;DMD.h&gt;</span>
@@ -241,7 +258,7 @@ Multiple panels</h2>
 <p>Note: the parameters to this constructor are specified in panels, whereas <a class="el" href="classBitmap.html#a76c3b49e535761f07c553e7336daf523" title="Returns the width of the bitmap in pixels.">width()</a> and <a class="el" href="classBitmap.html#adcd4e3dc7594421e647b0f52da9a41a3" title="Returns the height of the bitmap in pixels.">height()</a> are specified in pixels.</p>
 <dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="classBitmap.html#a76c3b49e535761f07c553e7336daf523" title="Returns the width of the bitmap in pixels.">width()</a>, <a class="el" href="classBitmap.html#adcd4e3dc7594421e647b0f52da9a41a3" title="Returns the height of the bitmap in pixels.">height()</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="DMD_8cpp_source.html#l00219">219</a> of file <a class="el" href="DMD_8cpp_source.html">DMD.cpp</a>.</p>
+<p>Definition at line <a class="el" href="DMD_8cpp_source.html#l00237">237</a> of file <a class="el" href="DMD_8cpp_source.html">DMD.cpp</a>.</p>
 
 </div>
 </div>
@@ -263,7 +280,28 @@ Multiple panels</h2>
 <p>Disables Timer1 overflow interrupts. </p>
 <dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="classDMD.html#a4c3b04b384f3d656a9b59690836775e2" title="Enables Timer1 overflow interrupts for updating this display.">enableTimer1()</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="DMD_8cpp_source.html#l00596">596</a> of file <a class="el" href="DMD_8cpp_source.html">DMD.cpp</a>.</p>
+<p>Definition at line <a class="el" href="DMD_8cpp_source.html#l00614">614</a> of file <a class="el" href="DMD_8cpp_source.html">DMD.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a52fe885bfb380b74df54c96221811cff"></a><!-- doxytag: member="DMD::disableTimer2" ref="a52fe885bfb380b74df54c96221811cff" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void DMD::disableTimer2 </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Disables Timer2 overflow interrupts. </p>
+<dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="classDMD.html#a5469775db7fafebca2cdbc6a6372fb97" title="Enables Timer2 overflow interrupts for updating this display.">enableTimer2()</a> </dd></dl>
+
+<p>Definition at line <a class="el" href="DMD_8cpp_source.html#l00674">674</a> of file <a class="el" href="DMD_8cpp_source.html">DMD.cpp</a>.</p>
 
 </div>
 </div>
@@ -317,9 +355,44 @@ Multiple panels</h2>
      display.<a class="code" href="classDMD.html#a4c3b04b384f3d656a9b59690836775e2" title="Enables Timer1 overflow interrupts for updating this display.">enableTimer1</a>();
  }
 </pre></div><p>If timer interrupts are being used to update the display, then it is unnecessary to call <a class="el" href="classDMD.html#a2c74a0845ef6080056b972d490648114" title="Performs regular display refresh activities from the application&#39;s main loop.">loop()</a>.</p>
-<dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="classDMD.html#a9e4bf2a9d247312d35c1401ff61261c8" title="Refresh the display.">refresh()</a>, <a class="el" href="classDMD.html#a39af27e216f654ecc7e60b0614cb6b33" title="Disables Timer1 overflow interrupts.">disableTimer1()</a>, <a class="el" href="classDMD.html#a6fbdcf8832f91d02500cb7a9b84d2723" title="Enables or disables double-buffering according to doubleBuffer.">setDoubleBuffer()</a> </dd></dl>
+<dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="classDMD.html#a9e4bf2a9d247312d35c1401ff61261c8" title="Refresh the display.">refresh()</a>, <a class="el" href="classDMD.html#a39af27e216f654ecc7e60b0614cb6b33" title="Disables Timer1 overflow interrupts.">disableTimer1()</a>, <a class="el" href="classDMD.html#a5469775db7fafebca2cdbc6a6372fb97" title="Enables Timer2 overflow interrupts for updating this display.">enableTimer2()</a>, <a class="el" href="classDMD.html#a6fbdcf8832f91d02500cb7a9b84d2723" title="Enables or disables double-buffering according to doubleBuffer.">setDoubleBuffer()</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="DMD_8cpp_source.html#l00545">545</a> of file <a class="el" href="DMD_8cpp_source.html">DMD.cpp</a>.</p>
+<p>Definition at line <a class="el" href="DMD_8cpp_source.html#l00563">563</a> of file <a class="el" href="DMD_8cpp_source.html">DMD.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a5469775db7fafebca2cdbc6a6372fb97"></a><!-- doxytag: member="DMD::enableTimer2" ref="a5469775db7fafebca2cdbc6a6372fb97" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void DMD::enableTimer2 </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Enables Timer2 overflow interrupts for updating this display. </p>
+<p>The application must also provide an interrupt service routine for Timer2 that calls <a class="el" href="classDMD.html#a9e4bf2a9d247312d35c1401ff61261c8" title="Refresh the display.">refresh()</a>:</p>
+<div class="fragment"><pre class="fragment"><span class="preprocessor"> #include &lt;DMD.h&gt;</span>
+
+ <a class="code" href="classDMD.html" title="Handle large dot matrix displays composed of LED&#39;s.">DMD</a> display;
+
+ ISR(TIMER2_OVF_vect)
+ {
+     display.<a class="code" href="classDMD.html#a9e4bf2a9d247312d35c1401ff61261c8" title="Refresh the display.">refresh</a>();
+ }
+
+ <span class="keywordtype">void</span> setup() {
+     display.<a class="code" href="classDMD.html#a5469775db7fafebca2cdbc6a6372fb97" title="Enables Timer2 overflow interrupts for updating this display.">enableTimer2</a>();
+ }
+</pre></div><p>If timer interrupts are being used to update the display, then it is unnecessary to call <a class="el" href="classDMD.html#a2c74a0845ef6080056b972d490648114" title="Performs regular display refresh activities from the application&#39;s main loop.">loop()</a>.</p>
+<dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="classDMD.html#a9e4bf2a9d247312d35c1401ff61261c8" title="Refresh the display.">refresh()</a>, <a class="el" href="classDMD.html#a52fe885bfb380b74df54c96221811cff" title="Disables Timer2 overflow interrupts.">disableTimer2()</a>, <a class="el" href="classDMD.html#a4c3b04b384f3d656a9b59690836775e2" title="Enables Timer1 overflow interrupts for updating this display.">enableTimer1()</a>, <a class="el" href="classDMD.html#a6fbdcf8832f91d02500cb7a9b84d2723" title="Enables or disables double-buffering according to doubleBuffer.">setDoubleBuffer()</a> </dd></dl>
+
+<p>Definition at line <a class="el" href="DMD_8cpp_source.html#l00646">646</a> of file <a class="el" href="DMD_8cpp_source.html">DMD.cpp</a>.</p>
 
 </div>
 </div>
@@ -358,7 +431,7 @@ Multiple panels</h2>
 <p>Returns <a class="el" href="classBitmap.html#a39b6754cfe50a457bbfdb1980fd87eb7">White</a> if any of <em>r</em>, <em>g</em>, or <em>b</em> are non-zero; otherwise returns <a class="el" href="classBitmap.html#a2c7faeeb89d3624b5bbca58871785adc">Black</a>.</p>
 <p>This function is provided for upwards compatibility with future displays that support full color. Monochrome applications should use the <a class="el" href="classBitmap.html#a2c7faeeb89d3624b5bbca58871785adc">Black</a> and <a class="el" href="classBitmap.html#a39b6754cfe50a457bbfdb1980fd87eb7">White</a> constants directly. </p>
 
-<p>Definition at line <a class="el" href="DMD_8cpp_source.html#l00612">612</a> of file <a class="el" href="DMD_8cpp_source.html">DMD.cpp</a>.</p>
+<p>Definition at line <a class="el" href="DMD_8cpp_source.html#l00690">690</a> of file <a class="el" href="DMD_8cpp_source.html">DMD.cpp</a>.</p>
 
 </div>
 </div>
@@ -385,7 +458,7 @@ Multiple panels</h2>
 </pre></div><p>If you are using a timer interrupt service routine, then call <a class="el" href="classDMD.html#a9e4bf2a9d247312d35c1401ff61261c8" title="Refresh the display.">refresh()</a> in response to the interrupt instead of calling <a class="el" href="classDMD.html#a2c74a0845ef6080056b972d490648114" title="Performs regular display refresh activities from the application&#39;s main loop.">loop()</a>.</p>
 <dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="classDMD.html#a9e4bf2a9d247312d35c1401ff61261c8" title="Refresh the display.">refresh()</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="DMD_8cpp_source.html#l00402">402</a> of file <a class="el" href="DMD_8cpp_source.html">DMD.cpp</a>.</p>
+<p>Definition at line <a class="el" href="DMD_8cpp_source.html#l00420">420</a> of file <a class="el" href="DMD_8cpp_source.html">DMD.cpp</a>.</p>
 
 </div>
 </div>
@@ -408,7 +481,7 @@ Multiple panels</h2>
 <p>If this function is called from an interrupt service routine, then it is recommended that double-buffering be enabled with <a class="el" href="classDMD.html#a6fbdcf8832f91d02500cb7a9b84d2723" title="Enables or disables double-buffering according to doubleBuffer.">setDoubleBuffer()</a> to prevent "tearing" artifacts that result from simultaneous update of a single shared buffer.</p>
 <dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="classDMD.html#a2c74a0845ef6080056b972d490648114" title="Performs regular display refresh activities from the application&#39;s main loop.">loop()</a>, <a class="el" href="classDMD.html#a6fbdcf8832f91d02500cb7a9b84d2723" title="Enables or disables double-buffering according to doubleBuffer.">setDoubleBuffer()</a>, <a class="el" href="classDMD.html#a4c3b04b384f3d656a9b59690836775e2" title="Enables Timer1 overflow interrupts for updating this display.">enableTimer1()</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="DMD_8cpp_source.html#l00460">460</a> of file <a class="el" href="DMD_8cpp_source.html">DMD.cpp</a>.</p>
+<p>Definition at line <a class="el" href="DMD_8cpp_source.html#l00478">478</a> of file <a class="el" href="DMD_8cpp_source.html">DMD.cpp</a>.</p>
 
 </div>
 </div>
@@ -433,7 +506,7 @@ Multiple panels</h2>
 <p>This function will allocate memory for the extra buffer when <em>doubleBuffer</em> is true. If there is insufficient memory for the second screen buffer, then this class will revert to single-buffered mode.</p>
 <dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="classDMD.html#aab1f3ba29c053d630ae12865d22166ec" title="Returns true if the display is double-buffered; false if single-buffered. The default is false...">doubleBuffer()</a>, <a class="el" href="classDMD.html#a80269ccd44b3ef9ee15f0a1009b7a60a" title="Swaps the buffers that are used for rendering to the display.">swapBuffers()</a>, <a class="el" href="classDMD.html#a9e4bf2a9d247312d35c1401ff61261c8" title="Refresh the display.">refresh()</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="DMD_8cpp_source.html#l00296">296</a> of file <a class="el" href="DMD_8cpp_source.html">DMD.cpp</a>.</p>
+<p>Definition at line <a class="el" href="DMD_8cpp_source.html#l00314">314</a> of file <a class="el" href="DMD_8cpp_source.html">DMD.cpp</a>.</p>
 
 </div>
 </div>
@@ -456,7 +529,7 @@ Multiple panels</h2>
 <p>The new rendering back buffer will have undefined contents and will probably need to be re-inialized with <a class="el" href="classBitmap.html#a839dc8fab05a5ebf7a6b2e61436b2fa1" title="Clears the entire bitmap to the specified color.">clear()</a> or <a class="el" href="classBitmap.html#a99da820f9280aace6b512801d5a5e2b2" title="Fills the width x height pixels starting at top-left corner (x, y) with color.">fill()</a> before drawing to it. The <a class="el" href="classDMD.html#a0b1771cf790b2b62eea55e56b02e3736" title="Swaps the buffers that are used for rendering to the display and copies the former back buffer conten...">swapBuffersAndCopy()</a> function can be used instead to preserve the screen contents from one frame to the next.</p>
 <dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="classDMD.html#a0b1771cf790b2b62eea55e56b02e3736" title="Swaps the buffers that are used for rendering to the display and copies the former back buffer conten...">swapBuffersAndCopy()</a>, <a class="el" href="classDMD.html#a6fbdcf8832f91d02500cb7a9b84d2723" title="Enables or disables double-buffering according to doubleBuffer.">setDoubleBuffer()</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="DMD_8cpp_source.html#l00345">345</a> of file <a class="el" href="DMD_8cpp_source.html">DMD.cpp</a>.</p>
+<p>Definition at line <a class="el" href="DMD_8cpp_source.html#l00363">363</a> of file <a class="el" href="DMD_8cpp_source.html">DMD.cpp</a>.</p>
 
 </div>
 </div>
@@ -479,7 +552,7 @@ Multiple panels</h2>
 <p>This function is useful if the screen does not change much from one frame to the next. If the screen changes a lot between frames, then it is usually better to explicitly <a class="el" href="classBitmap.html#a839dc8fab05a5ebf7a6b2e61436b2fa1" title="Clears the entire bitmap to the specified color.">clear()</a> or <a class="el" href="classBitmap.html#a99da820f9280aace6b512801d5a5e2b2" title="Fills the width x height pixels starting at top-left corner (x, y) with color.">fill()</a> the new back buffer.</p>
 <dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="classDMD.html#a80269ccd44b3ef9ee15f0a1009b7a60a" title="Swaps the buffers that are used for rendering to the display.">swapBuffers()</a>, <a class="el" href="classDMD.html#a6fbdcf8832f91d02500cb7a9b84d2723" title="Enables or disables double-buffering according to doubleBuffer.">setDoubleBuffer()</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="DMD_8cpp_source.html#l00378">378</a> of file <a class="el" href="DMD_8cpp_source.html">DMD.cpp</a>.</p>
+<p>Definition at line <a class="el" href="DMD_8cpp_source.html#l00396">396</a> of file <a class="el" href="DMD_8cpp_source.html">DMD.cpp</a>.</p>
 
 </div>
 </div>
@@ -502,7 +575,7 @@ Multiple panels</h2>
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Tue May 29 2012 15:23:58 for ArduinoLibs by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Wed May 30 2012 15:44:34 for ArduinoLibs by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

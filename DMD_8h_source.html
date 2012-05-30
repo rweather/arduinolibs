@@ -104,22 +104,25 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00042"></a>00042     <span class="keywordtype">void</span> <a class="code" href="classDMD.html#a4c3b04b384f3d656a9b59690836775e2" title="Enables Timer1 overflow interrupts for updating this display.">enableTimer1</a>();
 <a name="l00043"></a>00043     <span class="keywordtype">void</span> <a class="code" href="classDMD.html#a39af27e216f654ecc7e60b0614cb6b33" title="Disables Timer1 overflow interrupts.">disableTimer1</a>();
 <a name="l00044"></a>00044 
-<a name="l00045"></a>00045     <span class="keyword">static</span> <a class="code" href="classBitmap.html#a88d386944a7017aa776a177b10d8b2ba" title="Type that represents the color of a pixel in a bitmap.">Color</a> <a class="code" href="classDMD.html#a557412f734fc4596e1102bf71e110ea0" title="Converts an RGB value into a pixel color value.">fromRGB</a>(uint8_t r, uint8_t g, uint8_t b);
-<a name="l00046"></a>00046 
-<a name="l00047"></a>00047 <span class="keyword">private</span>:
-<a name="l00048"></a>00048     <span class="comment">// Disable copy constructor and operator=().</span>
-<a name="l00049"></a>00049     <a class="code" href="classDMD.html#affd37accffe951c8878434dfa1245809" title="Constructs a new dot matrix display handler for a display that is widthPanels x heightPanels in size...">DMD</a>(<span class="keyword">const</span> <a class="code" href="classDMD.html" title="Handle large dot matrix displays composed of LED&#39;s.">DMD</a> &amp;other) : <a class="code" href="classBitmap.html" title="Represents a monochrome bitmap within main memory.">Bitmap</a>(other) {}
-<a name="l00050"></a>00050     <a class="code" href="classDMD.html" title="Handle large dot matrix displays composed of LED&#39;s.">DMD</a> &amp;operator=(<span class="keyword">const</span> <a class="code" href="classDMD.html" title="Handle large dot matrix displays composed of LED&#39;s.">DMD</a> &amp;) { <span class="keywordflow">return</span> *<span class="keyword">this</span>; }
-<a name="l00051"></a>00051 
-<a name="l00052"></a>00052     <span class="keywordtype">bool</span> _doubleBuffer;
-<a name="l00053"></a>00053     uint8_t phase;
-<a name="l00054"></a>00054     uint8_t *fb0;
-<a name="l00055"></a>00055     uint8_t *fb1;
-<a name="l00056"></a>00056     uint8_t *displayfb;
-<a name="l00057"></a>00057     <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> lastRefresh;
-<a name="l00058"></a>00058 };
-<a name="l00059"></a>00059 
-<a name="l00060"></a>00060 <span class="preprocessor">#endif</span>
+<a name="l00045"></a>00045     <span class="keywordtype">void</span> <a class="code" href="classDMD.html#a5469775db7fafebca2cdbc6a6372fb97" title="Enables Timer2 overflow interrupts for updating this display.">enableTimer2</a>();
+<a name="l00046"></a>00046     <span class="keywordtype">void</span> <a class="code" href="classDMD.html#a52fe885bfb380b74df54c96221811cff" title="Disables Timer2 overflow interrupts.">disableTimer2</a>();
+<a name="l00047"></a>00047 
+<a name="l00048"></a>00048     <span class="keyword">static</span> <a class="code" href="classBitmap.html#a88d386944a7017aa776a177b10d8b2ba" title="Type that represents the color of a pixel in a bitmap.">Color</a> <a class="code" href="classDMD.html#a557412f734fc4596e1102bf71e110ea0" title="Converts an RGB value into a pixel color value.">fromRGB</a>(uint8_t r, uint8_t g, uint8_t b);
+<a name="l00049"></a>00049 
+<a name="l00050"></a>00050 <span class="keyword">private</span>:
+<a name="l00051"></a>00051     <span class="comment">// Disable copy constructor and operator=().</span>
+<a name="l00052"></a>00052     <a class="code" href="classDMD.html#affd37accffe951c8878434dfa1245809" title="Constructs a new dot matrix display handler for a display that is widthPanels x heightPanels in size...">DMD</a>(<span class="keyword">const</span> <a class="code" href="classDMD.html" title="Handle large dot matrix displays composed of LED&#39;s.">DMD</a> &amp;other) : <a class="code" href="classBitmap.html" title="Represents a monochrome bitmap within main memory.">Bitmap</a>(other) {}
+<a name="l00053"></a>00053     <a class="code" href="classDMD.html" title="Handle large dot matrix displays composed of LED&#39;s.">DMD</a> &amp;operator=(<span class="keyword">const</span> <a class="code" href="classDMD.html" title="Handle large dot matrix displays composed of LED&#39;s.">DMD</a> &amp;) { <span class="keywordflow">return</span> *<span class="keyword">this</span>; }
+<a name="l00054"></a>00054 
+<a name="l00055"></a>00055     <span class="keywordtype">bool</span> _doubleBuffer;
+<a name="l00056"></a>00056     uint8_t phase;
+<a name="l00057"></a>00057     uint8_t *fb0;
+<a name="l00058"></a>00058     uint8_t *fb1;
+<a name="l00059"></a>00059     uint8_t *displayfb;
+<a name="l00060"></a>00060     <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> lastRefresh;
+<a name="l00061"></a>00061 };
+<a name="l00062"></a>00062 
+<a name="l00063"></a>00063 <span class="preprocessor">#endif</span>
 </pre></div></div>
 </div>
 <!-- window showing the filter options -->
@@ -136,7 +139,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Tue May 29 2012 15:23:58 for ArduinoLibs by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Wed May 30 2012 15:44:33 for ArduinoLibs by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>
