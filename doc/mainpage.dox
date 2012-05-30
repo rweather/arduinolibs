@@ -46,6 +46,7 @@ LCD shield.
 
 \li DMD class to manage the initialize of the display.
 \li Bitmap class to manage drawing to in-memory bitmaps and the DMD display.
+\li \ref dmd_demo "Demo" that shows off various bitmap drawing features.
 \li \ref dmd_running_figure "RunningFigure" example that demonstrates how
 to draw and animate bitmaps.
 
