@@ -42,6 +42,13 @@ LCD shield.
 \li \ref lcd_hello_world "Hello World" example for the Freetronics LCD shield.
 \li \ref lcd_form "Form" example for LCD displays.
 
+\section main_DMD Freetronics Large Dot Matrix Display (DMD)
+
+\li DMD class to manage the initialize of the display.
+\li Bitmap class to manage drawing to in-memory bitmaps and the DMD display.
+\li \ref dmd_running_figure "RunningFigure" example that demonstrates how
+to draw and animate bitmaps.
+
 \section main_BlinkLED BlinkLED Utility Library
 
 \li BlinkLED class that simplifies the process of blinking a LED connected

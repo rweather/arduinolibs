@@ -243,19 +243,21 @@ const prog_uint8_t *frames[] = {
 unsigned int frame = 0;
 
 #define ADVANCE_MS  (1000 / NUM_FRAMES)
-unsigned long lastFrame;
+
+ISR(TIMER1_OVF_vect)
+{
+    display.refresh();
+}
 
 void setup() {
-    lastFrame = millis() - ADVANCE_MS;
+    display.enableTimer1();
 }
 
 void loop() {
-    if ((millis() - lastFrame) >= ADVANCE_MS) {
-        display.clear();
-        int x = (32 - pgm_read_byte(frames[frame])) / 2;
-        display.drawBitmap(x, 0, frames[frame]);
-        lastFrame += ADVANCE_MS;
-        frame = (frame + 1) % NUM_FRAMES;
-    }
-    display.loop();
+    display.clear();
+    int x = (32 - pgm_read_byte(frames[frame])) / 2;
+    display.drawBitmap(x, 0, frames[frame]);
+    frame = (frame + 1) % NUM_FRAMES;
+
+    delay(ADVANCE_MS);
 }

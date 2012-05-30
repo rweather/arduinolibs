@@ -1,0 +1,84 @@
+/*
+ * Copyright (C) 2012 Southern Storm Software, Pty Ltd.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a
+ * copy of this software and associated documentation files (the "Software"),
+ * to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included
+ * in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+ * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
+ */
+
+/**
+\file dmd-running-figure.dox
+\page dmd_running_figure Running figure example
+
+This example demonstrates how to draw animated bitmaps to
+<a href="http://www.freetronics.com/dmd">Freetronics Large Dot
+Matrix Displays</a>.  These displays have 512 LED's arranged in a
+32x16 matrix and controlled by an SPI interface.  The displays are
+available in red, blue, green, yellow, and white variations.
+
+The first step is to initialize the display:
+
+\dontinclude DMD/examples/RunningFigure/RunningFigure.pde
+\skip #include
+\until DMD display;
+
+We will also need some bitmaps to animate the running figure.  We will use
+static bitmaps stored in program memory.  The first frame of the 10-frame
+animation is:
+
+\dontinclude DMD/examples/RunningFigure/RunningFigure.pde
+\skip run1
+\until };
+
+As can be seen, the bitmap is made up of 0's and 1's; a 1 bit indicates that
+the corresponding LED will be lit when it is drawn to the dot matrix display.
+The first two bytes are the width and height of the bitmap in pixels.
+In this case, the first frame is 16x16 pixels.  Other frames in the animation
+are 18x16 and 13x16.
+
+We store pointers to all of the frames in a common array:
+
+\dontinclude DMD/examples/RunningFigure/RunningFigure.pde
+\skip frames[]
+\until frame = 0
+
+All that remains is to run the animation loop:
+
+\dontinclude DMD/examples/RunningFigure/RunningFigure.pde
+\skip ADVANCE_MS
+\until display.loop()
+\until }
+
+Each time \c ADVANCE_MS milliseconds expires, we clear the display and
+draw a bitmap centered on the screen.  To help with the centering, we read
+the width value from the bitmap for the current frame (the height is
+always 16).  We must also call DMD::loop() repeatedly from the application's
+main <tt>loop()</tt> function to ensure that the display is kept refreshed.
+
+Sometimes it can be inconvenient to arrange for DMD::loop() to be called
+regularly.  An alternative is to use Timer1 and
+\ref dmd_interrupts "interrupt-driven display refresh":
+
+\dontinclude DMD/examples/RunningFigureISR/RunningFigureISR.pde
+\skip ADVANCE_MS
+\until loop()
+\until }
+
+The full source code for the example follows:
+
+\include DMD/examples/RunningFigure/RunningFigure.pde
+*/
