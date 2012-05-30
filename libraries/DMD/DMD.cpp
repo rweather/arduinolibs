@@ -95,6 +95,24 @@
  * }
  * \endcode
  *
+ * If Timer1 is already in use by some other part of your application,
+ * then Timer2 can be used as an alternative interrupt source:
+ *
+ * \code
+ * #include <DMD.h>
+ *
+ * DMD display;
+ *
+ * ISR(TIMER2_OVF_vect)
+ * {
+ *     display.refresh();
+ * }
+ *
+ * void setup() {
+ *     display.enableTimer2();
+ * }
+ * \endcode
+ *
  * DMD can also be used with third-party timer libraries such as
  * <a href="http://code.google.com/p/arduino-timerone/downloads/list">TimerOne</a>:
  *
@@ -540,7 +558,7 @@ void DMD::refresh()
  * If timer interrupts are being used to update the display, then it is
  * unnecessary to call loop().
  *
- * \sa refresh(), disableTimer1(), setDoubleBuffer()
+ * \sa refresh(), disableTimer1(), enableTimer2(), setDoubleBuffer()
  */
 void DMD::enableTimer1()
 {
@@ -597,6 +615,66 @@ void DMD::disableTimer1()
 {
     // Turn off the Timer1 overflow interrupt.
     TIMSK1 &= ~_BV(TOIE1);
+}
+
+/**
+ * \brief Enables Timer2 overflow interrupts for updating this display.
+ *
+ * The application must also provide an interrupt service routine for
+ * Timer2 that calls refresh():
+ *
+ * \code
+ * #include <DMD.h>
+ *
+ * DMD display;
+ *
+ * ISR(TIMER2_OVF_vect)
+ * {
+ *     display.refresh();
+ * }
+ *
+ * void setup() {
+ *     display.enableTimer2();
+ * }
+ * \endcode
+ *
+ * If timer interrupts are being used to update the display, then it is
+ * unnecessary to call loop().
+ *
+ * \sa refresh(), disableTimer2(), enableTimer1(), setDoubleBuffer()
+ */
+void DMD::enableTimer2()
+{
+    // Configure Timer2 for the period we want.  With the prescaler set
+    // to 128, then 256 increments of Timer2 gives roughly 4 ms between
+    // overflows on a system with a 16 MHz clock.  We adjust the prescaler
+    // accordingly for other clock frequencies.
+    TCCR2A = 0;
+    if (F_CPU >= 32000000)
+        TCCR2B = _BV(CS22) | _BV(CS21); // Prescaler = 256
+    else if (F_CPU >= 16000000)
+        TCCR2B = _BV(CS22) | _BV(CS20); // Prescaler = 128
+    else if (F_CPU >= 8000000)
+        TCCR2B = _BV(CS22);             // Prescaler = 64
+    else
+        TCCR2B = _BV(CS21) | _BV(CS20); // Prescaler = 32
+
+    // Reset Timer2 to kick off the process.
+    TCNT2 = 0;
+
+    // Turn on the Timer2 overflow interrupt (also turn off OCIE2A and OCIE2B).
+    TIMSK2 = _BV(TOIE2);
+}
+
+/**
+ * \brief Disables Timer2 overflow interrupts.
+ *
+ * \sa enableTimer2()
+ */
+void DMD::disableTimer2()
+{
+    // Turn off the Timer2 overflow interrupt.
+    TIMSK2 &= ~_BV(TOIE2);
 }
 
 /**

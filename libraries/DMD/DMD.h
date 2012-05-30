@@ -42,6 +42,9 @@ public:
     void enableTimer1();
     void disableTimer1();
 
+    void enableTimer2();
+    void disableTimer2();
+
     static Color fromRGB(uint8_t r, uint8_t g, uint8_t b);
 
 private:

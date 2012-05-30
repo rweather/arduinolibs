@@ -70,13 +70,16 @@ always 16).  We must also call DMD::loop() repeatedly from the application's
 main <tt>loop()</tt> function to ensure that the display is kept refreshed.
 
 Sometimes it can be inconvenient to arrange for DMD::loop() to be called
-regularly.  An alternative is to use Timer1 and
+regularly.  An alternative is to use Timer1 or Timer2 and
 \ref dmd_interrupts "interrupt-driven display refresh":
 
 \dontinclude DMD/examples/RunningFigureISR/RunningFigureISR.pde
 \skip ADVANCE_MS
 \until loop()
 \until }
+
+In the case of Timer2, \c TIMER2_OVF_vect and \ref DMD::enableTimer2() "enableTimer2()"
+would be used in place of \c TIMER1_OVF_vect and \ref DMD::enableTimer1() "enableTimer1()".
 
 The full source code for the example follows:
 
