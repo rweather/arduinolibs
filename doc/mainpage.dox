@@ -56,11 +56,15 @@ to draw and animate bitmaps.
 to a output pin.
 \li ChaseLEDs class that simplifies the process of performing a LED chase
 over several output pins.
+\li Charlieplex class that manages a matrix of LED's arranged in a
+<a href="http://en.wikipedia.org/wiki/Charlieplexing">Charlieplexing</a>
+arrangement.
 \li \ref blink_blink "Blink" example of using BlinkLED.
 \li \ref blink_cylon "Cylon" example of using ChaseLEDs to simulate
 the Cylon eye effect from Battlestar Galactica.
 \li \ref blink_startrek "StarTrek" example for lighting a starship
 Enterprise model kit.
+\li \ref blink_charlieplex "Charlieplex" example.
 
 \section main_I2C I2C Utility Library
 
