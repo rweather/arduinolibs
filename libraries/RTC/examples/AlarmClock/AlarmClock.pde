@@ -40,6 +40,7 @@
 #include "LowPowerMelody.h"
 
 // I/O pins that are used by this sketch.
+#define RADIO                   11
 #define BUZZER                  12
 #define SENSE_BATTERY           A1
 #define RTC_DATA                A4
@@ -70,6 +71,9 @@ LowPowerMelody alarmMelody(BUZZER);
 uint8_t prevHour = 24;
 bool is24HourClock = false;
 RTCAlarm nextAlarm;
+bool isRadioPlaying = false;
+bool sawFirstClick = false;
+unsigned long firstClickTime;
 
 // Create the main form and its fields.
 Form mainForm(lcd);
@@ -84,6 +88,7 @@ SetMelody alarmSound(mainForm, "Alarm sound");
 SetTime setTime(mainForm, "Set current time");
 SetDate setDate(mainForm, "Set current date");
 BoolField hourMode(mainForm, "Hour display", "24 hour clock", "12 hour clock", false);
+BoolField radioActive(mainForm, "Radio", "On", "Off", false);
 
 void setup() {
     // Reduce power consumption on I/O pins we don't need.
@@ -95,7 +100,6 @@ void setup() {
     unusedPin(1);
     unusedPin(2);
     unusedPin(10);
-    unusedPin(11);
     unusedPin(13);
 
     // Turn off peripherals we don't need.
@@ -130,6 +134,11 @@ void setup() {
     frontScreen.setTime(time);
     frontScreen.setDate(date);
     findNextAlarm();
+
+    // The radio is turned on or off with a relay connected to an output pin.
+    // Configure the pin and turn the radio off initially.
+    digitalWrite(RADIO, LOW);
+    pinMode(RADIO, OUTPUT);
 
     // Show the main form for the first time.
     mainForm.show();
@@ -184,6 +193,12 @@ void loop() {
             rtc.writeByte(SETTING_SNOOZE, (byte)snooze.value());
         } else if (alarmSound.isCurrent()) {
             rtc.writeByte(SETTING_MELODY, (byte)alarmSound.value());
+        } else if (radioActive.isCurrent()) {
+            isRadioPlaying = radioActive.value();
+            if (isRadioPlaying)
+                digitalWrite(RADIO, HIGH);
+            else
+                digitalWrite(RADIO, LOW);
         }
         prevHour = 24;      // Force an update of the main screen.
         findNextAlarm();    // Update the time of the next alarm event.
@@ -200,6 +215,21 @@ void loop() {
     } else {
         // No alarm playing, so put the device to sleep to save power.
         sleepFor(SLEEP_15_MS);
+    }
+
+    // Select once means radio off, double-click select means radio on.
+    if (event == LCD_BUTTON_SELECT) {
+        unsigned long ms = millis();
+        if (sawFirstClick && (ms - firstClickTime) > 500)
+            sawFirstClick = false;
+        if (sawFirstClick) {
+            sawFirstClick = false;
+            turnRadioOn();
+        } else {
+            firstClickTime = ms;
+            sawFirstClick = true;
+            turnRadioOff();
+        }
     }
 }
 
@@ -278,4 +308,18 @@ void findNextAlarm(const RTCTime &currentTime, const RTCAlarm &alarm)
         // Found an alarm that is closer in time.
         nextAlarm = alarm;
     }
+}
+
+void turnRadioOn()
+{
+    isRadioPlaying = true;
+    digitalWrite(RADIO, HIGH);
+    radioActive.setValue(true);
+}
+
+void turnRadioOff()
+{
+    isRadioPlaying = false;
+    digitalWrite(RADIO, LOW);
+    radioActive.setValue(false);
 }

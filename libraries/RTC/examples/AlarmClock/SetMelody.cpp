@@ -48,10 +48,12 @@ static byte sosLengths[] = {8, 8, 8, 8, 4, 4, 4, 8, 8, 8, 8, 2};
 static const char item_FourBeeps[] PROGMEM = "Four beeps";
 static const char item_Haircut[] PROGMEM = "Shave 'n haircut";
 static const char item_SOS[] PROGMEM = "S.O.S.";
+static const char item_Radio[] PROGMEM = "Radio";
 static ListItem melodyNames[] PROGMEM = {
     item_FourBeeps,
     item_Haircut,
     item_SOS,
+    item_Radio,
     0
 };
 
@@ -79,12 +81,19 @@ void SetMelody::updateMelody()
     switch (value()) {
     case 0: default:
         alarmMelody.setMelody(defaultMelodyNotes, defaultMelodyLengths, sizeof(defaultMelodyLengths));
+        alarmMelody.setRadioMode(false);
         break;
     case 1:
         alarmMelody.setMelody(haircutNotes, haircutLengths, sizeof(haircutLengths));
+        alarmMelody.setRadioMode(false);
         break;
     case 2:
         alarmMelody.setMelody(sosNotes, sosLengths, sizeof(sosLengths));
+        alarmMelody.setRadioMode(false);
+        break;
+    case 3:
+        alarmMelody.setMelody(defaultMelodyNotes, defaultMelodyLengths, sizeof(defaultMelodyLengths));
+        alarmMelody.setRadioMode(true);
         break;
     }
 }

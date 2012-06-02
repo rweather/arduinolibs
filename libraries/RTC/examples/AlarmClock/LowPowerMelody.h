@@ -27,11 +27,20 @@
 
 class LowPowerMelody : public Melody {
 public:
-    LowPowerMelody(uint8_t pin) : Melody(pin) {}
+    LowPowerMelody(uint8_t pin)
+        : Melody(pin), radioMode(false), radioAlarmActive(false) {}
 
+    bool isPlaying() const;
     void play();
     void playOnce();
     void stop();
+
+    bool isRadioMode() const { return radioMode; }
+    void setRadioMode(bool mode) { radioMode = mode; }
+
+private:
+    bool radioMode;
+    bool radioAlarmActive;
 };
 
 #endif

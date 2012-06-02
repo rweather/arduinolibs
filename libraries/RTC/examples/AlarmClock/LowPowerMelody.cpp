@@ -24,9 +24,25 @@
 #include <avr/power.h>
 
 extern void findNextAlarm();
+extern void turnRadioOn();
+extern void turnRadioOff();
+
+bool LowPowerMelody::isPlaying() const
+{
+    if (radioMode)
+        return radioAlarmActive;
+    else
+        return Melody::isPlaying();
+}
 
 void LowPowerMelody::play()
 {
+    if (radioMode) {
+        turnRadioOn();
+        radioAlarmActive = true;
+        return;
+    }
+
     // Turn on Timer2.
     power_timer2_enable();
 
@@ -36,6 +52,9 @@ void LowPowerMelody::play()
 
 void LowPowerMelody::playOnce()
 {
+    if (radioMode)
+        return;
+
     // Turn on Timer2.
     power_timer2_enable();
 
@@ -45,6 +64,12 @@ void LowPowerMelody::playOnce()
 
 void LowPowerMelody::stop()
 {
+    if (radioMode) {
+        turnRadioOff();
+        radioAlarmActive = false;
+        return;
+    }
+
     // Stop the melody playing.
     Melody::stop();
 

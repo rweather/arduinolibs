@@ -38,6 +38,7 @@ Field, SoftI2C, DS1307RTC (or DS3232RTC), Melody and
 \li Configurable alarm timeout between 2 and 10 seconds.
 \li Single button to activate the back light and/or stop the alarm.
 \li Up, down, left, and right buttons to change clock settings.
+\li Relay that controls the power to a separate radio circuit.
 
 \section clock_main_circuit Main circuit
 
@@ -57,9 +58,9 @@ See \ref clock_ds3232 "below" for information on using a DS3232-based
 clock module instead of a DS1307-based module.
 
 The whole circuit is built on a prototyping shield, with ribbon cables
-connecting to the LCD.  The Stop Alarm button and piezo buzzer are not
-shown in this picture and some of the components are soldered to the bottom
-of the shield:
+connecting to the LCD.  The Stop Alarm button, piezo buzzer, and radio
+relay are not shown in this picture and some of the components are
+soldered to the bottom of the shield:
 
 \image html clock_shield.jpg
 
@@ -86,6 +87,17 @@ is necessary for programming.  Similar minimalistic built-it-yourself
 Arduino designs should also work.
 
 \image html kitten_minimal.jpg
+
+\section clock_radio Controlling a radio
+
+The relay connected to D11 can be used to control the power to a separate
+radio circuit so that the radio can be used as an alarm.  The relay switch
+should be inserted between the radio's power supply and the main radio circuit.
+When the relay is off, no power is applied to the radio.  If the radio is
+powered off 5V, then the relay circuit can be altered as follows to power
+the radio directly from the Arduino's power supply:
+
+\image html relay_control.png
 
 \section clock_ds3232 Using DS3232 instead of DS1307
 
