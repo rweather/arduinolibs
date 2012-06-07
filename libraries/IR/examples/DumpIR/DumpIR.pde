@@ -1,0 +1,196 @@
+/* This example is placed into the public domain */
+
+#include <IRreceiver.h>
+
+IRreceiver ir;
+
+static const char *systems[32] = {
+    "TV",
+    "TV2",
+    "TXT",
+    "TV_EXT",
+    "LV",
+    "VCR",
+    "VCR2",
+    "Sys7",
+    "SAT",
+    "VCR_EXT",
+    "SAT2",
+    "Sys11",
+    "CD_VIDEO",
+    "Sys13",
+    "CD_PHOTO",
+    "Sys15",
+    "PREAMP",
+    "RADIO",
+    "REC",
+    "PREAMP2",
+    "CD",
+    "COMBI",
+    "AUDIO_SAT",
+    "REC2",
+    "Sys24",
+    "Sys25",
+    "CD_R",
+    "Sys27",
+    "Sys28",
+    "Sys29",
+    "Sys30",
+    "Sys31"
+};
+
+// Selection of TV, VCR, and CD commands to assist with command identification.
+// May not be correct for all system types.
+static const char *commands[128] = {
+    "0",
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "123",
+    "11",
+    "STANDBY",
+    "MUTE",
+    "PREFERENCES",
+    "DISPLAY_INFO",
+    "INC_VOLUME",
+    "DEC_VOLUME",
+    "INC_BRIGHTNESS",
+    "DEC_BRIGHTNESS",
+    "INC_SATURATION",
+    "DEC_SATURATION",
+    "INC_BASS",
+    "DEC_BASS",
+    "INC_TREBLE",
+    "DEC_TREBLE",
+    "BALANCE_LEFT",
+    "BALANCE_RIGHT",
+    "INC_CONTRAST",
+    "DEC_CONTRAST",
+    "SEARCH_UP",
+    "DEC_TINT",
+    "CHANNEL_UP",
+    "CHANNEL_DOWN",
+    "CHANNEL_LAST",
+    "STEREO_SELECT",
+    "STEREO_SPATIAL",
+    "STEREO_TOGGLE",
+    "SLEEP_TIMER",
+    "INC_TINT",
+    "SWITCH_RF",
+    "STORE",
+    "TIME",
+    "INC_SCAN",
+    "DEC_SCAN",
+    "TRAY",
+    "SECONDARY_MENU",
+    "CLOCK",
+    "PAUSE",
+    "ERASE",
+    "REWIND",
+    "GOTO",
+    "WIND",
+    "PLAY",
+    "STOP",
+    "RECORD",
+    "EXTERNAL_1",
+    "EXTERNAL_2",
+    "CLEAR_MEMORY",
+    "VIEW_DATA",
+    "12",
+    "SYSTEM_STANDBY",
+    "CRISP",
+    "TRANSMIT_MODE",
+    "Cmd64",
+    "Cmd65",
+    "Cmd66",
+    "Cmd67",
+    "Cmd68",
+    "Cmd69",
+    "AUDIO_RESPONSE",
+    "DIM",
+    "Cmd72",
+    "Cmd73",
+    "Cmd74",
+    "Cmd75",
+    "Cmd76",
+    "INC_LINEAR",
+    "DEC_LINEAR",
+    "SOUND_FUNCTIONS",
+    "UP",
+    "DOWN",
+    "MENU_ON",
+    "MENU_OFF",
+    "AV_STATUS",
+    "LEFT",
+    "RIGHT",
+    "OK",
+    "PIP",
+    "PIP_SHIFT",
+    "PIP_SWAP",
+    "PIP_STROBE",
+    "PIP_MULTI_STROBE",
+    "PIP_FREEZE_MAIN",
+    "PIP_MULTI_SCAN",
+    "PIP_SOURCE",
+    "PIP_MOSAIC",
+    "PIP_NOISE",
+    "PIP_STORE",
+    "PIP_PHOTO_FINISH",
+    "PIP_RECALL",
+    "PIP_FREEZE",
+    "PIP_UP",
+    "PIP_DOWN",
+    "PIP_SIZE",
+    "VERSION_FUNCTIONS",
+    "COLOR_KEY",
+    "RED",
+    "GREEN",
+    "YELLOW",
+    "CYAN",
+    "INDEX",
+    "NEXT_OPTION",
+    "PREVIOUS_OPTION",
+    "Cmd114",
+    "Cmd115",
+    "Cmd116",
+    "Cmd117",
+    "SUBMODE",
+    "OPTIONS",
+    "FADE",
+    "Cmd121",
+    "STORE_OPEN_CLOSE",
+    "CONNECT_EURO",
+    "DISCONNECT_EURO",
+    "Cmd125",
+    "Cmd126",
+    "Cmd127"
+};
+
+void setup() {
+    Serial.begin(9600);
+}
+
+void loop() {
+    int cmd = ir.command();
+    if (cmd >= 0) {
+        Serial.print("IR system=");
+        Serial.print(ir.system());
+        Serial.print(" (RC5_SYS_");
+        Serial.print(systems[ir.system()]);
+        Serial.print("), command=");
+        Serial.print(cmd & 0x7F);
+        Serial.print(" (RC5_");
+        Serial.print(commands[cmd & 0x7F]);
+        Serial.print(")");
+        if (cmd & IRreceiver::AUTO_REPEAT)
+            Serial.println(", auto-repeat");
+        else
+            Serial.println();
+    }
+}

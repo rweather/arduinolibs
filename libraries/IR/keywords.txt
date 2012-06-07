@@ -1,0 +1,8 @@
+IRreceiver	KEYWORD1
+
+command	KEYWORD2
+system	KEYWORD2
+systemFilter	KEYWORD2
+setSystemFilter	KEYWORD2
+
+AUTO_REPEAT	LITERAL1
