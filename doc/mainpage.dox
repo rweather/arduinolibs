@@ -49,6 +49,8 @@ LCD shield.
 \li \ref dmd_demo "Demo" that shows off various bitmap drawing features.
 \li \ref dmd_running_figure "RunningFigure" example that demonstrates how
 to draw and animate bitmaps.
+\li \ref ir_snake "Snake" game that combines the dot matrix display with
+IRreceiver to make a simple video game.
 
 \section main_BlinkLED BlinkLED Utility Library
 
@@ -90,6 +92,8 @@ realtime clock and the LCD library to implement an alarm clock.
 \li IRreceiver class that receives incoming RC-5 commands from an
 infrared remote control.
 \li \ref ir_dumpir "DumpIR" example that dumps all incoming RC-5 commands.
+\li \ref ir_snake "Snake" game that combines DMD with an infrared remote
+control to make a simple video game.
 
 \section main_other Other
 
