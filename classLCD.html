@@ -88,6 +88,10 @@ Public Member Functions</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the Freetronics <a class="el" href="classLCD.html" title="Enhanced library for Freetronics 16x2 LCD shields.">LCD</a> display with the default pin assignment.  <a href="#a00bb2db1390721abc7b24ac4b8c276c8"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLCD.html#a067bc741cf27f143aba5d9f147908401">LCD</a> (uint8_t pin9)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the Freetronics <a class="el" href="classLCD.html" title="Enhanced library for Freetronics 16x2 LCD shields.">LCD</a> display for USBDroid.  <a href="#a067bc741cf27f143aba5d9f147908401"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLCD.html#a171f59ba80e7775ebd3a399f56482a9c">backlightPin</a> () const </td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the pin that is being used to control the back light. The default is 3.  <a href="#a171f59ba80e7775ebd3a399f56482a9c"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLCD.html#a0b9b3b954290e7a3d94cdc829582b0a8">setBacklightPin</a> (uint8_t pin)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the back light <em>pin</em> for the <a class="el" href="classLCD.html" title="Enhanced library for Freetronics 16x2 LCD shields.">LCD</a> shield.  <a href="#a0b9b3b954290e7a3d94cdc829582b0a8"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLCD.html#a5b07cf05e8e5e7c53654f5ca0cf58b89">display</a> ()</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Turns on the display of text on the <a class="el" href="classLCD.html" title="Enhanced library for Freetronics 16x2 LCD shields.">LCD</a> and the back light.  <a href="#a5b07cf05e8e5e7c53654f5ca0cf58b89"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLCD.html#af3974da6d988ba2d21c25135ada12108">noDisplay</a> ()</td></tr>
@@ -125,8 +129,16 @@ Public Member Functions</h2></td></tr>
 <li>LCD_BUTTON_SELECT_RELEASED - Select button was released.</li>
 </ul>
 <p>For convenience, all RELEASED button codes are the negation of their pressed counterparts. That is, LCD_BUTTON_LEFT_RELEASED == -LCD_BUTTON_LEFT. LCD_BUTTON_NONE is defined to be zero. Thus, you can check if a generic button has been pressed with <code>button &gt; 0</code> and if a generic button has been released with <code>button &lt; 0</code>.</p>
-<p>See the <a class="el" href="lcd_hello_world.html">Hello World</a> example for more information on using the <a class="el" href="classLCD.html" title="Enhanced library for Freetronics 16x2 LCD shields.">LCD</a> class.</p>
-<dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="classForm.html" title="Manager for a form containing data input/output fields.">Form</a> </dd></dl>
+<h2><a class="anchor" id="lcd_dfrobot"></a>
+Support for DFRobot LCD Shield</h2>
+<p>The <a href="http://www.dfrobot.com/index.php?route=product/product&amp;product_id=51">DFRobot LCD Shield</a> is almost identical to the Freetronics shield, except it uses pin 10 for the back light instead of pin 3. This can be specified in the application's <code>setup()</code> function:</p>
+<div class="fragment"><pre class="fragment"> <a class="code" href="classLCD.html" title="Enhanced library for Freetronics 16x2 LCD shields.">LCD</a> lcd;
+
+ <span class="keywordtype">void</span> setup() {
+     lcd.<a class="code" href="classLCD.html#a0b9b3b954290e7a3d94cdc829582b0a8" title="Sets the back light pin for the LCD shield.">setBacklightPin</a>(10);
+ }
+</pre></div><p>The back light pin is configured for output the first time the application calls <a class="el" href="classLCD.html#ac1e80e2603bd1cf0276c36092c416292" title="Gets the next button press, release, or idle event.">getButton()</a>.</p>
+<dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="classForm.html" title="Manager for a form containing data input/output fields.">Form</a>, <a class="el" href="lcd_hello_world.html">Hello World Example</a> </dd></dl>
 
 <p>Definition at line <a class="el" href="LCD_8h_source.html#l00048">48</a> of file <a class="el" href="LCD_8h_source.html">LCD.h</a>.</p>
 </div><hr/><h2>Member Enumeration Documentation</h2>
@@ -156,7 +168,7 @@ Public Member Functions</h2></td></tr>
 </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="LCD_8h_source.html#l00056">56</a> of file <a class="el" href="LCD_8h_source.html">LCD.h</a>.</p>
+<p>Definition at line <a class="el" href="LCD_8h_source.html#l00059">59</a> of file <a class="el" href="LCD_8h_source.html">LCD.h</a>.</p>
 
 </div>
 </div>
@@ -208,6 +220,27 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <hr/><h2>Member Function Documentation</h2>
+<a class="anchor" id="a171f59ba80e7775ebd3a399f56482a9c"></a><!-- doxytag: member="LCD::backlightPin" ref="a171f59ba80e7775ebd3a399f56482a9c" args="() const " -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t LCD::backlightPin </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const<code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Returns the pin that is being used to control the back light. The default is 3. </p>
+<dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="classLCD.html#a0b9b3b954290e7a3d94cdc829582b0a8" title="Sets the back light pin for the LCD shield.">setBacklightPin()</a> </dd></dl>
+
+<p>Definition at line <a class="el" href="LCD_8h_source.html#l00053">53</a> of file <a class="el" href="LCD_8h_source.html">LCD.h</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="a85c3a4694b105731404df36e35e5b26e"></a><!-- doxytag: member="LCD::disableScreenSaver" ref="a85c3a4694b105731404df36e35e5b26e" args="()" -->
 <div class="memitem">
 <div class="memproto">
@@ -225,7 +258,7 @@ Public Member Functions</h2></td></tr>
 <p>Disables the screen saver. </p>
 <dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="classLCD.html#af9a2326d034fa159d384ec16223c924f" title="Enables the screen saver and causes it to activate after timeoutSecs of inactivity on the buttons...">enableScreenSaver()</a>, <a class="el" href="classLCD.html#a5b07cf05e8e5e7c53654f5ca0cf58b89" title="Turns on the display of text on the LCD and the back light.">display()</a>, <a class="el" href="classLCD.html#af5d5ca618a3161aa352027b58fe09d0e" title="Returns true if the screen has been saved; false otherwise.">isScreenSaved()</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="LCD_8cpp_source.html#l00246">246</a> of file <a class="el" href="LCD_8cpp_source.html">LCD.cpp</a>.</p>
+<p>Definition at line <a class="el" href="LCD_8cpp_source.html#l00308">308</a> of file <a class="el" href="LCD_8cpp_source.html">LCD.cpp</a>.</p>
 
 </div>
 </div>
@@ -247,7 +280,7 @@ Public Member Functions</h2></td></tr>
 <p>If the screen saver is active, then calling this function will deactivate the screen saver and reset the timeout. Thus, this function can be called for force the screen to restore.</p>
 <dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="classLCD.html#af3974da6d988ba2d21c25135ada12108" title="Turns off the display of text on the LCD and the back light.">noDisplay()</a>, <a class="el" href="classLCD.html#af9a2326d034fa159d384ec16223c924f" title="Enables the screen saver and causes it to activate after timeoutSecs of inactivity on the buttons...">enableScreenSaver()</a>, <a class="el" href="classLCD.html#a56d1f68532c779c65fbbd071fb444801" title="Sets the current screen saver mode.">setScreenSaverMode()</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="LCD_8cpp_source.html#l00148">148</a> of file <a class="el" href="LCD_8cpp_source.html">LCD.cpp</a>.</p>
+<p>Definition at line <a class="el" href="LCD_8cpp_source.html#l00206">206</a> of file <a class="el" href="LCD_8cpp_source.html">LCD.cpp</a>.</p>
 
 </div>
 </div>
@@ -272,7 +305,7 @@ Public Member Functions</h2></td></tr>
 <p>If the <em>timeoutSecs</em> parameter is not supplied, the default is 10 seconds.</p>
 <dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="classLCD.html#a85c3a4694b105731404df36e35e5b26e" title="Disables the screen saver.">disableScreenSaver()</a>, <a class="el" href="classLCD.html#a5b07cf05e8e5e7c53654f5ca0cf58b89" title="Turns on the display of text on the LCD and the back light.">display()</a>, <a class="el" href="classLCD.html#ac1e80e2603bd1cf0276c36092c416292" title="Gets the next button press, release, or idle event.">getButton()</a>, <a class="el" href="classLCD.html#af5d5ca618a3161aa352027b58fe09d0e" title="Returns true if the screen has been saved; false otherwise.">isScreenSaved()</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="LCD_8cpp_source.html#l00232">232</a> of file <a class="el" href="LCD_8cpp_source.html">LCD.cpp</a>.</p>
+<p>Definition at line <a class="el" href="LCD_8cpp_source.html#l00294">294</a> of file <a class="el" href="LCD_8cpp_source.html">LCD.cpp</a>.</p>
 
 </div>
 </div>
@@ -297,7 +330,7 @@ Public Member Functions</h2></td></tr>
 <p>This function debounces the button state automatically so there is no need for the caller to worry about spurious button events.</p>
 <dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="classLCD.html#af9a2326d034fa159d384ec16223c924f" title="Enables the screen saver and causes it to activate after timeoutSecs of inactivity on the buttons...">enableScreenSaver()</a>, <a class="el" href="classLCD.html#a5b07cf05e8e5e7c53654f5ca0cf58b89" title="Turns on the display of text on the LCD and the back light.">display()</a>, <a class="el" href="classForm.html#a89bd3850e87caa2ca7b2e946f923d0ee" title="Dispatches event to the currently active field using Field::dispatch().">Form::dispatch()</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="LCD_8cpp_source.html#l00291">291</a> of file <a class="el" href="LCD_8cpp_source.html">LCD.cpp</a>.</p>
+<p>Definition at line <a class="el" href="LCD_8cpp_source.html#l00353">353</a> of file <a class="el" href="LCD_8cpp_source.html">LCD.cpp</a>.</p>
 
 </div>
 </div>
@@ -318,7 +351,7 @@ Public Member Functions</h2></td></tr>
 <p>Returns true if the screen has been saved; false otherwise. </p>
 <dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="classLCD.html#af9a2326d034fa159d384ec16223c924f" title="Enables the screen saver and causes it to activate after timeoutSecs of inactivity on the buttons...">enableScreenSaver()</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="LCD_8h_source.html#l00068">68</a> of file <a class="el" href="LCD_8h_source.html">LCD.h</a>.</p>
+<p>Definition at line <a class="el" href="LCD_8h_source.html#l00071">71</a> of file <a class="el" href="LCD_8h_source.html">LCD.h</a>.</p>
 
 </div>
 </div>
@@ -340,7 +373,7 @@ Public Member Functions</h2></td></tr>
 <p>This function can be called to force the screen saver to activate.</p>
 <dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="classLCD.html#a5b07cf05e8e5e7c53654f5ca0cf58b89" title="Turns on the display of text on the LCD and the back light.">display()</a>, <a class="el" href="classLCD.html#af9a2326d034fa159d384ec16223c924f" title="Enables the screen saver and causes it to activate after timeoutSecs of inactivity on the buttons...">enableScreenSaver()</a>, <a class="el" href="classLCD.html#a56d1f68532c779c65fbbd071fb444801" title="Sets the current screen saver mode.">setScreenSaverMode()</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="LCD_8cpp_source.html#l00163">163</a> of file <a class="el" href="LCD_8cpp_source.html">LCD.cpp</a>.</p>
+<p>Definition at line <a class="el" href="LCD_8cpp_source.html#l00223">223</a> of file <a class="el" href="LCD_8cpp_source.html">LCD.cpp</a>.</p>
 
 </div>
 </div>
@@ -361,7 +394,36 @@ Public Member Functions</h2></td></tr>
 <p>Returns the current screen saver mode; default is DisplayOff. </p>
 <dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="classLCD.html#a56d1f68532c779c65fbbd071fb444801" title="Sets the current screen saver mode.">setScreenSaverMode()</a>, <a class="el" href="classLCD.html#af9a2326d034fa159d384ec16223c924f" title="Enables the screen saver and causes it to activate after timeoutSecs of inactivity on the buttons...">enableScreenSaver()</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="LCD_8h_source.html#l00063">63</a> of file <a class="el" href="LCD_8h_source.html">LCD.h</a>.</p>
+<p>Definition at line <a class="el" href="LCD_8h_source.html#l00066">66</a> of file <a class="el" href="LCD_8h_source.html">LCD.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a0b9b3b954290e7a3d94cdc829582b0a8"></a><!-- doxytag: member="LCD::setBacklightPin" ref="a0b9b3b954290e7a3d94cdc829582b0a8" args="(uint8_t pin)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void LCD::setBacklightPin </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>pin</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Sets the back light <em>pin</em> for the <a class="el" href="classLCD.html" title="Enhanced library for Freetronics 16x2 LCD shields.">LCD</a> shield. </p>
+<p>The <a href="http://www.dfrobot.com/index.php?route=product/product&amp;product_id=51">DFRobot LCD Shield</a> uses pin 10 for the back light instead of pin 3:</p>
+<div class="fragment"><pre class="fragment"> <a class="code" href="classLCD.html" title="Enhanced library for Freetronics 16x2 LCD shields.">LCD</a> lcd;
+
+ <span class="keywordtype">void</span> setup() {
+     lcd.<a class="code" href="classLCD.html#a0b9b3b954290e7a3d94cdc829582b0a8" title="Sets the back light pin for the LCD shield.">setBacklightPin</a>(10);
+ }
+</pre></div><p>The back light pin is configured for output the next time the application calls <a class="el" href="classLCD.html#ac1e80e2603bd1cf0276c36092c416292" title="Gets the next button press, release, or idle event.">getButton()</a>.</p>
+<dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="classLCD.html#a171f59ba80e7775ebd3a399f56482a9c" title="Returns the pin that is being used to control the back light. The default is 3.">backlightPin()</a> </dd></dl>
+
+<p>Definition at line <a class="el" href="LCD_8cpp_source.html#l00182">182</a> of file <a class="el" href="LCD_8cpp_source.html">LCD.cpp</a>.</p>
 
 </div>
 </div>
@@ -383,7 +445,7 @@ Public Member Functions</h2></td></tr>
 <p>Sets the current screen saver <em>mode</em>. </p>
 <dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="classLCD.html#a1917fa285f81f476b4c7cc20d15456b8" title="Returns the current screen saver mode; default is DisplayOff.">screenSaverMode()</a>, <a class="el" href="classLCD.html#af9a2326d034fa159d384ec16223c924f" title="Enables the screen saver and causes it to activate after timeoutSecs of inactivity on the buttons...">enableScreenSaver()</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="LCD_8cpp_source.html#l00206">206</a> of file <a class="el" href="LCD_8cpp_source.html">LCD.cpp</a>.</p>
+<p>Definition at line <a class="el" href="LCD_8cpp_source.html#l00268">268</a> of file <a class="el" href="LCD_8cpp_source.html">LCD.cpp</a>.</p>
 
 </div>
 </div>
@@ -406,7 +468,7 @@ Public Member Functions</h2></td></tr>
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Fri Jun 1 2012 14:29:17 for ArduinoLibs by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sun Jun 10 2012 10:51:57 for ArduinoLibs by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

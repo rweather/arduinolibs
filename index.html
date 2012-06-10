@@ -59,9 +59,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="textblock"><p>This distribution contains a bunch of libraries and example applications that I have made for Arduino, covering a variety of tasks from blinking LED's to LCD's and RTC-based alarm clocks. They are distributed under the terms of the MIT license, with the source code available from <a href="https://github.com/rweather/arduinolibs">github</a>.</p>
 <p>For more information on these libraries, to report bugs, or to suggest improvements, please contact the author Rhys Weatherley via <a href="mailto:rhys.weatherley@gmail.com">email</a>.</p>
 <h2><a class="anchor" id="main_LCD"></a>
-Freetronics LCD Shield</h2>
+LCD Shield</h2>
 <ul>
-<li><a class="el" href="classLCD.html" title="Enhanced library for Freetronics 16x2 LCD shields.">LCD</a> class to manage the extended features of the Freetronics <a class="el" href="classLCD.html" title="Enhanced library for Freetronics 16x2 LCD shields.">LCD</a> shield. </li>
+<li><a class="el" href="classLCD.html" title="Enhanced library for Freetronics 16x2 LCD shields.">LCD</a> class to manage the extended features of the Freetronics and DFRobot <a class="el" href="classLCD.html" title="Enhanced library for Freetronics 16x2 LCD shields.">LCD</a> shields. </li>
 <li><a class="el" href="classForm.html" title="Manager for a form containing data input/output fields.">Form</a> and <a class="el" href="classField.html" title="Manages a single data input/output field within a Form.">Field</a> classes to build simple property sheet UI's on <a class="el" href="classLCD.html" title="Enhanced library for Freetronics 16x2 LCD shields.">LCD</a> displays. </li>
 <li><a class="el" href="lcd_hello_world.html">Hello World</a> example for the Freetronics <a class="el" href="classLCD.html" title="Enhanced library for Freetronics 16x2 LCD shields.">LCD</a> shield. </li>
 <li><a class="el" href="lcd_form.html">Form</a> example for <a class="el" href="classLCD.html" title="Enhanced library for Freetronics 16x2 LCD shields.">LCD</a> displays.</li>
@@ -72,7 +72,8 @@ Freetronics Large Dot Matrix Display (DMD)</h2>
 <li><a class="el" href="classDMD.html" title="Handle large dot matrix displays composed of LED&#39;s.">DMD</a> class to manage the initialize of the display. </li>
 <li><a class="el" href="classBitmap.html" title="Represents a monochrome bitmap within main memory.">Bitmap</a> class to manage drawing to in-memory bitmaps and the <a class="el" href="classDMD.html" title="Handle large dot matrix displays composed of LED&#39;s.">DMD</a> display. </li>
 <li><a class="el" href="dmd_demo.html">Demo</a> that shows off various bitmap drawing features. </li>
-<li><a class="el" href="dmd_running_figure.html">RunningFigure</a> example that demonstrates how to draw and animate bitmaps.</li>
+<li><a class="el" href="dmd_running_figure.html">RunningFigure</a> example that demonstrates how to draw and animate bitmaps. </li>
+<li><a class="el" href="ir_snake.html">Snake</a> game that combines the dot matrix display with <a class="el" href="classIRreceiver.html" title="Manages the reception of RC-5 commands from an infrared remote control.">IRreceiver</a> to make a simple video game.</li>
 </ul>
 <h2><a class="anchor" id="main_BlinkLED"></a>
 BlinkLED Utility Library</h2>
@@ -99,6 +100,13 @@ Realtime Clock Library</h2>
 <li><a class="el" href="classDS3232RTC.html" title="Communicates with a DS3232 realtime clock chip via I2C.">DS3232RTC</a> class that talks to the DS3232 realtime clock chip via I2C. </li>
 <li><a class="el" href="alarm_clock.html">Alarm Clock</a> example that uses the DS1307 or DS3232 realtime clock and the <a class="el" href="classLCD.html" title="Enhanced library for Freetronics 16x2 LCD shields.">LCD</a> library to implement an alarm clock.</li>
 </ul>
+<h2><a class="anchor" id="main_IR"></a>
+Infrared Control Library</h2>
+<ul>
+<li><a class="el" href="classIRreceiver.html" title="Manages the reception of RC-5 commands from an infrared remote control.">IRreceiver</a> class that receives incoming RC-5 commands from an infrared remote control. </li>
+<li><a class="el" href="ir_dumpir.html">DumpIR</a> example that dumps all incoming RC-5 commands. </li>
+<li><a class="el" href="ir_snake.html">Snake</a> game that combines <a class="el" href="classDMD.html" title="Handle large dot matrix displays composed of LED&#39;s.">DMD</a> with an infrared remote control to make a simple video game.</li>
+</ul>
 <h2><a class="anchor" id="main_other"></a>
 Other</h2>
 <ul>
@@ -120,7 +128,7 @@ Other</h2>
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Fri Jun 1 2012 14:29:16 for ArduinoLibs by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sun Jun 10 2012 10:51:56 for ArduinoLibs by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

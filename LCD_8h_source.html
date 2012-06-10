@@ -112,39 +112,44 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00050"></a><a class="code" href="classLCD.html#a00bb2db1390721abc7b24ac4b8c276c8">00050</a>     <a class="code" href="classLCD.html#a00bb2db1390721abc7b24ac4b8c276c8" title="Initialize the Freetronics LCD display with the default pin assignment.">LCD</a>() : LiquidCrystal(8, 9, 4, 5, 6, 7) { init(); }
 <a name="l00051"></a><a class="code" href="classLCD.html#a067bc741cf27f143aba5d9f147908401">00051</a>     <a class="code" href="classLCD.html#a067bc741cf27f143aba5d9f147908401" title="Initialize the Freetronics LCD display for USBDroid.">LCD</a>(uint8_t pin9) : LiquidCrystal(8, pin9, 4, 5, 6, 7) { init(); }
 <a name="l00052"></a>00052 
-<a name="l00053"></a>00053     <span class="keywordtype">void</span> <a class="code" href="classLCD.html#a5b07cf05e8e5e7c53654f5ca0cf58b89" title="Turns on the display of text on the LCD and the back light.">display</a>();
-<a name="l00054"></a>00054     <span class="keywordtype">void</span> <a class="code" href="classLCD.html#af3974da6d988ba2d21c25135ada12108" title="Turns off the display of text on the LCD and the back light.">noDisplay</a>();
+<a name="l00053"></a><a class="code" href="classLCD.html#a171f59ba80e7775ebd3a399f56482a9c">00053</a>     uint8_t <a class="code" href="classLCD.html#a171f59ba80e7775ebd3a399f56482a9c" title="Returns the pin that is being used to control the back light. The default is 3.">backlightPin</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> _backlightPin; }
+<a name="l00054"></a>00054     <span class="keywordtype">void</span> <a class="code" href="classLCD.html#a0b9b3b954290e7a3d94cdc829582b0a8" title="Sets the back light pin for the LCD shield.">setBacklightPin</a>(uint8_t pin);
 <a name="l00055"></a>00055 
-<a name="l00056"></a><a class="code" href="classLCD.html#a264bf94308c95d8598426e13dc8cdb28">00056</a>     <span class="keyword">enum</span> <a class="code" href="classLCD.html#a264bf94308c95d8598426e13dc8cdb28" title="Screen saver mode that controls the display and back light.">ScreenSaverMode</a>
-<a name="l00057"></a>00057     {
-<a name="l00058"></a><a class="code" href="classLCD.html#a264bf94308c95d8598426e13dc8cdb28a3f1e62d5fcd314d6ff067d3e74c4bf5f">00058</a>         <a class="code" href="classLCD.html#a264bf94308c95d8598426e13dc8cdb28a3f1e62d5fcd314d6ff067d3e74c4bf5f" title="Turn off both the display and the backlight when the screen saver is activated.">DisplayOff</a>,
-<a name="l00059"></a><a class="code" href="classLCD.html#a264bf94308c95d8598426e13dc8cdb28a9931c078cfd1023c69f1da431f9a656c">00059</a>         <a class="code" href="classLCD.html#a264bf94308c95d8598426e13dc8cdb28a9931c078cfd1023c69f1da431f9a656c" title="Turn off the back light but leave the display on when the screen saver is activated.">BacklightOff</a>,
-<a name="l00060"></a><a class="code" href="classLCD.html#a264bf94308c95d8598426e13dc8cdb28a781f3c5e42506bf4f86ba06d69b23d35">00060</a>         <a class="code" href="classLCD.html#a264bf94308c95d8598426e13dc8cdb28a781f3c5e42506bf4f86ba06d69b23d35" title="Same as BacklightOff but the screen saver is only deactivated when Select is pressed; other buttons h...">BacklightOnSelect</a>
-<a name="l00061"></a>00061     };
-<a name="l00062"></a>00062 
-<a name="l00063"></a><a class="code" href="classLCD.html#a1917fa285f81f476b4c7cc20d15456b8">00063</a>     <a class="code" href="classLCD.html#a264bf94308c95d8598426e13dc8cdb28" title="Screen saver mode that controls the display and back light.">ScreenSaverMode</a> <a class="code" href="classLCD.html#a1917fa285f81f476b4c7cc20d15456b8" title="Returns the current screen saver mode; default is DisplayOff.">screenSaverMode</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> mode; }
-<a name="l00064"></a>00064     <span class="keywordtype">void</span> <a class="code" href="classLCD.html#a56d1f68532c779c65fbbd071fb444801" title="Sets the current screen saver mode.">setScreenSaverMode</a>(<a class="code" href="classLCD.html#a264bf94308c95d8598426e13dc8cdb28" title="Screen saver mode that controls the display and back light.">ScreenSaverMode</a> mode);
+<a name="l00056"></a>00056     <span class="keywordtype">void</span> <a class="code" href="classLCD.html#a5b07cf05e8e5e7c53654f5ca0cf58b89" title="Turns on the display of text on the LCD and the back light.">display</a>();
+<a name="l00057"></a>00057     <span class="keywordtype">void</span> <a class="code" href="classLCD.html#af3974da6d988ba2d21c25135ada12108" title="Turns off the display of text on the LCD and the back light.">noDisplay</a>();
+<a name="l00058"></a>00058 
+<a name="l00059"></a><a class="code" href="classLCD.html#a264bf94308c95d8598426e13dc8cdb28">00059</a>     <span class="keyword">enum</span> <a class="code" href="classLCD.html#a264bf94308c95d8598426e13dc8cdb28" title="Screen saver mode that controls the display and back light.">ScreenSaverMode</a>
+<a name="l00060"></a>00060     {
+<a name="l00061"></a><a class="code" href="classLCD.html#a264bf94308c95d8598426e13dc8cdb28a3f1e62d5fcd314d6ff067d3e74c4bf5f">00061</a>         <a class="code" href="classLCD.html#a264bf94308c95d8598426e13dc8cdb28a3f1e62d5fcd314d6ff067d3e74c4bf5f" title="Turn off both the display and the backlight when the screen saver is activated.">DisplayOff</a>,
+<a name="l00062"></a><a class="code" href="classLCD.html#a264bf94308c95d8598426e13dc8cdb28a9931c078cfd1023c69f1da431f9a656c">00062</a>         <a class="code" href="classLCD.html#a264bf94308c95d8598426e13dc8cdb28a9931c078cfd1023c69f1da431f9a656c" title="Turn off the back light but leave the display on when the screen saver is activated.">BacklightOff</a>,
+<a name="l00063"></a><a class="code" href="classLCD.html#a264bf94308c95d8598426e13dc8cdb28a781f3c5e42506bf4f86ba06d69b23d35">00063</a>         <a class="code" href="classLCD.html#a264bf94308c95d8598426e13dc8cdb28a781f3c5e42506bf4f86ba06d69b23d35" title="Same as BacklightOff but the screen saver is only deactivated when Select is pressed; other buttons h...">BacklightOnSelect</a>
+<a name="l00064"></a>00064     };
 <a name="l00065"></a>00065 
-<a name="l00066"></a>00066     <span class="keywordtype">void</span> <a class="code" href="classLCD.html#af9a2326d034fa159d384ec16223c924f" title="Enables the screen saver and causes it to activate after timeoutSecs of inactivity on the buttons...">enableScreenSaver</a>(<span class="keywordtype">int</span> timeoutSecs = 10);
-<a name="l00067"></a>00067     <span class="keywordtype">void</span> <a class="code" href="classLCD.html#a85c3a4694b105731404df36e35e5b26e" title="Disables the screen saver.">disableScreenSaver</a>();
-<a name="l00068"></a><a class="code" href="classLCD.html#af5d5ca618a3161aa352027b58fe09d0e">00068</a>     <span class="keywordtype">bool</span> <a class="code" href="classLCD.html#af5d5ca618a3161aa352027b58fe09d0e" title="Returns true if the screen has been saved; false otherwise.">isScreenSaved</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> screenSaved; }
-<a name="l00069"></a>00069 
-<a name="l00070"></a>00070     <span class="keywordtype">int</span> <a class="code" href="classLCD.html#ac1e80e2603bd1cf0276c36092c416292" title="Gets the next button press, release, or idle event.">getButton</a>();
-<a name="l00071"></a>00071 
-<a name="l00072"></a>00072 <span class="keyword">private</span>:
-<a name="l00073"></a>00073     <span class="keywordtype">int</span> prevButton;
-<a name="l00074"></a>00074     <span class="keywordtype">int</span> debounceButton;
-<a name="l00075"></a>00075     <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> timeout;
-<a name="l00076"></a>00076     <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> lastRestore;
-<a name="l00077"></a>00077     <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> lastDebounce;
-<a name="l00078"></a>00078     <span class="keywordtype">bool</span> screenSaved;
-<a name="l00079"></a>00079     <span class="keywordtype">bool</span> eatRelease;
-<a name="l00080"></a>00080     <a class="code" href="classLCD.html#a264bf94308c95d8598426e13dc8cdb28" title="Screen saver mode that controls the display and back light.">ScreenSaverMode</a> mode;
-<a name="l00081"></a>00081 
-<a name="l00082"></a>00082     <span class="keywordtype">void</span> init();
-<a name="l00083"></a>00083 };
-<a name="l00084"></a>00084 
-<a name="l00085"></a>00085 <span class="preprocessor">#endif</span>
+<a name="l00066"></a><a class="code" href="classLCD.html#a1917fa285f81f476b4c7cc20d15456b8">00066</a>     <a class="code" href="classLCD.html#a264bf94308c95d8598426e13dc8cdb28" title="Screen saver mode that controls the display and back light.">ScreenSaverMode</a> <a class="code" href="classLCD.html#a1917fa285f81f476b4c7cc20d15456b8" title="Returns the current screen saver mode; default is DisplayOff.">screenSaverMode</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> mode; }
+<a name="l00067"></a>00067     <span class="keywordtype">void</span> <a class="code" href="classLCD.html#a56d1f68532c779c65fbbd071fb444801" title="Sets the current screen saver mode.">setScreenSaverMode</a>(<a class="code" href="classLCD.html#a264bf94308c95d8598426e13dc8cdb28" title="Screen saver mode that controls the display and back light.">ScreenSaverMode</a> mode);
+<a name="l00068"></a>00068 
+<a name="l00069"></a>00069     <span class="keywordtype">void</span> <a class="code" href="classLCD.html#af9a2326d034fa159d384ec16223c924f" title="Enables the screen saver and causes it to activate after timeoutSecs of inactivity on the buttons...">enableScreenSaver</a>(<span class="keywordtype">int</span> timeoutSecs = 10);
+<a name="l00070"></a>00070     <span class="keywordtype">void</span> <a class="code" href="classLCD.html#a85c3a4694b105731404df36e35e5b26e" title="Disables the screen saver.">disableScreenSaver</a>();
+<a name="l00071"></a><a class="code" href="classLCD.html#af5d5ca618a3161aa352027b58fe09d0e">00071</a>     <span class="keywordtype">bool</span> <a class="code" href="classLCD.html#af5d5ca618a3161aa352027b58fe09d0e" title="Returns true if the screen has been saved; false otherwise.">isScreenSaved</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> screenSaved; }
+<a name="l00072"></a>00072 
+<a name="l00073"></a>00073     <span class="keywordtype">int</span> <a class="code" href="classLCD.html#ac1e80e2603bd1cf0276c36092c416292" title="Gets the next button press, release, or idle event.">getButton</a>();
+<a name="l00074"></a>00074 
+<a name="l00075"></a>00075 <span class="keyword">private</span>:
+<a name="l00076"></a>00076     uint8_t _backlightPin;
+<a name="l00077"></a>00077     <span class="keywordtype">bool</span> backlightInit;
+<a name="l00078"></a>00078     <span class="keywordtype">int</span> prevButton;
+<a name="l00079"></a>00079     <span class="keywordtype">int</span> debounceButton;
+<a name="l00080"></a>00080     <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> timeout;
+<a name="l00081"></a>00081     <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> lastRestore;
+<a name="l00082"></a>00082     <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> lastDebounce;
+<a name="l00083"></a>00083     <span class="keywordtype">bool</span> screenSaved;
+<a name="l00084"></a>00084     <span class="keywordtype">bool</span> eatRelease;
+<a name="l00085"></a>00085     <a class="code" href="classLCD.html#a264bf94308c95d8598426e13dc8cdb28" title="Screen saver mode that controls the display and back light.">ScreenSaverMode</a> mode;
+<a name="l00086"></a>00086 
+<a name="l00087"></a>00087     <span class="keywordtype">void</span> init();
+<a name="l00088"></a>00088 };
+<a name="l00089"></a>00089 
+<a name="l00090"></a>00090 <span class="preprocessor">#endif</span>
 </pre></div></div>
 </div>
 <!-- window showing the filter options -->
@@ -161,7 +166,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Fri Jun 1 2012 14:29:17 for ArduinoLibs by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Sun Jun 10 2012 10:51:56 for ArduinoLibs by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>
