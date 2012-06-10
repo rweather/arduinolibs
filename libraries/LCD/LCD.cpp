@@ -28,7 +28,7 @@
 #include <WProgram.h>
 #endif
 
-#define LCD_BACK_LIGHT          3        // LCD backlight is on D3
+#define LCD_BACK_LIGHT          3        // Default LCD backlight is on D3
 #define LCD_BUTTON_PIN          A0       // Button state is on A0
 
 #define DEBOUNCE_DELAY          10      // Delay in ms to debounce buttons
@@ -73,10 +73,25 @@
  * generic button has been pressed with <tt>button &gt; 0</tt> and if a
  * generic button has been released with <tt>button &lt; 0</tt>.
  *
- * See the \ref lcd_hello_world "Hello World" example for more
- * information on using the LCD class.
+ * \section lcd_dfrobot Support for DFRobot LCD Shield
  *
- * \sa Form
+ * The <a href="http://www.dfrobot.com/index.php?route=product/product&product_id=51">DFRobot LCD Shield</a>
+ * is almost identical to the Freetronics shield, except it uses pin 10 for
+ * the back light instead of pin 3.  This can be specified in the
+ * application's <tt>setup()</tt> function:
+ *
+ * \code
+ * LCD lcd;
+ *
+ * void setup() {
+ *     lcd.setBacklightPin(10);
+ * }
+ * \endcode
+ *
+ * The back light pin is configured for output the first time the
+ * application calls getButton().
+ *
+ * \sa Form, \ref lcd_hello_world "Hello World Example"
  */
 
 /**
@@ -117,9 +132,11 @@ void LCD::init()
     // The Freetronics display is 16x2.
     begin(16, 2);
 
-    // Set the LCD back light to be initially on.
-    pinMode(LCD_BACK_LIGHT, OUTPUT);
-    digitalWrite(LCD_BACK_LIGHT, HIGH);
+    // Configure the backlight pin, but don't activate it yet in
+    // case the application sets it to something else during setup().
+    // Initialization will be forced in the first call to getButton().
+    _backlightPin = LCD_BACK_LIGHT;
+    backlightInit = false;
 
     // Initialise button input.
     pinMode(LCD_BUTTON_PIN, INPUT);
@@ -137,6 +154,47 @@ void LCD::init()
 }
 
 /**
+ * \fn uint8_t LCD::backlightPin() const
+ * \brief Returns the pin that is being used to control the back light.
+ * The default is 3.
+ *
+ * \sa setBacklightPin()
+ */
+
+/**
+ * \brief Sets the back light \a pin for the LCD shield.
+ *
+ * The <a href="http://www.dfrobot.com/index.php?route=product/product&product_id=51">DFRobot LCD Shield</a> uses pin 10 for the back light instead of pin 3:
+ *
+ * \code
+ * LCD lcd;
+ *
+ * void setup() {
+ *     lcd.setBacklightPin(10);
+ * }
+ * \endcode
+ *
+ * The back light pin is configured for output the next time the
+ * application calls getButton().
+ *
+ * \sa backlightPin()
+ */
+void LCD::setBacklightPin(uint8_t pin)
+{
+    if (_backlightPin != pin) {
+        if (backlightInit) {
+            // Restore the previous backlight pin to input, floating.
+            pinMode(_backlightPin, INPUT);
+            digitalWrite(_backlightPin, LOW);
+
+            // Need to re-initialize the backlight at the earliest opportunity.
+            backlightInit = false;
+        }
+        _backlightPin = pin;
+    }
+}
+
+/**
  * \brief Turns on the display of text on the LCD and the back light.
  *
  * If the screen saver is active, then calling this function will
@@ -148,8 +206,10 @@ void LCD::init()
 void LCD::display()
 {
     LiquidCrystal::display();
-    digitalWrite(LCD_BACK_LIGHT, HIGH);
+    pinMode(_backlightPin, OUTPUT);
+    digitalWrite(_backlightPin, HIGH);
     screenSaved = false;
+    backlightInit = true;
     lastRestore = millis();
 }
 
@@ -164,8 +224,10 @@ void LCD::noDisplay()
 {
     if (mode == DisplayOff)
         LiquidCrystal::noDisplay();
-    digitalWrite(LCD_BACK_LIGHT, LOW);
+    pinMode(_backlightPin, OUTPUT);
+    digitalWrite(_backlightPin, LOW);
     screenSaved = true;
+    backlightInit = true;
 }
 
 /**
@@ -290,6 +352,10 @@ static prog_uint8_t const buttonMappings[] PROGMEM = {
  */
 int LCD::getButton()
 {
+    // Initialize the backlight for the first time if necessary.
+    if (!backlightInit)
+        display();
+
     // Read the currently pressed button.
     int button = mapButton(analogRead(LCD_BUTTON_PIN));
 
@@ -309,8 +375,10 @@ int LCD::getButton()
             if (mode == BacklightOnSelect) {
                 // Turn on the back light only if Select was pressed.
                 if (button == LCD_BUTTON_SELECT) {
-                    digitalWrite(LCD_BACK_LIGHT, HIGH);
+                    pinMode(_backlightPin, OUTPUT);
+                    digitalWrite(_backlightPin, HIGH);
                     screenSaved = false;
+                    backlightInit = true;
                 }
             } else if (mode == DisplayOff) {
                 display();

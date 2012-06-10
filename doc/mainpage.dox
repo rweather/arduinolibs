@@ -34,10 +34,10 @@ For more information on these libraries, to report bugs, or to suggest
 improvements, please contact the author Rhys Weatherley via
 <a href="mailto:rhys.weatherley@gmail.com">email</a>.
 
-\section main_LCD Freetronics LCD Shield
+\section main_LCD LCD Shield
 
 \li LCD class to manage the extended features of the Freetronics
-LCD shield.
+and DFRobot LCD shields.
 \li Form and Field classes to build simple property sheet UI's on LCD displays.
 \li \ref lcd_hello_world "Hello World" example for the Freetronics LCD shield.
 \li \ref lcd_form "Form" example for LCD displays.

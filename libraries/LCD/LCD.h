@@ -50,6 +50,9 @@ public:
     LCD() : LiquidCrystal(8, 9, 4, 5, 6, 7) { init(); }
     LCD(uint8_t pin9) : LiquidCrystal(8, pin9, 4, 5, 6, 7) { init(); }
 
+    uint8_t backlightPin() const { return _backlightPin; }
+    void setBacklightPin(uint8_t pin);
+
     void display();
     void noDisplay();
 
@@ -70,6 +73,8 @@ public:
     int getButton();
 
 private:
+    uint8_t _backlightPin;
+    bool backlightInit;
     int prevButton;
     int debounceButton;
     unsigned long timeout;
