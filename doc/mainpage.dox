@@ -75,6 +75,7 @@ I2C master.
 \li SoftI2C class that implements the master side of the I2C protocol
 in software on any arbitrary pair of pins for DATA and CLOCK.
 This class supports both 7-bit and 10-bit I2C addresses.
+\li EEPROM24 class for reading and writing 24LCXX family EEPROM's.
 
 \section main_RTC Realtime Clock Library
 
