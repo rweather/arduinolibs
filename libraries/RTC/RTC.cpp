@@ -66,6 +66,21 @@ static uint8_t monthLengths[] = {
     31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31
 };
 
+static unsigned int monthOffsets[] = {
+    0,
+    31,
+    31 + 28,
+    31 + 28 + 31,
+    31 + 28 + 31 + 30,
+    31 + 28 + 31 + 30 + 31,
+    31 + 28 + 31 + 30 + 31 + 30,
+    31 + 28 + 31 + 30 + 31 + 30 + 31,
+    31 + 28 + 31 + 30 + 31 + 30 + 31 + 31,
+    31 + 28 + 31 + 30 + 31 + 30 + 31 + 31 + 30,
+    31 + 28 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31,
+    31 + 28 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31 + 30
+};
+
 inline bool isLeapYear(unsigned int year)
 {
     if ((year % 100) == 0)
@@ -366,6 +381,32 @@ void RTC::adjustYears(RTCDate *date, uint8_t flags)
     uint8_t len = monthLength(date);
     if (date->day > len)
         date->day = len;
+}
+
+/**
+ * \enum RTC::DayOfWeek
+ * \brief Day of the week corresponding to a date.
+ *
+ * \sa dayOfWeek()
+ */
+
+/**
+ * \brief Returns the day of the week corresponding to \a date.
+ *
+ * This function is only guaranteed to produce meaningful values
+ * for years between 2000 and 2099.
+ */
+RTC::DayOfWeek RTC::dayOfWeek(const RTCDate *date)
+{
+    // The +4 here adjusts for Jan 1, 2000 being a Saturday.
+    unsigned long daynum = date->day + 4;
+    daynum += monthOffsets[date->month - 1];
+    if (date->month > 2 && isLeapYear(date->year))
+        ++daynum;
+    daynum += 365UL * (date->year - 2000);
+    if (date->year > 2000)
+        daynum += ((date->year - 2001) / 4) + 1;
+    return (DayOfWeek)((daynum % 7) + 1);
 }
 
 /**

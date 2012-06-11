@@ -11,6 +11,10 @@ This example is placed into the public domain.
 SoftI2C i2c(A4, A5);
 DS3232RTC rtc(i2c);
 
+const char *days[] = {
+    "Mon, ", "Tue, ", "Wed, ", "Thu, ", "Fri, ", "Sat, ", "Sun, "
+};
+
 const char *months[] = {
     " Jan ", " Feb ", " Mar ", " Apr ", " May ", " Jun ",
     " Jul ", " Aug ", " Sep ", " Oct ", " Nov ", " Dec "
@@ -52,6 +56,7 @@ void loop() {
     Serial.println();
 
     Serial.print("Date: ");
+    Serial.print(days[RTC::dayOfWeek(&date) - 1]);
     Serial.print(date.day, DEC);
     Serial.print(months[date.month - 1]);
     Serial.print(date.year);

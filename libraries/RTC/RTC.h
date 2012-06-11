@@ -52,6 +52,17 @@ public:
     RTC();
     ~RTC();
 
+    enum DayOfWeek
+    {
+        Monday = 1,
+        Tuesday,
+        Wednesday,
+        Thursday,
+        Friday,
+        Saturday,
+        Sunday,
+    };
+
     virtual bool hasUpdates();
 
     virtual void readTime(RTCTime *value);
@@ -81,6 +92,8 @@ public:
     static void adjustDays(RTCDate *date, uint8_t flags);
     static void adjustMonths(RTCDate *date, uint8_t flags);
     static void adjustYears(RTCDate *date, uint8_t flags);
+
+    static DayOfWeek dayOfWeek(const RTCDate *date);
 
 private:
     unsigned long midnight;

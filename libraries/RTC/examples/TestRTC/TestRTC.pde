@@ -38,6 +38,10 @@ DS3232RTC rtc(i2c);
 char buffer[64];
 size_t buflen;
 
+const char *days[] = {
+    "Mon, ", "Tue, ", "Wed, ", "Thu, ", "Fri, ", "Sat, ", "Sun, "
+};
+
 const char *months[] = {
     " Jan ", " Feb ", " Mar ", " Apr ", " May ", " Jun ",
     " Jul ", " Aug ", " Sep ", " Oct ", " Nov ", " Dec "
@@ -192,6 +196,7 @@ void cmdDate(const char *args)
 
     // Read the current date.
     rtc.readDate(&date);
+    Serial.print(days[RTC::dayOfWeek(&date) - 1]);
     Serial.print(date.day, DEC);
     Serial.print(months[date.month - 1]);
     Serial.println(date.year, DEC);
