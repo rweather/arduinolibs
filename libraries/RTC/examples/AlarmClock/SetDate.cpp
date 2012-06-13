@@ -112,6 +112,7 @@ void SetDate::updateCurrentDate()
     }
 }
 
+extern const char *days[];      // Table of day names; e.g. "Mon, ".
 extern const char *months[];    // Table of month names; e.g. " Jan ".
 
 void SetDate::printDate()
@@ -121,6 +122,8 @@ void SetDate::printDate()
     int monthCol;
     int yearCol;
     int col = 0;
+    lcd()->write(days[RTC::dayOfWeek(&_value) - 1]);
+    col += 5;
     dayCol = col;
     if (_value.day < 10) {
         lcd()->write('0' + _value.day);

@@ -70,6 +70,10 @@ void FrontScreenField::enterField(bool reverse)
     updateAlarm();
 }
 
+const char *days[] = {
+    "Mon, ", "Tue, ", "Wed, ", "Thu, ", "Fri, ", "Sat, ", "Sun, "
+};
+
 const char *months[] = {
     " Jan ", " Feb ", " Mar ", " Apr ", " May ", " Jun ",
     " Jul ", " Aug ", " Sep ", " Oct ", " Nov ", " Dec "
@@ -184,6 +188,7 @@ void FrontScreenField::set24HourMode(bool value)
 void FrontScreenField::updateDate()
 {
     lcd()->setCursor(0, 0);
+    lcd()->write(days[RTC::dayOfWeek(&_date) - 1]);
     if (_date.day < 10) {
         lcd()->write('0' + _date.day);
     } else {
@@ -231,14 +236,16 @@ void FrontScreenField::updateTime()
 
 void FrontScreenField::updateVoltage()
 {
-    lcd()->setCursor(15, 0);
+    lcd()->setCursor(15, 1);
     lcd()->write(_batteryBars);
 
+/*
     lcd()->setCursor(12, 1);
     lcd()->write('0' + _voltageTrunc / 10);
     lcd()->write('.');
     lcd()->write('0' + _voltageTrunc % 10);
     lcd()->write('v');
+*/
 }
 
 #endif
@@ -246,9 +253,9 @@ void FrontScreenField::updateVoltage()
 void FrontScreenField::updateAlarm()
 {
 #ifdef USE_VOLTAGE_MONITOR
-    lcd()->setCursor(13, 0);
+    lcd()->setCursor(13, 1);
 #else
-    lcd()->setCursor(14, 0);
+    lcd()->setCursor(14, 1);
 #endif
     lcd()->write(_alarmMode != AlarmOff ? IND_ALARM_ACTIVE1 : ' ');
     lcd()->write(_alarmMode != AlarmOff ? IND_ALARM_ACTIVE2 : ' ');
