@@ -102,191 +102,219 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00066"></a>00066     31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31
 <a name="l00067"></a>00067 };
 <a name="l00068"></a>00068 
-<a name="l00069"></a>00069 <span class="keyword">inline</span> <span class="keywordtype">bool</span> isLeapYear(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> year)
-<a name="l00070"></a>00070 {
-<a name="l00071"></a>00071     <span class="keywordflow">if</span> ((year % 100) == 0)
-<a name="l00072"></a>00072         <span class="keywordflow">return</span> (year % 400) == 0;
-<a name="l00073"></a>00073     <span class="keywordflow">else</span>
-<a name="l00074"></a>00074         <span class="keywordflow">return</span> (year % 4) == 0;
-<a name="l00075"></a>00075 }
-<a name="l00076"></a>00076 
-<a name="l00077"></a>00077 <span class="keyword">inline</span> uint8_t monthLength(<span class="keyword">const</span> <a class="code" href="structRTCDate.html" title="Stores date information from a realtime clock chip.">RTCDate</a> *date)
-<a name="l00078"></a>00078 {
-<a name="l00079"></a>00079     <span class="keywordflow">if</span> (date-&gt;<a class="code" href="structRTCDate.html#a6e6196059b36186041a5312400ea9202" title="Month of the year (1-12)">month</a> != 2 || !isLeapYear(date-&gt;<a class="code" href="structRTCDate.html#a7d31822daff3c3fc947386abd897732f" title="Year (4-digit)">year</a>))
-<a name="l00080"></a>00080         <span class="keywordflow">return</span> monthLengths[date-&gt;<a class="code" href="structRTCDate.html#a6e6196059b36186041a5312400ea9202" title="Month of the year (1-12)">month</a> - 1];
-<a name="l00081"></a>00081     <span class="keywordflow">else</span>
-<a name="l00082"></a>00082         <span class="keywordflow">return</span> 29;
-<a name="l00083"></a>00083 }
-<a name="l00084"></a>00084 
-<a name="l00090"></a><a class="code" href="classRTC.html#ada31c5120d18d2dd2863b3d440308da2">00090</a> <a class="code" href="classRTC.html#ada31c5120d18d2dd2863b3d440308da2" title="Constructs a new realtime clock handler.">RTC::RTC</a>()
-<a name="l00091"></a>00091     : midnight(millis() - 9 * MILLIS_PER_HOUR) <span class="comment">// Simulated clock starts at 9am</span>
-<a name="l00092"></a>00092     , nvram(0)
+<a name="l00069"></a>00069 <span class="keyword">static</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> monthOffsets[] = {
+<a name="l00070"></a>00070     0,
+<a name="l00071"></a>00071     31,
+<a name="l00072"></a>00072     31 + 28,
+<a name="l00073"></a>00073     31 + 28 + 31,
+<a name="l00074"></a>00074     31 + 28 + 31 + 30,
+<a name="l00075"></a>00075     31 + 28 + 31 + 30 + 31,
+<a name="l00076"></a>00076     31 + 28 + 31 + 30 + 31 + 30,
+<a name="l00077"></a>00077     31 + 28 + 31 + 30 + 31 + 30 + 31,
+<a name="l00078"></a>00078     31 + 28 + 31 + 30 + 31 + 30 + 31 + 31,
+<a name="l00079"></a>00079     31 + 28 + 31 + 30 + 31 + 30 + 31 + 31 + 30,
+<a name="l00080"></a>00080     31 + 28 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31,
+<a name="l00081"></a>00081     31 + 28 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31 + 30
+<a name="l00082"></a>00082 };
+<a name="l00083"></a>00083 
+<a name="l00084"></a>00084 <span class="keyword">inline</span> <span class="keywordtype">bool</span> isLeapYear(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> year)
+<a name="l00085"></a>00085 {
+<a name="l00086"></a>00086     <span class="keywordflow">if</span> ((year % 100) == 0)
+<a name="l00087"></a>00087         <span class="keywordflow">return</span> (year % 400) == 0;
+<a name="l00088"></a>00088     <span class="keywordflow">else</span>
+<a name="l00089"></a>00089         <span class="keywordflow">return</span> (year % 4) == 0;
+<a name="l00090"></a>00090 }
+<a name="l00091"></a>00091 
+<a name="l00092"></a>00092 <span class="keyword">inline</span> uint8_t monthLength(<span class="keyword">const</span> <a class="code" href="structRTCDate.html" title="Stores date information from a realtime clock chip.">RTCDate</a> *date)
 <a name="l00093"></a>00093 {
-<a name="l00094"></a>00094     <span class="comment">// Start the simulated date at 1 Jan, 2000.</span>
-<a name="l00095"></a>00095     date.<a class="code" href="structRTCDate.html#a2d68ff3fb90240df522b41222362704c" title="Day of the month (1-31)">day</a> = 1;
-<a name="l00096"></a>00096     date.<a class="code" href="structRTCDate.html#a6e6196059b36186041a5312400ea9202" title="Month of the year (1-12)">month</a> = 1;
-<a name="l00097"></a>00097     date.<a class="code" href="structRTCDate.html#a7d31822daff3c3fc947386abd897732f" title="Year (4-digit)">year</a> = 2000;
-<a name="l00098"></a>00098 
-<a name="l00099"></a>00099     <span class="comment">// Set all simulated alarms to 6am by default.</span>
-<a name="l00100"></a>00100     <span class="keywordflow">for</span> (uint8_t index = 0; index &lt; <a class="code" href="classRTC.html#aee5ae8f600ee5296e65635c0d836fca3" title="Number of alarms that are supported by RTC::readAlarm() and RTC::writeAlarm().">ALARM_COUNT</a>; ++index) {
-<a name="l00101"></a>00101         alarms[index].<a class="code" href="structRTCAlarm.html#a75bdc42acd3ab3ad495680c6b6a34692" title="Hour of the day for the alarm (0-23).">hour</a> = 6;
-<a name="l00102"></a>00102         alarms[index].<a class="code" href="structRTCAlarm.html#ad9a75ceb4b4b3474baa66dd5466e62fe" title="Minute of the hour for the alarm (0-59).">minute</a> = 0;
-<a name="l00103"></a>00103         alarms[index].<a class="code" href="structRTCAlarm.html#a0f2ef7363cb60a26642d5295b77ca19e" title="Additional flags for the alarm.">flags</a> = 0;
-<a name="l00104"></a>00104     }
-<a name="l00105"></a>00105 }
-<a name="l00106"></a>00106 
-<a name="l00107"></a>00107 RTC::~RTC()
+<a name="l00094"></a>00094     <span class="keywordflow">if</span> (date-&gt;<a class="code" href="structRTCDate.html#a6e6196059b36186041a5312400ea9202" title="Month of the year (1-12)">month</a> != 2 || !isLeapYear(date-&gt;<a class="code" href="structRTCDate.html#a7d31822daff3c3fc947386abd897732f" title="Year (4-digit)">year</a>))
+<a name="l00095"></a>00095         <span class="keywordflow">return</span> monthLengths[date-&gt;<a class="code" href="structRTCDate.html#a6e6196059b36186041a5312400ea9202" title="Month of the year (1-12)">month</a> - 1];
+<a name="l00096"></a>00096     <span class="keywordflow">else</span>
+<a name="l00097"></a>00097         <span class="keywordflow">return</span> 29;
+<a name="l00098"></a>00098 }
+<a name="l00099"></a>00099 
+<a name="l00105"></a><a class="code" href="classRTC.html#ada31c5120d18d2dd2863b3d440308da2">00105</a> <a class="code" href="classRTC.html#ada31c5120d18d2dd2863b3d440308da2" title="Constructs a new realtime clock handler.">RTC::RTC</a>()
+<a name="l00106"></a>00106     : midnight(millis() - 9 * MILLIS_PER_HOUR) <span class="comment">// Simulated clock starts at 9am</span>
+<a name="l00107"></a>00107     , nvram(0)
 <a name="l00108"></a>00108 {
-<a name="l00109"></a>00109     <span class="keywordflow">if</span> (nvram)
-<a name="l00110"></a>00110         free(nvram);
-<a name="l00111"></a>00111 }
-<a name="l00112"></a>00112 
-<a name="l00119"></a><a class="code" href="classRTC.html#a3690761f29654a2c9e676fcbfa32dd30">00119</a> <span class="keywordtype">bool</span> <a class="code" href="classRTC.html#a3690761f29654a2c9e676fcbfa32dd30" title="Returns true if the realtime clock has updated since the last call to this function.">RTC::hasUpdates</a>()
-<a name="l00120"></a>00120 {
-<a name="l00121"></a>00121     <span class="keywordflow">return</span> <span class="keyword">true</span>;
-<a name="l00122"></a>00122 }
-<a name="l00123"></a>00123 
-<a name="l00129"></a><a class="code" href="classRTC.html#aaf0a5c1f32f210a49718d148620b5bec">00129</a> <span class="keywordtype">void</span> <a class="code" href="classRTC.html#aaf0a5c1f32f210a49718d148620b5bec" title="Reads the current time from the realtime clock into value.">RTC::readTime</a>(<a class="code" href="structRTCTime.html" title="Stores time information from a realtime clock chip.">RTCTime</a> *value)
-<a name="l00130"></a>00130 {
-<a name="l00131"></a>00131     <span class="comment">// Determine the number of seconds since the last midnight event.</span>
-<a name="l00132"></a>00132     <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> sinceMidnight = millis() - midnight;
-<a name="l00133"></a>00133     <span class="keywordflow">if</span> (sinceMidnight &gt;= MILLIS_PER_DAY) {
-<a name="l00134"></a>00134         <span class="comment">// We have overflowed into the next day.  Readjust midnight.</span>
-<a name="l00135"></a>00135         midnight += MILLIS_PER_DAY;
-<a name="l00136"></a>00136         sinceMidnight -= MILLIS_PER_DAY;
-<a name="l00137"></a>00137 
-<a name="l00138"></a>00138         <span class="comment">// Increment the simulated date.</span>
-<a name="l00139"></a>00139         <a class="code" href="classRTC.html#adc29d7c43efc5a192d21965da5c3ee1d" title="Adjusts date up or down one day according to flags.">adjustDays</a>(&amp;date, <a class="code" href="classRTC.html#aacbe3ebbf893685950b05327c11d5c37" title="Increment the day, month, or year in a call to adjustDays(), adjustMonths(), or adjustYears().">INCREMENT</a>);
-<a name="l00140"></a>00140     }
-<a name="l00141"></a>00141     value-&gt;<a class="code" href="structRTCTime.html#a87b7c02e535d808dcba04c77e34abb91" title="Second within the minute (0-59)">second</a> = (uint8_t)(((sinceMidnight / MILLIS_PER_SECOND) % 60));
-<a name="l00142"></a>00142     value-&gt;<a class="code" href="structRTCTime.html#acf2161ca037080dc4b767e636ad8db84" title="Minute within the hour (0-59)">minute</a> = (uint8_t)(((sinceMidnight / MILLIS_PER_MINUTE) % 60));
-<a name="l00143"></a>00143     value-&gt;<a class="code" href="structRTCTime.html#a98ba717092ef856dd2b773ba02fcb1a4" title="Hour of the day (0-23)">hour</a> = (uint8_t)(sinceMidnight / MILLIS_PER_HOUR);
-<a name="l00144"></a>00144 }
-<a name="l00145"></a>00145 
-<a name="l00154"></a><a class="code" href="classRTC.html#aa1e21bf42ebd4456919744ae0f4f631e">00154</a> <span class="keywordtype">void</span> <a class="code" href="classRTC.html#aa1e21bf42ebd4456919744ae0f4f631e" title="Reads the current date from the realtime clock into value.">RTC::readDate</a>(<a class="code" href="structRTCDate.html" title="Stores date information from a realtime clock chip.">RTCDate</a> *value)
-<a name="l00155"></a>00155 {
-<a name="l00156"></a>00156     *value = date;
-<a name="l00157"></a>00157 }
-<a name="l00158"></a>00158 
-<a name="l00164"></a><a class="code" href="classRTC.html#a102e2ec15bf0273d8f7e9ce4b6dcc96e">00164</a> <span class="keywordtype">void</span> <a class="code" href="classRTC.html#a102e2ec15bf0273d8f7e9ce4b6dcc96e" title="Updates the time in the realtime clock to match value.">RTC::writeTime</a>(<span class="keyword">const</span> <a class="code" href="structRTCTime.html" title="Stores time information from a realtime clock chip.">RTCTime</a> *value)
-<a name="l00165"></a>00165 {
-<a name="l00166"></a>00166     <span class="comment">// Adjust the position of the last simulated midnight event.</span>
-<a name="l00167"></a>00167     <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> sinceMidnight =
-<a name="l00168"></a>00168         value-&gt;<a class="code" href="structRTCTime.html#a87b7c02e535d808dcba04c77e34abb91" title="Second within the minute (0-59)">second</a> * MILLIS_PER_SECOND +
-<a name="l00169"></a>00169         value-&gt;<a class="code" href="structRTCTime.html#acf2161ca037080dc4b767e636ad8db84" title="Minute within the hour (0-59)">minute</a> * MILLIS_PER_MINUTE +
-<a name="l00170"></a>00170         value-&gt;<a class="code" href="structRTCTime.html#a98ba717092ef856dd2b773ba02fcb1a4" title="Hour of the day (0-23)">hour</a>   * MILLIS_PER_HOUR;
-<a name="l00171"></a>00171     midnight = millis() - sinceMidnight;
+<a name="l00109"></a>00109     <span class="comment">// Start the simulated date at 1 Jan, 2000.</span>
+<a name="l00110"></a>00110     date.<a class="code" href="structRTCDate.html#a2d68ff3fb90240df522b41222362704c" title="Day of the month (1-31)">day</a> = 1;
+<a name="l00111"></a>00111     date.<a class="code" href="structRTCDate.html#a6e6196059b36186041a5312400ea9202" title="Month of the year (1-12)">month</a> = 1;
+<a name="l00112"></a>00112     date.<a class="code" href="structRTCDate.html#a7d31822daff3c3fc947386abd897732f" title="Year (4-digit)">year</a> = 2000;
+<a name="l00113"></a>00113 
+<a name="l00114"></a>00114     <span class="comment">// Set all simulated alarms to 6am by default.</span>
+<a name="l00115"></a>00115     <span class="keywordflow">for</span> (uint8_t index = 0; index &lt; <a class="code" href="classRTC.html#aee5ae8f600ee5296e65635c0d836fca3" title="Number of alarms that are supported by RTC::readAlarm() and RTC::writeAlarm().">ALARM_COUNT</a>; ++index) {
+<a name="l00116"></a>00116         alarms[index].<a class="code" href="structRTCAlarm.html#a75bdc42acd3ab3ad495680c6b6a34692" title="Hour of the day for the alarm (0-23).">hour</a> = 6;
+<a name="l00117"></a>00117         alarms[index].<a class="code" href="structRTCAlarm.html#ad9a75ceb4b4b3474baa66dd5466e62fe" title="Minute of the hour for the alarm (0-59).">minute</a> = 0;
+<a name="l00118"></a>00118         alarms[index].<a class="code" href="structRTCAlarm.html#a0f2ef7363cb60a26642d5295b77ca19e" title="Additional flags for the alarm.">flags</a> = 0;
+<a name="l00119"></a>00119     }
+<a name="l00120"></a>00120 }
+<a name="l00121"></a>00121 
+<a name="l00122"></a>00122 RTC::~RTC()
+<a name="l00123"></a>00123 {
+<a name="l00124"></a>00124     <span class="keywordflow">if</span> (nvram)
+<a name="l00125"></a>00125         free(nvram);
+<a name="l00126"></a>00126 }
+<a name="l00127"></a>00127 
+<a name="l00134"></a><a class="code" href="classRTC.html#a3690761f29654a2c9e676fcbfa32dd30">00134</a> <span class="keywordtype">bool</span> <a class="code" href="classRTC.html#a3690761f29654a2c9e676fcbfa32dd30" title="Returns true if the realtime clock has updated since the last call to this function.">RTC::hasUpdates</a>()
+<a name="l00135"></a>00135 {
+<a name="l00136"></a>00136     <span class="keywordflow">return</span> <span class="keyword">true</span>;
+<a name="l00137"></a>00137 }
+<a name="l00138"></a>00138 
+<a name="l00144"></a><a class="code" href="classRTC.html#aaf0a5c1f32f210a49718d148620b5bec">00144</a> <span class="keywordtype">void</span> <a class="code" href="classRTC.html#aaf0a5c1f32f210a49718d148620b5bec" title="Reads the current time from the realtime clock into value.">RTC::readTime</a>(<a class="code" href="structRTCTime.html" title="Stores time information from a realtime clock chip.">RTCTime</a> *value)
+<a name="l00145"></a>00145 {
+<a name="l00146"></a>00146     <span class="comment">// Determine the number of seconds since the last midnight event.</span>
+<a name="l00147"></a>00147     <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> sinceMidnight = millis() - midnight;
+<a name="l00148"></a>00148     <span class="keywordflow">if</span> (sinceMidnight &gt;= MILLIS_PER_DAY) {
+<a name="l00149"></a>00149         <span class="comment">// We have overflowed into the next day.  Readjust midnight.</span>
+<a name="l00150"></a>00150         midnight += MILLIS_PER_DAY;
+<a name="l00151"></a>00151         sinceMidnight -= MILLIS_PER_DAY;
+<a name="l00152"></a>00152 
+<a name="l00153"></a>00153         <span class="comment">// Increment the simulated date.</span>
+<a name="l00154"></a>00154         <a class="code" href="classRTC.html#adc29d7c43efc5a192d21965da5c3ee1d" title="Adjusts date up or down one day according to flags.">adjustDays</a>(&amp;date, <a class="code" href="classRTC.html#aacbe3ebbf893685950b05327c11d5c37" title="Increment the day, month, or year in a call to adjustDays(), adjustMonths(), or adjustYears().">INCREMENT</a>);
+<a name="l00155"></a>00155     }
+<a name="l00156"></a>00156     value-&gt;<a class="code" href="structRTCTime.html#a87b7c02e535d808dcba04c77e34abb91" title="Second within the minute (0-59)">second</a> = (uint8_t)(((sinceMidnight / MILLIS_PER_SECOND) % 60));
+<a name="l00157"></a>00157     value-&gt;<a class="code" href="structRTCTime.html#acf2161ca037080dc4b767e636ad8db84" title="Minute within the hour (0-59)">minute</a> = (uint8_t)(((sinceMidnight / MILLIS_PER_MINUTE) % 60));
+<a name="l00158"></a>00158     value-&gt;<a class="code" href="structRTCTime.html#a98ba717092ef856dd2b773ba02fcb1a4" title="Hour of the day (0-23)">hour</a> = (uint8_t)(sinceMidnight / MILLIS_PER_HOUR);
+<a name="l00159"></a>00159 }
+<a name="l00160"></a>00160 
+<a name="l00169"></a><a class="code" href="classRTC.html#aa1e21bf42ebd4456919744ae0f4f631e">00169</a> <span class="keywordtype">void</span> <a class="code" href="classRTC.html#aa1e21bf42ebd4456919744ae0f4f631e" title="Reads the current date from the realtime clock into value.">RTC::readDate</a>(<a class="code" href="structRTCDate.html" title="Stores date information from a realtime clock chip.">RTCDate</a> *value)
+<a name="l00170"></a>00170 {
+<a name="l00171"></a>00171     *value = date;
 <a name="l00172"></a>00172 }
 <a name="l00173"></a>00173 
-<a name="l00179"></a><a class="code" href="classRTC.html#ae667600d05c8e7b06a93574dd068a4d7">00179</a> <span class="keywordtype">void</span> <a class="code" href="classRTC.html#ae667600d05c8e7b06a93574dd068a4d7" title="Updates the date in the realtime clock to match value.">RTC::writeDate</a>(<span class="keyword">const</span> <a class="code" href="structRTCDate.html" title="Stores date information from a realtime clock chip.">RTCDate</a> *value)
+<a name="l00179"></a><a class="code" href="classRTC.html#a102e2ec15bf0273d8f7e9ce4b6dcc96e">00179</a> <span class="keywordtype">void</span> <a class="code" href="classRTC.html#a102e2ec15bf0273d8f7e9ce4b6dcc96e" title="Updates the time in the realtime clock to match value.">RTC::writeTime</a>(<span class="keyword">const</span> <a class="code" href="structRTCTime.html" title="Stores time information from a realtime clock chip.">RTCTime</a> *value)
 <a name="l00180"></a>00180 {
-<a name="l00181"></a>00181     date = *value;
-<a name="l00182"></a>00182 }
-<a name="l00183"></a>00183 
-<a name="l00194"></a><a class="code" href="classRTC.html#ade282d7a60147c3f0269f1fcd59c8d66">00194</a> <span class="keywordtype">void</span> <a class="code" href="classRTC.html#ade282d7a60147c3f0269f1fcd59c8d66" title="Reads the details of the alarm with index alarmNum into value.">RTC::readAlarm</a>(uint8_t alarmNum, <a class="code" href="structRTCAlarm.html" title="Stores alarm information from a realtime clock chip.">RTCAlarm</a> *value)
+<a name="l00181"></a>00181     <span class="comment">// Adjust the position of the last simulated midnight event.</span>
+<a name="l00182"></a>00182     <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> sinceMidnight =
+<a name="l00183"></a>00183         value-&gt;<a class="code" href="structRTCTime.html#a87b7c02e535d808dcba04c77e34abb91" title="Second within the minute (0-59)">second</a> * MILLIS_PER_SECOND +
+<a name="l00184"></a>00184         value-&gt;<a class="code" href="structRTCTime.html#acf2161ca037080dc4b767e636ad8db84" title="Minute within the hour (0-59)">minute</a> * MILLIS_PER_MINUTE +
+<a name="l00185"></a>00185         value-&gt;<a class="code" href="structRTCTime.html#a98ba717092ef856dd2b773ba02fcb1a4" title="Hour of the day (0-23)">hour</a>   * MILLIS_PER_HOUR;
+<a name="l00186"></a>00186     midnight = millis() - sinceMidnight;
+<a name="l00187"></a>00187 }
+<a name="l00188"></a>00188 
+<a name="l00194"></a><a class="code" href="classRTC.html#ae667600d05c8e7b06a93574dd068a4d7">00194</a> <span class="keywordtype">void</span> <a class="code" href="classRTC.html#ae667600d05c8e7b06a93574dd068a4d7" title="Updates the date in the realtime clock to match value.">RTC::writeDate</a>(<span class="keyword">const</span> <a class="code" href="structRTCDate.html" title="Stores date information from a realtime clock chip.">RTCDate</a> *value)
 <a name="l00195"></a>00195 {
-<a name="l00196"></a>00196     *value = alarms[alarmNum];
+<a name="l00196"></a>00196     date = *value;
 <a name="l00197"></a>00197 }
 <a name="l00198"></a>00198 
-<a name="l00209"></a><a class="code" href="classRTC.html#a0e96c91efd9e7a6340effdae3eadf17e">00209</a> <span class="keywordtype">void</span> <a class="code" href="classRTC.html#a0e96c91efd9e7a6340effdae3eadf17e" title="Updates the details of the alarm with index alarmNum from value.">RTC::writeAlarm</a>(uint8_t alarmNum, <span class="keyword">const</span> <a class="code" href="structRTCAlarm.html" title="Stores alarm information from a realtime clock chip.">RTCAlarm</a> *value)
+<a name="l00209"></a><a class="code" href="classRTC.html#ade282d7a60147c3f0269f1fcd59c8d66">00209</a> <span class="keywordtype">void</span> <a class="code" href="classRTC.html#ade282d7a60147c3f0269f1fcd59c8d66" title="Reads the details of the alarm with index alarmNum into value.">RTC::readAlarm</a>(uint8_t alarmNum, <a class="code" href="structRTCAlarm.html" title="Stores alarm information from a realtime clock chip.">RTCAlarm</a> *value)
 <a name="l00210"></a>00210 {
-<a name="l00211"></a>00211     alarms[alarmNum] = *value;
+<a name="l00211"></a>00211     *value = alarms[alarmNum];
 <a name="l00212"></a>00212 }
 <a name="l00213"></a>00213 
-<a name="l00220"></a><a class="code" href="classRTC.html#acfdebfb449710e44e11f9a3675e14fd8">00220</a> <span class="keywordtype">int</span> <a class="code" href="classRTC.html#acfdebfb449710e44e11f9a3675e14fd8" title="Returns the number of bytes of non-volatile memory that can be used for storage of arbitrary settings...">RTC::byteCount</a>()<span class="keyword"> const</span>
-<a name="l00221"></a>00221 <span class="keyword"></span>{
-<a name="l00222"></a>00222     <span class="keywordflow">return</span> DEFAULT_BYTE_COUNT;
-<a name="l00223"></a>00223 }
-<a name="l00224"></a>00224 
-<a name="l00232"></a><a class="code" href="classRTC.html#a0f47b10b436e3f9d36e04ec907579431">00232</a> uint8_t <a class="code" href="classRTC.html#a0f47b10b436e3f9d36e04ec907579431" title="Reads the byte at offset within the realtime clock&#39;s non-volatile memory.">RTC::readByte</a>(uint8_t offset)
-<a name="l00233"></a>00233 {
-<a name="l00234"></a>00234     <span class="keywordflow">if</span> (nvram)
-<a name="l00235"></a>00235         <span class="keywordflow">return</span> nvram[offset];
-<a name="l00236"></a>00236     <span class="keywordflow">else</span>
-<a name="l00237"></a>00237         <span class="keywordflow">return</span> 0;
+<a name="l00224"></a><a class="code" href="classRTC.html#a0e96c91efd9e7a6340effdae3eadf17e">00224</a> <span class="keywordtype">void</span> <a class="code" href="classRTC.html#a0e96c91efd9e7a6340effdae3eadf17e" title="Updates the details of the alarm with index alarmNum from value.">RTC::writeAlarm</a>(uint8_t alarmNum, <span class="keyword">const</span> <a class="code" href="structRTCAlarm.html" title="Stores alarm information from a realtime clock chip.">RTCAlarm</a> *value)
+<a name="l00225"></a>00225 {
+<a name="l00226"></a>00226     alarms[alarmNum] = *value;
+<a name="l00227"></a>00227 }
+<a name="l00228"></a>00228 
+<a name="l00235"></a><a class="code" href="classRTC.html#acfdebfb449710e44e11f9a3675e14fd8">00235</a> <span class="keywordtype">int</span> <a class="code" href="classRTC.html#acfdebfb449710e44e11f9a3675e14fd8" title="Returns the number of bytes of non-volatile memory that can be used for storage of arbitrary settings...">RTC::byteCount</a>()<span class="keyword"> const</span>
+<a name="l00236"></a>00236 <span class="keyword"></span>{
+<a name="l00237"></a>00237     <span class="keywordflow">return</span> DEFAULT_BYTE_COUNT;
 <a name="l00238"></a>00238 }
 <a name="l00239"></a>00239 
-<a name="l00247"></a><a class="code" href="classRTC.html#a1cab6397ec04b1e2b3feea5b3cd1f749">00247</a> <span class="keywordtype">void</span> <a class="code" href="classRTC.html#a1cab6397ec04b1e2b3feea5b3cd1f749" title="Writes value to offset within the realtime clock&#39;s non-volatile memory.">RTC::writeByte</a>(uint8_t offset, uint8_t value)
+<a name="l00247"></a><a class="code" href="classRTC.html#a0f47b10b436e3f9d36e04ec907579431">00247</a> uint8_t <a class="code" href="classRTC.html#a0f47b10b436e3f9d36e04ec907579431" title="Reads the byte at offset within the realtime clock&#39;s non-volatile memory.">RTC::readByte</a>(uint8_t offset)
 <a name="l00248"></a>00248 {
-<a name="l00249"></a>00249     <span class="keywordflow">if</span> (nvram) {
-<a name="l00250"></a>00250         nvram[offset] = value;
-<a name="l00251"></a>00251     } <span class="keywordflow">else</span> {
-<a name="l00252"></a>00252         nvram = (uint8_t *)malloc(DEFAULT_BYTE_COUNT);
-<a name="l00253"></a>00253         <span class="keywordflow">if</span> (nvram) {
-<a name="l00254"></a>00254             memset(nvram, 0, DEFAULT_BYTE_COUNT);
-<a name="l00255"></a>00255             nvram[offset] = value;
-<a name="l00256"></a>00256         }
-<a name="l00257"></a>00257     }
-<a name="l00258"></a>00258 }
-<a name="l00259"></a>00259 
-<a name="l00273"></a><a class="code" href="classRTC.html#aeca3c8387332e8cabfd09c1806276e5a">00273</a> <span class="keywordtype">int</span> <a class="code" href="classRTC.html#aeca3c8387332e8cabfd09c1806276e5a" title="Reads the value of the temperature sensor and returns the temperature in quarters of a degree celcius...">RTC::readTemperature</a>()
-<a name="l00274"></a>00274 {
-<a name="l00275"></a>00275     <span class="keywordflow">return</span> <a class="code" href="classRTC.html#a9ed5480b362a83f1f45c4d3bcf7c3bf8" title="Value that is returned from readTemperature() if the realtime clock chip cannot determine the tempera...">NO_TEMPERATURE</a>;
-<a name="l00276"></a>00276 }
-<a name="l00277"></a>00277 
-<a name="l00298"></a><a class="code" href="classRTC.html#adc29d7c43efc5a192d21965da5c3ee1d">00298</a> <span class="keywordtype">void</span> <a class="code" href="classRTC.html#adc29d7c43efc5a192d21965da5c3ee1d" title="Adjusts date up or down one day according to flags.">RTC::adjustDays</a>(<a class="code" href="structRTCDate.html" title="Stores date information from a realtime clock chip.">RTCDate</a> *date, uint8_t flags)
-<a name="l00299"></a>00299 {
-<a name="l00300"></a>00300     <span class="keywordflow">if</span> (flags &amp; <a class="code" href="classRTC.html#a05b1bd1479afc80682abdd4f3e58dc6f" title="Decrement the day, month, or year in a call to adjustDays(), adjustMonths(), or adjustYears().">DECREMENT</a>) {
-<a name="l00301"></a>00301         --(date-&gt;<a class="code" href="structRTCDate.html#a2d68ff3fb90240df522b41222362704c" title="Day of the month (1-31)">day</a>);
-<a name="l00302"></a>00302         <span class="keywordflow">if</span> (date-&gt;<a class="code" href="structRTCDate.html#a2d68ff3fb90240df522b41222362704c" title="Day of the month (1-31)">day</a> == 0) {
-<a name="l00303"></a>00303             <span class="keywordflow">if</span> (!(flags &amp; <a class="code" href="classRTC.html#a02ace2d775063be9a99035851c9274eb" title="Wrap around to the beginning of the current month/year rather than advance to the next one...">WRAP</a>)) {
-<a name="l00304"></a>00304                 --(date-&gt;<a class="code" href="structRTCDate.html#a6e6196059b36186041a5312400ea9202" title="Month of the year (1-12)">month</a>);
-<a name="l00305"></a>00305                 <span class="keywordflow">if</span> (date-&gt;<a class="code" href="structRTCDate.html#a6e6196059b36186041a5312400ea9202" title="Month of the year (1-12)">month</a> == 0)
-<a name="l00306"></a>00306                     date-&gt;<a class="code" href="structRTCDate.html#a6e6196059b36186041a5312400ea9202" title="Month of the year (1-12)">month</a> = 12;
-<a name="l00307"></a>00307             }
-<a name="l00308"></a>00308             date-&gt;<a class="code" href="structRTCDate.html#a2d68ff3fb90240df522b41222362704c" title="Day of the month (1-31)">day</a> = monthLength(date);
-<a name="l00309"></a>00309         }
-<a name="l00310"></a>00310     } <span class="keywordflow">else</span> {
-<a name="l00311"></a>00311         ++(date-&gt;<a class="code" href="structRTCDate.html#a2d68ff3fb90240df522b41222362704c" title="Day of the month (1-31)">day</a>);
-<a name="l00312"></a>00312         <span class="keywordflow">if</span> (date-&gt;<a class="code" href="structRTCDate.html#a2d68ff3fb90240df522b41222362704c" title="Day of the month (1-31)">day</a> &gt; monthLength(date)) {
-<a name="l00313"></a>00313             <span class="keywordflow">if</span> (!(flags &amp; <a class="code" href="classRTC.html#a02ace2d775063be9a99035851c9274eb" title="Wrap around to the beginning of the current month/year rather than advance to the next one...">WRAP</a>)) {
-<a name="l00314"></a>00314                 ++(date-&gt;<a class="code" href="structRTCDate.html#a6e6196059b36186041a5312400ea9202" title="Month of the year (1-12)">month</a>);
-<a name="l00315"></a>00315                 <span class="keywordflow">if</span> (date-&gt;<a class="code" href="structRTCDate.html#a6e6196059b36186041a5312400ea9202" title="Month of the year (1-12)">month</a> == 13)
-<a name="l00316"></a>00316                     date-&gt;<a class="code" href="structRTCDate.html#a6e6196059b36186041a5312400ea9202" title="Month of the year (1-12)">month</a> = 1;
-<a name="l00317"></a>00317             }
-<a name="l00318"></a>00318             date-&gt;<a class="code" href="structRTCDate.html#a2d68ff3fb90240df522b41222362704c" title="Day of the month (1-31)">day</a> = 1;
-<a name="l00319"></a>00319         }
-<a name="l00320"></a>00320     }
-<a name="l00321"></a>00321 }
-<a name="l00322"></a>00322 
-<a name="l00328"></a><a class="code" href="classRTC.html#aeca597e6e37a05716e664242f9cfc5f4">00328</a> <span class="keywordtype">void</span> <a class="code" href="classRTC.html#aeca597e6e37a05716e664242f9cfc5f4" title="Adjusts date up or down one month according to flags.">RTC::adjustMonths</a>(<a class="code" href="structRTCDate.html" title="Stores date information from a realtime clock chip.">RTCDate</a> *date, uint8_t flags)
-<a name="l00329"></a>00329 {
-<a name="l00330"></a>00330     <span class="keywordflow">if</span> (flags &amp; <a class="code" href="classRTC.html#a05b1bd1479afc80682abdd4f3e58dc6f" title="Decrement the day, month, or year in a call to adjustDays(), adjustMonths(), or adjustYears().">DECREMENT</a>) {
-<a name="l00331"></a>00331         --(date-&gt;<a class="code" href="structRTCDate.html#a6e6196059b36186041a5312400ea9202" title="Month of the year (1-12)">month</a>);
-<a name="l00332"></a>00332         <span class="keywordflow">if</span> (date-&gt;<a class="code" href="structRTCDate.html#a6e6196059b36186041a5312400ea9202" title="Month of the year (1-12)">month</a> == 0) {
-<a name="l00333"></a>00333             date-&gt;<a class="code" href="structRTCDate.html#a6e6196059b36186041a5312400ea9202" title="Month of the year (1-12)">month</a> = 12;
-<a name="l00334"></a>00334             <span class="keywordflow">if</span> (!(flags &amp; <a class="code" href="classRTC.html#a02ace2d775063be9a99035851c9274eb" title="Wrap around to the beginning of the current month/year rather than advance to the next one...">WRAP</a>) &amp;&amp; date-&gt;<a class="code" href="structRTCDate.html#a7d31822daff3c3fc947386abd897732f" title="Year (4-digit)">year</a> &gt; 2000)
-<a name="l00335"></a>00335                 --(date-&gt;<a class="code" href="structRTCDate.html#a7d31822daff3c3fc947386abd897732f" title="Year (4-digit)">year</a>);
-<a name="l00336"></a>00336         }
-<a name="l00337"></a>00337     } <span class="keywordflow">else</span> {
-<a name="l00338"></a>00338         ++(date-&gt;<a class="code" href="structRTCDate.html#a6e6196059b36186041a5312400ea9202" title="Month of the year (1-12)">month</a>);
-<a name="l00339"></a>00339         <span class="keywordflow">if</span> (date-&gt;<a class="code" href="structRTCDate.html#a6e6196059b36186041a5312400ea9202" title="Month of the year (1-12)">month</a> == 13) {
-<a name="l00340"></a>00340             date-&gt;<a class="code" href="structRTCDate.html#a6e6196059b36186041a5312400ea9202" title="Month of the year (1-12)">month</a> = 1;
-<a name="l00341"></a>00341             <span class="keywordflow">if</span> (!(flags &amp; <a class="code" href="classRTC.html#a02ace2d775063be9a99035851c9274eb" title="Wrap around to the beginning of the current month/year rather than advance to the next one...">WRAP</a>) &amp;&amp; date-&gt;<a class="code" href="structRTCDate.html#a7d31822daff3c3fc947386abd897732f" title="Year (4-digit)">year</a> &lt; 2099)
-<a name="l00342"></a>00342                 ++(date-&gt;<a class="code" href="structRTCDate.html#a7d31822daff3c3fc947386abd897732f" title="Year (4-digit)">year</a>);
-<a name="l00343"></a>00343         }
-<a name="l00344"></a>00344     }
-<a name="l00345"></a>00345     uint8_t len = monthLength(date);
-<a name="l00346"></a>00346     <span class="keywordflow">if</span> (date-&gt;<a class="code" href="structRTCDate.html#a2d68ff3fb90240df522b41222362704c" title="Day of the month (1-31)">day</a> &gt; len)
-<a name="l00347"></a>00347         date-&gt;<a class="code" href="structRTCDate.html#a2d68ff3fb90240df522b41222362704c" title="Day of the month (1-31)">day</a> = len;
-<a name="l00348"></a>00348 }
-<a name="l00349"></a>00349 
-<a name="l00355"></a><a class="code" href="classRTC.html#a31d10cb2f7cac8839bd4be2d858b802d">00355</a> <span class="keywordtype">void</span> <a class="code" href="classRTC.html#a31d10cb2f7cac8839bd4be2d858b802d" title="Adjusts date up or down one year according to flags.">RTC::adjustYears</a>(<a class="code" href="structRTCDate.html" title="Stores date information from a realtime clock chip.">RTCDate</a> *date, uint8_t flags)
-<a name="l00356"></a>00356 {
-<a name="l00357"></a>00357     <span class="keywordflow">if</span> (flags &amp; <a class="code" href="classRTC.html#a05b1bd1479afc80682abdd4f3e58dc6f" title="Decrement the day, month, or year in a call to adjustDays(), adjustMonths(), or adjustYears().">DECREMENT</a>) {
-<a name="l00358"></a>00358         --(date-&gt;<a class="code" href="structRTCDate.html#a7d31822daff3c3fc947386abd897732f" title="Year (4-digit)">year</a>);
-<a name="l00359"></a>00359         <span class="keywordflow">if</span> (date-&gt;<a class="code" href="structRTCDate.html#a7d31822daff3c3fc947386abd897732f" title="Year (4-digit)">year</a> &lt; 2000)
-<a name="l00360"></a>00360             date-&gt;<a class="code" href="structRTCDate.html#a7d31822daff3c3fc947386abd897732f" title="Year (4-digit)">year</a> = 2000;
-<a name="l00361"></a>00361     } <span class="keywordflow">else</span> {
-<a name="l00362"></a>00362         ++(date-&gt;<a class="code" href="structRTCDate.html#a7d31822daff3c3fc947386abd897732f" title="Year (4-digit)">year</a>);
-<a name="l00363"></a>00363         <span class="keywordflow">if</span> (date-&gt;<a class="code" href="structRTCDate.html#a7d31822daff3c3fc947386abd897732f" title="Year (4-digit)">year</a> &gt; 2099)
-<a name="l00364"></a>00364             date-&gt;<a class="code" href="structRTCDate.html#a7d31822daff3c3fc947386abd897732f" title="Year (4-digit)">year</a> = 2099;
-<a name="l00365"></a>00365     }
-<a name="l00366"></a>00366     uint8_t len = monthLength(date);
-<a name="l00367"></a>00367     <span class="keywordflow">if</span> (date-&gt;<a class="code" href="structRTCDate.html#a2d68ff3fb90240df522b41222362704c" title="Day of the month (1-31)">day</a> &gt; len)
-<a name="l00368"></a>00368         date-&gt;<a class="code" href="structRTCDate.html#a2d68ff3fb90240df522b41222362704c" title="Day of the month (1-31)">day</a> = len;
-<a name="l00369"></a>00369 }
-<a name="l00370"></a>00370 
+<a name="l00249"></a>00249     <span class="keywordflow">if</span> (nvram)
+<a name="l00250"></a>00250         <span class="keywordflow">return</span> nvram[offset];
+<a name="l00251"></a>00251     <span class="keywordflow">else</span>
+<a name="l00252"></a>00252         <span class="keywordflow">return</span> 0;
+<a name="l00253"></a>00253 }
+<a name="l00254"></a>00254 
+<a name="l00262"></a><a class="code" href="classRTC.html#a1cab6397ec04b1e2b3feea5b3cd1f749">00262</a> <span class="keywordtype">void</span> <a class="code" href="classRTC.html#a1cab6397ec04b1e2b3feea5b3cd1f749" title="Writes value to offset within the realtime clock&#39;s non-volatile memory.">RTC::writeByte</a>(uint8_t offset, uint8_t value)
+<a name="l00263"></a>00263 {
+<a name="l00264"></a>00264     <span class="keywordflow">if</span> (nvram) {
+<a name="l00265"></a>00265         nvram[offset] = value;
+<a name="l00266"></a>00266     } <span class="keywordflow">else</span> {
+<a name="l00267"></a>00267         nvram = (uint8_t *)malloc(DEFAULT_BYTE_COUNT);
+<a name="l00268"></a>00268         <span class="keywordflow">if</span> (nvram) {
+<a name="l00269"></a>00269             memset(nvram, 0, DEFAULT_BYTE_COUNT);
+<a name="l00270"></a>00270             nvram[offset] = value;
+<a name="l00271"></a>00271         }
+<a name="l00272"></a>00272     }
+<a name="l00273"></a>00273 }
+<a name="l00274"></a>00274 
+<a name="l00288"></a><a class="code" href="classRTC.html#aeca3c8387332e8cabfd09c1806276e5a">00288</a> <span class="keywordtype">int</span> <a class="code" href="classRTC.html#aeca3c8387332e8cabfd09c1806276e5a" title="Reads the value of the temperature sensor and returns the temperature in quarters of a degree celcius...">RTC::readTemperature</a>()
+<a name="l00289"></a>00289 {
+<a name="l00290"></a>00290     <span class="keywordflow">return</span> <a class="code" href="classRTC.html#a9ed5480b362a83f1f45c4d3bcf7c3bf8" title="Value that is returned from readTemperature() if the realtime clock chip cannot determine the tempera...">NO_TEMPERATURE</a>;
+<a name="l00291"></a>00291 }
+<a name="l00292"></a>00292 
+<a name="l00313"></a><a class="code" href="classRTC.html#adc29d7c43efc5a192d21965da5c3ee1d">00313</a> <span class="keywordtype">void</span> <a class="code" href="classRTC.html#adc29d7c43efc5a192d21965da5c3ee1d" title="Adjusts date up or down one day according to flags.">RTC::adjustDays</a>(<a class="code" href="structRTCDate.html" title="Stores date information from a realtime clock chip.">RTCDate</a> *date, uint8_t flags)
+<a name="l00314"></a>00314 {
+<a name="l00315"></a>00315     <span class="keywordflow">if</span> (flags &amp; <a class="code" href="classRTC.html#a05b1bd1479afc80682abdd4f3e58dc6f" title="Decrement the day, month, or year in a call to adjustDays(), adjustMonths(), or adjustYears().">DECREMENT</a>) {
+<a name="l00316"></a>00316         --(date-&gt;<a class="code" href="structRTCDate.html#a2d68ff3fb90240df522b41222362704c" title="Day of the month (1-31)">day</a>);
+<a name="l00317"></a>00317         <span class="keywordflow">if</span> (date-&gt;<a class="code" href="structRTCDate.html#a2d68ff3fb90240df522b41222362704c" title="Day of the month (1-31)">day</a> == 0) {
+<a name="l00318"></a>00318             <span class="keywordflow">if</span> (!(flags &amp; <a class="code" href="classRTC.html#a02ace2d775063be9a99035851c9274eb" title="Wrap around to the beginning of the current month/year rather than advance to the next one...">WRAP</a>)) {
+<a name="l00319"></a>00319                 --(date-&gt;<a class="code" href="structRTCDate.html#a6e6196059b36186041a5312400ea9202" title="Month of the year (1-12)">month</a>);
+<a name="l00320"></a>00320                 <span class="keywordflow">if</span> (date-&gt;<a class="code" href="structRTCDate.html#a6e6196059b36186041a5312400ea9202" title="Month of the year (1-12)">month</a> == 0)
+<a name="l00321"></a>00321                     date-&gt;<a class="code" href="structRTCDate.html#a6e6196059b36186041a5312400ea9202" title="Month of the year (1-12)">month</a> = 12;
+<a name="l00322"></a>00322             }
+<a name="l00323"></a>00323             date-&gt;<a class="code" href="structRTCDate.html#a2d68ff3fb90240df522b41222362704c" title="Day of the month (1-31)">day</a> = monthLength(date);
+<a name="l00324"></a>00324         }
+<a name="l00325"></a>00325     } <span class="keywordflow">else</span> {
+<a name="l00326"></a>00326         ++(date-&gt;<a class="code" href="structRTCDate.html#a2d68ff3fb90240df522b41222362704c" title="Day of the month (1-31)">day</a>);
+<a name="l00327"></a>00327         <span class="keywordflow">if</span> (date-&gt;<a class="code" href="structRTCDate.html#a2d68ff3fb90240df522b41222362704c" title="Day of the month (1-31)">day</a> &gt; monthLength(date)) {
+<a name="l00328"></a>00328             <span class="keywordflow">if</span> (!(flags &amp; <a class="code" href="classRTC.html#a02ace2d775063be9a99035851c9274eb" title="Wrap around to the beginning of the current month/year rather than advance to the next one...">WRAP</a>)) {
+<a name="l00329"></a>00329                 ++(date-&gt;<a class="code" href="structRTCDate.html#a6e6196059b36186041a5312400ea9202" title="Month of the year (1-12)">month</a>);
+<a name="l00330"></a>00330                 <span class="keywordflow">if</span> (date-&gt;<a class="code" href="structRTCDate.html#a6e6196059b36186041a5312400ea9202" title="Month of the year (1-12)">month</a> == 13)
+<a name="l00331"></a>00331                     date-&gt;<a class="code" href="structRTCDate.html#a6e6196059b36186041a5312400ea9202" title="Month of the year (1-12)">month</a> = 1;
+<a name="l00332"></a>00332             }
+<a name="l00333"></a>00333             date-&gt;<a class="code" href="structRTCDate.html#a2d68ff3fb90240df522b41222362704c" title="Day of the month (1-31)">day</a> = 1;
+<a name="l00334"></a>00334         }
+<a name="l00335"></a>00335     }
+<a name="l00336"></a>00336 }
+<a name="l00337"></a>00337 
+<a name="l00343"></a><a class="code" href="classRTC.html#aeca597e6e37a05716e664242f9cfc5f4">00343</a> <span class="keywordtype">void</span> <a class="code" href="classRTC.html#aeca597e6e37a05716e664242f9cfc5f4" title="Adjusts date up or down one month according to flags.">RTC::adjustMonths</a>(<a class="code" href="structRTCDate.html" title="Stores date information from a realtime clock chip.">RTCDate</a> *date, uint8_t flags)
+<a name="l00344"></a>00344 {
+<a name="l00345"></a>00345     <span class="keywordflow">if</span> (flags &amp; <a class="code" href="classRTC.html#a05b1bd1479afc80682abdd4f3e58dc6f" title="Decrement the day, month, or year in a call to adjustDays(), adjustMonths(), or adjustYears().">DECREMENT</a>) {
+<a name="l00346"></a>00346         --(date-&gt;<a class="code" href="structRTCDate.html#a6e6196059b36186041a5312400ea9202" title="Month of the year (1-12)">month</a>);
+<a name="l00347"></a>00347         <span class="keywordflow">if</span> (date-&gt;<a class="code" href="structRTCDate.html#a6e6196059b36186041a5312400ea9202" title="Month of the year (1-12)">month</a> == 0) {
+<a name="l00348"></a>00348             date-&gt;<a class="code" href="structRTCDate.html#a6e6196059b36186041a5312400ea9202" title="Month of the year (1-12)">month</a> = 12;
+<a name="l00349"></a>00349             <span class="keywordflow">if</span> (!(flags &amp; <a class="code" href="classRTC.html#a02ace2d775063be9a99035851c9274eb" title="Wrap around to the beginning of the current month/year rather than advance to the next one...">WRAP</a>) &amp;&amp; date-&gt;<a class="code" href="structRTCDate.html#a7d31822daff3c3fc947386abd897732f" title="Year (4-digit)">year</a> &gt; 2000)
+<a name="l00350"></a>00350                 --(date-&gt;<a class="code" href="structRTCDate.html#a7d31822daff3c3fc947386abd897732f" title="Year (4-digit)">year</a>);
+<a name="l00351"></a>00351         }
+<a name="l00352"></a>00352     } <span class="keywordflow">else</span> {
+<a name="l00353"></a>00353         ++(date-&gt;<a class="code" href="structRTCDate.html#a6e6196059b36186041a5312400ea9202" title="Month of the year (1-12)">month</a>);
+<a name="l00354"></a>00354         <span class="keywordflow">if</span> (date-&gt;<a class="code" href="structRTCDate.html#a6e6196059b36186041a5312400ea9202" title="Month of the year (1-12)">month</a> == 13) {
+<a name="l00355"></a>00355             date-&gt;<a class="code" href="structRTCDate.html#a6e6196059b36186041a5312400ea9202" title="Month of the year (1-12)">month</a> = 1;
+<a name="l00356"></a>00356             <span class="keywordflow">if</span> (!(flags &amp; <a class="code" href="classRTC.html#a02ace2d775063be9a99035851c9274eb" title="Wrap around to the beginning of the current month/year rather than advance to the next one...">WRAP</a>) &amp;&amp; date-&gt;<a class="code" href="structRTCDate.html#a7d31822daff3c3fc947386abd897732f" title="Year (4-digit)">year</a> &lt; 2099)
+<a name="l00357"></a>00357                 ++(date-&gt;<a class="code" href="structRTCDate.html#a7d31822daff3c3fc947386abd897732f" title="Year (4-digit)">year</a>);
+<a name="l00358"></a>00358         }
+<a name="l00359"></a>00359     }
+<a name="l00360"></a>00360     uint8_t len = monthLength(date);
+<a name="l00361"></a>00361     <span class="keywordflow">if</span> (date-&gt;<a class="code" href="structRTCDate.html#a2d68ff3fb90240df522b41222362704c" title="Day of the month (1-31)">day</a> &gt; len)
+<a name="l00362"></a>00362         date-&gt;<a class="code" href="structRTCDate.html#a2d68ff3fb90240df522b41222362704c" title="Day of the month (1-31)">day</a> = len;
+<a name="l00363"></a>00363 }
+<a name="l00364"></a>00364 
+<a name="l00370"></a><a class="code" href="classRTC.html#a31d10cb2f7cac8839bd4be2d858b802d">00370</a> <span class="keywordtype">void</span> <a class="code" href="classRTC.html#a31d10cb2f7cac8839bd4be2d858b802d" title="Adjusts date up or down one year according to flags.">RTC::adjustYears</a>(<a class="code" href="structRTCDate.html" title="Stores date information from a realtime clock chip.">RTCDate</a> *date, uint8_t flags)
+<a name="l00371"></a>00371 {
+<a name="l00372"></a>00372     <span class="keywordflow">if</span> (flags &amp; <a class="code" href="classRTC.html#a05b1bd1479afc80682abdd4f3e58dc6f" title="Decrement the day, month, or year in a call to adjustDays(), adjustMonths(), or adjustYears().">DECREMENT</a>) {
+<a name="l00373"></a>00373         --(date-&gt;<a class="code" href="structRTCDate.html#a7d31822daff3c3fc947386abd897732f" title="Year (4-digit)">year</a>);
+<a name="l00374"></a>00374         <span class="keywordflow">if</span> (date-&gt;<a class="code" href="structRTCDate.html#a7d31822daff3c3fc947386abd897732f" title="Year (4-digit)">year</a> &lt; 2000)
+<a name="l00375"></a>00375             date-&gt;<a class="code" href="structRTCDate.html#a7d31822daff3c3fc947386abd897732f" title="Year (4-digit)">year</a> = 2000;
+<a name="l00376"></a>00376     } <span class="keywordflow">else</span> {
+<a name="l00377"></a>00377         ++(date-&gt;<a class="code" href="structRTCDate.html#a7d31822daff3c3fc947386abd897732f" title="Year (4-digit)">year</a>);
+<a name="l00378"></a>00378         <span class="keywordflow">if</span> (date-&gt;<a class="code" href="structRTCDate.html#a7d31822daff3c3fc947386abd897732f" title="Year (4-digit)">year</a> &gt; 2099)
+<a name="l00379"></a>00379             date-&gt;<a class="code" href="structRTCDate.html#a7d31822daff3c3fc947386abd897732f" title="Year (4-digit)">year</a> = 2099;
+<a name="l00380"></a>00380     }
+<a name="l00381"></a>00381     uint8_t len = monthLength(date);
+<a name="l00382"></a>00382     <span class="keywordflow">if</span> (date-&gt;<a class="code" href="structRTCDate.html#a2d68ff3fb90240df522b41222362704c" title="Day of the month (1-31)">day</a> &gt; len)
+<a name="l00383"></a>00383         date-&gt;<a class="code" href="structRTCDate.html#a2d68ff3fb90240df522b41222362704c" title="Day of the month (1-31)">day</a> = len;
+<a name="l00384"></a>00384 }
+<a name="l00385"></a>00385 
+<a name="l00399"></a><a class="code" href="classRTC.html#a525a9c1dad89613708f47a683eb316aa">00399</a> <a class="code" href="classRTC.html#ab2ca0cbee608ec32d3d6e04d40298f11" title="Day of the week corresponding to a date.">RTC::DayOfWeek</a> <a class="code" href="classRTC.html#a525a9c1dad89613708f47a683eb316aa" title="Returns the day of the week corresponding to date.">RTC::dayOfWeek</a>(<span class="keyword">const</span> <a class="code" href="structRTCDate.html" title="Stores date information from a realtime clock chip.">RTCDate</a> *date)
+<a name="l00400"></a>00400 {
+<a name="l00401"></a>00401     <span class="comment">// The +4 here adjusts for Jan 1, 2000 being a Saturday.</span>
+<a name="l00402"></a>00402     <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> daynum = date-&gt;<a class="code" href="structRTCDate.html#a2d68ff3fb90240df522b41222362704c" title="Day of the month (1-31)">day</a> + 4;
+<a name="l00403"></a>00403     daynum += monthOffsets[date-&gt;<a class="code" href="structRTCDate.html#a6e6196059b36186041a5312400ea9202" title="Month of the year (1-12)">month</a> - 1];
+<a name="l00404"></a>00404     <span class="keywordflow">if</span> (date-&gt;<a class="code" href="structRTCDate.html#a6e6196059b36186041a5312400ea9202" title="Month of the year (1-12)">month</a> &gt; 2 &amp;&amp; isLeapYear(date-&gt;<a class="code" href="structRTCDate.html#a7d31822daff3c3fc947386abd897732f" title="Year (4-digit)">year</a>))
+<a name="l00405"></a>00405         ++daynum;
+<a name="l00406"></a>00406     daynum += 365UL * (date-&gt;<a class="code" href="structRTCDate.html#a7d31822daff3c3fc947386abd897732f" title="Year (4-digit)">year</a> - 2000);
+<a name="l00407"></a>00407     <span class="keywordflow">if</span> (date-&gt;<a class="code" href="structRTCDate.html#a7d31822daff3c3fc947386abd897732f" title="Year (4-digit)">year</a> &gt; 2000)
+<a name="l00408"></a>00408         daynum += ((date-&gt;<a class="code" href="structRTCDate.html#a7d31822daff3c3fc947386abd897732f" title="Year (4-digit)">year</a> - 2001) / 4) + 1;
+<a name="l00409"></a>00409     <span class="keywordflow">return</span> (<a class="code" href="classRTC.html#ab2ca0cbee608ec32d3d6e04d40298f11" title="Day of the week corresponding to a date.">DayOfWeek</a>)((daynum % 7) + 1);
+<a name="l00410"></a>00410 }
+<a name="l00411"></a>00411 
 </pre></div></div>
 </div>
 <!-- window showing the filter options -->
@@ -303,7 +331,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Tue Jun 12 2012 11:29:25 for ArduinoLibs by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Wed Jun 13 2012 15:22:29 for ArduinoLibs by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

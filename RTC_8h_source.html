@@ -114,44 +114,57 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00052"></a>00052     <a class="code" href="classRTC.html#ada31c5120d18d2dd2863b3d440308da2" title="Constructs a new realtime clock handler.">RTC</a>();
 <a name="l00053"></a>00053     ~<a class="code" href="classRTC.html" title="Base class for realtime clock handlers.">RTC</a>();
 <a name="l00054"></a>00054 
-<a name="l00055"></a>00055     <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="classRTC.html#a3690761f29654a2c9e676fcbfa32dd30" title="Returns true if the realtime clock has updated since the last call to this function.">hasUpdates</a>();
-<a name="l00056"></a>00056 
-<a name="l00057"></a>00057     <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classRTC.html#aaf0a5c1f32f210a49718d148620b5bec" title="Reads the current time from the realtime clock into value.">readTime</a>(<a class="code" href="structRTCTime.html" title="Stores time information from a realtime clock chip.">RTCTime</a> *value);
-<a name="l00058"></a>00058     <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classRTC.html#aa1e21bf42ebd4456919744ae0f4f631e" title="Reads the current date from the realtime clock into value.">readDate</a>(<a class="code" href="structRTCDate.html" title="Stores date information from a realtime clock chip.">RTCDate</a> *value);
-<a name="l00059"></a>00059 
-<a name="l00060"></a>00060     <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classRTC.html#a102e2ec15bf0273d8f7e9ce4b6dcc96e" title="Updates the time in the realtime clock to match value.">writeTime</a>(<span class="keyword">const</span> <a class="code" href="structRTCTime.html" title="Stores time information from a realtime clock chip.">RTCTime</a> *value);
-<a name="l00061"></a>00061     <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classRTC.html#ae667600d05c8e7b06a93574dd068a4d7" title="Updates the date in the realtime clock to match value.">writeDate</a>(<span class="keyword">const</span> <a class="code" href="structRTCDate.html" title="Stores date information from a realtime clock chip.">RTCDate</a> *value);
-<a name="l00062"></a>00062 
-<a name="l00063"></a><a class="code" href="classRTC.html#aee5ae8f600ee5296e65635c0d836fca3">00063</a>     <span class="keyword">static</span> <span class="keyword">const</span> uint8_t <a class="code" href="classRTC.html#aee5ae8f600ee5296e65635c0d836fca3" title="Number of alarms that are supported by RTC::readAlarm() and RTC::writeAlarm().">ALARM_COUNT</a> = 4;
-<a name="l00064"></a>00064 
-<a name="l00065"></a>00065     <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classRTC.html#ade282d7a60147c3f0269f1fcd59c8d66" title="Reads the details of the alarm with index alarmNum into value.">readAlarm</a>(uint8_t alarmNum, <a class="code" href="structRTCAlarm.html" title="Stores alarm information from a realtime clock chip.">RTCAlarm</a> *value);
-<a name="l00066"></a>00066     <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classRTC.html#a0e96c91efd9e7a6340effdae3eadf17e" title="Updates the details of the alarm with index alarmNum from value.">writeAlarm</a>(uint8_t alarmNum, <span class="keyword">const</span> <a class="code" href="structRTCAlarm.html" title="Stores alarm information from a realtime clock chip.">RTCAlarm</a> *value);
+<a name="l00055"></a><a class="code" href="classRTC.html#ab2ca0cbee608ec32d3d6e04d40298f11">00055</a>     <span class="keyword">enum</span> <a class="code" href="classRTC.html#ab2ca0cbee608ec32d3d6e04d40298f11" title="Day of the week corresponding to a date.">DayOfWeek</a>
+<a name="l00056"></a>00056     {
+<a name="l00057"></a>00057         Monday = 1,
+<a name="l00058"></a>00058         Tuesday,
+<a name="l00059"></a>00059         Wednesday,
+<a name="l00060"></a>00060         Thursday,
+<a name="l00061"></a>00061         Friday,
+<a name="l00062"></a>00062         Saturday,
+<a name="l00063"></a>00063         Sunday,
+<a name="l00064"></a>00064     };
+<a name="l00065"></a>00065 
+<a name="l00066"></a>00066     <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="classRTC.html#a3690761f29654a2c9e676fcbfa32dd30" title="Returns true if the realtime clock has updated since the last call to this function.">hasUpdates</a>();
 <a name="l00067"></a>00067 
-<a name="l00068"></a>00068     <span class="keyword">virtual</span> <span class="keywordtype">int</span> <a class="code" href="classRTC.html#acfdebfb449710e44e11f9a3675e14fd8" title="Returns the number of bytes of non-volatile memory that can be used for storage of arbitrary settings...">byteCount</a>() <span class="keyword">const</span>;
-<a name="l00069"></a>00069     <span class="keyword">virtual</span> uint8_t <a class="code" href="classRTC.html#a0f47b10b436e3f9d36e04ec907579431" title="Reads the byte at offset within the realtime clock&#39;s non-volatile memory.">readByte</a>(uint8_t offset);
-<a name="l00070"></a>00070     <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classRTC.html#a1cab6397ec04b1e2b3feea5b3cd1f749" title="Writes value to offset within the realtime clock&#39;s non-volatile memory.">writeByte</a>(uint8_t offset, uint8_t value);
-<a name="l00071"></a>00071 
-<a name="l00072"></a><a class="code" href="classRTC.html#a9ed5480b362a83f1f45c4d3bcf7c3bf8">00072</a>     <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">int</span> <a class="code" href="classRTC.html#a9ed5480b362a83f1f45c4d3bcf7c3bf8" title="Value that is returned from readTemperature() if the realtime clock chip cannot determine the tempera...">NO_TEMPERATURE</a> = 32767;
+<a name="l00068"></a>00068     <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classRTC.html#aaf0a5c1f32f210a49718d148620b5bec" title="Reads the current time from the realtime clock into value.">readTime</a>(<a class="code" href="structRTCTime.html" title="Stores time information from a realtime clock chip.">RTCTime</a> *value);
+<a name="l00069"></a>00069     <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classRTC.html#aa1e21bf42ebd4456919744ae0f4f631e" title="Reads the current date from the realtime clock into value.">readDate</a>(<a class="code" href="structRTCDate.html" title="Stores date information from a realtime clock chip.">RTCDate</a> *value);
+<a name="l00070"></a>00070 
+<a name="l00071"></a>00071     <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classRTC.html#a102e2ec15bf0273d8f7e9ce4b6dcc96e" title="Updates the time in the realtime clock to match value.">writeTime</a>(<span class="keyword">const</span> <a class="code" href="structRTCTime.html" title="Stores time information from a realtime clock chip.">RTCTime</a> *value);
+<a name="l00072"></a>00072     <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classRTC.html#ae667600d05c8e7b06a93574dd068a4d7" title="Updates the date in the realtime clock to match value.">writeDate</a>(<span class="keyword">const</span> <a class="code" href="structRTCDate.html" title="Stores date information from a realtime clock chip.">RTCDate</a> *value);
 <a name="l00073"></a>00073 
-<a name="l00074"></a>00074     <span class="keyword">virtual</span> <span class="keywordtype">int</span> <a class="code" href="classRTC.html#aeca3c8387332e8cabfd09c1806276e5a" title="Reads the value of the temperature sensor and returns the temperature in quarters of a degree celcius...">readTemperature</a>();
+<a name="l00074"></a><a class="code" href="classRTC.html#aee5ae8f600ee5296e65635c0d836fca3">00074</a>     <span class="keyword">static</span> <span class="keyword">const</span> uint8_t <a class="code" href="classRTC.html#aee5ae8f600ee5296e65635c0d836fca3" title="Number of alarms that are supported by RTC::readAlarm() and RTC::writeAlarm().">ALARM_COUNT</a> = 4;
 <a name="l00075"></a>00075 
-<a name="l00076"></a>00076     <span class="comment">// Flags for adjustDays(), adjustMonths(), and adjustYears().</span>
-<a name="l00077"></a><a class="code" href="classRTC.html#aacbe3ebbf893685950b05327c11d5c37">00077</a>     <span class="keyword">static</span> <span class="keyword">const</span> uint8_t <a class="code" href="classRTC.html#aacbe3ebbf893685950b05327c11d5c37" title="Increment the day, month, or year in a call to adjustDays(), adjustMonths(), or adjustYears().">INCREMENT</a> = 0x0000;
-<a name="l00078"></a><a class="code" href="classRTC.html#a05b1bd1479afc80682abdd4f3e58dc6f">00078</a>     <span class="keyword">static</span> <span class="keyword">const</span> uint8_t <a class="code" href="classRTC.html#a05b1bd1479afc80682abdd4f3e58dc6f" title="Decrement the day, month, or year in a call to adjustDays(), adjustMonths(), or adjustYears().">DECREMENT</a> = 0x0001;
-<a name="l00079"></a><a class="code" href="classRTC.html#a02ace2d775063be9a99035851c9274eb">00079</a>     <span class="keyword">static</span> <span class="keyword">const</span> uint8_t <a class="code" href="classRTC.html#a02ace2d775063be9a99035851c9274eb" title="Wrap around to the beginning of the current month/year rather than advance to the next one...">WRAP</a>      = 0x0002;
-<a name="l00080"></a>00080 
-<a name="l00081"></a>00081     <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="classRTC.html#adc29d7c43efc5a192d21965da5c3ee1d" title="Adjusts date up or down one day according to flags.">adjustDays</a>(<a class="code" href="structRTCDate.html" title="Stores date information from a realtime clock chip.">RTCDate</a> *date, uint8_t flags);
-<a name="l00082"></a>00082     <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="classRTC.html#aeca597e6e37a05716e664242f9cfc5f4" title="Adjusts date up or down one month according to flags.">adjustMonths</a>(<a class="code" href="structRTCDate.html" title="Stores date information from a realtime clock chip.">RTCDate</a> *date, uint8_t flags);
-<a name="l00083"></a>00083     <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="classRTC.html#a31d10cb2f7cac8839bd4be2d858b802d" title="Adjusts date up or down one year according to flags.">adjustYears</a>(<a class="code" href="structRTCDate.html" title="Stores date information from a realtime clock chip.">RTCDate</a> *date, uint8_t flags);
+<a name="l00076"></a>00076     <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classRTC.html#ade282d7a60147c3f0269f1fcd59c8d66" title="Reads the details of the alarm with index alarmNum into value.">readAlarm</a>(uint8_t alarmNum, <a class="code" href="structRTCAlarm.html" title="Stores alarm information from a realtime clock chip.">RTCAlarm</a> *value);
+<a name="l00077"></a>00077     <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classRTC.html#a0e96c91efd9e7a6340effdae3eadf17e" title="Updates the details of the alarm with index alarmNum from value.">writeAlarm</a>(uint8_t alarmNum, <span class="keyword">const</span> <a class="code" href="structRTCAlarm.html" title="Stores alarm information from a realtime clock chip.">RTCAlarm</a> *value);
+<a name="l00078"></a>00078 
+<a name="l00079"></a>00079     <span class="keyword">virtual</span> <span class="keywordtype">int</span> <a class="code" href="classRTC.html#acfdebfb449710e44e11f9a3675e14fd8" title="Returns the number of bytes of non-volatile memory that can be used for storage of arbitrary settings...">byteCount</a>() <span class="keyword">const</span>;
+<a name="l00080"></a>00080     <span class="keyword">virtual</span> uint8_t <a class="code" href="classRTC.html#a0f47b10b436e3f9d36e04ec907579431" title="Reads the byte at offset within the realtime clock&#39;s non-volatile memory.">readByte</a>(uint8_t offset);
+<a name="l00081"></a>00081     <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classRTC.html#a1cab6397ec04b1e2b3feea5b3cd1f749" title="Writes value to offset within the realtime clock&#39;s non-volatile memory.">writeByte</a>(uint8_t offset, uint8_t value);
+<a name="l00082"></a>00082 
+<a name="l00083"></a><a class="code" href="classRTC.html#a9ed5480b362a83f1f45c4d3bcf7c3bf8">00083</a>     <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">int</span> <a class="code" href="classRTC.html#a9ed5480b362a83f1f45c4d3bcf7c3bf8" title="Value that is returned from readTemperature() if the realtime clock chip cannot determine the tempera...">NO_TEMPERATURE</a> = 32767;
 <a name="l00084"></a>00084 
-<a name="l00085"></a>00085 <span class="keyword">private</span>:
-<a name="l00086"></a>00086     <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> midnight;
-<a name="l00087"></a>00087     <a class="code" href="structRTCDate.html" title="Stores date information from a realtime clock chip.">RTCDate</a> date;
-<a name="l00088"></a>00088     <a class="code" href="structRTCAlarm.html" title="Stores alarm information from a realtime clock chip.">RTCAlarm</a> alarms[<a class="code" href="classRTC.html#aee5ae8f600ee5296e65635c0d836fca3" title="Number of alarms that are supported by RTC::readAlarm() and RTC::writeAlarm().">ALARM_COUNT</a>];
-<a name="l00089"></a>00089     uint8_t *nvram;
-<a name="l00090"></a>00090 };
+<a name="l00085"></a>00085     <span class="keyword">virtual</span> <span class="keywordtype">int</span> <a class="code" href="classRTC.html#aeca3c8387332e8cabfd09c1806276e5a" title="Reads the value of the temperature sensor and returns the temperature in quarters of a degree celcius...">readTemperature</a>();
+<a name="l00086"></a>00086 
+<a name="l00087"></a>00087     <span class="comment">// Flags for adjustDays(), adjustMonths(), and adjustYears().</span>
+<a name="l00088"></a><a class="code" href="classRTC.html#aacbe3ebbf893685950b05327c11d5c37">00088</a>     <span class="keyword">static</span> <span class="keyword">const</span> uint8_t <a class="code" href="classRTC.html#aacbe3ebbf893685950b05327c11d5c37" title="Increment the day, month, or year in a call to adjustDays(), adjustMonths(), or adjustYears().">INCREMENT</a> = 0x0000;
+<a name="l00089"></a><a class="code" href="classRTC.html#a05b1bd1479afc80682abdd4f3e58dc6f">00089</a>     <span class="keyword">static</span> <span class="keyword">const</span> uint8_t <a class="code" href="classRTC.html#a05b1bd1479afc80682abdd4f3e58dc6f" title="Decrement the day, month, or year in a call to adjustDays(), adjustMonths(), or adjustYears().">DECREMENT</a> = 0x0001;
+<a name="l00090"></a><a class="code" href="classRTC.html#a02ace2d775063be9a99035851c9274eb">00090</a>     <span class="keyword">static</span> <span class="keyword">const</span> uint8_t <a class="code" href="classRTC.html#a02ace2d775063be9a99035851c9274eb" title="Wrap around to the beginning of the current month/year rather than advance to the next one...">WRAP</a>      = 0x0002;
 <a name="l00091"></a>00091 
-<a name="l00092"></a>00092 <span class="preprocessor">#endif</span>
+<a name="l00092"></a>00092     <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="classRTC.html#adc29d7c43efc5a192d21965da5c3ee1d" title="Adjusts date up or down one day according to flags.">adjustDays</a>(<a class="code" href="structRTCDate.html" title="Stores date information from a realtime clock chip.">RTCDate</a> *date, uint8_t flags);
+<a name="l00093"></a>00093     <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="classRTC.html#aeca597e6e37a05716e664242f9cfc5f4" title="Adjusts date up or down one month according to flags.">adjustMonths</a>(<a class="code" href="structRTCDate.html" title="Stores date information from a realtime clock chip.">RTCDate</a> *date, uint8_t flags);
+<a name="l00094"></a>00094     <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="classRTC.html#a31d10cb2f7cac8839bd4be2d858b802d" title="Adjusts date up or down one year according to flags.">adjustYears</a>(<a class="code" href="structRTCDate.html" title="Stores date information from a realtime clock chip.">RTCDate</a> *date, uint8_t flags);
+<a name="l00095"></a>00095 
+<a name="l00096"></a>00096     <span class="keyword">static</span> <a class="code" href="classRTC.html#ab2ca0cbee608ec32d3d6e04d40298f11" title="Day of the week corresponding to a date.">DayOfWeek</a> <a class="code" href="classRTC.html#a525a9c1dad89613708f47a683eb316aa" title="Returns the day of the week corresponding to date.">dayOfWeek</a>(<span class="keyword">const</span> <a class="code" href="structRTCDate.html" title="Stores date information from a realtime clock chip.">RTCDate</a> *date);
+<a name="l00097"></a>00097 
+<a name="l00098"></a>00098 <span class="keyword">private</span>:
+<a name="l00099"></a>00099     <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> midnight;
+<a name="l00100"></a>00100     <a class="code" href="structRTCDate.html" title="Stores date information from a realtime clock chip.">RTCDate</a> date;
+<a name="l00101"></a>00101     <a class="code" href="structRTCAlarm.html" title="Stores alarm information from a realtime clock chip.">RTCAlarm</a> alarms[<a class="code" href="classRTC.html#aee5ae8f600ee5296e65635c0d836fca3" title="Number of alarms that are supported by RTC::readAlarm() and RTC::writeAlarm().">ALARM_COUNT</a>];
+<a name="l00102"></a>00102     uint8_t *nvram;
+<a name="l00103"></a>00103 };
+<a name="l00104"></a>00104 
+<a name="l00105"></a>00105 <span class="preprocessor">#endif</span>
 </pre></div></div>
 </div>
 <!-- window showing the filter options -->
@@ -168,7 +181,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Tue Jun 12 2012 11:29:25 for ArduinoLibs by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Wed Jun 13 2012 15:22:29 for ArduinoLibs by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

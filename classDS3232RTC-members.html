@@ -70,6 +70,8 @@ This is the complete list of members for <a class="el" href="classDS3232RTC.html
   <tr class="memlist"><td><a class="el" href="classRTC.html#a31d10cb2f7cac8839bd4be2d858b802d">adjustYears</a>(RTCDate *date, uint8_t flags)</td><td><a class="el" href="classRTC.html">RTC</a></td><td><code> [static]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="classRTC.html#aee5ae8f600ee5296e65635c0d836fca3">ALARM_COUNT</a></td><td><a class="el" href="classRTC.html">RTC</a></td><td><code> [static]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="classDS3232RTC.html#a1319fe936dcb7e9d6bdf200b77a94f8e">byteCount</a>() const </td><td><a class="el" href="classDS3232RTC.html">DS3232RTC</a></td><td><code> [virtual]</code></td></tr>
+  <tr class="memlist"><td><a class="el" href="classRTC.html#a525a9c1dad89613708f47a683eb316aa">dayOfWeek</a>(const RTCDate *date)</td><td><a class="el" href="classRTC.html">RTC</a></td><td><code> [static]</code></td></tr>
+  <tr class="memlist"><td><a class="el" href="classRTC.html#ab2ca0cbee608ec32d3d6e04d40298f11">DayOfWeek</a> enum name</td><td><a class="el" href="classRTC.html">RTC</a></td><td></td></tr>
   <tr class="memlist"><td><a class="el" href="classRTC.html#a05b1bd1479afc80682abdd4f3e58dc6f">DECREMENT</a></td><td><a class="el" href="classRTC.html">RTC</a></td><td><code> [static]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="classDS3232RTC.html#ada732bae42fc2833e59ae293aa27ddcb">disable32kHzOutput</a>()</td><td><a class="el" href="classDS3232RTC.html">DS3232RTC</a></td><td></td></tr>
   <tr class="memlist"><td><a class="el" href="classDS3232RTC.html#a225b8c62d617aa1b7be7d20e8a033be9">disableAlarmInterrupts</a>()</td><td><a class="el" href="classDS3232RTC.html">DS3232RTC</a></td><td></td></tr>
@@ -77,9 +79,11 @@ This is the complete list of members for <a class="el" href="classDS3232RTC.html
   <tr class="memlist"><td><a class="el" href="classDS3232RTC.html#a3966de6f4241d86f198a8b9dd5e7e59a">enable32kHzOutput</a>()</td><td><a class="el" href="classDS3232RTC.html">DS3232RTC</a></td><td></td></tr>
   <tr class="memlist"><td><a class="el" href="classDS3232RTC.html#ab91e79271a1f8e75b07bddbb04445dc9">enableAlarmInterrupts</a>()</td><td><a class="el" href="classDS3232RTC.html">DS3232RTC</a></td><td></td></tr>
   <tr class="memlist"><td><a class="el" href="classDS3232RTC.html#a79649f100a4562b9c1ba7c69e85cbca3">firedAlarm</a>()</td><td><a class="el" href="classDS3232RTC.html">DS3232RTC</a></td><td></td></tr>
+  <tr bgcolor="#f0f0f0"><td><b>Friday</b> enum value (defined in <a class="el" href="classRTC.html">RTC</a>)</td><td><a class="el" href="classRTC.html">RTC</a></td><td></td></tr>
   <tr class="memlist"><td><a class="el" href="classDS3232RTC.html#a619ffee1bc013c9ddf4ae415115798bc">hasUpdates</a>()</td><td><a class="el" href="classDS3232RTC.html">DS3232RTC</a></td><td><code> [virtual]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="classRTC.html#aacbe3ebbf893685950b05327c11d5c37">INCREMENT</a></td><td><a class="el" href="classRTC.html">RTC</a></td><td><code> [static]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="classDS3232RTC.html#acc5908a3743afb4c26bd75e22cad87a4">isRealTime</a>() const </td><td><a class="el" href="classDS3232RTC.html">DS3232RTC</a></td><td><code> [inline]</code></td></tr>
+  <tr bgcolor="#f0f0f0"><td><b>Monday</b> enum value (defined in <a class="el" href="classRTC.html">RTC</a>)</td><td><a class="el" href="classRTC.html">RTC</a></td><td></td></tr>
   <tr class="memlist"><td><a class="el" href="classRTC.html#a9ed5480b362a83f1f45c4d3bcf7c3bf8">NO_TEMPERATURE</a></td><td><a class="el" href="classRTC.html">RTC</a></td><td><code> [static]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="classDS3232RTC.html#a09c7073c687dcbbc423baf48074c7873">readAlarm</a>(uint8_t alarmNum, RTCAlarm *value)</td><td><a class="el" href="classDS3232RTC.html">DS3232RTC</a></td><td><code> [virtual]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="classDS3232RTC.html#a5ba83a3ef7d65d45c2f3241afdd8fef7">readByte</a>(uint8_t offset)</td><td><a class="el" href="classDS3232RTC.html">DS3232RTC</a></td><td><code> [virtual]</code></td></tr>
@@ -87,6 +91,11 @@ This is the complete list of members for <a class="el" href="classDS3232RTC.html
   <tr class="memlist"><td><a class="el" href="classDS3232RTC.html#a0faf40c25ab019a326a60f301c2bb41b">readTemperature</a>()</td><td><a class="el" href="classDS3232RTC.html">DS3232RTC</a></td><td><code> [virtual]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="classDS3232RTC.html#af89e68c68f1c4b7e94286f800b5b2747">readTime</a>(RTCTime *value)</td><td><a class="el" href="classDS3232RTC.html">DS3232RTC</a></td><td><code> [virtual]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="classRTC.html#ada31c5120d18d2dd2863b3d440308da2">RTC</a>()</td><td><a class="el" href="classRTC.html">RTC</a></td><td></td></tr>
+  <tr bgcolor="#f0f0f0"><td><b>Saturday</b> enum value (defined in <a class="el" href="classRTC.html">RTC</a>)</td><td><a class="el" href="classRTC.html">RTC</a></td><td></td></tr>
+  <tr bgcolor="#f0f0f0"><td><b>Sunday</b> enum value (defined in <a class="el" href="classRTC.html">RTC</a>)</td><td><a class="el" href="classRTC.html">RTC</a></td><td></td></tr>
+  <tr bgcolor="#f0f0f0"><td><b>Thursday</b> enum value (defined in <a class="el" href="classRTC.html">RTC</a>)</td><td><a class="el" href="classRTC.html">RTC</a></td><td></td></tr>
+  <tr bgcolor="#f0f0f0"><td><b>Tuesday</b> enum value (defined in <a class="el" href="classRTC.html">RTC</a>)</td><td><a class="el" href="classRTC.html">RTC</a></td><td></td></tr>
+  <tr bgcolor="#f0f0f0"><td><b>Wednesday</b> enum value (defined in <a class="el" href="classRTC.html">RTC</a>)</td><td><a class="el" href="classRTC.html">RTC</a></td><td></td></tr>
   <tr class="memlist"><td><a class="el" href="classRTC.html#a02ace2d775063be9a99035851c9274eb">WRAP</a></td><td><a class="el" href="classRTC.html">RTC</a></td><td><code> [static]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="classDS3232RTC.html#a8b0a65e0ac479aec8fad6ca3147dbe75">writeAlarm</a>(uint8_t alarmNum, const RTCAlarm *value)</td><td><a class="el" href="classDS3232RTC.html">DS3232RTC</a></td><td><code> [virtual]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="classDS3232RTC.html#a9acebf12c5cecdd6d84e0ff9ed41765a">writeByte</a>(uint8_t offset, uint8_t value)</td><td><a class="el" href="classDS3232RTC.html">DS3232RTC</a></td><td><code> [virtual]</code></td></tr>
@@ -108,7 +117,7 @@ This is the complete list of members for <a class="el" href="classDS3232RTC.html
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Tue Jun 12 2012 11:29:26 for ArduinoLibs by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Wed Jun 13 2012 15:22:30 for ArduinoLibs by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>
