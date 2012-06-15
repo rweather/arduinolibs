@@ -99,6 +99,10 @@ the radio directly from the Arduino's power supply:
 
 \image html relay_control.png
 
+Double-tapping the Alarm Stop button will turn the radio on.  Single-tapping
+the Alarm Stop button will turn the radio off.  A settings field can also
+be used to turn the radio on and off.
+
 \section clock_ds3232 Using DS3232 instead of DS1307
 
 For clock modules based on the DS3232 chip, such as the

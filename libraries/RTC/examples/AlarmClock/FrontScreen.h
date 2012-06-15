@@ -53,15 +53,19 @@ public:
     bool is24HourMode() const { return _hourMode; }
     void set24HourMode(bool value);
 
+    bool isRadioOn() const { return _radioOn; }
+    void setRadioOn(bool value);
+
 private:
     RTCDate _date;
     RTCTime _time;
     AlarmMode _alarmMode;
     bool _hourMode;
+    bool _radioOn;
 
     void updateDate();
     void updateTime();
-    void updateAlarm();
+    void updateIndicators();
 
     void registerIndicators();
 };

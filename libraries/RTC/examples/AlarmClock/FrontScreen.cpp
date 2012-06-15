@@ -29,6 +29,7 @@
 
 // Special characters for indicators.
 #define IND_RADIO_ON            0
+#define IND_ALARM_SNOOZE        5
 #define IND_ALARM_ACTIVE1       6
 #define IND_ALARM_ACTIVE2       7
 
@@ -36,6 +37,7 @@ FrontScreenField::FrontScreenField(Form &form)
     : Field(form, "")
     , _alarmMode(FrontScreenField::AlarmOff)
     , _hourMode(false)
+    , _radioOn(false)
 {
     _date.day = 1;
     _date.month = 1;
@@ -54,7 +56,7 @@ void FrontScreenField::enterField(bool reverse)
 {
     updateDate();
     updateTime();
-    updateAlarm();
+    updateIndicators();
 }
 
 const char *days[] = {
@@ -116,17 +118,23 @@ static uint8_t alarmSnooze[8] = {
     B00000,
     B00000
 };
+static uint8_t radioIndicator[8] = {
+    B11111,
+    B10101,
+    B01110,
+    B00100,
+    B00100,
+    B00100,
+    B00100,
+    B00000
+};
 
 void FrontScreenField::setAlarmMode(AlarmMode mode)
 {
     if (_alarmMode != mode) {
         _alarmMode = mode;
-        if (mode == Snooze)
-            lcd()->createChar(IND_ALARM_ACTIVE1, alarmSnooze);
-        else
-            lcd()->createChar(IND_ALARM_ACTIVE1, alarmActive1);
         if (isCurrent())
-            updateAlarm();
+            updateIndicators();
     }
 }
 
@@ -136,6 +144,15 @@ void FrontScreenField::set24HourMode(bool value)
         _hourMode = value;
         if (isCurrent())
             updateTime();
+    }
+}
+
+void FrontScreenField::setRadioOn(bool value)
+{
+    if (_radioOn != value) {
+        _radioOn = value;
+        if (isCurrent())
+            updateIndicators();
     }
 }
 
@@ -186,15 +203,28 @@ void FrontScreenField::updateTime()
         lcd()->print(pm ? "pm" : "am");
 }
 
-void FrontScreenField::updateAlarm()
+void FrontScreenField::updateIndicators()
 {
-    lcd()->setCursor(14, 1);
-    lcd()->write(_alarmMode != AlarmOff ? IND_ALARM_ACTIVE1 : ' ');
-    lcd()->write(_alarmMode != AlarmOff ? IND_ALARM_ACTIVE2 : ' ');
+    lcd()->setCursor(13, 1);
+    lcd()->print("   ");
+    int col = 16;
+    if (_radioOn) {
+        --col;
+        lcd()->setCursor(col, 1);
+        lcd()->write((uint8_t)IND_RADIO_ON);
+    }
+    if (_alarmMode != AlarmOff) {
+        col -= 2;
+        lcd()->setCursor(col, 1);
+        lcd()->write(_alarmMode == Snooze ? IND_ALARM_SNOOZE : IND_ALARM_ACTIVE1);
+        lcd()->write(IND_ALARM_ACTIVE2);
+    }
 }
 
 void FrontScreenField::registerIndicators()
 {
+    lcd()->createChar(IND_RADIO_ON, radioIndicator);
+    lcd()->createChar(IND_ALARM_SNOOZE, alarmSnooze);
     lcd()->createChar(IND_ALARM_ACTIVE1, alarmActive1);
     lcd()->createChar(IND_ALARM_ACTIVE2, alarmActive2);
 }

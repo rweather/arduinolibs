@@ -183,6 +183,7 @@ void loop() {
                 digitalWrite(RADIO, HIGH);
             else
                 digitalWrite(RADIO, LOW);
+            frontScreen.setRadioOn(isRadioPlaying);
         }
         prevHour = 24;      // Force an update of the main screen.
         findNextAlarm();    // Update the time of the next alarm event.
@@ -299,6 +300,7 @@ void turnRadioOn()
     isRadioPlaying = true;
     digitalWrite(RADIO, HIGH);
     radioActive.setValue(true);
+    frontScreen.setRadioOn(true);
 }
 
 void turnRadioOff()
@@ -306,4 +308,5 @@ void turnRadioOff()
     isRadioPlaying = false;
     digitalWrite(RADIO, LOW);
     radioActive.setValue(false);
+    frontScreen.setRadioOn(false);
 }
