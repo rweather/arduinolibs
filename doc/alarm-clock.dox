@@ -38,12 +38,13 @@ Field, SoftI2C, DS1307RTC (or DS3232RTC), Melody and
 \li Configurable alarm timeout between 2 and 10 seconds.
 \li Single button to activate the back light and/or stop the alarm.
 \li Up, down, left, and right buttons to change clock settings.
-\li Relay that controls the power to a separate radio circuit.
+\li MOSFET that controls the power to a separate radio circuit.
 
 \section clock_main_circuit Main circuit
 
 The main clock circuit consists of an Arduino Uno compatible board, a 16x2
-LCD module, a realtime clock chip, and a piezo buzzer for the alarm:
+LCD module, a realtime clock chip, a piezo buzzer for the alarm, and an
+MOSFET for controlling the radio:
 
 \image html alarm_circuit.png
 
@@ -59,7 +60,7 @@ clock module instead of a DS1307-based module.
 
 The whole circuit is built on a prototyping shield, with ribbon cables
 connecting to the LCD.  The Stop Alarm button, piezo buzzer, and radio
-relay are not shown in this picture and some of the components are
+controller are not shown in this picture and some of the components are
 soldered to the bottom of the shield:
 
 \image html clock_shield.jpg
@@ -90,17 +91,21 @@ Arduino designs should also work.
 
 \section clock_radio Controlling a radio
 
-The relay connected to D11 can be used to control the power to a separate
-radio circuit so that the radio can be used as an alarm.  The relay switch
-should be inserted between the radio's power supply and the main radio circuit.
-When the relay is off, no power is applied to the radio.  If the radio is
-powered off 5V, then the relay circuit can be altered as follows to power
-the radio directly from the Arduino's power supply:
+The MOSFET connected to D11 can be used to control the power supply to a
+separate radio circuit so that the radio can be used as an alarm.  In the
+following circuit, RadioV+ is the radio's power supply voltage (which may
+be the Arduino's 5V supply if the radio can run off 5V):
 
-\image html relay_control.png
+\image html radio_controller.png
 
-Double-tapping the Alarm Stop button will turn the radio on.  Single-tapping
-the Alarm Stop button will turn the radio off.  A settings field can also
+The output of the MOSFET can be used to control almost any kind of
+circuit; for example an extremely loud mechanical alarm bell.  It doesn't
+have to be a radio.  A 2N7000 or equivalent MOSFET is suitable for light
+loads up to 200mA.  For larger currents, a higher-rated MOSFET should be
+used instead.
+
+Double-tapping the Stop Alarm button will turn the radio on.  Single-tapping
+the Stop Alarm button will turn the radio off.  A settings field can also
 be used to turn the radio on and off.
 
 \section clock_ds3232 Using DS3232 instead of DS1307
