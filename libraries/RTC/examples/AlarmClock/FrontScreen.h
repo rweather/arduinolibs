@@ -26,8 +26,6 @@
 #include <Field.h>
 #include <RTC.h>
 
-//#define USE_VOLTAGE_MONITOR 1
-
 class FrontScreenField : public Field
 {
 public:
@@ -41,11 +39,6 @@ public:
 
     RTCTime time() const { return _time; }
     void setTime(const RTCTime &time);
-
-#ifdef USE_VOLTAGE_MONITOR
-    int voltage() const { return _voltage; }
-    void setVoltage(int voltage);
-#endif
 
     enum AlarmMode
     {
@@ -63,19 +56,11 @@ public:
 private:
     RTCDate _date;
     RTCTime _time;
-#ifdef USE_VOLTAGE_MONITOR
-    int _voltage;
-    int _voltageTrunc;
-    int _batteryBars;
-#endif
     AlarmMode _alarmMode;
     bool _hourMode;
 
     void updateDate();
     void updateTime();
-#ifdef USE_VOLTAGE_MONITOR
-    void updateVoltage();
-#endif
     void updateAlarm();
 
     void registerIndicators();

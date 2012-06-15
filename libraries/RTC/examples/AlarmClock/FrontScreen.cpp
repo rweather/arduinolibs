@@ -28,22 +28,12 @@
 #endif
 
 // Special characters for indicators.
-#define IND_BATTERY_EMPTY       0
-#define IND_BATTERY_20PCT       1
-#define IND_BATTERY_40PCT       2
-#define IND_BATTERY_60PCT       3
-#define IND_BATTERY_80PCT       4
-#define IND_BATTERY_FULL        5
+#define IND_RADIO_ON            0
 #define IND_ALARM_ACTIVE1       6
 #define IND_ALARM_ACTIVE2       7
 
 FrontScreenField::FrontScreenField(Form &form)
     : Field(form, "")
-#ifdef USE_VOLTAGE_MONITOR
-    , _voltage(360)
-    , _voltageTrunc(36)
-    , _batteryBars(IND_BATTERY_FULL)
-#endif
     , _alarmMode(FrontScreenField::AlarmOff)
     , _hourMode(false)
 {
@@ -63,9 +53,6 @@ FrontScreenField::~FrontScreenField()
 void FrontScreenField::enterField(bool reverse)
 {
     updateDate();
-#ifdef USE_VOLTAGE_MONITOR
-    updateVoltage();
-#endif
     updateTime();
     updateAlarm();
 }
@@ -98,39 +85,6 @@ void FrontScreenField::setTime(const RTCTime &time)
             updateTime();
     }
 }
-
-#ifdef USE_VOLTAGE_MONITOR
-
-void FrontScreenField::setVoltage(int voltage)
-{
-    // Normal voltage ranges between 2.7 and 3.6.  The power supply
-    // for the clock will no longer function below 2.7 volts.
-    if (_voltage == voltage)
-        return;
-    _voltage = voltage;
-    int ind;
-    if (voltage > 355)
-        ind = IND_BATTERY_FULL;
-    else if (voltage > 345)
-        ind = IND_BATTERY_80PCT;
-    else if (voltage > 325)
-        ind = IND_BATTERY_60PCT;
-    else if (voltage > 305)
-        ind = IND_BATTERY_40PCT;
-    else if (voltage > 285)
-        ind = IND_BATTERY_20PCT;
-    else
-        ind = IND_BATTERY_EMPTY;
-    int trunc = voltage / 10;
-    if (ind != _batteryBars || trunc != _voltageTrunc) {
-        _batteryBars = ind;
-        _voltageTrunc = trunc;
-        if (isCurrent())
-            updateVoltage();
-    }
-}
-
-#endif
 
 static uint8_t alarmActive1[8] = {
     B00100,
@@ -232,108 +186,15 @@ void FrontScreenField::updateTime()
         lcd()->print(pm ? "pm" : "am");
 }
 
-#ifdef USE_VOLTAGE_MONITOR
-
-void FrontScreenField::updateVoltage()
-{
-    lcd()->setCursor(15, 1);
-    lcd()->write(_batteryBars);
-
-/*
-    lcd()->setCursor(12, 1);
-    lcd()->write('0' + _voltageTrunc / 10);
-    lcd()->write('.');
-    lcd()->write('0' + _voltageTrunc % 10);
-    lcd()->write('v');
-*/
-}
-
-#endif
-
 void FrontScreenField::updateAlarm()
 {
-#ifdef USE_VOLTAGE_MONITOR
-    lcd()->setCursor(13, 1);
-#else
     lcd()->setCursor(14, 1);
-#endif
     lcd()->write(_alarmMode != AlarmOff ? IND_ALARM_ACTIVE1 : ' ');
     lcd()->write(_alarmMode != AlarmOff ? IND_ALARM_ACTIVE2 : ' ');
 }
 
-#ifdef USE_VOLTAGE_MONITOR
-static uint8_t batteryEmpty[8] = {
-    B01110,
-    B10001,
-    B10001,
-    B10001,
-    B10001,
-    B10001,
-    B11111,
-    B00000
-};
-static uint8_t battery20Pct[8] = {
-    B01110,
-    B10001,
-    B10001,
-    B10001,
-    B10001,
-    B11111,
-    B11111,
-    B00000
-};
-static uint8_t battery40Pct[8] = {
-    B01110,
-    B10001,
-    B10001,
-    B10001,
-    B11111,
-    B11111,
-    B11111,
-    B00000
-};
-static uint8_t battery60Pct[8] = {
-    B01110,
-    B10001,
-    B10001,
-    B11111,
-    B11111,
-    B11111,
-    B11111,
-    B00000
-};
-static uint8_t battery80Pct[8] = {
-    B01110,
-    B10001,
-    B11111,
-    B11111,
-    B11111,
-    B11111,
-    B11111,
-    B00000
-};
-static uint8_t batteryFull[8] = {
-    B01110,
-    B11111,
-    B11111,
-    B11111,
-    B11111,
-    B11111,
-    B11111,
-    B00000
-};
-#endif
-
 void FrontScreenField::registerIndicators()
 {
-#ifdef USE_VOLTAGE_MONITOR
-    lcd()->createChar(IND_BATTERY_EMPTY, batteryEmpty);
-    lcd()->createChar(IND_BATTERY_20PCT, battery20Pct);
-    lcd()->createChar(IND_BATTERY_40PCT, battery40Pct);
-    lcd()->createChar(IND_BATTERY_60PCT, battery60Pct);
-    lcd()->createChar(IND_BATTERY_80PCT, battery80Pct);
-    lcd()->createChar(IND_BATTERY_FULL,  batteryFull);
-#endif
     lcd()->createChar(IND_ALARM_ACTIVE1, alarmActive1);
     lcd()->createChar(IND_ALARM_ACTIVE2, alarmActive2);
 }
