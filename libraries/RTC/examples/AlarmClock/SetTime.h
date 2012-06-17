@@ -23,17 +23,28 @@
 #ifndef SetTime_h
 #define SetTime_h
 
-#include "EditTime.h"
+#include "Field.h"
+#include <RTC.h>
 
-class SetTime : public EditTime {
+class SetTime : public Field {
 public:
     SetTime(Form &form, const String &label);
 
     int dispatch(int event);
 
     void enterField(bool reverse);
+    void exitField();
+
+    RTCTime value() const { return _value; }
+    void setValue(const RTCTime &value);
 
     void updateCurrentTime();
+
+protected:
+    RTCTime _value;
+    uint8_t editField;
+
+    void printTime();
 };
 
 #endif

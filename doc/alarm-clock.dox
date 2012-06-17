@@ -36,6 +36,8 @@ Field, SoftI2C, DS1307RTC (or DS3232RTC), Melody and
 \li Up to 4 configurable alarm times, plus a snooze alarm.
 \li Three alarm sounds to choose from.
 \li Configurable alarm timeout between 2 and 10 seconds.
+\li Alarms can be configured to only sound on Monday to Friday
+    or on Saturday and Sunday.
 \li Single button to activate the back light and/or stop the alarm.
 \li Up, down, left, and right buttons to change clock settings.
 \li MOSFET that controls the power to a separate radio circuit.

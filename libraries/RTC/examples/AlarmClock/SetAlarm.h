@@ -23,16 +23,43 @@
 #ifndef SetAlarm_h
 #define SetAlarm_h
 
-#include "EditTime.h"
+#include "Field.h"
+#include <RTC.h>
 
-class SetAlarm : public EditTime {
+class SetAlarm : public Field {
 public:
     SetAlarm(Form &form, const String &label, uint8_t alarmNum);
 
     int dispatch(int event);
 
+    void enterField(bool reverse);
+    void exitField();
+
+    RTCAlarm value() const { return _value; }
+    void setValue(const RTCAlarm &value);
+
+    enum Days
+    {
+        AnyDay,
+        MondayToFriday,
+        SaturdayAndSunday
+    };
+
+    Days days() const;
+    void setDays(Days days);
+
+    static Days days(const RTCAlarm *alarm);
+
+    static void combineDays(RTCAlarm *alarm1, const RTCAlarm *alarm2);
+
 private:
     uint8_t _alarmNum;
+    RTCAlarm _value;
+    uint8_t editField;
+
+    bool isEnabled() const { return (_value.flags & 0x01) != 0; }
+
+    void printAlarm();
 };
 
 #endif

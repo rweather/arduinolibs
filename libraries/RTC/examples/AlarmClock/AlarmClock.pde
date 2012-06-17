@@ -155,10 +155,26 @@ void loop() {
         setTime.updateCurrentTime();
 
         // Trigger an alarm if necessary.
-        if (time.second == 0 && nextAlarm.flags && !alarmMelody.isPlaying()) {
+        if (time.second == 0 && (nextAlarm.flags & 0x01) && !alarmMelody.isPlaying()) {
             if (time.hour == nextAlarm.hour && time.minute == nextAlarm.minute) {
+                // We have a match on time; now check the day of week.
+                RTCDate date = frontScreen.date();
+                RTC::DayOfWeek day = RTC::dayOfWeek(&date);
+                SetAlarm::Days matchDays = SetAlarm::days(&nextAlarm);
+                bool matched;
+                if (matchDays == SetAlarm::AnyDay)
+                    matched = true;
+                else if (matchDays == SetAlarm::MondayToFriday &&
+                            day >= RTC::Monday && day <= RTC::Friday)
+                    matched = true;
+                else if (matchDays == SetAlarm::SaturdayAndSunday &&
+                            day >= RTC::Saturday && day <= RTC::Sunday)
+                    matched = true;
+                else
+                    matched = false;
                 findNextAlarm();
-                alarmMelody.play();
+                if (matched)
+                    alarmMelody.play();
             }
         }
     }
@@ -231,7 +247,7 @@ inline int timeToAlarm(const RTCTime &currentTime, const RTCAlarm &alarm)
 // Add 9 minutes to an alarm to get its snooze time.
 RTCAlarm adjustForSnooze(const RTCAlarm &alarm)
 {
-    if (!alarm.flags)
+    if (!(alarm.flags & 0x01))
         return alarm;
     RTCAlarm snooze;
     snooze.hour = alarm.hour;
@@ -258,19 +274,19 @@ void findNextAlarm()
     nextAlarm.hour = 0;
     nextAlarm.minute = 0;
     nextAlarm.flags = 0;
-    findNextAlarm(currentTime, alarm1.alarmValue());
-    findNextAlarm(currentTime, alarm2.alarmValue());
-    findNextAlarm(currentTime, alarm3.alarmValue());
-    findNextAlarm(currentTime, alarm4.alarmValue());
+    findNextAlarm(currentTime, alarm1.value());
+    findNextAlarm(currentTime, alarm2.value());
+    findNextAlarm(currentTime, alarm3.value());
+    findNextAlarm(currentTime, alarm4.value());
     if (snooze.value()) {
-        findNextAlarm(currentTime, adjustForSnooze(alarm1.alarmValue()));
-        findNextAlarm(currentTime, adjustForSnooze(alarm2.alarmValue()));
-        findNextAlarm(currentTime, adjustForSnooze(alarm3.alarmValue()));
-        findNextAlarm(currentTime, adjustForSnooze(alarm4.alarmValue()));
+        findNextAlarm(currentTime, adjustForSnooze(alarm1.value()));
+        findNextAlarm(currentTime, adjustForSnooze(alarm2.value()));
+        findNextAlarm(currentTime, adjustForSnooze(alarm3.value()));
+        findNextAlarm(currentTime, adjustForSnooze(alarm4.value()));
     }
 
     // Set the alarm indicator on the front screen.
-    if (nextAlarm.flags) {
+    if (nextAlarm.flags & 0x01) {
         if (snooze.value())
             frontScreen.setAlarmMode(FrontScreenField::Snooze);
         else
@@ -281,17 +297,21 @@ void findNextAlarm()
 }
 void findNextAlarm(const RTCTime &currentTime, const RTCAlarm &alarm)
 {
-    if (!alarm.flags)
+    if (!(alarm.flags & 0x01))
         return;     // Alarm is disabled.
-    if (!nextAlarm.flags) {
+    if (!(nextAlarm.flags & 0x01)) {
         // First valid alarm.
         nextAlarm = alarm;
         return;
     }
-    if (timeToAlarm(currentTime, nextAlarm) >
-            timeToAlarm(currentTime, alarm)) {
+    int timeToNext = timeToAlarm(currentTime, nextAlarm);
+    int timeToCurr = timeToAlarm(currentTime, alarm);
+    if (timeToNext > timeToCurr) {
         // Found an alarm that is closer in time.
         nextAlarm = alarm;
+    } else if (timeToNext == timeToCurr) {
+        // Same time; combine the day indicators.
+        SetAlarm::combineDays(&nextAlarm, &alarm);
     }
 }
 
