@@ -34,7 +34,7 @@ Field, SoftI2C, DS1307RTC (or DS3232RTC), Melody and
 \li Displays both the time and date.
 \li 12 hour and 24 hour time display modes.
 \li Up to 4 configurable alarm times, plus a snooze alarm.
-\li Three alarm sounds to choose from.
+\li Three alarm sounds to choose from, plus an option to use a radio alarm.
 \li Configurable alarm timeout between 2 and 10 seconds.
 \li Alarms can be configured to only sound on Monday to Friday
     or on Saturday and Sunday.
@@ -45,7 +45,7 @@ Field, SoftI2C, DS1307RTC (or DS3232RTC), Melody and
 \section clock_main_circuit Main circuit
 
 The main clock circuit consists of an Arduino Uno compatible board, a 16x2
-LCD module, a realtime clock chip, a piezo buzzer for the alarm, and an
+LCD module, a realtime clock chip, a piezo buzzer for the alarm, and a
 MOSFET for controlling the radio:
 
 \image html alarm_circuit.png
@@ -128,5 +128,14 @@ as follows:
 \li SDA connected to A4.
 \li SCL connected to A5.
 \li BAT, 32K, and RST left unconnected.
+
+\section clock_completed Completed Clock
+
+The following picture shows the completed clock prototype, built into a
+UB1 jiffy box with the radio.  Being the prototype, it is a little rough
+and ready, but rugged enough to take a pounding each morning as a bedside
+alarm clock:
+
+\image html alarm_clock.jpg
 
 */
