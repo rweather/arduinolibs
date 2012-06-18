@@ -63,19 +63,21 @@ Features</h2>
 <li>Displays both the time and date. </li>
 <li>12 hour and 24 hour time display modes. </li>
 <li>Up to 4 configurable alarm times, plus a snooze alarm. </li>
-<li>Three alarm sounds to choose from. </li>
+<li>Three alarm sounds to choose from, plus an option to use a radio alarm. </li>
 <li>Configurable alarm timeout between 2 and 10 seconds. </li>
+<li>Alarms can be configured to only sound on Monday to Friday or on Saturday and Sunday. </li>
 <li>Single button to activate the back light and/or stop the alarm. </li>
-<li>Up, down, left, and right buttons to change clock settings.</li>
+<li>Up, down, left, and right buttons to change clock settings. </li>
+<li>MOSFET that controls the power to a separate radio circuit.</li>
 </ul>
 <h2><a class="anchor" id="clock_main_circuit"></a>
 Main circuit</h2>
-<p>The main clock circuit consists of an Arduino Uno compatible board, a 16x2 <a class="el" href="classLCD.html" title="Enhanced library for Freetronics 16x2 LCD shields.">LCD</a> module, a realtime clock chip, and a piezo buzzer for the alarm:</p>
+<p>The main clock circuit consists of an Arduino Uno compatible board, a 16x2 <a class="el" href="classLCD.html" title="Enhanced library for Freetronics 16x2 LCD shields.">LCD</a> module, a realtime clock chip, a piezo buzzer for the alarm, and a MOSFET for controlling the radio:</p>
 <div class="image">
 <img src="alarm_circuit.png" alt="alarm_circuit.png"/>
 </div>
 <p>Some of the components can be purchased ready-made as the <a href="http://www.freetronics.com/pages/16x2-lcd-shield-quickstart-guide">Freetronics 16x2 LCD Shield</a> and the <a href="http://www.sparkfun.com/products/99">SparkFun Realtime Clock Module</a>. I used the ready-made realtime clock module, but made my own equivalent to the <a class="el" href="classLCD.html" title="Enhanced library for Freetronics 16x2 LCD shields.">LCD</a> shield from parts to aid in spacing out the <a class="el" href="classLCD.html" title="Enhanced library for Freetronics 16x2 LCD shields.">LCD</a> and pushbuttons on the exterior of the box. The value of the 33R resistor may need to be adjusted for different types of back light LED's. See <a class="el" href="alarm_clock.html#clock_ds3232">below</a> for information on using a DS3232-based clock module instead of a DS1307-based module.</p>
-<p>The whole circuit is built on a prototyping shield, with ribbon cables connecting to the <a class="el" href="classLCD.html" title="Enhanced library for Freetronics 16x2 LCD shields.">LCD</a>. The Stop Alarm button and piezo buzzer are not shown in this picture and some of the components are soldered to the bottom of the shield:</p>
+<p>The whole circuit is built on a prototyping shield, with ribbon cables connecting to the <a class="el" href="classLCD.html" title="Enhanced library for Freetronics 16x2 LCD shields.">LCD</a>. The Stop Alarm button, piezo buzzer, and radio controller are not shown in this picture and some of the components are soldered to the bottom of the shield:</p>
 <div class="image">
 <img src="clock_shield.jpg" alt="clock_shield.jpg"/>
 </div>
@@ -86,6 +88,14 @@ Arduino board</h2>
 <div class="image">
 <img src="kitten_minimal.jpg" alt="kitten_minimal.jpg"/>
 </div>
+<h2><a class="anchor" id="clock_radio"></a>
+Controlling a radio</h2>
+<p>The MOSFET connected to D11 can be used to control the power supply to a separate radio circuit so that the radio can be used as an alarm. In the following circuit, RadioV+ is the radio's power supply voltage (which may be the Arduino's 5V supply if the radio can run off 5V):</p>
+<div class="image">
+<img src="radio_controller.png" alt="radio_controller.png"/>
+</div>
+<p>The output of the MOSFET can be used to control almost any kind of circuit; for example an extremely loud mechanical alarm bell. It doesn't have to be a radio. A 2N7000 or equivalent MOSFET is suitable for light loads up to 200mA. For larger currents, a higher-rated MOSFET should be used instead.</p>
+<p>Double-tapping the Stop Alarm button will turn the radio on. Single-tapping the Stop Alarm button will turn the radio off. A settings field can also be used to turn the radio on and off.</p>
 <h2><a class="anchor" id="clock_ds3232"></a>
 Using DS3232 instead of DS1307</h2>
 <p>For clock modules based on the DS3232 chip, such as the <a href="http://www.freetronics.com/products/real-time-clock-rtc-module">Freetronics Real Time Clock Module</a>, change the <code>Clock</code> typedef in <code>Clock.h</code> to the following:</p>
@@ -96,9 +106,15 @@ Using DS3232 instead of DS1307</h2>
 <li>SQI connected to A3. </li>
 <li>SDA connected to A4. </li>
 <li>SCL connected to A5. </li>
-<li>BAT, 32K, and RST left unconnected. </li>
+<li>BAT, 32K, and RST left unconnected.</li>
 </ul>
-</div></div>
+<h2><a class="anchor" id="clock_completed"></a>
+Completed Clock</h2>
+<p>The following picture shows the completed clock prototype, built into a UB1 jiffy box with the radio. Being the prototype, it is a little rough and ready, but rugged enough to take a pounding each morning as a bedside alarm clock:</p>
+<div class="image">
+<img src="alarm_clock.jpg" alt="alarm_clock.jpg"/>
+</div>
+ </div></div>
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -113,7 +129,7 @@ Using DS3232 instead of DS1307</h2>
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Wed Jun 13 2012 15:22:29 for ArduinoLibs by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Mon Jun 18 2012 11:02:52 for ArduinoLibs by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>
