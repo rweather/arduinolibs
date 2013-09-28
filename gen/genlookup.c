@@ -79,7 +79,7 @@ int main(int argc, char *argv[])
 
     // Dump the button mapping table for the selected bit count.
     bits = 5;
-    printf("static prog_uint8_t const buttonMappings[] PROGMEM = {\n");
+    printf("static uint8_t const buttonMappings[] PROGMEM = {\n");
     for (value2 = 0; value2 < (1 << bits); ++value2) {
         value = value2 << (10 - bits);
         value3 = value + (1 << (10 - bits)) - 1;

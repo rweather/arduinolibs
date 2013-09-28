@@ -38,6 +38,8 @@ public:
     bool isValid() const { return fb != 0; }
 
     typedef uint8_t Color;
+    typedef PGM_VOID_P ProgMem;
+    typedef PGM_VOID_P Font;
 
     static const Color Black  = 0;
     static const Color White  = 1;
@@ -63,12 +65,12 @@ public:
     void drawFilledCircle(int centerX, int centerY, int radius, Color color = White);
 
     void drawBitmap(int x, int y, const Bitmap &bitmap, Color color = White);
-    void drawBitmap(int x, int y, const prog_uint8_t *bitmap, Color color = White);
+    void drawBitmap(int x, int y, Bitmap::ProgMem bitmap, Color color = White);
     void drawInvertedBitmap(int x, int y, const Bitmap &bitmap);
-    void drawInvertedBitmap(int x, int y, const prog_uint8_t *bitmap);
+    void drawInvertedBitmap(int x, int y, Bitmap::ProgMem bitmap);
 
-    const prog_uint8_t *font() const { return _font; }
-    void setFont(const prog_uint8_t *font) { _font = font; }
+    Font font() const { return _font; }
+    void setFont(Font font) { _font = font; }
 
     Color textColor() const { return _textColor; }
     void setTextColor(Color color) { _textColor = color; }
@@ -85,7 +87,7 @@ public:
 
     void copy(int x, int y, int width, int height, Bitmap *dest, int destX, int destY);
     void fill(int x, int y, int width, int height, Color color);
-    void fill(int x, int y, int width, int height, const prog_uint8_t *pattern, Color color = White);
+    void fill(int x, int y, int width, int height, Bitmap::ProgMem pattern, Color color = White);
 
     void scroll(int dx, int dy, Color fillColor = Black);
     void scroll(int x, int y, int width, int height, int dx, int dy, Color fillColor = Black);
@@ -101,7 +103,7 @@ private:
     int _height;
     int _stride;
     uint8_t *fb;
-    const prog_uint8_t *_font;
+    Font _font;
     Color _textColor;
 
     friend class DMD;
@@ -125,7 +127,7 @@ inline void Bitmap::drawInvertedBitmap(int x, int y, const Bitmap &bitmap)
     drawBitmap(x, y, bitmap, Black);
 }
 
-inline void Bitmap::drawInvertedBitmap(int x, int y, const prog_uint8_t *bitmap)
+inline void Bitmap::drawInvertedBitmap(int x, int y, Bitmap::ProgMem bitmap)
 {
     drawBitmap(x, y, bitmap, Black);
 }

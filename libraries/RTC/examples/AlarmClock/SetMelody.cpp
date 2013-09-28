@@ -49,7 +49,7 @@ static const char item_FourBeeps[] PROGMEM = "Four beeps";
 static const char item_Haircut[] PROGMEM = "Shave 'n haircut";
 static const char item_SOS[] PROGMEM = "S.O.S.";
 static const char item_Radio[] PROGMEM = "Radio";
-static ListItem melodyNames[] PROGMEM = {
+static ListItem const melodyNames[] PROGMEM = {
     item_FourBeeps,
     item_Haircut,
     item_SOS,

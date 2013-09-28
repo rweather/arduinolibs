@@ -45,7 +45,7 @@
 #define DEJAVUSANSBOLD9_WIDTH 10
 #define DEJAVUSANSBOLD9_HEIGHT 10
 
-static uint8_t DejaVuSansBold9[] PROGMEM = {
+static uint8_t const DejaVuSansBold9[] PROGMEM = {
     0x12, 0x36, // size
     0x0A, // width
     0x0A, // height

@@ -48,6 +48,16 @@
  */
 
 /**
+ * \typedef Bitmap::ProgMem
+ * \brief Type that represents a bitmap within program memory.
+ */
+
+/**
+ * \typedef Bitmap::Font
+ * \brief Type that represents a font within program memory.
+ */
+
+/**
  * \var Bitmap::Black
  * \brief Color value corresponding to "black".
  */
@@ -412,14 +422,14 @@ void Bitmap::drawBitmap(int x, int y, const Bitmap &bitmap, Color color)
  *
  * \sa drawInvertedBitmap(), fill()
  */
-void Bitmap::drawBitmap(int x, int y, const prog_uint8_t *bitmap, Color color)
+void Bitmap::drawBitmap(int x, int y, Bitmap::ProgMem bitmap, Color color)
 {
     uint8_t w = pgm_read_byte(bitmap);
     uint8_t s = (w + 7) >> 3;
     uint8_t h = pgm_read_byte(bitmap + 1);
     Color invColor = !color;
     for (uint8_t by = 0; by < h; ++by) {
-        const prog_uint8_t *line = bitmap + 2 + by * s;
+        const uint8_t *line = ((const uint8_t *)bitmap) + 2 + by * s;
         uint8_t mask = 0x80;
         uint8_t value = pgm_read_byte(line);
         for (uint8_t bx = 0; bx < w; ++bx) {
@@ -448,7 +458,7 @@ void Bitmap::drawBitmap(int x, int y, const prog_uint8_t *bitmap, Color color)
  */
 
 /**
- * \fn void Bitmap::drawInvertedBitmap(int x, int y, const prog_uint8_t *bitmap)
+ * \fn void Bitmap::drawInvertedBitmap(int x, int y, Bitmap::ProgMem bitmap)
  * \brief Draws \a bitmap at (\a x, \a y) in inverted colors.
  *
  * This is a convenience function that is equivalent to
@@ -458,14 +468,14 @@ void Bitmap::drawBitmap(int x, int y, const prog_uint8_t *bitmap, Color color)
  */
 
 /**
- * \fn const prog_uint8_t *Bitmap::font() const
+ * \fn Font Bitmap::font() const
  * \brief Returns the currently selected font, or null if none selected.
  *
  * \sa setFont(), drawText(), drawChar(), charWidth()
  */
 
 /**
- * \fn void Bitmap::setFont(const prog_uint8_t *font)
+ * \fn void Bitmap::setFont(Font font)
  * \brief Sets the \a font for use with drawText() and drawChar().
  *
  * \code
@@ -590,15 +600,15 @@ int Bitmap::drawChar(int x, int y, char ch)
     index -= first;
     uint8_t heightBytes = (height + 7) >> 3;;
     uint8_t width;
-    const prog_uint8_t *image;
+    const uint8_t *image;
     if (fontIsFixed(_font)) {
         // Fixed-width font.
         width = fontWidth(_font);
-        image = _font + 6 + index * heightBytes * width;
+        image = ((const uint8_t *)_font) + 6 + index * heightBytes * width;
     } else {
         // Variable-width font.
         width = pgm_read_byte(_font + 6 + index);
-        image = _font + 6 + count;
+        image = ((const uint8_t *)_font) + 6 + count;
         for (uint8_t temp = 0; temp < index; ++temp) {
             // Scan through all previous characters to find the starting
             // location for this one.
@@ -772,7 +782,7 @@ void Bitmap::fill(int x, int y, int width, int height, Color color)
  *
  * \sa drawBitmap(), clear(), invert()
  */
-void Bitmap::fill(int x, int y, int width, int height, const prog_uint8_t *pattern, Color color)
+void Bitmap::fill(int x, int y, int width, int height, Bitmap::ProgMem pattern, Color color)
 {
     uint8_t w = pgm_read_byte(pattern);
     uint8_t s = (w + 7) >> 3;
@@ -781,8 +791,8 @@ void Bitmap::fill(int x, int y, int width, int height, const prog_uint8_t *patte
         return;
     Color invColor = !color;
     for (int tempy = 0; tempy < height; ++tempy) {
-        const prog_uint8_t *startLine = pattern + 2 + (tempy % h) * s;
-        const prog_uint8_t *line = startLine;
+        const uint8_t *startLine = ((const uint8_t *)pattern) + 2 + (tempy % h) * s;
+        const uint8_t *line = startLine;
         uint8_t mask = 0x80;
         uint8_t value = pgm_read_byte(line++);
         int bit = 0;

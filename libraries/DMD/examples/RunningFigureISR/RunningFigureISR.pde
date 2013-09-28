@@ -227,7 +227,7 @@ byte const run10[] PROGMEM = {
     B01000000, B00000000
 };
 
-const prog_uint8_t *frames[] = {
+Bitmap::ProgMem frames[] = {
     run1,
     run2,
     run3,

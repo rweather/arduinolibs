@@ -45,7 +45,7 @@
 #define MONO5X7_WIDTH 5
 #define MONO5X7_HEIGHT 7
 
-static uint8_t Mono5x7[] PROGMEM = {
+static uint8_t const Mono5x7[] PROGMEM = {
     0x00, 0x00, // size
     0x05, // width
     0x07, // height

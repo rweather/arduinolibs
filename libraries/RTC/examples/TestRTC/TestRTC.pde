@@ -104,7 +104,7 @@ void printDec2(int value)
     Serial.print((char)('0' + (value % 10)));
 }
 
-void printProgString(const prog_char *str)
+void printProgString(PGM_P str)
 {
     for (;;) {
         char ch = (char)(pgm_read_byte(str));
@@ -309,10 +309,10 @@ void cmdNvram(const char *args)
 typedef void (*commandFunc)(const char *args);
 typedef struct
 {
-    const prog_char *name;
+    PGM_P name;
     commandFunc func;
-    const prog_char *desc;
-    const prog_char *args;
+    PGM_P desc;
+    PGM_P args;
 } command_t;
 const char s_cmdTime[] PROGMEM = "TIME";
 const char s_cmdTimeDesc[] PROGMEM =
@@ -354,14 +354,11 @@ void cmdHelp(const char *)
 {
     int index = 0;
     for (;;) {
-        const prog_char *name = (const prog_char *)
-            (pgm_read_word(&(commands[index].name)));
+        PGM_P name = (PGM_P)(pgm_read_word(&(commands[index].name)));
         if (!name)
             break;
-        const prog_char *desc = (const prog_char *)
-            (pgm_read_word(&(commands[index].desc)));
-        const prog_char *args = (const prog_char *)
-            (pgm_read_word(&(commands[index].args)));
+        PGM_P desc = (PGM_P)(pgm_read_word(&(commands[index].desc)));
+        PGM_P args = (PGM_P)(pgm_read_word(&(commands[index].args)));
         printProgString(name);
         if (args) {
             Serial.print(' ');
@@ -376,7 +373,7 @@ void cmdHelp(const char *)
 }
 
 // Match a data-space string where the name comes from PROGMEM.
-bool matchString(const prog_char *name, const char *str, int len)
+bool matchString(PGM_P name, const char *str, int len)
 {
     for (;;) {
         char ch1 = (char)(pgm_read_byte(name));
@@ -425,8 +422,7 @@ void processCommand(const char *buf)
     // Find the command and execute it.
     int index = 0;
     for (;;) {
-        const prog_char *name = (const prog_char *)
-            (pgm_read_word(&(commands[index].name)));
+        PGM_P name = (PGM_P)(pgm_read_word(&(commands[index].name)));
         if (!name)
             break;
         if (matchString(name, cmd, len)) {

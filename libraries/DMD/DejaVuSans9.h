@@ -45,7 +45,7 @@
 #define DEJAVUSANS9_WIDTH 10
 #define DEJAVUSANS9_HEIGHT 10
 
-static uint8_t DejaVuSans9[] PROGMEM = {
+static uint8_t const DejaVuSans9[] PROGMEM = {
     0x0F, 0x7A, // size
     0x0A, // width
     0x0A, // height

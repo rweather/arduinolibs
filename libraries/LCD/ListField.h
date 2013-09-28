@@ -26,7 +26,7 @@
 #include "Field.h"
 #include <avr/pgmspace.h>
 
-typedef const prog_char *ListItem;
+typedef PGM_P ListItem;
 typedef const PROGMEM ListItem *ListItems;
 
 class ListField : public Field {
