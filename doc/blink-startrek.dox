@@ -71,7 +71,7 @@ Now that we have a circuit, let's configure the red navigation LED on AOUT2
 using the BlinkLED class, to blink with a period of 1000 milliseconds on,
 1000 milliseconds off:
 
-\dontinclude BlinkLED/examples/StarTrek/StarTrek.pde
+\dontinclude BlinkLED/examples/StarTrek/StarTrek.ino
 \skip <BlinkLED.h>
 \until <BlinkLED.h>
 \skip NAV_LIGHTS
@@ -84,7 +84,7 @@ using the BlinkLED class, to blink with a period of 1000 milliseconds on,
 We repeat the process for the strobe LED on AOUT3, with a period of
 70 milliseconds on, and 830 milliseconds off:
 
-\dontinclude BlinkLED/examples/StarTrek/StarTrek.pde
+\dontinclude BlinkLED/examples/StarTrek/StarTrek.ino
 \skip STROBE_LIGHT
 \until STROBE_LIGHT
 \skip STROBE_LIGHT_ON
@@ -112,14 +112,14 @@ outputs to create a trailing flame effect.  See the
 \ref blink_cylon "Cylon" example for more information on creating
 custom effects with ChaseLEDs.
 
-\dontinclude BlinkLED/examples/StarTrek/StarTrek.pde
+\dontinclude BlinkLED/examples/StarTrek/StarTrek.ino
 \skip NACELLE_CHASE_LEN
 \until NacelleChaseLEDs nacelleChase
 
 We also need to add a call to ChaseLEDs::loop() to the application's
 main loop:
 
-\dontinclude BlinkLED/examples/StarTrek/StarTrek.pde
+\dontinclude BlinkLED/examples/StarTrek/StarTrek.ino
 \skip loop()
 \until }
 
@@ -154,12 +154,12 @@ Other nacelle effects are possible by modifying the <tt>advance()</tt> method
 in the sketch.  For example, the "opposite pairs" effect with 3 outputs
 can also be done with 6 outputs and the following modification to the sketch:
 
-\dontinclude BlinkLED/examples/StarTrek2/StarTrek2.pde
+\dontinclude BlinkLED/examples/StarTrek2/StarTrek2.ino
 \skip advance(byte
 \until }
 
 The full source code for the example, including the "opposite pairs"
 effect, follows:
 
-\include BlinkLED/examples/StarTrek2/StarTrek2.pde
+\include BlinkLED/examples/StarTrek2/StarTrek2.ino
 */

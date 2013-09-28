@@ -36,7 +36,7 @@ basic text output and to use the enhanced shield features.
 
 We start by including the library and initializing it:
 
-\dontinclude LCD/examples/HelloWorld/HelloWorld.pde
+\dontinclude LCD/examples/HelloWorld/HelloWorld.ino
 \skip LCD.h
 \until lcd
 
@@ -53,7 +53,7 @@ LCD lcd(A1);
 The next step is to enable the screen saver and print some text
 in the \c setup function:
 
-\dontinclude LCD/examples/HelloWorld/HelloWorld.pde
+\dontinclude LCD/examples/HelloWorld/HelloWorld.ino
 \skip setup()
 \until }
 
@@ -65,13 +65,13 @@ or calling LCD::display() will wake up the screen again.
 In the program's \c loop function we print the number of seconds
 since startup to the second line of the LCD display:
 
-\dontinclude LCD/examples/HelloWorld/HelloWorld.pde
+\dontinclude LCD/examples/HelloWorld/HelloWorld.ino
 \skip loop()
 \until millis()
 
 We then print the name of the button that is currently pressed:
 
-\dontinclude LCD/examples/HelloWorld/HelloWorld.pde
+\dontinclude LCD/examples/HelloWorld/HelloWorld.ino
 \skip setCursor(8, 1)
 \until }
 
@@ -81,5 +81,5 @@ pressed or released this time through the loop.
 
 The full source code for the example follows:
 
-\include LCD/examples/HelloWorld/HelloWorld.pde
+\include LCD/examples/HelloWorld/HelloWorld.ino
 */

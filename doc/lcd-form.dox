@@ -37,14 +37,14 @@ buttons are used to modify the value of the currently-displayed field.
 
 We start by including the classes from the library that we will need:
 
-\dontinclude LCD/examples/Form/Form.pde
+\dontinclude LCD/examples/Form/Form.ino
 \skip LCD.h
 \until BoolField.h
 
 Next, we initialize the LCD display, create the main form, and populate
 it with fields:
 
-\dontinclude LCD/examples/Form/Form.pde
+\dontinclude LCD/examples/Form/Form.ino
 \skip lcd;
 \until lcd;
 \skip mainForm
@@ -77,7 +77,7 @@ duration between 0 and 24 hours.
 Now that we have defined our form, we need to initialize the program and
 show the form for the first time:
 
-\dontinclude LCD/examples/Form/Form.pde
+\dontinclude LCD/examples/Form/Form.ino
 \skip STATUS_LED
 \until }
 
@@ -89,7 +89,7 @@ All that remains is to define our application's \c loop function which
 retrieves button events from LCD::getButton() and dispatches them
 to the form:
 
-\dontinclude LCD/examples/Form/Form.pde
+\dontinclude LCD/examples/Form/Form.ino
 \skip loop()
 \until }
 \until }
@@ -97,5 +97,5 @@ to the form:
 
 The full source code for the example follows:
 
-\include LCD/examples/Form/Form.pde
+\include LCD/examples/Form/Form.ino
 */

@@ -44,7 +44,7 @@ simple to use in any application and which won't block other activities.
 We start this example by including the BlinkLED class and instantiating an
 object instance:
 
-\dontinclude BlinkLED/examples/Blink/Blink.pde
+\dontinclude BlinkLED/examples/Blink/Blink.ino
 \skip #include
 \until statusBlink
 
@@ -61,7 +61,7 @@ BlinkLED statusBlink(13, 70, 930, true);
 The remaining code we need is a call to BlinkLED::loop() every time around
 the main application loop:
 
-\dontinclude BlinkLED/examples/Blink/Blink.pde
+\dontinclude BlinkLED/examples/Blink/Blink.ino
 \skip loop()
 \until }
 
@@ -76,5 +76,5 @@ specific value using BlinkLED::setState().
 
 The full source code for the example follows:
 
-\include BlinkLED/examples/Blink/Blink.pde
+\include BlinkLED/examples/Blink/Blink.ino
 */

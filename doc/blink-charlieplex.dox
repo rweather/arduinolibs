@@ -39,7 +39,7 @@ how to connect up larger numbers of pins in a Charlieplexed arrangement.
 The first step is to initialize a Charlieplex object with the output
 pins it needs to drive:
 
-\dontinclude BlinkLED/examples/Charlieplex/Charlieplex.pde
+\dontinclude BlinkLED/examples/Charlieplex/Charlieplex.ino
 \skip #include
 \until charlie
 
@@ -47,7 +47,7 @@ Then in <tt>setup()</tt> we use Charlieplex::setLed() and
 Charlieplex::setPwmLed() to set three of the six LED's to
 the desired output values:
 
-\dontinclude BlinkLED/examples/Charlieplex/Charlieplex.pde
+\dontinclude BlinkLED/examples/Charlieplex/Charlieplex.ino
 \skip setup
 \until }
 
@@ -56,7 +56,7 @@ necessary to constantly scan the entire LED array, alternatively turning
 LED's on and off.  The user's peristence of vision fills in the gaps.
 To do this, we call Charlieplex::loop():
 
-\dontinclude BlinkLED/examples/Charlieplex/Charlieplex.pde
+\dontinclude BlinkLED/examples/Charlieplex/Charlieplex.ino
 \skip loop
 \until }
 
@@ -69,9 +69,9 @@ cause it to exceed its maximum rating and burn out.
 
 The full source code for the example follows:
 
-\include BlinkLED/examples/Charlieplex/Charlieplex.pde
+\include BlinkLED/examples/Charlieplex/Charlieplex.ino
 
 A more complex example that performs a LED chase over the 6 LED's follows:
 
-\include BlinkLED/examples/CharlieplexChase/CharlieplexChase.pde
+\include BlinkLED/examples/CharlieplexChase/CharlieplexChase.ino
 */

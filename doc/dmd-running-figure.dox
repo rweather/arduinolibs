@@ -32,7 +32,7 @@ available in red, blue, green, yellow, and white variations.
 
 The first step is to initialize the display:
 
-\dontinclude DMD/examples/RunningFigure/RunningFigure.pde
+\dontinclude DMD/examples/RunningFigure/RunningFigure.ino
 \skip #include
 \until DMD display;
 
@@ -40,7 +40,7 @@ We will also need some bitmaps to animate the running figure.  We will use
 static bitmaps stored in program memory.  The first frame of the 10-frame
 animation is:
 
-\dontinclude DMD/examples/RunningFigure/RunningFigure.pde
+\dontinclude DMD/examples/RunningFigure/RunningFigure.ino
 \skip run1
 \until };
 
@@ -52,13 +52,13 @@ are 18x16 and 13x16.
 
 We store pointers to all of the frames in a common array:
 
-\dontinclude DMD/examples/RunningFigure/RunningFigure.pde
+\dontinclude DMD/examples/RunningFigure/RunningFigure.ino
 \skip frames[]
 \until frame = 0
 
 All that remains is to run the animation loop:
 
-\dontinclude DMD/examples/RunningFigure/RunningFigure.pde
+\dontinclude DMD/examples/RunningFigure/RunningFigure.ino
 \skip ADVANCE_MS
 \until display.loop()
 \until }
@@ -73,7 +73,7 @@ Sometimes it can be inconvenient to arrange for DMD::loop() to be called
 regularly.  An alternative is to use Timer1 or Timer2 and
 \ref dmd_interrupts "interrupt-driven display refresh":
 
-\dontinclude DMD/examples/RunningFigureISR/RunningFigureISR.pde
+\dontinclude DMD/examples/RunningFigureISR/RunningFigureISR.ino
 \skip ADVANCE_MS
 \until loop()
 \until }
@@ -83,5 +83,5 @@ would be used in place of \c TIMER1_OVF_vect and \ref DMD::enableTimer1() "enabl
 
 The full source code for the example follows:
 
-\include DMD/examples/RunningFigure/RunningFigure.pde
+\include DMD/examples/RunningFigure/RunningFigure.ino
 */

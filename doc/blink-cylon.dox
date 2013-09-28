@@ -32,13 +32,13 @@ six LED's in a back and forth motion, using the following schematic:
 
 We start by including the ChaseLEDs class:
 
-\dontinclude BlinkLED/examples/Cylon/Cylon.pde
+\dontinclude BlinkLED/examples/Cylon/Cylon.ino
 \skip ChaseLEDs.h
 \until ChaseLEDs.h
 
 The next step is to define the pins that the chase will run over:
 
-\dontinclude BlinkLED/examples/Cylon/Cylon.pde
+\dontinclude BlinkLED/examples/Cylon/Cylon.ino
 \skip byte pins
 \until cylonEyes
 
@@ -47,7 +47,7 @@ with each LED lit for 100 milliseconds before moving onto the next one.
 To complete the example, we need to call ChaseLEDs::loop() each time
 around our main loop to cause the chase to run:
 
-\dontinclude BlinkLED/examples/Cylon/Cylon.pde
+\dontinclude BlinkLED/examples/Cylon/Cylon.ino
 \skip loop()
 \until }
 
@@ -59,7 +59,7 @@ So far we are chasing only a single LED.  We could change this to chase
 two adjacent LED's instead by defining a new \c CylonChase class that
 inherits from ChaseLEDs:
 
-\dontinclude BlinkLED/examples/Cylon2/Cylon2.pde
+\dontinclude BlinkLED/examples/Cylon2/Cylon2.ino
 \skip class CylonChase
 \until };
 
@@ -70,7 +70,7 @@ get the pin that is 2 steps back in the sequence, set it to LOW, and then
 set the previous pin (1 step back) and the next pin to HIGH.  All that
 remains is to change our chase initialization to use the new class:
 
-\dontinclude BlinkLED/examples/Cylon2/Cylon2.pde
+\dontinclude BlinkLED/examples/Cylon2/Cylon2.ino
 \skip byte pins
 \until cylonEyes
 
@@ -78,7 +78,7 @@ We can do even better than this.  Instead of fully lighting both LED's,
 we could instead use the PWM outputs to dim the previous pin, creating a
 kind of "trailing flame" effect:
 
-\dontinclude BlinkLED/examples/Cylon3/Cylon3.pde
+\dontinclude BlinkLED/examples/Cylon3/Cylon3.ino
 \skip advance(
 \until }
 
@@ -91,11 +91,11 @@ rate is to hook up a 10K potentiometer to the A0 analog input:
 We then modify the <tt>advance()</tt> method to read the new chase rate
 from the potentiometer each time the LED advances:
 
-\dontinclude BlinkLED/examples/Cylon4/Cylon4.pde
+\dontinclude BlinkLED/examples/Cylon4/Cylon4.ino
 \skip advance(
 \until }
 
 The full source code for the final version of the example follows:
 
-\include BlinkLED/examples/Cylon4/Cylon4.pde
+\include BlinkLED/examples/Cylon4/Cylon4.ino
 */

@@ -56,7 +56,7 @@
  * The following example drives 6 LED's connected to the output pins
  * D9, D10, and D11:
  *
- * \dontinclude BlinkLED/examples/Charlieplex/Charlieplex.pde
+ * \dontinclude BlinkLED/examples/Charlieplex/Charlieplex.ino
  * \skip #include
  * \until charlie.loop
  * \until }

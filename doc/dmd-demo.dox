@@ -38,5 +38,5 @@ drawing and animating bitmaps.
 
 The full source code for the demo follows:
 
-\include DMD/examples/Demo/Demo.pde
+\include DMD/examples/Demo/Demo.ino
 */

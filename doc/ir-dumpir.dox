@@ -34,5 +34,5 @@ infrared receiver connected to D2, GND, and 5V:
 
 The full source code for the example follows:
 
-\include IR/examples/DumpIR/DumpIR.pde
+\include IR/examples/DumpIR/DumpIR.ino
 */
