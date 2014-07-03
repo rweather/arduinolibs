@@ -127,6 +127,22 @@
  * \endcode
  */
 
+/**
+ * \fn LCD(uint8_t rs, uint8_t enable, uint8_t d0, uint8_t d1, uint8_t d2, uint8_t d3)
+
+ * \brief Initialize the Freetronics LCD display with custom pins.
+ *
+ * For compatibility with other shields, it may be desirable to rewire
+ * some of the pins entirely. This version of the constructor allows any
+ * pins to be reassigned from the defaults (which are rs = 8, enable = 9,
+ * d0 = 4, d1 = 5, d2 = 6, d3 = 7.)
+ *
+ * \code
+ * LCD lcd(8,9,4,5,10,11);
+ * \endcode
+ */
+
+
 void LCD::init()
 {
     // The Freetronics display is 16x2.
