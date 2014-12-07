@@ -41,8 +41,11 @@ struct RTCDate
 
 struct RTCAlarm
 {
+    uint8_t day;
+    uint8_t dow;
     uint8_t hour;
     uint8_t minute;
+    uint8_t second;
     uint8_t flags;
 };
 
