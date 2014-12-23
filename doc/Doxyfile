@@ -663,6 +663,7 @@ INPUT                  = ../libraries/LCD \
                          ../libraries/PowerSave \
                          ../libraries/DMD \
                          ../libraries/IR \
+                         ../libraries/Crypto \
                          .
 
 # This tag can be used to specify the character encoding of the source files
