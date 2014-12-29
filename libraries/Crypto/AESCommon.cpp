@@ -148,66 +148,24 @@ static uint8_t const K[8] = {
     (0x1B << 2) ^ (0x1B << 1) ^ 0x1B
 };
 
-// Multiply x by 2 in the Galois field.
-inline uint8_t gmul2(uint8_t x)
-{
-    // We need the effect of the following code:
-    //
-    //     if (x & 0x80)
-    //         return (x << 1) ^ 0x1B;
-    //     else
-    //         return (x << 1);
-    //
-    // However, we don't want to use runtime conditionals if we can help it
-    // to avoid leaking timing information from the implementation.
-    // In this case, multiplication is slightly faster than table lookup on AVR.
-    uint16_t y = ((uint16_t)x) << 1;
-    return ((uint8_t)y) ^ (uint8_t)(0x1B * ((uint8_t)(y >> 8)));
-}
-
-// Multiply x by 3 in the Galois field.
-inline uint8_t gmul3(uint8_t x)
-{
-    return x ^ gmul2(x);
-}
+// Multiply x by 2 in the Galois field, to achieve the effect of the following:
+//
+//     if (x & 0x80)
+//         return (x << 1) ^ 0x1B;
+//     else
+//         return (x << 1);
+//
+// However, we don't want to use runtime conditionals if we can help it
+// to avoid leaking timing information from the implementation.
+// In this case, multiplication is slightly faster than table lookup on AVR.
+#define gmul2(x)    (t = ((uint16_t)(x)) << 1, \
+                     ((uint8_t)t) ^ (uint8_t)(0x1B * ((uint8_t)(t >> 8))))
 
 // Multiply x by 4 in the Galois field.
-inline uint8_t gmul4(uint8_t x)
-{
-    uint16_t y = ((uint16_t)x) << 2;
-    return ((uint8_t)y) ^ K[y >> 8];
-}
+#define gmul4(x)    (t = ((uint16_t)(x)) << 2, ((uint8_t)t) ^ K[t >> 8])
 
 // Multiply x by 8 in the Galois field.
-inline uint8_t gmul8(uint8_t x)
-{
-    uint16_t y = ((uint16_t)x) << 3;
-    return ((uint8_t)y) ^ K[y >> 8];
-}
-
-// Multiply x by 9 in the Galois field.
-inline uint8_t gmul9(uint8_t x)
-{
-    return x ^ gmul8(x);
-}
-
-// Multiply x by 11 in the Galois field.
-inline uint8_t gmul11(uint8_t x)
-{
-    return x ^ gmul2(x) ^ gmul8(x);
-}
-
-// Multiply x by 13 in the Galois field.
-inline uint8_t gmul13(uint8_t x)
-{
-    return x ^ gmul4(x) ^ gmul8(x);
-}
-
-// Multiply x by 14 in the Galois field.
-inline uint8_t gmul14(uint8_t x)
-{
-    return gmul2(x) ^ gmul4(x) ^ gmul8(x);
-}
+#define gmul8(x)    (t = ((uint16_t)(x)) << 3, ((uint8_t)t) ^ K[t >> 8])
 
 #define OUT(col, row)   output[(col) * 4 + (row)]
 #define IN(col, row)    input[(col) * 4 + (row)]
@@ -254,18 +212,44 @@ static void inverseShiftRowsAndSubBytes(uint8_t *output, const uint8_t *input)
 
 static void mixColumn(uint8_t *output, uint8_t *input)
 {
-    output[0] = gmul2(input[0]) ^ gmul3(input[1]) ^ input[2] ^ input[3];
-    output[1] = input[0] ^ gmul2(input[1]) ^ gmul3(input[2]) ^ input[3];
-    output[2] = input[0] ^ input[1] ^ gmul2(input[2]) ^ gmul3(input[3]);
-    output[3] = gmul3(input[0]) ^ input[1] ^ input[2] ^ gmul2(input[3]);
+    uint16_t t; // Needed by the gmul2 macro.
+    uint8_t a = input[0];
+    uint8_t b = input[1];
+    uint8_t c = input[2];
+    uint8_t d = input[3];
+    uint8_t a2 = gmul2(a);
+    uint8_t b2 = gmul2(b);
+    uint8_t c2 = gmul2(c);
+    uint8_t d2 = gmul2(d);
+    output[0] = a2 ^ b2 ^ b ^ c ^ d;
+    output[1] = a ^ b2 ^ c2 ^ c ^ d;
+    output[2] = a ^ b ^ c2 ^ d2 ^ d;
+    output[3] = a2 ^ a ^ b ^ c ^ d2;
 }
 
 static void inverseMixColumn(uint8_t *output, const uint8_t *input)
 {
-    output[0] = gmul14(input[0]) ^ gmul11(input[1]) ^ gmul13(input[2]) ^ gmul9(input[3]);
-    output[1] = gmul9(input[0]) ^ gmul14(input[1]) ^ gmul11(input[2]) ^ gmul13(input[3]);
-    output[2] = gmul13(input[0]) ^ gmul9(input[1]) ^ gmul14(input[2]) ^ gmul11(input[3]);
-    output[3] = gmul11(input[0]) ^ gmul13(input[1]) ^ gmul9(input[2]) ^ gmul14(input[3]);
+    uint16_t t; // Needed by the gmul2, gmul4, and gmul8 macros.
+    uint8_t a = input[0];
+    uint8_t b = input[1];
+    uint8_t c = input[2];
+    uint8_t d = input[3];
+    uint8_t a2 = gmul2(a);
+    uint8_t b2 = gmul2(b);
+    uint8_t c2 = gmul2(c);
+    uint8_t d2 = gmul2(d);
+    uint8_t a4 = gmul4(a);
+    uint8_t b4 = gmul4(b);
+    uint8_t c4 = gmul4(c);
+    uint8_t d4 = gmul4(d);
+    uint8_t a8 = gmul8(a);
+    uint8_t b8 = gmul8(b);
+    uint8_t c8 = gmul8(c);
+    uint8_t d8 = gmul8(d);
+    output[0] = a8 ^ a4 ^ a2 ^ b8 ^ b2 ^ b ^ c8 ^ c4 ^ c ^ d8 ^ d;
+    output[1] = a8 ^ a ^ b8 ^ b4 ^ b2 ^ c8 ^ c2 ^ c ^ d8 ^ d4 ^ d;
+    output[2] = a8 ^ a4 ^ a ^ b8 ^ b ^ c8 ^ c4 ^ c2 ^ d8 ^ d2 ^ d;
+    output[3] = a8 ^ a2 ^ a ^ b8 ^ b4 ^ b ^ c8 ^ c ^ d8 ^ d4 ^ d2;
 }
 
 void AESCommon::encryptBlock(uint8_t *output, const uint8_t *input)
