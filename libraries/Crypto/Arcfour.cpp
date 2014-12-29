@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Southern Storm Software, Pty Ltd.
+ * Copyright (C) 2015 Southern Storm Software, Pty Ltd.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -93,6 +93,7 @@ size_t Arcfour::ivSize()
  *
  * \param key The key which must contain between 5 and 32 bytes,
  * with at least 16 recommended.
+ * \param len The length of the key in bytes.
  * \return Returns false if the key length is not between 5 and 32;
  * or true if the key was set successfully.
  *
