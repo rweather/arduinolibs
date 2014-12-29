@@ -154,7 +154,7 @@ void Arcfour::encrypt(uint8_t *output, const uint8_t *input, size_t len)
 
 void Arcfour::decrypt(uint8_t *output, const uint8_t *input, size_t len)
 {
-    return encrypt(output, input, len);
+    encrypt(output, input, len);
 }
 
 void Arcfour::clear()
