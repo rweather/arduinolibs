@@ -32,8 +32,8 @@ public:
     Cipher();
     virtual ~Cipher();
 
-    virtual size_t keySize() = 0;
-    virtual size_t ivSize() = 0;
+    virtual size_t keySize() const = 0;
+    virtual size_t ivSize() const = 0;
 
     virtual bool setKey(const uint8_t *key, size_t len) = 0;
     virtual bool setIV(const uint8_t *iv, size_t len) = 0;

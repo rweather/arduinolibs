@@ -130,7 +130,7 @@ AESCommon::~AESCommon()
  * \brief Size of an AES block in bytes.
  * \return Always returns 16.
  */
-size_t AESCommon::blockSize()
+size_t AESCommon::blockSize() const
 {
     return 16;
 }

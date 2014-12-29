@@ -32,8 +32,8 @@ public:
     BlockCipher();
     virtual ~BlockCipher();
 
-    virtual size_t blockSize() = 0;
-    virtual size_t keySize() = 0;
+    virtual size_t blockSize() const = 0;
+    virtual size_t keySize() const = 0;
 
     virtual bool setKey(const uint8_t *key, size_t len) = 0;
 

@@ -52,7 +52,7 @@ AES256::~AES256()
  * \brief Size of a 256-bit AES key in bytes.
  * \return Always returns 32.
  */
-size_t AES256::keySize()
+size_t AES256::keySize() const
 {
     return 32;
 }

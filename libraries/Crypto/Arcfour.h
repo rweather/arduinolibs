@@ -31,8 +31,8 @@ public:
     Arcfour();
     virtual ~Arcfour();
 
-    size_t keySize();
-    size_t ivSize();
+    size_t keySize() const;
+    size_t ivSize() const;
 
     bool setKey(const uint8_t *key, size_t len);
     bool setIV(const uint8_t *iv, size_t len);

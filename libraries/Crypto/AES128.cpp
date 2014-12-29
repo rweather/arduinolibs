@@ -52,7 +52,7 @@ AES128::~AES128()
  * \brief Size of a 128-bit AES key in bytes.
  * \return Always returns 16.
  */
-size_t AES128::keySize()
+size_t AES128::keySize() const
 {
     return 16;
 }

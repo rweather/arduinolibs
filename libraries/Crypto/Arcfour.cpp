@@ -72,7 +72,7 @@ Arcfour::~Arcfour()
  *
  * \sa setKey()
  */
-size_t Arcfour::keySize()
+size_t Arcfour::keySize() const
 {
     return 16;
 }
@@ -82,7 +82,7 @@ size_t Arcfour::keySize()
  *
  * \return Always returns 0 because Arcfour does not use initialization vectors.
  */
-size_t Arcfour::ivSize()
+size_t Arcfour::ivSize() const
 {
     return 0;
 }

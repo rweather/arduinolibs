@@ -52,7 +52,7 @@ AES192::~AES192()
  * \brief Size of a 192-bit AES key in bytes.
  * \return Always returns 24.
  */
-size_t AES192::keySize()
+size_t AES192::keySize() const
 {
     return 24;
 }

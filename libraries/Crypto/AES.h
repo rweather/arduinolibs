@@ -30,7 +30,7 @@ class AESCommon : public BlockCipher
 public:
     virtual ~AESCommon();
 
-    size_t blockSize();
+    size_t blockSize() const;
 
     void encryptBlock(uint8_t *output, const uint8_t *input);
     void decryptBlock(uint8_t *output, const uint8_t *input);
@@ -59,7 +59,7 @@ public:
     AES128();
     virtual ~AES128();
 
-    size_t keySize();
+    size_t keySize() const;
 
     bool setKey(const uint8_t *key, size_t len);
 
@@ -73,7 +73,7 @@ public:
     AES192();
     virtual ~AES192();
 
-    size_t keySize();
+    size_t keySize() const;
 
     bool setKey(const uint8_t *key, size_t len);
 
@@ -87,7 +87,7 @@ public:
     AES256();
     virtual ~AES256();
 
-    size_t keySize();
+    size_t keySize() const;
 
     bool setKey(const uint8_t *key, size_t len);
 
