@@ -27,7 +27,7 @@
  * \brief Abstract base class for block ciphers.
  *
  * Block ciphers always operate in electronic codebook (ECB) mode.
- * Higher-level classes such as CFB and CTR wrap the block cipher to
+ * Higher-level classes such as CFB128 and CTR128 wrap the block cipher to
  * create more useful classes for encryption and decryption of bulk data.
  *
  * References: http://en.wikipedia.org/wiki/Block_cipher,

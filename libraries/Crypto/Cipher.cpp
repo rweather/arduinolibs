@@ -33,7 +33,7 @@
  *
  * All of the stream ciphers such as Arcfour and ChaCha inherit
  * directly from this class, together with block cipher modes such as
- * CTR128 and CFB128.
+ * CTR and CFB.
  */
 
 /**
