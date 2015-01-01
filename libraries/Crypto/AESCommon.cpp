@@ -31,9 +31,15 @@
  * AES192, or AES256 to create an AES block cipher with a specific
  * key size.
  *
+ * \note This AES implementation does not have constant cache behaviour due
+ * to the use of table lookups.  It may not be safe to use this implementation
+ * in an environment where the attacker can observe the timing of encryption
+ * and decryption operations.  Unless AES compatibility is required,
+ * it is recommended that the ChaCha stream cipher be used instead.
+ *
  * Reference: http://en.wikipedia.org/wiki/Advanced_Encryption_Standard
  *
- * \sa AES128, AES192, AES256
+ * \sa ChaCha, AES128, AES192, AES256
  */
 
 // AES S-box (http://en.wikipedia.org/wiki/Rijndael_S-box)

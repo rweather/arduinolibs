@@ -30,6 +30,7 @@
  * \note While fast and small on 8-bit platforms, Arcfour is a very weak
  * algorithm when used incorrectly.  Security can be improved slightly using
  * drop() and good key generation.  Never reuse the same key with Arcfour.
+ * ChaCha will almost always be a better option than Arcfour.
  *
  * The default key size is 128 bits, but any key size between 40 and
  * 256 bits (5 to 32 bytes) can be used with setKey().
@@ -41,7 +42,7 @@
  *
  * Reference: http://en.wikipedia.org/wiki/RC4
  *
- * \sa Cipher
+ * \sa ChaCha
  */
 
 /**
