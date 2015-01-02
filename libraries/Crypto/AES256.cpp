@@ -26,7 +26,7 @@
 
 /**
  * \class AES256 AES.h <AES.h>
- * \brief AES block cipher with 56-bit keys.
+ * \brief AES block cipher with 256-bit keys.
  *
  * \sa AES128, AES192
  */
