@@ -23,7 +23,7 @@
 #include "Hash.h"
 
 /**
- * \class Hash Hash.h <rwcrypt/hash/Hash.h>
+ * \class Hash Hash.h <Hash.h>
  * \brief Abstract base class for cryptographic hash algorithms.
  *
  * \sa SHA1, SHA256

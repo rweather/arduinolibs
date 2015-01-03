@@ -211,7 +211,7 @@ void CTRCommon::clear()
  *
  * Reference: http://en.wikipedia.org/wiki/Block_cipher_mode_of_operation
  *
- * \sa CFB, Cipher
+ * \sa CFB, OFB, CBC
  */
 
 /**
