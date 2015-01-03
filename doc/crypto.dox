@@ -34,6 +34,8 @@
 All cryptographic algorithms have been optimized for 8-bit Arduino platforms
 like the Uno.  Memory usage is also reduced, particularly for SHA1 and SHA256
 which save 256 and 192 bytes respectively over traditional implementations.
+For other algorithms, static sbox tables and the like are placed into
+program memory to further reduce data memory usage.
 
 ChaCha with 20 rounds and 256-bit keys is the recommended
 symmetric encryption algorithm because it is twice as fast as AES128,
@@ -51,15 +53,15 @@ All figures are for the Arduino Uno running at 16 MHz:
 
 <table>
 <tr><td>Algorithm</td><td>Encryption / Hashing (per byte)</td><td>Decryption (per byte)</td><td>Key Setup</td><td>State Size (bytes)</td></tr>
-<tr><td>AES128 (ECB mode)</td><td align="right">32.27us</td><td align="right">65.85us</td><td align="right">158.74us</td><td align="right">208</td></tr>
-<tr><td>AES192 (ECB mode)</td><td align="right">43.44us</td><td align="right">79.59us</td><td align="right">165.53us</td><td align="right">240</td></tr>
-<tr><td>AES256 (ECB mode)</td><td align="right">50.62us</td><td align="right">92.34us</td><td align="right">225.58us</td><td align="right">272</td></tr>
+<tr><td>AES128 (ECB mode)</td><td align="right">36.90us</td><td align="right">66.48us</td><td align="right">160.00us</td><td align="right">208</td></tr>
+<tr><td>AES192 (ECB mode)</td><td align="right">44.20us</td><td align="right">80.35us</td><td align="right">166.54us</td><td align="right">240</td></tr>
+<tr><td>AES256 (ECB mode)</td><td align="right">51.50us</td><td align="right">94.22us</td><td align="right">227.97us</td><td align="right">272</td></tr>
 <tr><td>Arcfour</td><td align="right">2.98us</td><td align="right">2.98us</td><td align="right">601.34us</td><td align="right">258</td></tr>
-<tr><td>ChaCha (20 rounds)</td><td align="right">14.87us</td><td align="right">14.88us</td><td align="right">39.88us</td><td align="right">130</td></tr>
-<tr><td>ChaCha (12 rounds)</td><td align="right">10.38us</td><td align="right">10.38us</td><td align="right">39.88us</td><td align="right">130</td></tr>
-<tr><td>ChaCha (8 rounds)</td><td align="right">8.13us</td><td align="right">8.14us</td><td align="right">39.88us</td><td align="right">130</td></tr>
+<tr><td>ChaCha (20 rounds)</td><td align="right">14.87us</td><td align="right">14.88us</td><td align="right">43.74us</td><td align="right">130</td></tr>
+<tr><td>ChaCha (12 rounds)</td><td align="right">10.38us</td><td align="right">10.38us</td><td align="right">43.74us</td><td align="right">130</td></tr>
+<tr><td>ChaCha (8 rounds)</td><td align="right">8.13us</td><td align="right">8.14us</td><td align="right">43.74us</td><td align="right">130</td></tr>
 <tr><td>SHA1</td><td align="right">21.90us</td><td> </td><td align="right"> </td><td align="right">94</td></tr>
-<tr><td>SHA256</td><td align="right">42.89us</td><td> </td><td align="right"> </td><td align="right">106</td></tr>
+<tr><td>SHA256</td><td align="right">43.85us</td><td> </td><td align="right"> </td><td align="right">106</td></tr>
 </table>
 
 Where a cipher supports more than one key size (such as ChaCha and Arcfour),
