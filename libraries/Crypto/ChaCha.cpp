@@ -57,8 +57,8 @@ ChaCha::~ChaCha()
 
 size_t ChaCha::keySize() const
 {
-    // Default key size is 128-bit, but any key size is allowed.
-    return 16;
+    // Default key size is 256-bit, but any key size is allowed.
+    return 32;
 }
 
 size_t ChaCha::ivSize() const
