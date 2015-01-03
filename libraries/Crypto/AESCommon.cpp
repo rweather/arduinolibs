@@ -22,6 +22,7 @@
 
 #include "AES.h"
 #include "Crypto.h"
+#include "ProgMemUtil.h"
 
 /**
  * \class AESCommon AES.h <AES.h>
@@ -43,7 +44,7 @@
  */
 
 // AES S-box (http://en.wikipedia.org/wiki/Rijndael_S-box)
-static uint8_t const sbox[256] = {
+static uint8_t const sbox[256] PROGMEM = {
     0x63, 0x7C, 0x77, 0x7B, 0xF2, 0x6B, 0x6F, 0xC5,     // 0x00
     0x30, 0x01, 0x67, 0x2B, 0xFE, 0xD7, 0xAB, 0x76,
     0xCA, 0x82, 0xC9, 0x7D, 0xFA, 0x59, 0x47, 0xF0,     // 0x10
@@ -79,7 +80,7 @@ static uint8_t const sbox[256] = {
 };
 
 // AES inverse S-box (http://en.wikipedia.org/wiki/Rijndael_S-box)
-static uint8_t const sbox_inverse[256] = {
+static uint8_t const sbox_inverse[256] PROGMEM = {
     0x52, 0x09, 0x6A, 0xD5, 0x30, 0x36, 0xA5, 0x38,     // 0x00
     0xBF, 0x40, 0xA3, 0x9E, 0x81, 0xF3, 0xD7, 0xFB,
     0x7C, 0xE3, 0x39, 0x82, 0x9B, 0x2F, 0xFF, 0x87,     // 0x10
@@ -178,42 +179,42 @@ static uint8_t const K[8] = {
 
 static void subBytesAndShiftRows(uint8_t *output, const uint8_t *input)
 {
-    OUT(0, 0) = sbox[IN(0, 0)];
-    OUT(0, 1) = sbox[IN(1, 1)];
-    OUT(0, 2) = sbox[IN(2, 2)];
-    OUT(0, 3) = sbox[IN(3, 3)];
-    OUT(1, 0) = sbox[IN(1, 0)];
-    OUT(1, 1) = sbox[IN(2, 1)];
-    OUT(1, 2) = sbox[IN(3, 2)];
-    OUT(1, 3) = sbox[IN(0, 3)];
-    OUT(2, 0) = sbox[IN(2, 0)];
-    OUT(2, 1) = sbox[IN(3, 1)];
-    OUT(2, 2) = sbox[IN(0, 2)];
-    OUT(2, 3) = sbox[IN(1, 3)];
-    OUT(3, 0) = sbox[IN(3, 0)];
-    OUT(3, 1) = sbox[IN(0, 1)];
-    OUT(3, 2) = sbox[IN(1, 2)];
-    OUT(3, 3) = sbox[IN(2, 3)];
+    OUT(0, 0) = pgm_read_byte(sbox + IN(0, 0));
+    OUT(0, 1) = pgm_read_byte(sbox + IN(1, 1));
+    OUT(0, 2) = pgm_read_byte(sbox + IN(2, 2));
+    OUT(0, 3) = pgm_read_byte(sbox + IN(3, 3));
+    OUT(1, 0) = pgm_read_byte(sbox + IN(1, 0));
+    OUT(1, 1) = pgm_read_byte(sbox + IN(2, 1));
+    OUT(1, 2) = pgm_read_byte(sbox + IN(3, 2));
+    OUT(1, 3) = pgm_read_byte(sbox + IN(0, 3));
+    OUT(2, 0) = pgm_read_byte(sbox + IN(2, 0));
+    OUT(2, 1) = pgm_read_byte(sbox + IN(3, 1));
+    OUT(2, 2) = pgm_read_byte(sbox + IN(0, 2));
+    OUT(2, 3) = pgm_read_byte(sbox + IN(1, 3));
+    OUT(3, 0) = pgm_read_byte(sbox + IN(3, 0));
+    OUT(3, 1) = pgm_read_byte(sbox + IN(0, 1));
+    OUT(3, 2) = pgm_read_byte(sbox + IN(1, 2));
+    OUT(3, 3) = pgm_read_byte(sbox + IN(2, 3));
 }
 
 static void inverseShiftRowsAndSubBytes(uint8_t *output, const uint8_t *input)
 {
-    OUT(0, 0) = sbox_inverse[IN(0, 0)];
-    OUT(0, 1) = sbox_inverse[IN(3, 1)];
-    OUT(0, 2) = sbox_inverse[IN(2, 2)];
-    OUT(0, 3) = sbox_inverse[IN(1, 3)];
-    OUT(1, 0) = sbox_inverse[IN(1, 0)];
-    OUT(1, 1) = sbox_inverse[IN(0, 1)];
-    OUT(1, 2) = sbox_inverse[IN(3, 2)];
-    OUT(1, 3) = sbox_inverse[IN(2, 3)];
-    OUT(2, 0) = sbox_inverse[IN(2, 0)];
-    OUT(2, 1) = sbox_inverse[IN(1, 1)];
-    OUT(2, 2) = sbox_inverse[IN(0, 2)];
-    OUT(2, 3) = sbox_inverse[IN(3, 3)];
-    OUT(3, 0) = sbox_inverse[IN(3, 0)];
-    OUT(3, 1) = sbox_inverse[IN(2, 1)];
-    OUT(3, 2) = sbox_inverse[IN(1, 2)];
-    OUT(3, 3) = sbox_inverse[IN(0, 3)];
+    OUT(0, 0) = pgm_read_byte(sbox_inverse + IN(0, 0));
+    OUT(0, 1) = pgm_read_byte(sbox_inverse + IN(3, 1));
+    OUT(0, 2) = pgm_read_byte(sbox_inverse + IN(2, 2));
+    OUT(0, 3) = pgm_read_byte(sbox_inverse + IN(1, 3));
+    OUT(1, 0) = pgm_read_byte(sbox_inverse + IN(1, 0));
+    OUT(1, 1) = pgm_read_byte(sbox_inverse + IN(0, 1));
+    OUT(1, 2) = pgm_read_byte(sbox_inverse + IN(3, 2));
+    OUT(1, 3) = pgm_read_byte(sbox_inverse + IN(2, 3));
+    OUT(2, 0) = pgm_read_byte(sbox_inverse + IN(2, 0));
+    OUT(2, 1) = pgm_read_byte(sbox_inverse + IN(1, 1));
+    OUT(2, 2) = pgm_read_byte(sbox_inverse + IN(0, 2));
+    OUT(2, 3) = pgm_read_byte(sbox_inverse + IN(3, 3));
+    OUT(3, 0) = pgm_read_byte(sbox_inverse + IN(3, 0));
+    OUT(3, 1) = pgm_read_byte(sbox_inverse + IN(2, 1));
+    OUT(3, 2) = pgm_read_byte(sbox_inverse + IN(1, 2));
+    OUT(3, 3) = pgm_read_byte(sbox_inverse + IN(0, 3));
 }
 
 static void mixColumn(uint8_t *output, uint8_t *input)
@@ -329,22 +330,22 @@ void AESCommon::keyScheduleCore(uint8_t *output, const uint8_t *input, uint8_t i
 {
     // Rcon(i), 2^i in the Rijndael finite field, for i = 0..10.
     // http://en.wikipedia.org/wiki/Rijndael_key_schedule
-    static uint8_t const rcon[11] = {
+    static uint8_t const rcon[11] PROGMEM = {
         0x00, 0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40,     // 0x00
         0x80, 0x1B, 0x36
     };
-    output[0] = sbox[input[1]] ^ rcon[iteration];
-    output[1] = sbox[input[2]];
-    output[2] = sbox[input[3]];
-    output[3] = sbox[input[0]];
+    output[0] = pgm_read_byte(sbox + input[1]) ^ pgm_read_byte(rcon + iteration);
+    output[1] = pgm_read_byte(sbox + input[2]);
+    output[2] = pgm_read_byte(sbox + input[3]);
+    output[3] = pgm_read_byte(sbox + input[0]);
 }
 
 void AESCommon::applySbox(uint8_t *output, const uint8_t *input)
 {
-    output[0] = sbox[input[0]];
-    output[1] = sbox[input[1]];
-    output[2] = sbox[input[2]];
-    output[3] = sbox[input[3]];
+    output[0] = pgm_read_byte(sbox + input[0]);
+    output[1] = pgm_read_byte(sbox + input[1]);
+    output[2] = pgm_read_byte(sbox + input[2]);
+    output[3] = pgm_read_byte(sbox + input[3]);
 }
 
 /** @endcond */

@@ -24,6 +24,7 @@
 #include "Crypto.h"
 #include "RotateUtil.h"
 #include "EndianUtil.h"
+#include "ProgMemUtil.h"
 #include <string.h>
 
 /**
@@ -85,10 +86,10 @@ size_t ChaCha::ivSize() const
 
 bool ChaCha::setKey(const uint8_t *key, size_t len)
 {
-    static const char tag128[] = "expand 16-byte k";
-    static const char tag256[] = "expand 32-byte k";
+    static const char tag128[] PROGMEM = "expand 16-byte k";
+    static const char tag256[] PROGMEM = "expand 32-byte k";
     if (len <= 16) {
-        memcpy(block, tag128, 16);
+        memcpy_P(block, tag128, 16);
         memcpy(block + 16, key, len);
         memcpy(block + 32, key, len);
         if (len < 16) {
@@ -98,7 +99,7 @@ bool ChaCha::setKey(const uint8_t *key, size_t len)
     } else {
         if (len > 32)
             len = 32;
-        memcpy(block, tag256, 16);
+        memcpy_P(block, tag256, 16);
         memcpy(block + 16, key, len);
         if (len < 32)
             memset(block + 16 + len, 0, 32 - len);

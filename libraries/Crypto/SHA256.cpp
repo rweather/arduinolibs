@@ -24,6 +24,7 @@
 #include "Crypto.h"
 #include "RotateUtil.h"
 #include "EndianUtil.h"
+#include "ProgMemUtil.h"
 #include <string.h>
 
 /**
@@ -152,7 +153,7 @@ void SHA256::clear()
 void SHA256::processChunk()
 {
     // Round constants for SHA-256.
-    static uint32_t const k[64] = {
+    static uint32_t const k[64] PROGMEM = {
         0x428a2f98, 0x71374491, 0xb5c0fbcf, 0xe9b5dba5,
         0x3956c25b, 0x59f111f1, 0x923f82a4, 0xab1c5ed5,
         0xd807aa98, 0x12835b01, 0x243185be, 0x550c7dc3,
@@ -189,7 +190,7 @@ void SHA256::processChunk()
     // Perform the first 16 rounds of the compression function main loop.
     uint32_t temp1, temp2;
     for (index = 0; index < 16; ++index) {
-        temp1 = h + k[index] + state.w[index] +
+        temp1 = h + pgm_read_dword(k + index) + state.w[index] +
                 (rightRotate6(e) ^ rightRotate11(e) ^ rightRotate25(e)) +
                 ((e & f) ^ ((~e) & g));
         temp2 = (rightRotate2(a) ^ rightRotate13(a) ^ rightRotate22(a)) +
@@ -217,7 +218,7 @@ void SHA256::processChunk()
                 (rightRotate17(temp2) ^ rightRotate19(temp2) ^ (temp2 >> 10));
 
         // Perform the round.
-        temp1 = h + k[index] + temp1 +
+        temp1 = h + pgm_read_dword(k + index) + temp1 +
                 (rightRotate6(e) ^ rightRotate11(e) ^ rightRotate25(e)) +
                 ((e & f) ^ ((~e) & g));
         temp2 = (rightRotate2(a) ^ rightRotate13(a) ^ rightRotate22(a)) +
