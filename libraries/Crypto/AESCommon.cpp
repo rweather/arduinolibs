@@ -22,7 +22,7 @@
 
 #include "AES.h"
 #include "Crypto.h"
-#include "ProgMemUtil.h"
+#include "utility/ProgMemUtil.h"
 
 /**
  * \class AESCommon AES.h <AES.h>

@@ -22,8 +22,8 @@
 
 #include "SHA1.h"
 #include "Crypto.h"
-#include "RotateUtil.h"
-#include "EndianUtil.h"
+#include "utility/RotateUtil.h"
+#include "utility/EndianUtil.h"
 #include <string.h>
 
 /**

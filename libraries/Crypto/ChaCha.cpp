@@ -22,9 +22,9 @@
 
 #include "ChaCha.h"
 #include "Crypto.h"
-#include "RotateUtil.h"
-#include "EndianUtil.h"
-#include "ProgMemUtil.h"
+#include "utility/RotateUtil.h"
+#include "utility/EndianUtil.h"
+#include "utility/ProgMemUtil.h"
 #include <string.h>
 
 /**
