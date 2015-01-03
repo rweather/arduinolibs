@@ -88,6 +88,15 @@ The default implementation simulates the time and date based on the value of
 \li \ref alarm_clock "Alarm Clock" example that uses the DS1307 or DS3232
 realtime clock and the LCD library to implement an alarm clock.
 
+\section main_Crypto Cryptographic Library
+
+\li Block ciphers: AES128, AES192, AES256
+\li Block cipher modes: CTR, CFB, CBC, OFB
+\li Stream ciphers: ChaCha, Arcfour
+\li Hash algorithms: SHA1, SHA256
+
+More information can be found on the \ref crypto "Cryptographic Library" page.
+
 \section main_IR Infrared Control Library
 
 \li IRreceiver class that receives incoming RC-5 commands from an

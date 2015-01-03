@@ -291,6 +291,39 @@ void testCipher(ChaCha *cipher, const struct TestVector *test)
         Serial.println("Failed");
 }
 
+// The data space of this sketch is too big if we try to test the
+// performance of all of setKey(), encrypt(), and decrypt().
+// Since decryption is almost identical to encryption, only test
+// that if the PERF_DECRYPT option is enabled, suppressing setKey().
+//#define PERF_DECRYPT 1
+
+#if !defined(PERF_DECRYPT)
+
+void perfCipherSetKey(ChaCha *cipher, const struct TestVector *test)
+{
+    unsigned long start;
+    unsigned long elapsed;
+    int count;
+
+    Serial.print(test->name);
+    Serial.print(" SetKey ... ");
+
+    cipher->setNumRounds(test->rounds);
+    start = micros();
+    for (count = 0; count < 1000; ++count) {
+        cipher->setKey(test->key, test->keySize);
+        cipher->setIV(test->iv, 8);
+    }
+    elapsed = micros() - start;
+
+    Serial.print(elapsed / 1000.0);
+    Serial.print("us per operation, ");
+    Serial.print((1000.0 * 1000000.0) / elapsed);
+    Serial.println(" per second");
+}
+
+#endif
+
 void perfCipherEncrypt(ChaCha *cipher, const struct TestVector *test)
 {
     unsigned long start;
@@ -314,6 +347,8 @@ void perfCipherEncrypt(ChaCha *cipher, const struct TestVector *test)
     Serial.print((sizeof(buffer) * 500.0 * 1000000.0) / elapsed);
     Serial.println(" bytes per second");
 }
+
+#if defined(PERF_DECRYPT)
 
 void perfCipherDecrypt(ChaCha *cipher, const struct TestVector *test)
 {
@@ -339,10 +374,17 @@ void perfCipherDecrypt(ChaCha *cipher, const struct TestVector *test)
     Serial.println(" bytes per second");
 }
 
+#endif
+
 void perfCipher(ChaCha *cipher, const struct TestVector *test)
 {
+#if !defined(PERF_DECRYPT)
+    perfCipherSetKey(cipher, test);
+    perfCipherEncrypt(cipher, test);
+#else
     perfCipherEncrypt(cipher, test);
     perfCipherDecrypt(cipher, test);
+#endif
 }
 
 void setup()
