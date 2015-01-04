@@ -78,8 +78,8 @@
 // Left rotate by 11: Rotate left by 8, then left by 3.
 #define leftRotate11(a) (leftRotate(leftRotate(leftRotate(leftRotate((a), 8), 1), 1), 1))
 
-// Left rotate by 12: Rotate left by 8, then left by 4.
-#define leftRotate12(a) (leftRotate(leftRotate(leftRotate(leftRotate(leftRotate((a), 8), 1), 1), 1), 1))
+// Left rotate by 12: Rotate left by 16, then right by 4.
+#define leftRotate12(a) (rightRotate(rightRotate(rightRotate(rightRotate(leftRotate((a), 16), 1), 1), 1), 1))
 
 // Left rotate by 13: Rotate left by 16, then right by 3.
 #define leftRotate13(a) (rightRotate(rightRotate(rightRotate(leftRotate((a), 16), 1), 1), 1))

@@ -199,18 +199,6 @@ void ChaCha::clear()
     posn = 64;
 }
 
-// On AVR it is faster to rotate left by 16 bits and then right by 4 bits
-// one at a time than to rotate left by 12 bits in a single step.
-#define leftRotate12(a) \
-    (__extension__ ({ \
-        uint32_t temp = (a); \
-        temp = (temp << 16) | (temp >> 16); \
-        temp = rightRotate(temp, 1); \
-        temp = rightRotate(temp, 1); \
-        temp = rightRotate(temp, 1); \
-        rightRotate(temp, 1); \
-    }))
-
 // Perform a ChaCha quarter round operation.
 #define quarterRound(a, b, c, d)    \
     do { \

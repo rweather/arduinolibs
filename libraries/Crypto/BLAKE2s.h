@@ -20,26 +20,38 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-#ifndef CRYPTO_ENDIANUTIL_H
-#define CRYPTO_ENDIANUTIL_H
+#ifndef CRYPTO_BLAKE2S_H
+#define CRYPTO_BLAKE2S_H
 
-#include <inttypes.h>
+#include "Hash.h"
 
-// CPU is assumed to be little endian.   Edit this file if you
-// need to port this library to a big endian CPU.
+class BLAKE2s : public Hash
+{
+public:
+    BLAKE2s();
+    virtual ~BLAKE2s();
 
-#define CRYPTO_LITTLE_ENDIAN 1
+    size_t hashSize() const;
+    size_t blockSize() const;
 
-#define htole32(x)  (x)
-#define le32toh(x)  (x)
-#define htobe32(x)  \
-    (__extension__ ({ \
-        uint32_t _temp = (x); \
-        ((_temp >> 24) & 0x000000FF) | \
-        ((_temp >>  8) & 0x0000FF00) | \
-        ((_temp <<  8) & 0x00FF0000) | \
-        ((_temp << 24) & 0xFF000000); \
-    }))
-#define be32toh(x)  (htobe32((x)))
+    void reset();
+    void reset(uint8_t outputLength);
+    void update(const void *data, size_t len);
+    void finalize(void *hash, size_t len);
+
+    void clear();
+
+private:
+    struct {
+        uint32_t h[8];
+        uint32_t m[16];
+        uint32_t v[16];
+        uint8_t chunkSize;
+        bool finalized;
+        uint64_t length;
+    } state;
+
+    void processChunk(uint32_t f0);
+};
 
 #endif

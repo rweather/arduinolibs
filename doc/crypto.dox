@@ -29,7 +29,7 @@
 \li Block ciphers: AES128, AES192, AES256
 \li Block cipher modes: CTR, CFB, CBC, OFB
 \li Stream ciphers: ChaCha, Arcfour
-\li Hash algorithms: SHA1, SHA256
+\li Hash algorithms: SHA1, SHA256, BLAKE2s
 
 All cryptographic algorithms have been optimized for 8-bit Arduino platforms
 like the Uno.  Memory usage is also reduced, particularly for SHA1 and SHA256
@@ -42,6 +42,11 @@ symmetric encryption algorithm because it is twice as fast as AES128,
 constant-time, and much more secure.  AES128, AES192, AES256, and Arcfour
 are provided for use in applications where compatibility with other systems
 is desirable.
+
+BLAKE2s is a variation on the ChaCha stream cipher, designed for hashing,
+with a 256-bit hash output.  It is intended as a high performance drop-in
+replacement for SHA256 for when speed is critical but exact SHA256
+compatibility is not.
 
 \section crypto_examples Examples
 
@@ -62,6 +67,7 @@ All figures are for the Arduino Uno running at 16 MHz:
 <tr><td>ChaCha (8 rounds)</td><td align="right">8.13us</td><td align="right">8.14us</td><td align="right">43.74us</td><td align="right">130</td></tr>
 <tr><td>SHA1</td><td align="right">21.90us</td><td> </td><td align="right"> </td><td align="right">94</td></tr>
 <tr><td>SHA256</td><td align="right">43.85us</td><td> </td><td align="right"> </td><td align="right">106</td></tr>
+<tr><td>BLAKE2s</td><td align="right">18.54us</td><td> </td><td align="right"> </td><td align="right">170</td></tr>
 </table>
 
 Where a cipher supports more than one key size (such as ChaCha and Arcfour),
