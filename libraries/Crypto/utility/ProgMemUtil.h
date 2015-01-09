@@ -26,10 +26,12 @@
 #if defined(__AVR__)
 #include <avr/pgmspace.h>
 #else
+#include <string.h>
 #define PROGMEM
 #define pgm_read_byte(x)    (*(x))
 #define pgm_read_word(x)    (*(x))
 #define pgm_read_dword(x)   (*(x))
+#define memcpy_P(d,s,l)     memcpy((d), (s), (l))
 #endif
 
 #endif
