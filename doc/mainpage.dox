@@ -92,7 +92,7 @@ realtime clock and the LCD library to implement an alarm clock.
 
 \li Block ciphers: AES128, AES192, AES256
 \li Block cipher modes: CTR, CFB, CBC, OFB
-\li Stream ciphers: ChaCha, Arcfour
+\li Stream ciphers: ChaCha
 \li Hash algorithms: SHA1, SHA256, BLAKE2s
 
 More information can be found on the \ref crypto "Cryptographic Library" page.

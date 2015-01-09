@@ -31,9 +31,8 @@
  * bytes that are input to encrypt() or decrypt() is exactly the same as
  * the number of bytes that are output.
  *
- * All of the stream ciphers such as Arcfour and ChaCha inherit
- * directly from this class, together with block cipher modes such as
- * CTR and CFB.
+ * All of the stream ciphers such as ChaCha inherit directly from this class,
+ * together with block cipher modes such as CTR and CFB.
  */
 
 /**
