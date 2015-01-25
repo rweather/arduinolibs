@@ -54,7 +54,8 @@ TBD
 
 \section crypto_performance Performance
 
-All figures are for the Arduino Uno running at 16 MHz:
+All figures are for the Arduino Uno running at 16 MHz.  Figures for the
+Ardunino Mega 2560 running at 16 MHz are similar:
 
 <table>
 <tr><td>Algorithm</td><td>Encryption / Hashing (per byte)</td><td>Decryption (per byte)</td><td>Key Setup</td><td>State Size (bytes)</td></tr>

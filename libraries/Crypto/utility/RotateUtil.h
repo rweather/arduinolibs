@@ -25,6 +25,8 @@
 
 #include <inttypes.h>
 
+#if defined(__AVR__)
+
 // Rotation functions that are optimised for best performance on AVR.
 // The most efficient rotations are where the number of bits is 1 or a
 // multiple of 8, so we compose the efficient rotations to produce all
@@ -170,5 +172,92 @@
 #define rightRotate29(a) (leftRotate3((a)))
 #define rightRotate30(a) (leftRotate2((a)))
 #define rightRotate31(a) (leftRotate1((a)))
+
+#else
+
+// Generic rotation functions.  All bit shifts are considered to have
+// similar performance.  Usually true of 32-bit and higher platforms.
+
+// Generic left rotate.
+#define leftRotate(a, bits) \
+    (__extension__ ({ \
+        uint32_t _temp = (a); \
+        (_temp << (bits)) | (_temp >> (32 - (bits))); \
+    }))
+
+// Generic right rotate.
+#define rightRotate(a, bits) \
+    (__extension__ ({ \
+        uint32_t _temp = (a); \
+        (_temp >> (bits)) | (_temp << (32 - (bits))); \
+    }))
+
+// Left rotate by a specific number of bits.
+#define leftRotate1(a)  (leftRotate((a), 1))
+#define leftRotate2(a)  (leftRotate((a), 2))
+#define leftRotate3(a)  (leftRotate((a), 3))
+#define leftRotate4(a)  (leftRotate((a), 4))
+#define leftRotate5(a)  (leftRotate((a), 5))
+#define leftRotate6(a)  (leftRotate((a), 6))
+#define leftRotate7(a)  (leftRotate((a), 7))
+#define leftRotate8(a)  (leftRotate((a), 8))
+#define leftRotate9(a)  (leftRotate((a), 9))
+#define leftRotate10(a) (leftRotate((a), 10))
+#define leftRotate11(a) (leftRotate((a), 11))
+#define leftRotate12(a) (leftRotate((a), 12))
+#define leftRotate13(a) (leftRotate((a), 13))
+#define leftRotate14(a) (leftRotate((a), 14))
+#define leftRotate15(a) (leftRotate((a), 15))
+#define leftRotate16(a) (leftRotate((a), 16))
+#define leftRotate17(a) (leftRotate((a), 17))
+#define leftRotate18(a) (leftRotate((a), 18))
+#define leftRotate19(a) (leftRotate((a), 19))
+#define leftRotate20(a) (leftRotate((a), 20))
+#define leftRotate21(a) (leftRotate((a), 21))
+#define leftRotate22(a) (leftRotate((a), 22))
+#define leftRotate23(a) (leftRotate((a), 23))
+#define leftRotate24(a) (leftRotate((a), 24))
+#define leftRotate25(a) (leftRotate((a), 25))
+#define leftRotate26(a) (leftRotate((a), 26))
+#define leftRotate27(a) (leftRotate((a), 27))
+#define leftRotate28(a) (leftRotate((a), 28))
+#define leftRotate29(a) (leftRotate((a), 29))
+#define leftRotate30(a) (leftRotate((a), 30))
+#define leftRotate31(a) (leftRotate((a), 31))
+
+// Right rotate by a specific number of bits.
+#define rightRotate1(a)  (rightRotate((a), 1))
+#define rightRotate2(a)  (rightRotate((a), 2))
+#define rightRotate3(a)  (rightRotate((a), 3))
+#define rightRotate4(a)  (rightRotate((a), 4))
+#define rightRotate5(a)  (rightRotate((a), 5))
+#define rightRotate6(a)  (rightRotate((a), 6))
+#define rightRotate7(a)  (rightRotate((a), 7))
+#define rightRotate8(a)  (rightRotate((a), 8))
+#define rightRotate9(a)  (rightRotate((a), 9))
+#define rightRotate10(a) (rightRotate((a), 10))
+#define rightRotate11(a) (rightRotate((a), 11))
+#define rightRotate12(a) (rightRotate((a), 12))
+#define rightRotate13(a) (rightRotate((a), 13))
+#define rightRotate14(a) (rightRotate((a), 14))
+#define rightRotate15(a) (rightRotate((a), 15))
+#define rightRotate16(a) (rightRotate((a), 16))
+#define rightRotate17(a) (rightRotate((a), 17))
+#define rightRotate18(a) (rightRotate((a), 18))
+#define rightRotate19(a) (rightRotate((a), 19))
+#define rightRotate20(a) (rightRotate((a), 20))
+#define rightRotate21(a) (rightRotate((a), 21))
+#define rightRotate22(a) (rightRotate((a), 22))
+#define rightRotate23(a) (rightRotate((a), 23))
+#define rightRotate24(a) (rightRotate((a), 24))
+#define rightRotate25(a) (rightRotate((a), 25))
+#define rightRotate26(a) (rightRotate((a), 26))
+#define rightRotate27(a) (rightRotate((a), 27))
+#define rightRotate28(a) (rightRotate((a), 28))
+#define rightRotate29(a) (rightRotate((a), 29))
+#define rightRotate30(a) (rightRotate((a), 30))
+#define rightRotate31(a) (rightRotate((a), 31))
+
+#endif
 
 #endif
