@@ -753,6 +753,7 @@ IMAGE_PATH             = ../libraries/BlinkLED/examples/Cylon \
                          ../libraries/LCD/examples/HelloWorld \
                          ../libraries/LCD/examples/Form \
                          ../libraries/RTC/examples/AlarmClock \
+                         ../libraries/Crypto \
                          ../libraries/DMD \
                          ../libraries/IR \
                          ../libraries/I2C

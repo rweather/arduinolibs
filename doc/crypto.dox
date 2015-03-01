@@ -30,6 +30,7 @@
 \li Block cipher modes: CTR, CFB, CBC, OFB
 \li Stream ciphers: ChaCha
 \li Hash algorithms: SHA1, SHA256, BLAKE2s
+\li Random number generation: \link RNGClass RNG\endlink, TransistorNoiseSource
 
 All cryptographic algorithms have been optimized for 8-bit Arduino platforms
 like the Uno.  Memory usage is also reduced, particularly for SHA1 and SHA256

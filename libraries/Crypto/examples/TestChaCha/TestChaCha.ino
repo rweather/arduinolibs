@@ -27,6 +27,7 @@ This example runs tests on the ChaCha implementation to verify correct behaviour
 #include <Crypto.h>
 #include <ChaCha.h>
 #include <string.h>
+#include <avr/pgmspace.h>
 
 #define MAX_PLAINTEXT_SIZE  64
 #define MAX_CIPHERTEXT_SIZE 64
@@ -50,7 +51,7 @@ struct TestVector
 // specification doesn't contain test vectors - these were generated
 // using the reference implementation from http://cr.yp.to/chacha.html.
 
-static TestVector const testVectorChaCha20_128 = {
+static TestVector const testVectorChaCha20_128 PROGMEM = {
     .name        = "ChaCha20 128-bit",
     .key         = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16},
     .keySize     = 16,
@@ -76,7 +77,7 @@ static TestVector const testVectorChaCha20_128 = {
     .size        = 64
 };
 
-static TestVector const testVectorChaCha20_256 = {
+static TestVector const testVectorChaCha20_256 PROGMEM = {
     .name        = "ChaCha20 256-bit",
     .key         = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,
                     201, 202, 203, 204, 205, 206, 207, 208, 209, 210,
@@ -104,7 +105,7 @@ static TestVector const testVectorChaCha20_256 = {
     .size        = 64
 };
 
-static TestVector const testVectorChaCha12_128 = {
+static TestVector const testVectorChaCha12_128 PROGMEM = {
     .name        = "ChaCha12 128-bit",
     .key         = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16},
     .keySize     = 16,
@@ -130,7 +131,7 @@ static TestVector const testVectorChaCha12_128 = {
     .size        = 64
 };
 
-static TestVector const testVectorChaCha12_256 = {
+static TestVector const testVectorChaCha12_256 PROGMEM = {
     .name        = "ChaCha12 256-bit",
     .key         = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,
                     201, 202, 203, 204, 205, 206, 207, 208, 209, 210,
@@ -158,7 +159,7 @@ static TestVector const testVectorChaCha12_256 = {
     .size        = 64
 };
 
-static TestVector const testVectorChaCha8_128 = {
+static TestVector const testVectorChaCha8_128 PROGMEM = {
     .name        = "ChaCha8 128-bit",
     .key         = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16},
     .keySize     = 16,
@@ -184,7 +185,7 @@ static TestVector const testVectorChaCha8_128 = {
     .size        = 64
 };
 
-static TestVector const testVectorChaCha8_256 = {
+static TestVector const testVectorChaCha8_256 PROGMEM = {
     .name        = "ChaCha8 256-bit",
     .key         = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,
                     201, 202, 203, 204, 205, 206, 207, 208, 209, 210,
@@ -211,6 +212,8 @@ static TestVector const testVectorChaCha8_256 = {
     .counter     = {109, 110, 111, 112, 113, 114, 115, 116},
     .size        = 64
 };
+
+TestVector testVector;
 
 ChaCha chacha;
 
@@ -272,6 +275,9 @@ void testCipher(ChaCha *cipher, const struct TestVector *test)
 {
     bool ok;
 
+    memcpy_P(&testVector, test, sizeof(TestVector));
+    test = &testVector;
+
     Serial.print(test->name);
     Serial.print(" ... ");
 
@@ -291,19 +297,14 @@ void testCipher(ChaCha *cipher, const struct TestVector *test)
         Serial.println("Failed");
 }
 
-// The data space of this sketch is too big if we try to test the
-// performance of all of setKey(), encrypt(), and decrypt().
-// Since decryption is almost identical to encryption, only test
-// that if the PERF_DECRYPT option is enabled, suppressing setKey().
-//#define PERF_DECRYPT 1
-
-#if !defined(PERF_DECRYPT)
-
 void perfCipherSetKey(ChaCha *cipher, const struct TestVector *test)
 {
     unsigned long start;
     unsigned long elapsed;
     int count;
+
+    memcpy_P(&testVector, test, sizeof(TestVector));
+    test = &testVector;
 
     Serial.print(test->name);
     Serial.print(" SetKey ... ");
@@ -322,13 +323,14 @@ void perfCipherSetKey(ChaCha *cipher, const struct TestVector *test)
     Serial.println(" per second");
 }
 
-#endif
-
 void perfCipherEncrypt(ChaCha *cipher, const struct TestVector *test)
 {
     unsigned long start;
     unsigned long elapsed;
     int count;
+
+    memcpy_P(&testVector, test, sizeof(TestVector));
+    test = &testVector;
 
     Serial.print(test->name);
     Serial.print(" Encrypt ... ");
@@ -348,13 +350,14 @@ void perfCipherEncrypt(ChaCha *cipher, const struct TestVector *test)
     Serial.println(" bytes per second");
 }
 
-#if defined(PERF_DECRYPT)
-
 void perfCipherDecrypt(ChaCha *cipher, const struct TestVector *test)
 {
     unsigned long start;
     unsigned long elapsed;
     int count;
+
+    memcpy_P(&testVector, test, sizeof(TestVector));
+    test = &testVector;
 
     Serial.print(test->name);
     Serial.print(" Decrypt ... ");
@@ -374,17 +377,11 @@ void perfCipherDecrypt(ChaCha *cipher, const struct TestVector *test)
     Serial.println(" bytes per second");
 }
 
-#endif
-
 void perfCipher(ChaCha *cipher, const struct TestVector *test)
 {
-#if !defined(PERF_DECRYPT)
     perfCipherSetKey(cipher, test);
     perfCipherEncrypt(cipher, test);
-#else
-    perfCipherEncrypt(cipher, test);
     perfCipherDecrypt(cipher, test);
-#endif
 }
 
 void setup()
