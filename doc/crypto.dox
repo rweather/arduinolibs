@@ -29,14 +29,14 @@
 \li Block ciphers: AES128, AES192, AES256
 \li Block cipher modes: CTR, CFB, CBC, OFB
 \li Stream ciphers: ChaCha
-\li Hash algorithms: SHA1, SHA256, SHA512, BLAKE2s
+\li Hash algorithms: SHA1, SHA256, SHA512, BLAKE2s, BLAKE2b
 \li Public key algorithms: Curve25519
 \li Random number generation: \link RNGClass RNG\endlink, TransistorNoiseSource
 
 All cryptographic algorithms have been optimized for 8-bit Arduino platforms
 like the Uno.  Memory usage is also reduced, particularly for SHA1, SHA256,
 and SHA512 which save 256, 192, and 512 bytes respectively over traditional
-implementations.  For other algorithms, static sbox tables and the like are
+implementations.  For all algorithms, static sbox tables and the like are
 placed into program memory to further reduce data memory usage.
 
 ChaCha with 20 rounds and 256-bit keys is the recommended
@@ -45,10 +45,10 @@ constant-time, and much more secure.  AES128, AES192, and AES256 are
 provided for use in applications where compatibility with other systems
 is desirable.
 
-BLAKE2s is a variation on the ChaCha stream cipher, designed for hashing,
-with a 256-bit hash output.  It is intended as a high performance drop-in
-replacement for SHA256 for when speed is critical but exact SHA256
-compatibility is not.
+BLAKE2s and BLAKE2b are variations on the ChaCha stream cipher, designed for
+hashing, with 256-bit and 512-bit hash outputs respectively.  They are
+intended as high performance replacements for SHA256 and SHA512 for when
+speed is critical but exact bit-compatibility of hash values is not.
 
 \section crypto_performance Performance
 
@@ -67,6 +67,7 @@ Ardunino Mega 2560 running at 16 MHz are similar:
 <tr><td>SHA256</td><td align="right">43.85us</td><td> </td><td align="right"> </td><td align="right">106</td></tr>
 <tr><td>SHA512</td><td align="right">123.25us</td><td> </td><td align="right"> </td><td align="right">210</td></tr>
 <tr><td>BLAKE2s</td><td align="right">18.54us</td><td> </td><td align="right"> </td><td align="right">170</td></tr>
+<tr><td>BLAKE2b</td><td align="right">50.59us</td><td> </td><td align="right"> </td><td align="right">338</td></tr>
 </table>
 
 Where a cipher supports more than one key size (such as ChaCha), the values
