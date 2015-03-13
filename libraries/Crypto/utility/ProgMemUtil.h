@@ -25,12 +25,19 @@
 
 #if defined(__AVR__)
 #include <avr/pgmspace.h>
+#define pgm_read_qword(x)   \
+    (__extension__ ({ \
+        const uint32_t *_temp = (const uint32_t *)(x); \
+        ((uint64_t)pgm_read_dword(_temp)) | \
+        (((uint64_t)pgm_read_dword(_temp + 1)) << 32); \
+    }))
 #else
 #include <string.h>
 #define PROGMEM
 #define pgm_read_byte(x)    (*(x))
 #define pgm_read_word(x)    (*(x))
 #define pgm_read_dword(x)   (*(x))
+#define pgm_read_qword(x)   (*(x))
 #define memcpy_P(d,s,l)     memcpy((d), (s), (l))
 #endif
 

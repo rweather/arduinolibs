@@ -20,37 +20,37 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-#ifndef CRYPTO_ENDIANUTIL_H
-#define CRYPTO_ENDIANUTIL_H
+#ifndef CRYPTO_SHA512_h
+#define CRYPTO_SHA512_h
 
-#include <inttypes.h>
+#include "Hash.h"
 
-// CPU is assumed to be little endian.   Edit this file if you
-// need to port this library to a big endian CPU.
+class SHA512 : public Hash
+{
+public:
+    SHA512();
+    virtual ~SHA512();
 
-#define CRYPTO_LITTLE_ENDIAN 1
+    size_t hashSize() const;
+    size_t blockSize() const;
 
-#define htole32(x)  (x)
-#define le32toh(x)  (x)
-#define htobe32(x)  \
-    (__extension__ ({ \
-        uint32_t _temp = (x); \
-        ((_temp >> 24) & 0x000000FF) | \
-        ((_temp >>  8) & 0x0000FF00) | \
-        ((_temp <<  8) & 0x00FF0000) | \
-        ((_temp << 24) & 0xFF000000); \
-    }))
-#define be32toh(x)  (htobe32((x)))
+    void reset();
+    void update(const void *data, size_t len);
+    void finalize(void *hash, size_t len);
 
-#define htole64(x)  (x)
-#define le64toh(x)  (x)
-#define htobe64(x)  \
-    (__extension__ ({ \
-        uint64_t __temp = (x); \
-        uint32_t __low = htobe32((uint32_t)__temp); \
-        uint32_t __high = htobe32((uint32_t)(__temp >> 32)); \
-        (((uint64_t)__low) << 32) | __high; \
-    }))
-#define be64toh(x)  (htobe64((x)))
+    void clear();
+
+private:
+    struct {
+        uint64_t h[8];
+        uint64_t w[16];
+        uint8_t chunkSize;
+        bool finalized;
+        uint64_t lengthLow;
+        uint64_t lengthHigh;
+    } state;
+
+    void processChunk();
+};
 
 #endif
