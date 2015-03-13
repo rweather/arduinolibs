@@ -2,6 +2,7 @@ var searchData=
 [
   ['_7eaescommon',['~AESCommon',['../classAESCommon.html#a8f67970c86c23affb0297fc1bb10fad8',1,'AESCommon']]],
   ['_7ebitmap',['~Bitmap',['../classBitmap.html#a72d2a301ec1eb1c8d0f3d64823659a8e',1,'Bitmap']]],
+  ['_7eblake2b',['~BLAKE2b',['../classBLAKE2b.html#ad0287d7284000ff236153e6afa0130f1',1,'BLAKE2b']]],
   ['_7eblake2s',['~BLAKE2s',['../classBLAKE2s.html#a4b3187ecaa3d3c8febfbb40c0f779aa7',1,'BLAKE2s']]],
   ['_7eblockcipher',['~BlockCipher',['../classBlockCipher.html#acec1bc4faeaa6dda2d91bffd79a988f9',1,'BlockCipher']]],
   ['_7ecbccommon',['~CBCCommon',['../classCBCCommon.html#a45a91367531b4692b3bb7237ab6e9015',1,'CBCCommon']]],
@@ -16,5 +17,6 @@ var searchData=
   ['_7eofbcommon',['~OFBCommon',['../classOFBCommon.html#aae7435157e51bf977d3481e94e17ae01',1,'OFBCommon']]],
   ['_7erngclass',['~RNGClass',['../classRNGClass.html#aef3ee2fb14a39caf650dc90a0226dd31',1,'RNGClass']]],
   ['_7esha1',['~SHA1',['../classSHA1.html#a8485d7c14fa29286cd3c7acfe438606d',1,'SHA1']]],
-  ['_7esha256',['~SHA256',['../classSHA256.html#ad82f2925b612de315b289017e023a73b',1,'SHA256']]]
+  ['_7esha256',['~SHA256',['../classSHA256.html#ad82f2925b612de315b289017e023a73b',1,'SHA256']]],
+  ['_7esha512',['~SHA512',['../classSHA512.html#a777ec274fa838684b0208369c5f66391',1,'SHA512']]]
 ];

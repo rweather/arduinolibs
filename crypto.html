@@ -85,13 +85,13 @@ Supported Algorithms</h1>
 <li>Block ciphers: <a class="el" href="classAES128.html" title="AES block cipher with 128-bit keys. ">AES128</a>, <a class="el" href="classAES192.html" title="AES block cipher with 192-bit keys. ">AES192</a>, <a class="el" href="classAES256.html" title="AES block cipher with 256-bit keys. ">AES256</a> </li>
 <li>Block cipher modes: <a class="el" href="classCTR.html" title="Implementation of the Counter (CTR) mode for 128-bit block ciphers. ">CTR</a>, <a class="el" href="classCFB.html" title="Implementation of the Cipher Feedback (CFB) mode for 128-bit block ciphers. ">CFB</a>, <a class="el" href="classCBC.html" title="Implementation of the Cipher Block Chaining (CBC) mode for 128-bit block ciphers. ...">CBC</a>, <a class="el" href="classOFB.html" title="Implementation of the Output Feedback (OFB) mode for 128-bit block ciphers. ">OFB</a> </li>
 <li>Stream ciphers: <a class="el" href="classChaCha.html" title="ChaCha stream cipher. ">ChaCha</a> </li>
-<li><a class="el" href="classHash.html" title="Abstract base class for cryptographic hash algorithms. ">Hash</a> algorithms: <a class="el" href="classSHA1.html" title="SHA-1 hash algorithm. ">SHA1</a>, <a class="el" href="classSHA256.html" title="SHA-256 hash algorithm. ">SHA256</a>, <a class="el" href="classBLAKE2s.html" title="BLAKE2s hash algorithm. ">BLAKE2s</a> </li>
+<li><a class="el" href="classHash.html" title="Abstract base class for cryptographic hash algorithms. ">Hash</a> algorithms: <a class="el" href="classSHA1.html" title="SHA-1 hash algorithm. ">SHA1</a>, <a class="el" href="classSHA256.html" title="SHA-256 hash algorithm. ">SHA256</a>, <a class="el" href="classSHA512.html" title="SHA-512 hash algorithm. ">SHA512</a>, <a class="el" href="classBLAKE2s.html" title="BLAKE2s hash algorithm. ">BLAKE2s</a>, <a class="el" href="classBLAKE2b.html" title="BLAKE2b hash algorithm. ">BLAKE2b</a> </li>
 <li>Public key algorithms: <a class="el" href="classCurve25519.html" title="Diffie-Hellman key agreement based on the elliptic curve modulo 2^255 - 19. ">Curve25519</a> </li>
 <li>Random number generation: <a class="el" href="classRNGClass.html">RNG</a>, <a class="el" href="classTransistorNoiseSource.html" title="Processes the signal from a transistor-based noise source. ">TransistorNoiseSource</a></li>
 </ul>
-<p>All cryptographic algorithms have been optimized for 8-bit Arduino platforms like the Uno. Memory usage is also reduced, particularly for <a class="el" href="classSHA1.html" title="SHA-1 hash algorithm. ">SHA1</a> and <a class="el" href="classSHA256.html" title="SHA-256 hash algorithm. ">SHA256</a> which save 256 and 192 bytes respectively over traditional implementations. For other algorithms, static sbox tables and the like are placed into program memory to further reduce data memory usage.</p>
+<p>All cryptographic algorithms have been optimized for 8-bit Arduino platforms like the Uno. Memory usage is also reduced, particularly for <a class="el" href="classSHA1.html" title="SHA-1 hash algorithm. ">SHA1</a>, <a class="el" href="classSHA256.html" title="SHA-256 hash algorithm. ">SHA256</a>, and <a class="el" href="classSHA512.html" title="SHA-512 hash algorithm. ">SHA512</a> which save 256, 192, and 512 bytes respectively over traditional implementations. For all algorithms, static sbox tables and the like are placed into program memory to further reduce data memory usage.</p>
 <p><a class="el" href="classChaCha.html" title="ChaCha stream cipher. ">ChaCha</a> with 20 rounds and 256-bit keys is the recommended symmetric encryption algorithm because it is twice as fast as <a class="el" href="classAES128.html" title="AES block cipher with 128-bit keys. ">AES128</a>, constant-time, and much more secure. <a class="el" href="classAES128.html" title="AES block cipher with 128-bit keys. ">AES128</a>, <a class="el" href="classAES192.html" title="AES block cipher with 192-bit keys. ">AES192</a>, and <a class="el" href="classAES256.html" title="AES block cipher with 256-bit keys. ">AES256</a> are provided for use in applications where compatibility with other systems is desirable.</p>
-<p><a class="el" href="classBLAKE2s.html" title="BLAKE2s hash algorithm. ">BLAKE2s</a> is a variation on the <a class="el" href="classChaCha.html" title="ChaCha stream cipher. ">ChaCha</a> stream cipher, designed for hashing, with a 256-bit hash output. It is intended as a high performance drop-in replacement for <a class="el" href="classSHA256.html" title="SHA-256 hash algorithm. ">SHA256</a> for when speed is critical but exact <a class="el" href="classSHA256.html" title="SHA-256 hash algorithm. ">SHA256</a> compatibility is not.</p>
+<p><a class="el" href="classBLAKE2s.html" title="BLAKE2s hash algorithm. ">BLAKE2s</a> and <a class="el" href="classBLAKE2b.html" title="BLAKE2b hash algorithm. ">BLAKE2b</a> are variations on the <a class="el" href="classChaCha.html" title="ChaCha stream cipher. ">ChaCha</a> stream cipher, designed for hashing, with 256-bit and 512-bit hash outputs respectively. They are intended as high performance replacements for <a class="el" href="classSHA256.html" title="SHA-256 hash algorithm. ">SHA256</a> and <a class="el" href="classSHA512.html" title="SHA-512 hash algorithm. ">SHA512</a> for when speed is critical but exact bit-compatibility of hash values is not.</p>
 <h1><a class="anchor" id="crypto_performance"></a>
 Performance</h1>
 <p>All figures are for the Arduino Uno running at 16 MHz. Figures for the Ardunino Mega 2560 running at 16 MHz are similar:</p>
@@ -115,7 +115,11 @@ Performance</h1>
 <tr>
 <td><a class="el" href="classSHA256.html" title="SHA-256 hash algorithm. ">SHA256</a></td><td align="right">43.85us</td><td></td><td align="right"></td><td align="right">106 </td></tr>
 <tr>
+<td><a class="el" href="classSHA512.html" title="SHA-512 hash algorithm. ">SHA512</a></td><td align="right">123.25us</td><td></td><td align="right"></td><td align="right">210 </td></tr>
+<tr>
 <td><a class="el" href="classBLAKE2s.html" title="BLAKE2s hash algorithm. ">BLAKE2s</a></td><td align="right">18.54us</td><td></td><td align="right"></td><td align="right">170 </td></tr>
+<tr>
+<td><a class="el" href="classBLAKE2b.html" title="BLAKE2b hash algorithm. ">BLAKE2b</a></td><td align="right">50.59us</td><td></td><td align="right"></td><td align="right">338 </td></tr>
 </table>
 <p>Where a cipher supports more than one key size (such as <a class="el" href="classChaCha.html" title="ChaCha stream cipher. ">ChaCha</a>), the values are typically almost identical for 128-bit and 256-bit keys so only the maximum is shown above.</p>
 <p>Public key algorithms have the following results on an Arduino Uno:</p>
@@ -132,7 +136,7 @@ Performance</h1>
 </div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Mar 12 2015 19:02:05 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Mar 14 2015 09:07:25 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

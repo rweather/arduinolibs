@@ -44,6 +44,7 @@ var searchData=
   ['setvalue',['setValue',['../classBoolField.html#a080c575fd4a98e6afc4b9197fbab5577',1,'BoolField::setValue()'],['../classIntField.html#aed421e2c52946f2c7643534b4f6f13f7',1,'IntField::setValue()'],['../classListField.html#a266193631e897fb0b46e1270b1d0eb24',1,'ListField::setValue()'],['../classTextField.html#a24b98c5bb744331bf0a5facc8ea9c033',1,'TextField::setValue()'],['../classTimeField.html#a063b6df2bd6fa7970ee445ab4e5d1fc1',1,'TimeField::setValue()']]],
   ['sha1',['SHA1',['../classSHA1.html',1,'SHA1'],['../classSHA1.html#ad49a5108ffd6996b1133bf41224ff726',1,'SHA1::SHA1()']]],
   ['sha256',['SHA256',['../classSHA256.html',1,'SHA256'],['../classSHA256.html#ab672831c542df07ff03ded25760feec2',1,'SHA256::SHA256()']]],
+  ['sha512',['SHA512',['../classSHA512.html',1,'SHA512'],['../classSHA512.html#a520d966d99c0008e3cc58bd3b77dafcd',1,'SHA512::SHA512()']]],
   ['show',['show',['../classForm.html#a9e8d718ab55a8034c22c606ccfa90d65',1,'Form']]],
   ['size',['size',['../classEEPROM24.html#aa544875cef9bd05bf71d6c19be06cf7c',1,'EEPROM24']]],
   ['sleep_5f120_5fms',['SLEEP_120_MS',['../group__power__save.html#ggabdc6266a040b28c4d79028ddb0ceae36a96fa577b54aa6f2341ea5ddd839aa8bc',1,'PowerSave.h']]],
