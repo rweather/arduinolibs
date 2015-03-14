@@ -72,17 +72,12 @@ void SHA512::reset()
     };
     memcpy_P(state.h, hashStart, sizeof(hashStart));
     state.chunkSize = 0;
-    state.finalized = false;
     state.lengthLow = 0;
     state.lengthHigh = 0;
 }
 
 void SHA512::update(const void *data, size_t len)
 {
-    // Reset the hashing process if finalize() was called previously.
-    if (state.finalized)
-        reset();
-
     // Update the total length in bits, not bytes.
     uint64_t temp = state.lengthLow;
     state.lengthLow += (((uint64_t)len) << 3);
@@ -109,32 +104,28 @@ void SHA512::update(const void *data, size_t len)
 
 void SHA512::finalize(void *hash, size_t len)
 {
-    // Finalize the hash if necessary.
-    if (!state.finalized) {
-        // Pad the last chunk.  We may need two padding chunks if there
-        // isn't enough room in the first for the padding and length.
-        uint8_t *wbytes = (uint8_t *)state.w;
-        if (state.chunkSize <= (128 - 17)) {
-            wbytes[state.chunkSize] = 0x80;
-            memset(wbytes + state.chunkSize + 1, 0x00, 128 - 16 - (state.chunkSize + 1));
-            state.w[14] = htobe64(state.lengthHigh);
-            state.w[15] = htobe64(state.lengthLow);
-            processChunk();
-        } else {
-            wbytes[state.chunkSize] = 0x80;
-            memset(wbytes + state.chunkSize + 1, 0x00, 128 - (state.chunkSize + 1));
-            processChunk();
-            memset(wbytes, 0x00, 128 - 16);
-            state.w[14] = htobe64(state.lengthHigh);
-            state.w[15] = htobe64(state.lengthLow);
-            processChunk();
-        }
-
-        // Convert the result into big endian and return it.
-        for (uint8_t posn = 0; posn < 8; ++posn)
-            state.w[posn] = htobe64(state.h[posn]);
-        state.finalized = true;
+    // Pad the last chunk.  We may need two padding chunks if there
+    // isn't enough room in the first for the padding and length.
+    uint8_t *wbytes = (uint8_t *)state.w;
+    if (state.chunkSize <= (128 - 17)) {
+        wbytes[state.chunkSize] = 0x80;
+        memset(wbytes + state.chunkSize + 1, 0x00, 128 - 16 - (state.chunkSize + 1));
+        state.w[14] = htobe64(state.lengthHigh);
+        state.w[15] = htobe64(state.lengthLow);
+        processChunk();
+    } else {
+        wbytes[state.chunkSize] = 0x80;
+        memset(wbytes + state.chunkSize + 1, 0x00, 128 - (state.chunkSize + 1));
+        processChunk();
+        memset(wbytes, 0x00, 128 - 16);
+        state.w[14] = htobe64(state.lengthHigh);
+        state.w[15] = htobe64(state.lengthLow);
+        processChunk();
     }
+
+    // Convert the result into big endian and return it.
+    for (uint8_t posn = 0; posn < 8; ++posn)
+        state.w[posn] = htobe64(state.h[posn]);
 
     // Copy the hash to the caller's return buffer.
     if (len > 64)

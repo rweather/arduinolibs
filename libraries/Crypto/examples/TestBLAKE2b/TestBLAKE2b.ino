@@ -98,17 +98,7 @@ bool testHash_N(Hash *hash, const struct TestHashVector *test, size_t inc)
     size_t posn, len;
     uint8_t value[HASH_SIZE];
 
-    for (posn = 0; posn < size; posn += inc) {
-        len = size - posn;
-        if (len > inc)
-            len = inc;
-        hash->update(test->data + posn, len);
-    }
-    hash->finalize(value, sizeof(value));
-    if (memcmp(value, test->hash, sizeof(value)) != 0)
-        return false;
-
-    // Try again to make sure the hash resets.
+    hash->reset();
     for (posn = 0; posn < size; posn += inc) {
         len = size - posn;
         if (len > inc)

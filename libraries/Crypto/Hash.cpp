@@ -76,8 +76,8 @@ Hash::~Hash()
  * \param data Data to be hashed.
  * \param len Number of bytes of data to be hashed.
  *
- * If finalize() has already been called, then calling update() will
- * reset() the hash and start a new hashing process.
+ * If finalize() has already been called, then the behavior of update() will
+ * be undefined.  Call reset() first to start a new hashing process.
  *
  * \sa reset(), finalize()
  */
@@ -93,8 +93,8 @@ Hash::~Hash()
  * truncated to the first \a len bytes.  If \a len is greater than
  * hashSize(), then the remaining bytes will left unchanged.
  *
- * If finalize() is called again, the same hash value is returned again until
- * the next call to reset() or update().
+ * If finalize() is called again, then the returned \a hash value is
+ * undefined.  Call reset() first to start a new hashing process.
  *
  * \sa reset(), update()
  */

@@ -44,9 +44,8 @@ private:
     struct {
         uint32_t h[8];
         uint32_t w[16];
-        uint8_t chunkSize;
-        bool finalized;
         uint64_t length;
+        uint8_t chunkSize;
     } state;
 
     void processChunk();

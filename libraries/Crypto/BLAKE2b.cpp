@@ -89,7 +89,6 @@ void BLAKE2b::reset()
     state.h[6] = BLAKE2b_IV6;
     state.h[7] = BLAKE2b_IV7;
     state.chunkSize = 0;
-    state.finalized = false;
     state.lengthLow = 0;
     state.lengthHigh = 0;
 }
@@ -112,17 +111,12 @@ void BLAKE2b::reset(uint8_t outputLength)
     state.h[6] = BLAKE2b_IV6;
     state.h[7] = BLAKE2b_IV7;
     state.chunkSize = 0;
-    state.finalized = false;
     state.lengthLow = 0;
     state.lengthHigh = 0;
 }
 
 void BLAKE2b::update(const void *data, size_t len)
 {
-    // Reset the hashing process if finalize() was called previously.
-    if (state.finalized)
-        reset();
-
     // Break the input up into 1024-bit chunks and process each in turn.
     const uint8_t *d = (const uint8_t *)data;
     while (len > 0) {
@@ -148,17 +142,13 @@ void BLAKE2b::update(const void *data, size_t len)
 
 void BLAKE2b::finalize(void *hash, size_t len)
 {
-    // Finalize the hash if necessary.
-    if (!state.finalized) {
-        // Pad the last chunk and hash it with f0 set to all-ones.
-        memset(((uint8_t *)state.m) + state.chunkSize, 0, 128 - state.chunkSize);
-        processChunk(0xFFFFFFFFFFFFFFFFULL);
+    // Pad the last chunk and hash it with f0 set to all-ones.
+    memset(((uint8_t *)state.m) + state.chunkSize, 0, 128 - state.chunkSize);
+    processChunk(0xFFFFFFFFFFFFFFFFULL);
 
-        // Convert the hash into little-endian in the message buffer.
-        for (uint8_t posn = 0; posn < 8; ++posn)
-            state.m[posn] = htole64(state.h[posn]);
-        state.finalized = true;
-    }
+    // Convert the hash into little-endian in the message buffer.
+    for (uint8_t posn = 0; posn < 8; ++posn)
+        state.m[posn] = htole64(state.h[posn]);
 
     // Copy the hash to the caller's return buffer.
     if (len > 64)
