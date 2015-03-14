@@ -29,7 +29,7 @@
 \li Block ciphers: AES128, AES192, AES256
 \li Block cipher modes: CTR, CFB, CBC, OFB
 \li Stream ciphers: ChaCha
-\li Hash algorithms: SHA1, SHA256, SHA512, BLAKE2s, BLAKE2b
+\li Hash algorithms: SHA1, SHA256, SHA512, SHA3_256, SHA3_512, BLAKE2s, BLAKE2b
 \li Public key algorithms: Curve25519
 \li Random number generation: \link RNGClass RNG\endlink, TransistorNoiseSource
 
@@ -66,6 +66,8 @@ Ardunino Mega 2560 running at 16 MHz are similar:
 <tr><td>SHA1</td><td align="right">21.90us</td><td> </td><td align="right"> </td><td align="right">94</td></tr>
 <tr><td>SHA256</td><td align="right">43.85us</td><td> </td><td align="right"> </td><td align="right">106</td></tr>
 <tr><td>SHA512</td><td align="right">123.25us</td><td> </td><td align="right"> </td><td align="right">210</td></tr>
+<tr><td>SHA3_256</td><td align="right">121.69us</td><td> </td><td align="right"> </td><td align="right">403</td></tr>
+<tr><td>SHA3_512</td><td align="right">229.12us</td><td> </td><td align="right"> </td><td align="right">403</td></tr>
 <tr><td>BLAKE2s</td><td align="right">18.54us</td><td> </td><td align="right"> </td><td align="right">170</td></tr>
 <tr><td>BLAKE2b</td><td align="right">50.59us</td><td> </td><td align="right"> </td><td align="right">338</td></tr>
 </table>

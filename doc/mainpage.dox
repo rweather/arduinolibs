@@ -93,7 +93,7 @@ realtime clock and the LCD library to implement an alarm clock.
 \li Block ciphers: AES128, AES192, AES256
 \li Block cipher modes: CTR, CFB, CBC, OFB
 \li Stream ciphers: ChaCha
-\li Hash algorithms: SHA1, SHA256, SHA512, BLAKE2s, BLAKE2b
+\li Hash algorithms: SHA1, SHA256, SHA512, SHA3_256, SHA3_512, BLAKE2s, BLAKE2b
 \li Public key algorithms: Curve25519
 \li Random number generation: \link RNGClass RNG\endlink, TransistorNoiseSource
 
