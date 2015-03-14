@@ -205,7 +205,7 @@ virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 
 <p>Implements <a class="el" href="classHash.html#a4a959469433cd9348ab7f3ac6228bb34">Hash</a>.</p>
 
-<p>Definition at line <a class="el" href="SHA1_8cpp_source.html#l00137">137</a> of file <a class="el" href="SHA1_8cpp_source.html">SHA1.cpp</a>.</p>
+<p>Definition at line <a class="el" href="SHA1_8cpp_source.html#l00128">128</a> of file <a class="el" href="SHA1_8cpp_source.html">SHA1.cpp</a>.</p>
 
 </div>
 </div>
@@ -250,12 +250,12 @@ virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
   </dd>
 </dl>
 <p>If <em>len</em> is less than <a class="el" href="classSHA1.html#ab8cdb7233a8b81be07877049960ddfdd" title="Size of the hash result from finalize(). ">hashSize()</a>, then the hash value will be truncated to the first <em>len</em> bytes. If <em>len</em> is greater than <a class="el" href="classSHA1.html#ab8cdb7233a8b81be07877049960ddfdd" title="Size of the hash result from finalize(). ">hashSize()</a>, then the remaining bytes will left unchanged.</p>
-<p>If <a class="el" href="classSHA1.html#a5a6a8a6169aa48e0bccadb22a149ab7c" title="Finalizes the hashing process and returns the hash. ">finalize()</a> is called again, the same hash value is returned again until the next call to <a class="el" href="classSHA1.html#ab71aaf39ed956320054861a2fbfa454f" title="Resets the hash ready for a new hashing process. ">reset()</a> or <a class="el" href="classSHA1.html#aec77fbc5015f82bbf7055e535085656a" title="Updates the hash with more data. ">update()</a>.</p>
+<p>If <a class="el" href="classSHA1.html#a5a6a8a6169aa48e0bccadb22a149ab7c" title="Finalizes the hashing process and returns the hash. ">finalize()</a> is called again, then the returned <em>hash</em> value is undefined. Call <a class="el" href="classSHA1.html#ab71aaf39ed956320054861a2fbfa454f" title="Resets the hash ready for a new hashing process. ">reset()</a> first to start a new hashing process.</p>
 <dl class="section see"><dt>See Also</dt><dd><a class="el" href="classSHA1.html#ab71aaf39ed956320054861a2fbfa454f" title="Resets the hash ready for a new hashing process. ">reset()</a>, <a class="el" href="classSHA1.html#aec77fbc5015f82bbf7055e535085656a" title="Updates the hash with more data. ">update()</a> </dd></dl>
 
 <p>Implements <a class="el" href="classHash.html#a09b3ccec22763fc86b1415695862977c">Hash</a>.</p>
 
-<p>Definition at line <a class="el" href="SHA1_8cpp_source.html#l00102">102</a> of file <a class="el" href="SHA1_8cpp_source.html">SHA1.cpp</a>.</p>
+<p>Definition at line <a class="el" href="SHA1_8cpp_source.html#l00097">97</a> of file <a class="el" href="SHA1_8cpp_source.html">SHA1.cpp</a>.</p>
 
 </div>
 </div>
@@ -359,12 +359,12 @@ virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
   </table>
   </dd>
 </dl>
-<p>If <a class="el" href="classSHA1.html#a5a6a8a6169aa48e0bccadb22a149ab7c" title="Finalizes the hashing process and returns the hash. ">finalize()</a> has already been called, then calling <a class="el" href="classSHA1.html#aec77fbc5015f82bbf7055e535085656a" title="Updates the hash with more data. ">update()</a> will <a class="el" href="classSHA1.html#ab71aaf39ed956320054861a2fbfa454f" title="Resets the hash ready for a new hashing process. ">reset()</a> the hash and start a new hashing process.</p>
+<p>If <a class="el" href="classSHA1.html#a5a6a8a6169aa48e0bccadb22a149ab7c" title="Finalizes the hashing process and returns the hash. ">finalize()</a> has already been called, then the behavior of <a class="el" href="classSHA1.html#aec77fbc5015f82bbf7055e535085656a" title="Updates the hash with more data. ">update()</a> will be undefined. Call <a class="el" href="classSHA1.html#ab71aaf39ed956320054861a2fbfa454f" title="Resets the hash ready for a new hashing process. ">reset()</a> first to start a new hashing process.</p>
 <dl class="section see"><dt>See Also</dt><dd><a class="el" href="classSHA1.html#ab71aaf39ed956320054861a2fbfa454f" title="Resets the hash ready for a new hashing process. ">reset()</a>, <a class="el" href="classSHA1.html#a5a6a8a6169aa48e0bccadb22a149ab7c" title="Finalizes the hashing process and returns the hash. ">finalize()</a> </dd></dl>
 
 <p>Implements <a class="el" href="classHash.html#aec9761ee427d122e7450de8df200265c">Hash</a>.</p>
 
-<p>Definition at line <a class="el" href="SHA1_8cpp_source.html#l00076">76</a> of file <a class="el" href="SHA1_8cpp_source.html">SHA1.cpp</a>.</p>
+<p>Definition at line <a class="el" href="SHA1_8cpp_source.html#l00075">75</a> of file <a class="el" href="SHA1_8cpp_source.html">SHA1.cpp</a>.</p>
 
 </div>
 </div>
@@ -375,7 +375,7 @@ virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Mar 14 2015 09:07:26 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Mar 14 2015 15:47:30 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

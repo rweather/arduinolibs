@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['noisesource',['NoiseSource',['../classNoiseSource.html',1,'']]]
+  ['melody',['Melody',['../classMelody.html',1,'']]]
 ];

@@ -1,7 +1,8 @@
 var searchData=
 [
-  ['sha1',['SHA1',['../classSHA1.html',1,'']]],
-  ['sha256',['SHA256',['../classSHA256.html',1,'']]],
-  ['sha512',['SHA512',['../classSHA512.html',1,'']]],
-  ['softi2c',['SoftI2C',['../classSoftI2C.html',1,'']]]
+  ['rngclass',['RNGClass',['../classRNGClass.html',1,'']]],
+  ['rtc',['RTC',['../classRTC.html',1,'']]],
+  ['rtcalarm',['RTCAlarm',['../structRTCAlarm.html',1,'']]],
+  ['rtcdate',['RTCDate',['../structRTCDate.html',1,'']]],
+  ['rtctime',['RTCTime',['../structRTCTime.html',1,'']]]
 ];

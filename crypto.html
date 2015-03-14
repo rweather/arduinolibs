@@ -85,7 +85,7 @@ Supported Algorithms</h1>
 <li>Block ciphers: <a class="el" href="classAES128.html" title="AES block cipher with 128-bit keys. ">AES128</a>, <a class="el" href="classAES192.html" title="AES block cipher with 192-bit keys. ">AES192</a>, <a class="el" href="classAES256.html" title="AES block cipher with 256-bit keys. ">AES256</a> </li>
 <li>Block cipher modes: <a class="el" href="classCTR.html" title="Implementation of the Counter (CTR) mode for 128-bit block ciphers. ">CTR</a>, <a class="el" href="classCFB.html" title="Implementation of the Cipher Feedback (CFB) mode for 128-bit block ciphers. ">CFB</a>, <a class="el" href="classCBC.html" title="Implementation of the Cipher Block Chaining (CBC) mode for 128-bit block ciphers. ...">CBC</a>, <a class="el" href="classOFB.html" title="Implementation of the Output Feedback (OFB) mode for 128-bit block ciphers. ">OFB</a> </li>
 <li>Stream ciphers: <a class="el" href="classChaCha.html" title="ChaCha stream cipher. ">ChaCha</a> </li>
-<li><a class="el" href="classHash.html" title="Abstract base class for cryptographic hash algorithms. ">Hash</a> algorithms: <a class="el" href="classSHA1.html" title="SHA-1 hash algorithm. ">SHA1</a>, <a class="el" href="classSHA256.html" title="SHA-256 hash algorithm. ">SHA256</a>, <a class="el" href="classSHA512.html" title="SHA-512 hash algorithm. ">SHA512</a>, <a class="el" href="classBLAKE2s.html" title="BLAKE2s hash algorithm. ">BLAKE2s</a>, <a class="el" href="classBLAKE2b.html" title="BLAKE2b hash algorithm. ">BLAKE2b</a> </li>
+<li><a class="el" href="classHash.html" title="Abstract base class for cryptographic hash algorithms. ">Hash</a> algorithms: <a class="el" href="classSHA1.html" title="SHA-1 hash algorithm. ">SHA1</a>, <a class="el" href="classSHA256.html" title="SHA-256 hash algorithm. ">SHA256</a>, <a class="el" href="classSHA512.html" title="SHA-512 hash algorithm. ">SHA512</a>, <a class="el" href="classSHA3__256.html" title="SHA3-256 hash algorithm. ">SHA3_256</a>, <a class="el" href="classSHA3__512.html" title="SHA3-512 hash algorithm. ">SHA3_512</a>, <a class="el" href="classBLAKE2s.html" title="BLAKE2s hash algorithm. ">BLAKE2s</a>, <a class="el" href="classBLAKE2b.html" title="BLAKE2b hash algorithm. ">BLAKE2b</a> </li>
 <li>Public key algorithms: <a class="el" href="classCurve25519.html" title="Diffie-Hellman key agreement based on the elliptic curve modulo 2^255 - 19. ">Curve25519</a> </li>
 <li>Random number generation: <a class="el" href="classRNGClass.html">RNG</a>, <a class="el" href="classTransistorNoiseSource.html" title="Processes the signal from a transistor-based noise source. ">TransistorNoiseSource</a></li>
 </ul>
@@ -111,15 +111,19 @@ Performance</h1>
 <tr>
 <td><a class="el" href="classChaCha.html" title="ChaCha stream cipher. ">ChaCha</a> (8 rounds)</td><td align="right">8.13us</td><td align="right">8.14us</td><td align="right">43.74us</td><td align="right">130 </td></tr>
 <tr>
-<td><a class="el" href="classSHA1.html" title="SHA-1 hash algorithm. ">SHA1</a></td><td align="right">21.90us</td><td></td><td align="right"></td><td align="right">94 </td></tr>
+<td><a class="el" href="classSHA1.html" title="SHA-1 hash algorithm. ">SHA1</a></td><td align="right">21.90us</td><td></td><td align="right"></td><td align="right">93 </td></tr>
 <tr>
-<td><a class="el" href="classSHA256.html" title="SHA-256 hash algorithm. ">SHA256</a></td><td align="right">43.85us</td><td></td><td align="right"></td><td align="right">106 </td></tr>
+<td><a class="el" href="classSHA256.html" title="SHA-256 hash algorithm. ">SHA256</a></td><td align="right">43.85us</td><td></td><td align="right"></td><td align="right">105 </td></tr>
 <tr>
-<td><a class="el" href="classSHA512.html" title="SHA-512 hash algorithm. ">SHA512</a></td><td align="right">123.25us</td><td></td><td align="right"></td><td align="right">210 </td></tr>
+<td><a class="el" href="classSHA512.html" title="SHA-512 hash algorithm. ">SHA512</a></td><td align="right">123.24us</td><td></td><td align="right"></td><td align="right">209 </td></tr>
 <tr>
-<td><a class="el" href="classBLAKE2s.html" title="BLAKE2s hash algorithm. ">BLAKE2s</a></td><td align="right">18.54us</td><td></td><td align="right"></td><td align="right">170 </td></tr>
+<td><a class="el" href="classSHA3__256.html" title="SHA3-256 hash algorithm. ">SHA3_256</a></td><td align="right">121.69us</td><td></td><td align="right"></td><td align="right">403 </td></tr>
 <tr>
-<td><a class="el" href="classBLAKE2b.html" title="BLAKE2b hash algorithm. ">BLAKE2b</a></td><td align="right">50.59us</td><td></td><td align="right"></td><td align="right">338 </td></tr>
+<td><a class="el" href="classSHA3__512.html" title="SHA3-512 hash algorithm. ">SHA3_512</a></td><td align="right">229.12us</td><td></td><td align="right"></td><td align="right">403 </td></tr>
+<tr>
+<td><a class="el" href="classBLAKE2s.html" title="BLAKE2s hash algorithm. ">BLAKE2s</a></td><td align="right">18.54us</td><td></td><td align="right"></td><td align="right">169 </td></tr>
+<tr>
+<td><a class="el" href="classBLAKE2b.html" title="BLAKE2b hash algorithm. ">BLAKE2b</a></td><td align="right">50.58us</td><td></td><td align="right"></td><td align="right">337 </td></tr>
 </table>
 <p>Where a cipher supports more than one key size (such as <a class="el" href="classChaCha.html" title="ChaCha stream cipher. ">ChaCha</a>), the values are typically almost identical for 128-bit and 256-bit keys so only the maximum is shown above.</p>
 <p>Public key algorithms have the following results on an Arduino Uno:</p>
@@ -136,7 +140,7 @@ Performance</h1>
 </div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Mar 14 2015 09:07:25 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Mar 14 2015 15:47:30 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

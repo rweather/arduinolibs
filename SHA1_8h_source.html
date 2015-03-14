@@ -134,29 +134,28 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <span class="keyword">struct </span>{</div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        uint32_t h[5];</div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        uint32_t w[16];</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        uint8_t chunkSize;</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        <span class="keywordtype">bool</span> finalized;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        uint64_t length;</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    } state;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <span class="keywordtype">void</span> processChunk();</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;};</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        uint64_t length;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        uint8_t chunkSize;</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    } state;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <span class="keywordtype">void</span> processChunk();</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;};</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="ttc" id="classSHA1_html_a8485d7c14fa29286cd3c7acfe438606d"><div class="ttname"><a href="classSHA1.html#a8485d7c14fa29286cd3c7acfe438606d">SHA1::~SHA1</a></div><div class="ttdeci">virtual ~SHA1()</div><div class="ttdoc">Destroys this SHA-1 hash object after clearing sensitive information. </div><div class="ttdef"><b>Definition:</b> <a href="SHA1_8cpp_source.html#l00049">SHA1.cpp:49</a></div></div>
 <div class="ttc" id="classSHA1_html_ab71aaf39ed956320054861a2fbfa454f"><div class="ttname"><a href="classSHA1.html#ab71aaf39ed956320054861a2fbfa454f">SHA1::reset</a></div><div class="ttdeci">void reset()</div><div class="ttdoc">Resets the hash ready for a new hashing process. </div><div class="ttdef"><b>Definition:</b> <a href="SHA1_8cpp_source.html#l00064">SHA1.cpp:64</a></div></div>
 <div class="ttc" id="classHash_html"><div class="ttname"><a href="classHash.html">Hash</a></div><div class="ttdoc">Abstract base class for cryptographic hash algorithms. </div><div class="ttdef"><b>Definition:</b> <a href="Hash_8h_source.html#l00029">Hash.h:29</a></div></div>
-<div class="ttc" id="classSHA1_html_aec77fbc5015f82bbf7055e535085656a"><div class="ttname"><a href="classSHA1.html#aec77fbc5015f82bbf7055e535085656a">SHA1::update</a></div><div class="ttdeci">void update(const void *data, size_t len)</div><div class="ttdoc">Updates the hash with more data. </div><div class="ttdef"><b>Definition:</b> <a href="SHA1_8cpp_source.html#l00076">SHA1.cpp:76</a></div></div>
-<div class="ttc" id="classSHA1_html_a41a159d6565b04d3f620dcd720faaf3f"><div class="ttname"><a href="classSHA1.html#a41a159d6565b04d3f620dcd720faaf3f">SHA1::clear</a></div><div class="ttdeci">void clear()</div><div class="ttdoc">Clears the hash state, removing all sensitive data, and then resets the hash ready for a new hashing ...</div><div class="ttdef"><b>Definition:</b> <a href="SHA1_8cpp_source.html#l00137">SHA1.cpp:137</a></div></div>
+<div class="ttc" id="classSHA1_html_aec77fbc5015f82bbf7055e535085656a"><div class="ttname"><a href="classSHA1.html#aec77fbc5015f82bbf7055e535085656a">SHA1::update</a></div><div class="ttdeci">void update(const void *data, size_t len)</div><div class="ttdoc">Updates the hash with more data. </div><div class="ttdef"><b>Definition:</b> <a href="SHA1_8cpp_source.html#l00075">SHA1.cpp:75</a></div></div>
+<div class="ttc" id="classSHA1_html_a41a159d6565b04d3f620dcd720faaf3f"><div class="ttname"><a href="classSHA1.html#a41a159d6565b04d3f620dcd720faaf3f">SHA1::clear</a></div><div class="ttdeci">void clear()</div><div class="ttdoc">Clears the hash state, removing all sensitive data, and then resets the hash ready for a new hashing ...</div><div class="ttdef"><b>Definition:</b> <a href="SHA1_8cpp_source.html#l00128">SHA1.cpp:128</a></div></div>
 <div class="ttc" id="classSHA1_html_a816e3fd1a02cf1ecc67866cd8c7c309a"><div class="ttname"><a href="classSHA1.html#a816e3fd1a02cf1ecc67866cd8c7c309a">SHA1::blockSize</a></div><div class="ttdeci">size_t blockSize() const </div><div class="ttdoc">Size of the internal block used by the hash algorithm. </div><div class="ttdef"><b>Definition:</b> <a href="SHA1_8cpp_source.html#l00059">SHA1.cpp:59</a></div></div>
 <div class="ttc" id="classSHA1_html"><div class="ttname"><a href="classSHA1.html">SHA1</a></div><div class="ttdoc">SHA-1 hash algorithm. </div><div class="ttdef"><b>Definition:</b> <a href="SHA1_8h_source.html#l00028">SHA1.h:28</a></div></div>
-<div class="ttc" id="classSHA1_html_a5a6a8a6169aa48e0bccadb22a149ab7c"><div class="ttname"><a href="classSHA1.html#a5a6a8a6169aa48e0bccadb22a149ab7c">SHA1::finalize</a></div><div class="ttdeci">void finalize(void *hash, size_t len)</div><div class="ttdoc">Finalizes the hashing process and returns the hash. </div><div class="ttdef"><b>Definition:</b> <a href="SHA1_8cpp_source.html#l00102">SHA1.cpp:102</a></div></div>
+<div class="ttc" id="classSHA1_html_a5a6a8a6169aa48e0bccadb22a149ab7c"><div class="ttname"><a href="classSHA1.html#a5a6a8a6169aa48e0bccadb22a149ab7c">SHA1::finalize</a></div><div class="ttdeci">void finalize(void *hash, size_t len)</div><div class="ttdoc">Finalizes the hashing process and returns the hash. </div><div class="ttdef"><b>Definition:</b> <a href="SHA1_8cpp_source.html#l00097">SHA1.cpp:97</a></div></div>
 <div class="ttc" id="classSHA1_html_ab8cdb7233a8b81be07877049960ddfdd"><div class="ttname"><a href="classSHA1.html#ab8cdb7233a8b81be07877049960ddfdd">SHA1::hashSize</a></div><div class="ttdeci">size_t hashSize() const </div><div class="ttdoc">Size of the hash result from finalize(). </div><div class="ttdef"><b>Definition:</b> <a href="SHA1_8cpp_source.html#l00054">SHA1.cpp:54</a></div></div>
 <div class="ttc" id="classSHA1_html_ad49a5108ffd6996b1133bf41224ff726"><div class="ttname"><a href="classSHA1.html#ad49a5108ffd6996b1133bf41224ff726">SHA1::SHA1</a></div><div class="ttdeci">SHA1()</div><div class="ttdoc">Constructs a SHA-1 hash object. </div><div class="ttdef"><b>Definition:</b> <a href="SHA1_8cpp_source.html#l00041">SHA1.cpp:41</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Mar 14 2015 09:07:25 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Mar 14 2015 15:47:30 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

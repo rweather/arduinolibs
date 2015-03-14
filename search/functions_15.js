@@ -13,10 +13,13 @@ var searchData=
   ['_7efield',['~Field',['../classField.html#a45d6e6d09b8f8e46de62b40119d62c60',1,'Field']]],
   ['_7eform',['~Form',['../classForm.html#a9cda7cce41e81bfaca51e922d4f9b98f',1,'Form']]],
   ['_7ehash',['~Hash',['../classHash.html#a4e4b4797dda8678aaed058bae155813e',1,'Hash']]],
+  ['_7ekeccakcore',['~KeccakCore',['../classKeccakCore.html#a4579e3a9b24f1d615fa8d660c23e77a4',1,'KeccakCore']]],
   ['_7enoisesource',['~NoiseSource',['../classNoiseSource.html#a4eca1e894a5d719fb9bf4df34a791cdb',1,'NoiseSource']]],
   ['_7eofbcommon',['~OFBCommon',['../classOFBCommon.html#aae7435157e51bf977d3481e94e17ae01',1,'OFBCommon']]],
   ['_7erngclass',['~RNGClass',['../classRNGClass.html#aef3ee2fb14a39caf650dc90a0226dd31',1,'RNGClass']]],
   ['_7esha1',['~SHA1',['../classSHA1.html#a8485d7c14fa29286cd3c7acfe438606d',1,'SHA1']]],
   ['_7esha256',['~SHA256',['../classSHA256.html#ad82f2925b612de315b289017e023a73b',1,'SHA256']]],
+  ['_7esha3_5f256',['~SHA3_256',['../classSHA3__256.html#a835d09eb88d477cd162330c493cbdf64',1,'SHA3_256']]],
+  ['_7esha3_5f512',['~SHA3_512',['../classSHA3__512.html#a327005ebc8c0768118ec7d334c583f85',1,'SHA3_512']]],
   ['_7esha512',['~SHA512',['../classSHA512.html#a777ec274fa838684b0208369c5f66391',1,'SHA512']]]
 ];

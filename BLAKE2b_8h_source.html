@@ -136,30 +136,29 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        uint64_t h[8];</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        uint64_t m[16];</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        uint64_t v[16];</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        uint8_t chunkSize;</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        <span class="keywordtype">bool</span> finalized;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        uint64_t lengthLow;</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        uint64_t lengthHigh;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    } state;</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <span class="keywordtype">void</span> processChunk(uint64_t f0);</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;};</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="ttc" id="classBLAKE2b_html_a0cd8146b7868bd0f4c24a3856f106d17"><div class="ttname"><a href="classBLAKE2b.html#a0cd8146b7868bd0f4c24a3856f106d17">BLAKE2b::finalize</a></div><div class="ttdeci">void finalize(void *hash, size_t len)</div><div class="ttdoc">Finalizes the hashing process and returns the hash. </div><div class="ttdef"><b>Definition:</b> <a href="BLAKE2b_8cpp_source.html#l00149">BLAKE2b.cpp:149</a></div></div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        uint64_t lengthLow;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        uint64_t lengthHigh;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        uint8_t chunkSize;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    } state;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <span class="keywordtype">void</span> processChunk(uint64_t f0);</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;};</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="ttc" id="classBLAKE2b_html_a0cd8146b7868bd0f4c24a3856f106d17"><div class="ttname"><a href="classBLAKE2b.html#a0cd8146b7868bd0f4c24a3856f106d17">BLAKE2b::finalize</a></div><div class="ttdeci">void finalize(void *hash, size_t len)</div><div class="ttdoc">Finalizes the hashing process and returns the hash. </div><div class="ttdef"><b>Definition:</b> <a href="BLAKE2b_8cpp_source.html#l00143">BLAKE2b.cpp:143</a></div></div>
 <div class="ttc" id="classBLAKE2b_html_a917beae2ca6e9831a35717a526089e8a"><div class="ttname"><a href="classBLAKE2b.html#a917beae2ca6e9831a35717a526089e8a">BLAKE2b::reset</a></div><div class="ttdeci">void reset()</div><div class="ttdoc">Resets the hash ready for a new hashing process. </div><div class="ttdef"><b>Definition:</b> <a href="BLAKE2b_8cpp_source.html#l00081">BLAKE2b.cpp:81</a></div></div>
-<div class="ttc" id="classBLAKE2b_html_a21623759bd381285ebf7e75a00c9c8a9"><div class="ttname"><a href="classBLAKE2b.html#a21623759bd381285ebf7e75a00c9c8a9">BLAKE2b::clear</a></div><div class="ttdeci">void clear()</div><div class="ttdoc">Clears the hash state, removing all sensitive data, and then resets the hash ready for a new hashing ...</div><div class="ttdef"><b>Definition:</b> <a href="BLAKE2b_8cpp_source.html#l00169">BLAKE2b.cpp:169</a></div></div>
+<div class="ttc" id="classBLAKE2b_html_a21623759bd381285ebf7e75a00c9c8a9"><div class="ttname"><a href="classBLAKE2b.html#a21623759bd381285ebf7e75a00c9c8a9">BLAKE2b::clear</a></div><div class="ttdeci">void clear()</div><div class="ttdoc">Clears the hash state, removing all sensitive data, and then resets the hash ready for a new hashing ...</div><div class="ttdef"><b>Definition:</b> <a href="BLAKE2b_8cpp_source.html#l00159">BLAKE2b.cpp:159</a></div></div>
 <div class="ttc" id="classBLAKE2b_html_a19b3b751809905a5587468f0d6c666ff"><div class="ttname"><a href="classBLAKE2b.html#a19b3b751809905a5587468f0d6c666ff">BLAKE2b::BLAKE2b</a></div><div class="ttdeci">BLAKE2b()</div><div class="ttdoc">Constructs a BLAKE2b hash object. </div><div class="ttdef"><b>Definition:</b> <a href="BLAKE2b_8cpp_source.html#l00047">BLAKE2b.cpp:47</a></div></div>
 <div class="ttc" id="classBLAKE2b_html_abec1b2320c3afaed12a29cf081b95fe2"><div class="ttname"><a href="classBLAKE2b.html#abec1b2320c3afaed12a29cf081b95fe2">BLAKE2b::blockSize</a></div><div class="ttdeci">size_t blockSize() const </div><div class="ttdoc">Size of the internal block used by the hash algorithm. </div><div class="ttdef"><b>Definition:</b> <a href="BLAKE2b_8cpp_source.html#l00066">BLAKE2b.cpp:66</a></div></div>
 <div class="ttc" id="classHash_html"><div class="ttname"><a href="classHash.html">Hash</a></div><div class="ttdoc">Abstract base class for cryptographic hash algorithms. </div><div class="ttdef"><b>Definition:</b> <a href="Hash_8h_source.html#l00029">Hash.h:29</a></div></div>
 <div class="ttc" id="classBLAKE2b_html"><div class="ttname"><a href="classBLAKE2b.html">BLAKE2b</a></div><div class="ttdoc">BLAKE2b hash algorithm. </div><div class="ttdef"><b>Definition:</b> <a href="BLAKE2b_8h_source.html#l00028">BLAKE2b.h:28</a></div></div>
 <div class="ttc" id="classBLAKE2b_html_a7555de16f6918ab820170a7ed3098c89"><div class="ttname"><a href="classBLAKE2b.html#a7555de16f6918ab820170a7ed3098c89">BLAKE2b::hashSize</a></div><div class="ttdeci">size_t hashSize() const </div><div class="ttdoc">Size of the hash result from finalize(). </div><div class="ttdef"><b>Definition:</b> <a href="BLAKE2b_8cpp_source.html#l00061">BLAKE2b.cpp:61</a></div></div>
 <div class="ttc" id="classBLAKE2b_html_ad0287d7284000ff236153e6afa0130f1"><div class="ttname"><a href="classBLAKE2b.html#ad0287d7284000ff236153e6afa0130f1">BLAKE2b::~BLAKE2b</a></div><div class="ttdeci">virtual ~BLAKE2b()</div><div class="ttdoc">Destroys this BLAKE2b hash object after clearing sensitive information. </div><div class="ttdef"><b>Definition:</b> <a href="BLAKE2b_8cpp_source.html#l00056">BLAKE2b.cpp:56</a></div></div>
-<div class="ttc" id="classBLAKE2b_html_a468e48c66ce1738e11c922d133135069"><div class="ttname"><a href="classBLAKE2b.html#a468e48c66ce1738e11c922d133135069">BLAKE2b::update</a></div><div class="ttdeci">void update(const void *data, size_t len)</div><div class="ttdoc">Updates the hash with more data. </div><div class="ttdef"><b>Definition:</b> <a href="BLAKE2b_8cpp_source.html#l00120">BLAKE2b.cpp:120</a></div></div>
+<div class="ttc" id="classBLAKE2b_html_a468e48c66ce1738e11c922d133135069"><div class="ttname"><a href="classBLAKE2b.html#a468e48c66ce1738e11c922d133135069">BLAKE2b::update</a></div><div class="ttdeci">void update(const void *data, size_t len)</div><div class="ttdoc">Updates the hash with more data. </div><div class="ttdef"><b>Definition:</b> <a href="BLAKE2b_8cpp_source.html#l00118">BLAKE2b.cpp:118</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Mar 14 2015 09:07:25 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Mar 14 2015 15:47:30 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>
