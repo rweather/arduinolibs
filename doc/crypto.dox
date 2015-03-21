@@ -31,7 +31,7 @@
 \li Stream ciphers: ChaCha
 \li Hash algorithms: SHA1, SHA256, SHA512, SHA3_256, SHA3_512, BLAKE2s, BLAKE2b
 \li Public key algorithms: Curve25519
-\li Random number generation: \link RNGClass RNG\endlink, TransistorNoiseSource
+\li Random number generation: \link RNGClass RNG\endlink, TransistorNoiseSource, RingOscillatorNoiseSource
 
 All cryptographic algorithms have been optimized for 8-bit Arduino platforms
 like the Uno.  Memory usage is also reduced, particularly for SHA1, SHA256,

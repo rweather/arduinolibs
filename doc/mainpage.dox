@@ -95,7 +95,7 @@ realtime clock and the LCD library to implement an alarm clock.
 \li Stream ciphers: ChaCha
 \li Hash algorithms: SHA1, SHA256, SHA512, SHA3_256, SHA3_512, BLAKE2s, BLAKE2b
 \li Public key algorithms: Curve25519
-\li Random number generation: \link RNGClass RNG\endlink, TransistorNoiseSource
+\li Random number generation: \link RNGClass RNG\endlink, TransistorNoiseSource, RingOscillatorNoiseSource
 
 More information can be found on the \ref crypto "Cryptographic Library" page.
 

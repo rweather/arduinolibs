@@ -4,6 +4,7 @@
 #include <Crypto.h>
 #include <RNG.h>
 #include <TransistorNoiseSource.h>
+#include <RingOscillatorNoiseSource.h>
 
 // Change "MyApp 1.0" to some other tag for your application
 // so that different applications will generate different results
@@ -15,6 +16,7 @@
 
 // Noise source to seed the random number generator.
 TransistorNoiseSource noise(A1);
+//RingOscillatorNoiseSource noise;
 
 bool calibrating = false;
 byte data[32];

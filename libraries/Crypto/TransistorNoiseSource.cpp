@@ -72,7 +72,7 @@
  * }
  * \endcode
  *
- * \sa \link RNGClass RNG\endlink, NoiseSource
+ * \sa \link RNGClass RNG\endlink, NoiseSource, RingOscillatorNoiseSource
  */
 
 /*
