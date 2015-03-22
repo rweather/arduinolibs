@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['hello_20world_20for_20freetronics_20lcd',['Hello World for Freetronics LCD',['../lcd_hello_world.html',1,'']]]
+  ['generating_20random_20numbers',['Generating random numbers',['../crypto_rng.html',1,'']]]
 ];

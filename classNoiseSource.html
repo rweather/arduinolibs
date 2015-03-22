@@ -102,7 +102,8 @@ Inheritance diagram for NoiseSource:</div>
  <div class="center">
   <img src="classNoiseSource.png" usemap="#NoiseSource_map" alt=""/>
   <map id="NoiseSource_map" name="NoiseSource_map">
-<area href="classTransistorNoiseSource.html" title="Processes the signal from a transistor-based noise source. " alt="TransistorNoiseSource" shape="rect" coords="0,56,141,80"/>
+<area href="classRingOscillatorNoiseSource.html" title="Processes the signal from a ring oscillator based noise source. " alt="RingOscillatorNoiseSource" shape="rect" coords="0,56,164,80"/>
+<area href="classTransistorNoiseSource.html" title="Processes the signal from a transistor-based noise source. " alt="TransistorNoiseSource" shape="rect" coords="174,56,338,80"/>
 </map>
  </div></div>
 <table class="memberdecls">
@@ -162,7 +163,7 @@ Protected Member Functions</h2></td></tr>
 <p>It is possible that the noise source never exits calibration. This can happen if the input voltage is insufficient to trigger noise or if the noise source is not connected. Noise sources may also periodically recalibrate themselves.</p>
 <dl class="section see"><dt>See Also</dt><dd><a class="el" href="classNoiseSource.html#a7ce647815524fe84f562aca5256e12f3" title="Stirs entropy from this noise source into the global random number pool. ">stir()</a> </dd></dl>
 
-<p>Implemented in <a class="el" href="classTransistorNoiseSource.html#a9244b327c291c737396e769da9c66af9">TransistorNoiseSource</a>.</p>
+<p>Implemented in <a class="el" href="classRingOscillatorNoiseSource.html#ade7f7ed390e23722347b3c207912b3f9">RingOscillatorNoiseSource</a>, and <a class="el" href="classTransistorNoiseSource.html#a9244b327c291c737396e769da9c66af9">TransistorNoiseSource</a>.</p>
 
 </div>
 </div>
@@ -246,7 +247,7 @@ Protected Member Functions</h2></td></tr>
 <p>The noise source should batch up the entropy data, providing between 16 and 48 bytes of data each time. If the noise source does not have sufficient entropy data at the moment, it should return without stiring the current data in.</p>
 <dl class="section see"><dt>See Also</dt><dd><a class="el" href="classNoiseSource.html#ac8ac086f830efb5ffe3e8d506aa61c85" title="Determine if the noise source is still calibrating itself. ">calibrating()</a>, <a class="el" href="classNoiseSource.html#a1af7449a5ae4a8acd34ac218c9eec6c1" title="Called from subclasses to output noise to the global random number pool. ">output()</a> </dd></dl>
 
-<p>Implemented in <a class="el" href="classTransistorNoiseSource.html#add25c6a14b0506bc30ca781f2d923917">TransistorNoiseSource</a>.</p>
+<p>Implemented in <a class="el" href="classRingOscillatorNoiseSource.html#ad71698b5c92b41eef2f1322999b3eff9">RingOscillatorNoiseSource</a>, and <a class="el" href="classTransistorNoiseSource.html#add25c6a14b0506bc30ca781f2d923917">TransistorNoiseSource</a>.</p>
 
 </div>
 </div>
@@ -257,7 +258,7 @@ Protected Member Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Mar 14 2015 15:47:30 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Mar 22 2015 15:54:26 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

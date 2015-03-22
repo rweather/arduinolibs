@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['star_20trek_20example',['Star Trek Example',['../blink_startrek.html',1,'']]],
-  ['snake_20video_20game_20using_20an_20infrared_20remote_20control',['Snake Video Game Using an Infrared Remote Control',['../ir_snake.html',1,'']]]
+  ['ring_20oscillator_20noise_20sources',['Ring Oscillator Noise Sources',['../crypto_rng_ring.html',1,'']]],
+  ['running_20figure_20example',['Running figure example',['../dmd_running_figure.html',1,'']]]
 ];

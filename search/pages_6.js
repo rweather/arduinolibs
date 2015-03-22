@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['running_20figure_20example',['Running figure example',['../dmd_running_figure.html',1,'']]]
+  ['hello_20world_20for_20freetronics_20lcd',['Hello World for Freetronics LCD',['../lcd_hello_world.html',1,'']]]
 ];

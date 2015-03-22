@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['ring_20oscillator_20noise_20sources',['Ring Oscillator Noise Sources',['../crypto_rng_ring.html',1,'']]],
   ['running_20figure_20example',['Running figure example',['../dmd_running_figure.html',1,'']]],
   ['rand',['rand',['../classRNGClass.html#a418a833cf18198fd7e5d6dbd78c99c29',1,'RNGClass']]],
   ['read',['read',['../classEEPROM24.html#a960971377d4decb122ff38d12603e586',1,'EEPROM24::read(unsigned long address)'],['../classEEPROM24.html#a63e23dc014415f947975359ac09f627e',1,'EEPROM24::read(unsigned long address, void *data, size_t length)'],['../classI2CMaster.html#a49eeebb57f6bc06de39973fe836369cd',1,'I2CMaster::read()'],['../classSoftI2C.html#a330dbba5b726fa161a6b01a9ca49e1bc',1,'SoftI2C::read()']]],
@@ -13,6 +14,7 @@ var searchData=
   ['removefield',['removeField',['../classForm.html#a7abd717029f9b19ee7318470072cd697',1,'Form']]],
   ['reset',['reset',['../classBLAKE2b.html#a917beae2ca6e9831a35717a526089e8a',1,'BLAKE2b::reset()'],['../classBLAKE2b.html#a9afd8ec05ccfa08a922de74461e45387',1,'BLAKE2b::reset(uint8_t outputLength)'],['../classBLAKE2s.html#a778776d15316c182fdb2df5a89b3ca02',1,'BLAKE2s::reset()'],['../classBLAKE2s.html#a91ba6bc39e42002ac61114ced1d0af6d',1,'BLAKE2s::reset(uint8_t outputLength)'],['../classHash.html#a7b94309acaa5f52386785fb780e5be61',1,'Hash::reset()'],['../classKeccakCore.html#a5a322eb7e3b5c1eaad127c9c6e6a529b',1,'KeccakCore::reset()'],['../classSHA1.html#ab71aaf39ed956320054861a2fbfa454f',1,'SHA1::reset()'],['../classSHA256.html#ad9d80d8fdccffb15497bd36285afce65',1,'SHA256::reset()'],['../classSHA3__256.html#a57b5f29347a733e04fe47d60621f3202',1,'SHA3_256::reset()'],['../classSHA3__512.html#a435746d5a8b012f7c65050337cc4a23f',1,'SHA3_512::reset()'],['../classSHA512.html#a0d009e8d9157c3f14323e68631c33e97',1,'SHA512::reset()']]],
   ['resume',['resume',['../classBlinkLED.html#a380241e4dfd20e8a558487227f2f4252',1,'BlinkLED']]],
+  ['ringoscillatornoisesource',['RingOscillatorNoiseSource',['../classRingOscillatorNoiseSource.html',1,'']]],
   ['rngclass',['RNGClass',['../classRNGClass.html',1,'RNGClass'],['../classRNGClass.html#acbcf327242f51ae2d9209aeaa45e30e9',1,'RNGClass::RNGClass()']]],
   ['rtc',['RTC',['../classRTC.html',1,'RTC'],['../classRTC.html#ada31c5120d18d2dd2863b3d440308da2',1,'RTC::RTC()']]],
   ['rtcalarm',['RTCAlarm',['../structRTCAlarm.html',1,'']]],

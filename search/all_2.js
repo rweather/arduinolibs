@@ -2,7 +2,7 @@ var searchData=
 [
   ['charlieplexing_20example',['Charlieplexing Example',['../blink_charlieplex.html',1,'']]],
   ['cylon_20eyes_20example',['Cylon Eyes Example',['../blink_cylon.html',1,'']]],
-  ['calibrating',['calibrating',['../classNoiseSource.html#ac8ac086f830efb5ffe3e8d506aa61c85',1,'NoiseSource::calibrating()'],['../classTransistorNoiseSource.html#a9244b327c291c737396e769da9c66af9',1,'TransistorNoiseSource::calibrating()']]],
+  ['calibrating',['calibrating',['../classNoiseSource.html#ac8ac086f830efb5ffe3e8d506aa61c85',1,'NoiseSource::calibrating()'],['../classRingOscillatorNoiseSource.html#ade7f7ed390e23722347b3c207912b3f9',1,'RingOscillatorNoiseSource::calibrating()'],['../classTransistorNoiseSource.html#a9244b327c291c737396e769da9c66af9',1,'TransistorNoiseSource::calibrating()']]],
   ['capacity',['capacity',['../classKeccakCore.html#a804b895121a4e04bc491f41a5821a13e',1,'KeccakCore']]],
   ['cbc',['CBC',['../classCBC.html',1,'CBC&lt; T &gt;'],['../classCBC.html#ae22d0d9347d5f3c97328e643a9b29ecb',1,'CBC::CBC()']]],
   ['cbccommon',['CBCCommon',['../classCBCCommon.html',1,'CBCCommon'],['../classCBCCommon.html#a7575b369910e05f54e76698dd04bfa05',1,'CBCCommon::CBCCommon()']]],
@@ -19,6 +19,8 @@ var searchData=
   ['copy',['copy',['../classBitmap.html#ab22fe1f3871934987a670b559f67c67c',1,'Bitmap']]],
   ['count',['count',['../classCharlieplex.html#a5008aa4143d381ce34a3aed1a3843e4e',1,'Charlieplex']]],
   ['cryptographic_20library',['Cryptographic Library',['../crypto.html',1,'']]],
+  ['crypto_2drng_2dring_2edox',['crypto-rng-ring.dox',['../crypto-rng-ring_8dox.html',1,'']]],
+  ['crypto_2drng_2edox',['crypto-rng.dox',['../crypto-rng_8dox.html',1,'']]],
   ['crypto_2edox',['crypto.dox',['../crypto_8dox.html',1,'']]],
   ['ctr',['CTR',['../classCTR.html',1,'CTR&lt; T &gt;'],['../classCTR.html#a7025ab5d79f0f0763f751aeabc425ca9',1,'CTR::CTR()']]],
   ['ctrcommon',['CTRCommon',['../classCTRCommon.html',1,'CTRCommon'],['../classCTRCommon.html#abeb01342f17023e99776001d397c51ff',1,'CTRCommon::CTRCommon()']]],

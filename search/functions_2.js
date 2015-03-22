@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['calibrating',['calibrating',['../classNoiseSource.html#ac8ac086f830efb5ffe3e8d506aa61c85',1,'NoiseSource::calibrating()'],['../classTransistorNoiseSource.html#a9244b327c291c737396e769da9c66af9',1,'TransistorNoiseSource::calibrating()']]],
+  ['calibrating',['calibrating',['../classNoiseSource.html#ac8ac086f830efb5ffe3e8d506aa61c85',1,'NoiseSource::calibrating()'],['../classRingOscillatorNoiseSource.html#ade7f7ed390e23722347b3c207912b3f9',1,'RingOscillatorNoiseSource::calibrating()'],['../classTransistorNoiseSource.html#a9244b327c291c737396e769da9c66af9',1,'TransistorNoiseSource::calibrating()']]],
   ['capacity',['capacity',['../classKeccakCore.html#a804b895121a4e04bc491f41a5821a13e',1,'KeccakCore']]],
   ['cbc',['CBC',['../classCBC.html#ae22d0d9347d5f3c97328e643a9b29ecb',1,'CBC']]],
   ['cbccommon',['CBCCommon',['../classCBCCommon.html#a7575b369910e05f54e76698dd04bfa05',1,'CBCCommon']]],
