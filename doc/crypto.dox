@@ -50,6 +50,10 @@ hashing, with 256-bit and 512-bit hash outputs respectively.  They are
 intended as high performance replacements for SHA256 and SHA512 for when
 speed is critical but exact bit-compatibility of hash values is not.
 
+\section crypto_other Examples and other topics
+
+\li \ref crypto_rng "Generating random numbers"
+
 \section crypto_performance Performance
 
 All figures are for the Arduino Uno running at 16 MHz.  Figures for the
