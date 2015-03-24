@@ -40,6 +40,12 @@ public:
     virtual void finalize(void *hash, size_t len) = 0;
 
     virtual void clear() = 0;
+
+    virtual void resetHMAC(const void *key, size_t keyLen) = 0;
+    virtual void finalizeHMAC(const void *key, size_t keyLen, void *hash, size_t hashLen) = 0;
+
+protected:
+    void formatHMACKey(void *block, const void *key, size_t len, uint8_t pad);
 };
 
 #endif

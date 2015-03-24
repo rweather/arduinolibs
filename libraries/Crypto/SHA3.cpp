@@ -21,6 +21,7 @@
  */
 
 #include "SHA3.h"
+#include "Crypto.h"
 
 /**
  * \class SHA3_256 SHA3.h <SHA3.h>
@@ -79,6 +80,21 @@ void SHA3_256::clear()
     core.clear();
 }
 
+void SHA3_256::resetHMAC(const void *key, size_t keyLen)
+{
+    core.setHMACKey(key, keyLen, 0x36, 32);
+}
+
+void SHA3_256::finalizeHMAC(const void *key, size_t keyLen, void *hash, size_t hashLen)
+{
+    uint8_t temp[32];
+    finalize(temp, sizeof(temp));
+    core.setHMACKey(key, keyLen, 0x5C, 32);
+    core.update(temp, sizeof(temp));
+    finalize(hash, hashLen);
+    clean(temp);
+}
+
 /**
  * \class SHA3_512 SHA3.h <SHA3.h>
  * \brief SHA3-512 hash algorithm.
@@ -134,4 +150,19 @@ void SHA3_512::finalize(void *hash, size_t len)
 void SHA3_512::clear()
 {
     core.clear();
+}
+
+void SHA3_512::resetHMAC(const void *key, size_t keyLen)
+{
+    core.setHMACKey(key, keyLen, 0x36, 64);
+}
+
+void SHA3_512::finalizeHMAC(const void *key, size_t keyLen, void *hash, size_t hashLen)
+{
+    uint8_t temp[64];
+    finalize(temp, sizeof(temp));
+    core.setHMACKey(key, keyLen, 0x5C, 64);
+    core.update(temp, sizeof(temp));
+    finalize(hash, hashLen);
+    clean(temp);
 }

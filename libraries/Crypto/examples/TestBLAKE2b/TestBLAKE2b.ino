@@ -29,6 +29,7 @@ This example runs tests on the BLAKE2b implementation to verify correct behaviou
 #include <string.h>
 
 #define HASH_SIZE 64
+#define BLOCK_SIZE 128
 
 struct TestHashVector
 {
@@ -90,7 +91,7 @@ static TestHashVector const testVectorBLAKE2b_4 = {
 
 BLAKE2b blake2b;
 
-byte buffer[128];
+byte buffer[BLOCK_SIZE + 2];
 
 bool testHash_N(Hash *hash, const struct TestHashVector *test, size_t inc)
 {
@@ -160,6 +161,69 @@ void perfHash(Hash *hash)
     Serial.println(" bytes per second");
 }
 
+// Very simple method for hashing a HMAC inner or outer key.
+void hashKey(Hash *hash, const uint8_t *key, size_t keyLen, uint8_t pad)
+{
+    size_t posn;
+    uint8_t buf;
+    uint8_t result[HASH_SIZE];
+    if (keyLen <= BLOCK_SIZE) {
+        hash->reset();
+        for (posn = 0; posn < BLOCK_SIZE; ++posn) {
+            if (posn < keyLen)
+                buf = key[posn] ^ pad;
+            else
+                buf = pad;
+            hash->update(&buf, 1);
+        }
+    } else {
+        hash->reset();
+        hash->update(key, keyLen);
+        hash->finalize(result, HASH_SIZE);
+        hash->reset();
+        for (posn = 0; posn < BLOCK_SIZE; ++posn) {
+            if (posn < HASH_SIZE)
+                buf = result[posn] ^ pad;
+            else
+                buf = pad;
+            hash->update(&buf, 1);
+        }
+    }
+}
+
+void testHMAC(Hash *hash, size_t keyLen)
+{
+    uint8_t result[HASH_SIZE];
+
+    Serial.print("HMAC-BLAKE2b keysize=");
+    Serial.print(keyLen);
+    Serial.print(" ... ");
+
+    // Construct the expected result with a simple HMAC implementation.
+    memset(buffer, (uint8_t)keyLen, keyLen);
+    hashKey(hash, buffer, keyLen, 0x36);
+    memset(buffer, 0xBA, sizeof(buffer));
+    hash->update(buffer, sizeof(buffer));
+    hash->finalize(result, HASH_SIZE);
+    memset(buffer, (uint8_t)keyLen, keyLen);
+    hashKey(hash, buffer, keyLen, 0x5C);
+    hash->update(result, HASH_SIZE);
+    hash->finalize(result, HASH_SIZE);
+
+    // Now use the library to compute the HMAC.
+    hash->resetHMAC(buffer, keyLen);
+    memset(buffer, 0xBA, sizeof(buffer));
+    hash->update(buffer, sizeof(buffer));
+    memset(buffer, (uint8_t)keyLen, keyLen);
+    hash->finalizeHMAC(buffer, keyLen, buffer, HASH_SIZE);
+
+    // Check the result.
+    if (!memcmp(result, buffer, HASH_SIZE))
+        Serial.println("Passed");
+    else
+        Serial.println("Failed");
+}
+
 void setup()
 {
     Serial.begin(9600);
@@ -171,6 +235,12 @@ void setup()
     testHash(&blake2b, &testVectorBLAKE2b_2);
     testHash(&blake2b, &testVectorBLAKE2b_3);
     testHash(&blake2b, &testVectorBLAKE2b_4);
+    testHMAC(&blake2b, (size_t)0);
+    testHMAC(&blake2b, 1);
+    testHMAC(&blake2b, HASH_SIZE);
+    testHMAC(&blake2b, BLOCK_SIZE);
+    testHMAC(&blake2b, BLOCK_SIZE + 1);
+    testHMAC(&blake2b, BLOCK_SIZE + 2);
 
     Serial.println();
 

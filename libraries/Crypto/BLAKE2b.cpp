@@ -162,6 +162,25 @@ void BLAKE2b::clear()
     reset();
 }
 
+void BLAKE2b::resetHMAC(const void *key, size_t keyLen)
+{
+    formatHMACKey(state.m, key, keyLen, 0x36);
+    state.lengthLow += 128;
+    processChunk(0);
+}
+
+void BLAKE2b::finalizeHMAC(const void *key, size_t keyLen, void *hash, size_t hashLen)
+{
+    uint8_t temp[64];
+    finalize(temp, sizeof(temp));
+    formatHMACKey(state.m, key, keyLen, 0x5C);
+    state.lengthLow += 128;
+    processChunk(0);
+    update(temp, sizeof(temp));
+    finalize(hash, hashLen);
+    clean(temp);
+}
+
 // Permutation on the message input state for BLAKE2b.
 static const uint8_t sigma[12][16] PROGMEM = {
     { 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15},

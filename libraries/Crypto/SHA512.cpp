@@ -139,6 +139,25 @@ void SHA512::clear()
     reset();
 }
 
+void SHA512::resetHMAC(const void *key, size_t keyLen)
+{
+    formatHMACKey(state.w, key, keyLen, 0x36);
+    state.lengthLow += 128 * 8;
+    processChunk();
+}
+
+void SHA512::finalizeHMAC(const void *key, size_t keyLen, void *hash, size_t hashLen)
+{
+    uint8_t temp[64];
+    finalize(temp, sizeof(temp));
+    formatHMACKey(state.w, key, keyLen, 0x5C);
+    state.lengthLow += 128 * 8;
+    processChunk();
+    update(temp, sizeof(temp));
+    finalize(hash, hashLen);
+    clean(temp);
+}
+
 /**
  * \brief Processes a single 1024-bit chunk with the core SHA-512 algorithm.
  *

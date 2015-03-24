@@ -46,6 +46,8 @@ public:
 
     void clear();
 
+    void setHMACKey(const void *key, size_t len, uint8_t pad, size_t hashSize);
+
 private:
     struct {
         uint64_t A[5][5];

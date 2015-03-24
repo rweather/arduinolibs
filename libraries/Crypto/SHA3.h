@@ -41,6 +41,9 @@ public:
 
     void clear();
 
+    void resetHMAC(const void *key, size_t keyLen);
+    void finalizeHMAC(const void *key, size_t keyLen, void *hash, size_t hashLen);
+
 private:
     KeccakCore core;
 };
@@ -59,6 +62,9 @@ public:
     void finalize(void *hash, size_t len);
 
     void clear();
+
+    void resetHMAC(const void *key, size_t keyLen);
+    void finalizeHMAC(const void *key, size_t keyLen, void *hash, size_t hashLen);
 
 private:
     KeccakCore core;

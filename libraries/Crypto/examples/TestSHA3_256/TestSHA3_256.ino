@@ -31,6 +31,7 @@ correct behaviour.
 
 #define DATA_SIZE 136
 #define HASH_SIZE 32
+#define BLOCK_SIZE 136
 
 struct TestHashVector
 {
@@ -95,7 +96,7 @@ static TestHashVector const testVectorSHA3_256_4 = {
      0xBE, 0x9B, 0x7C, 0x73, 0x6B, 0x80, 0x59, 0xAB,
      0xFD, 0x67, 0x79, 0xAC, 0x35, 0xAC, 0x81, 0xB5}
 };
-static TestHashVector const testVectorSHA3_256_5 = {
+static TestHashVector testVectorSHA3_256_5 = {
     "SHA3-256 #5",
     {0xB3, 0x2D, 0x95, 0xB0, 0xB9, 0xAA, 0xD2, 0xA8,
      0x81, 0x6D, 0xE6, 0xD0, 0x6D, 0x1F, 0x86, 0x00,
@@ -122,8 +123,6 @@ static TestHashVector const testVectorSHA3_256_5 = {
 };
 
 SHA3_256 sha3_256;
-
-byte buffer[128];
 
 bool testHash_N(Hash *hash, const struct TestHashVector *test, size_t inc)
 {
@@ -176,23 +175,90 @@ void perfHash(Hash *hash)
     unsigned long start;
     unsigned long elapsed;
     int count;
+    // Reuse one of the test vectors as a large temporary buffer.
+    uint8_t *buffer = (uint8_t *)&testVectorSHA3_256_5;
 
     Serial.print("Hashing ... ");
 
-    for (size_t posn = 0; posn < sizeof(buffer); ++posn)
+    for (size_t posn = 0; posn < 128; ++posn)
         buffer[posn] = (uint8_t)posn;
 
     hash->reset();
     start = micros();
     for (count = 0; count < 500; ++count) {
-        hash->update(buffer, sizeof(buffer));
+        hash->update(buffer, 128);
     }
     elapsed = micros() - start;
 
-    Serial.print(elapsed / (sizeof(buffer) * 500.0));
+    Serial.print(elapsed / (128 * 500.0));
     Serial.print("us per byte, ");
-    Serial.print((sizeof(buffer) * 500.0 * 1000000.0) / elapsed);
+    Serial.print((128 * 500.0 * 1000000.0) / elapsed);
     Serial.println(" bytes per second");
+}
+
+// Very simple method for hashing a HMAC inner or outer key.
+void hashKey(Hash *hash, const uint8_t *key, size_t keyLen, uint8_t pad)
+{
+    size_t posn;
+    uint8_t buf;
+    uint8_t result[HASH_SIZE];
+    if (keyLen <= BLOCK_SIZE) {
+        hash->reset();
+        for (posn = 0; posn < BLOCK_SIZE; ++posn) {
+            if (posn < keyLen)
+                buf = key[posn] ^ pad;
+            else
+                buf = pad;
+            hash->update(&buf, 1);
+        }
+    } else {
+        hash->reset();
+        hash->update(key, keyLen);
+        hash->finalize(result, HASH_SIZE);
+        hash->reset();
+        for (posn = 0; posn < BLOCK_SIZE; ++posn) {
+            if (posn < HASH_SIZE)
+                buf = result[posn] ^ pad;
+            else
+                buf = pad;
+            hash->update(&buf, 1);
+        }
+    }
+}
+
+void testHMAC(Hash *hash, size_t keyLen)
+{
+    uint8_t result[HASH_SIZE];
+    // Reuse one of the test vectors as a large temporary buffer.
+    uint8_t *buffer = (uint8_t *)&testVectorSHA3_256_5;
+
+    Serial.print("HMAC-SHA3-256 keysize=");
+    Serial.print(keyLen);
+    Serial.print(" ... ");
+
+    // Construct the expected result with a simple HMAC implementation.
+    memset(buffer, (uint8_t)keyLen, keyLen);
+    hashKey(hash, buffer, keyLen, 0x36);
+    memset(buffer, 0xBA, sizeof(buffer));
+    hash->update(buffer, sizeof(buffer));
+    hash->finalize(result, HASH_SIZE);
+    memset(buffer, (uint8_t)keyLen, keyLen);
+    hashKey(hash, buffer, keyLen, 0x5C);
+    hash->update(result, HASH_SIZE);
+    hash->finalize(result, HASH_SIZE);
+
+    // Now use the library to compute the HMAC.
+    hash->resetHMAC(buffer, keyLen);
+    memset(buffer, 0xBA, sizeof(buffer));
+    hash->update(buffer, sizeof(buffer));
+    memset(buffer, (uint8_t)keyLen, keyLen);
+    hash->finalizeHMAC(buffer, keyLen, buffer, HASH_SIZE);
+
+    // Check the result.
+    if (!memcmp(result, buffer, HASH_SIZE))
+        Serial.println("Passed");
+    else
+        Serial.println("Failed");
 }
 
 void setup()
@@ -207,6 +273,12 @@ void setup()
     testHash(&sha3_256, &testVectorSHA3_256_3);
     testHash(&sha3_256, &testVectorSHA3_256_4);
     testHash(&sha3_256, &testVectorSHA3_256_5);
+    testHMAC(&sha3_256, (size_t)0);
+    testHMAC(&sha3_256, 1);
+    testHMAC(&sha3_256, HASH_SIZE);
+    testHMAC(&sha3_256, BLOCK_SIZE);
+    testHMAC(&sha3_256, BLOCK_SIZE + 1);
+    testHMAC(&sha3_256, BLOCK_SIZE + 2);
 
     Serial.println();
 

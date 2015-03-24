@@ -131,6 +131,25 @@ void SHA1::clear()
     reset();
 }
 
+void SHA1::resetHMAC(const void *key, size_t keyLen)
+{
+    formatHMACKey(state.w, key, keyLen, 0x36);
+    state.length += 64 * 8;
+    processChunk();
+}
+
+void SHA1::finalizeHMAC(const void *key, size_t keyLen, void *hash, size_t hashLen)
+{
+    uint8_t temp[20];
+    finalize(temp, sizeof(temp));
+    formatHMACKey(state.w, key, keyLen, 0x5C);
+    state.length += 64 * 8;
+    processChunk();
+    update(temp, sizeof(temp));
+    finalize(hash, hashLen);
+    clean(temp);
+}
+
 /**
  * \brief Processes a single 512-bit chunk with the core SHA-1 algorithm.
  *

@@ -248,6 +248,41 @@ void KeccakCore::clear()
 }
 
 /**
+ * \brief Sets a HMAC key for a Keccak-based hash algorithm.
+ *
+ * \param key Points to the HMAC key for the hashing process.
+ * \param len Length of the HMAC \a key in bytes.
+ * \param pad Inner (0x36) or outer (0x5C) padding value to XOR with
+ * the formatted HMAC key.
+ * \param hashSize The size of the output from the hash algorithm.
+ *
+ * This function is intended to help classes implement Hash::resetHMAC() and
+ * Hash::finalizeHMAC() by directly formatting the HMAC key into the
+ * internal block buffer and resetting the hash.
+ */
+void KeccakCore::setHMACKey(const void *key, size_t len, uint8_t pad, size_t hashSize)
+{
+    uint8_t *b = (uint8_t *)state.B;
+    size_t size = blockSize();
+    reset();
+    if (len <= size) {
+        memcpy(b, key, len);
+    } else {
+        update(key, len);
+        this->pad(0x06);
+        extract(b, hashSize);
+        len = hashSize;
+        reset();
+    }
+    memset(b + len, pad, size - len);
+    while (len > 0) {
+        *b++ ^= pad;
+        --len;
+    }
+    update(state.B, size);
+}
+
+/**
  * \brief Transform the state with the KECCAK-p sponge function with b = 1600.
  */
 void KeccakCore::keccakp()
