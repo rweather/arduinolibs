@@ -213,115 +213,134 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;    <a class="code" href="classSHA512.html#a0d009e8d9157c3f14323e68631c33e97">reset</a>();</div>
 <div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;}</div>
 <div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;</div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;<span class="keywordtype">void</span> SHA512::processChunk()</div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;{</div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;    <span class="comment">// Round constants for SHA-512.</span></div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;    <span class="keyword">static</span> uint64_t <span class="keyword">const</span> k[80] PROGMEM = {</div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;        0x428A2F98D728AE22ULL, 0x7137449123EF65CDULL, 0xB5C0FBCFEC4D3B2FULL,</div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;        0xE9B5DBA58189DBBCULL, 0x3956C25BF348B538ULL, 0x59F111F1B605D019ULL,</div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;        0x923F82A4AF194F9BULL, 0xAB1C5ED5DA6D8118ULL, 0xD807AA98A3030242ULL,</div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;        0x12835B0145706FBEULL, 0x243185BE4EE4B28CULL, 0x550C7DC3D5FFB4E2ULL,</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;        0x72BE5D74F27B896FULL, 0x80DEB1FE3B1696B1ULL, 0x9BDC06A725C71235ULL,</div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;        0xC19BF174CF692694ULL, 0xE49B69C19EF14AD2ULL, 0xEFBE4786384F25E3ULL,</div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;        0x0FC19DC68B8CD5B5ULL, 0x240CA1CC77AC9C65ULL, 0x2DE92C6F592B0275ULL,</div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;        0x4A7484AA6EA6E483ULL, 0x5CB0A9DCBD41FBD4ULL, 0x76F988DA831153B5ULL,</div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;        0x983E5152EE66DFABULL, 0xA831C66D2DB43210ULL, 0xB00327C898FB213FULL,</div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;        0xBF597FC7BEEF0EE4ULL, 0xC6E00BF33DA88FC2ULL, 0xD5A79147930AA725ULL,</div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;        0x06CA6351E003826FULL, 0x142929670A0E6E70ULL, 0x27B70A8546D22FFCULL,</div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;        0x2E1B21385C26C926ULL, 0x4D2C6DFC5AC42AEDULL, 0x53380D139D95B3DFULL,</div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;        0x650A73548BAF63DEULL, 0x766A0ABB3C77B2A8ULL, 0x81C2C92E47EDAEE6ULL,</div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;        0x92722C851482353BULL, 0xA2BFE8A14CF10364ULL, 0xA81A664BBC423001ULL,</div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;        0xC24B8B70D0F89791ULL, 0xC76C51A30654BE30ULL, 0xD192E819D6EF5218ULL,</div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;        0xD69906245565A910ULL, 0xF40E35855771202AULL, 0x106AA07032BBD1B8ULL,</div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;        0x19A4C116B8D2D0C8ULL, 0x1E376C085141AB53ULL, 0x2748774CDF8EEB99ULL,</div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;        0x34B0BCB5E19B48A8ULL, 0x391C0CB3C5C95A63ULL, 0x4ED8AA4AE3418ACBULL,</div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;        0x5B9CCA4F7763E373ULL, 0x682E6FF3D6B2B8A3ULL, 0x748F82EE5DEFB2FCULL,</div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;        0x78A5636F43172F60ULL, 0x84C87814A1F0AB72ULL, 0x8CC702081A6439ECULL,</div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;        0x90BEFFFA23631E28ULL, 0xA4506CEBDE82BDE9ULL, 0xBEF9A3F7B2C67915ULL,</div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;        0xC67178F2E372532BULL, 0xCA273ECEEA26619CULL, 0xD186B8C721C0C207ULL,</div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;        0xEADA7DD6CDE0EB1EULL, 0xF57D4F7FEE6ED178ULL, 0x06F067AA72176FBAULL,</div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;        0x0A637DC5A2C898A6ULL, 0x113F9804BEF90DAEULL, 0x1B710B35131C471BULL,</div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;        0x28DB77F523047D84ULL, 0x32CAAB7B40C72493ULL, 0x3C9EBE0A15C9BEBCULL,</div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;        0x431D67C49C100D4CULL, 0x4CC5D4BECB3E42B6ULL, 0x597F299CFC657E2AULL,</div>
-<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;        0x5FCB6FAB3AD6FAECULL, 0x6C44198C4A475817ULL</div>
-<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;    };</div>
-<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;</div>
-<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;    <span class="comment">// Convert the first 16 words from big endian to host byte order.</span></div>
-<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;    uint8_t index;</div>
-<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;    <span class="keywordflow">for</span> (index = 0; index &lt; 16; ++index)</div>
-<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;        state.w[index] = be64toh(state.w[index]);</div>
-<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;</div>
-<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;    <span class="comment">// Initialise working variables to the current hash value.</span></div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;    uint64_t a = state.h[0];</div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;    uint64_t b = state.h[1];</div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;    uint64_t c = state.h[2];</div>
-<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;    uint64_t d = state.h[3];</div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;    uint64_t e = state.h[4];</div>
-<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;    uint64_t f = state.h[5];</div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;    uint64_t g = state.h[6];</div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;    uint64_t h = state.h[7];</div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;</div>
-<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;    <span class="comment">// Perform the first 16 rounds of the compression function main loop.</span></div>
-<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;    uint64_t temp1, temp2;</div>
-<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;    <span class="keywordflow">for</span> (index = 0; index &lt; 16; ++index) {</div>
-<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;        temp1 = h + pgm_read_qword(k + index) + state.w[index] +</div>
-<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;                (rightRotate14_64(e) ^ rightRotate18_64(e) ^</div>
-<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;                 rightRotate41_64(e)) + ((e &amp; f) ^ ((~e) &amp; g));</div>
-<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;        temp2 = (rightRotate28_64(a) ^ rightRotate34_64(a) ^</div>
-<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;                 rightRotate39_64(a)) + ((a &amp; b) ^ (a &amp; c) ^ (b &amp; c));</div>
-<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;        h = g;</div>
-<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;        g = f;</div>
-<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;        f = e;</div>
-<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;        e = d + temp1;</div>
-<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;        d = c;</div>
-<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;        c = b;</div>
-<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;        b = a;</div>
-<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;        a = temp1 + temp2;</div>
-<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;    }</div>
-<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;</div>
-<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;    <span class="comment">// Perform the 64 remaining rounds.  We expand the first 16 words to</span></div>
-<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;    <span class="comment">// 80 in-place in the &quot;w&quot; array.  This saves 512 bytes of memory</span></div>
-<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;    <span class="comment">// that would have otherwise need to be allocated to the &quot;w&quot; array.</span></div>
-<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;    <span class="keywordflow">for</span> (; index &lt; 80; ++index) {</div>
-<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;        <span class="comment">// Expand the next word.</span></div>
-<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;        temp1 = state.w[(index - 15) &amp; 0x0F];</div>
-<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;        temp2 = state.w[(index - 2) &amp; 0x0F];</div>
-<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;        temp1 = state.w[index &amp; 0x0F] =</div>
-<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;            state.w[(index - 16) &amp; 0x0F] + state.w[(index - 7) &amp; 0x0F] +</div>
-<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;                (rightRotate1_64(temp1) ^ rightRotate8_64(temp1) ^</div>
-<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;                 (temp1 &gt;&gt; 7)) +</div>
-<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;                (rightRotate19_64(temp2) ^ rightRotate61_64(temp2) ^</div>
-<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;                 (temp2 &gt;&gt; 6));</div>
-<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;</div>
-<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;        <span class="comment">// Perform the round.</span></div>
-<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;        temp1 = h + pgm_read_qword(k + index) + temp1 +</div>
-<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;                (rightRotate14_64(e) ^ rightRotate18_64(e) ^</div>
-<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;                 rightRotate41_64(e)) + ((e &amp; f) ^ ((~e) &amp; g));</div>
-<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;        temp2 = (rightRotate28_64(a) ^ rightRotate34_64(a) ^</div>
-<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;                 rightRotate39_64(a)) + ((a &amp; b) ^ (a &amp; c) ^ (b &amp; c));</div>
-<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;        h = g;</div>
-<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;        g = f;</div>
-<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;        f = e;</div>
-<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;        e = d + temp1;</div>
-<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;        d = c;</div>
-<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;        c = b;</div>
-<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;        b = a;</div>
-<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;        a = temp1 + temp2;</div>
-<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;    }</div>
-<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;</div>
-<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;    <span class="comment">// Add the compressed chunk to the current hash value.</span></div>
-<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;    state.h[0] += a;</div>
-<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;    state.h[1] += b;</div>
-<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;    state.h[2] += c;</div>
-<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;    state.h[3] += d;</div>
-<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;    state.h[4] += e;</div>
-<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;    state.h[5] += f;</div>
-<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;    state.h[6] += g;</div>
-<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;    state.h[7] += h;</div>
-<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;</div>
-<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;    <span class="comment">// Attempt to clean up the stack.</span></div>
-<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;    a = b = c = d = e = f = g = h = temp1 = temp2 = 0;</div>
-<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;}</div>
+<div class="line"><a name="l00142"></a><span class="lineno"><a class="line" href="classSHA512.html#a2427ad8bf8b6958df91bd5806986167c">  142</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classSHA512.html#a2427ad8bf8b6958df91bd5806986167c">SHA512::resetHMAC</a>(<span class="keyword">const</span> <span class="keywordtype">void</span> *key, <span class="keywordtype">size_t</span> keyLen)</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;{</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;    <a class="code" href="classHash.html#ab6f40c9af91dc3d738d9fcce59af63cc">formatHMACKey</a>(state.w, key, keyLen, 0x36);</div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;    state.lengthLow += 128 * 8;</div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;    processChunk();</div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;}</div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;</div>
+<div class="line"><a name="l00149"></a><span class="lineno"><a class="line" href="classSHA512.html#a1fe9533f0d3dfdb426eb3dc4bdc31904">  149</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classSHA512.html#a1fe9533f0d3dfdb426eb3dc4bdc31904">SHA512::finalizeHMAC</a>(<span class="keyword">const</span> <span class="keywordtype">void</span> *key, <span class="keywordtype">size_t</span> keyLen, <span class="keywordtype">void</span> *hash, <span class="keywordtype">size_t</span> hashLen)</div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;{</div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;    uint8_t temp[64];</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;    <a class="code" href="classSHA512.html#afc136ad0e77de527b031db3fb8b32464">finalize</a>(temp, <span class="keyword">sizeof</span>(temp));</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;    <a class="code" href="classHash.html#ab6f40c9af91dc3d738d9fcce59af63cc">formatHMACKey</a>(state.w, key, keyLen, 0x5C);</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;    state.lengthLow += 128 * 8;</div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;    processChunk();</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;    <a class="code" href="classSHA512.html#a7d37a20d7ab431ab15d094f768b6a695">update</a>(temp, <span class="keyword">sizeof</span>(temp));</div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;    <a class="code" href="classSHA512.html#afc136ad0e77de527b031db3fb8b32464">finalize</a>(hash, hashLen);</div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;    clean(temp);</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;}</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;</div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;<span class="keywordtype">void</span> SHA512::processChunk()</div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;{</div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;    <span class="comment">// Round constants for SHA-512.</span></div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;    <span class="keyword">static</span> uint64_t <span class="keyword">const</span> k[80] PROGMEM = {</div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;        0x428A2F98D728AE22ULL, 0x7137449123EF65CDULL, 0xB5C0FBCFEC4D3B2FULL,</div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;        0xE9B5DBA58189DBBCULL, 0x3956C25BF348B538ULL, 0x59F111F1B605D019ULL,</div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;        0x923F82A4AF194F9BULL, 0xAB1C5ED5DA6D8118ULL, 0xD807AA98A3030242ULL,</div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;        0x12835B0145706FBEULL, 0x243185BE4EE4B28CULL, 0x550C7DC3D5FFB4E2ULL,</div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;        0x72BE5D74F27B896FULL, 0x80DEB1FE3B1696B1ULL, 0x9BDC06A725C71235ULL,</div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;        0xC19BF174CF692694ULL, 0xE49B69C19EF14AD2ULL, 0xEFBE4786384F25E3ULL,</div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;        0x0FC19DC68B8CD5B5ULL, 0x240CA1CC77AC9C65ULL, 0x2DE92C6F592B0275ULL,</div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;        0x4A7484AA6EA6E483ULL, 0x5CB0A9DCBD41FBD4ULL, 0x76F988DA831153B5ULL,</div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;        0x983E5152EE66DFABULL, 0xA831C66D2DB43210ULL, 0xB00327C898FB213FULL,</div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;        0xBF597FC7BEEF0EE4ULL, 0xC6E00BF33DA88FC2ULL, 0xD5A79147930AA725ULL,</div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;        0x06CA6351E003826FULL, 0x142929670A0E6E70ULL, 0x27B70A8546D22FFCULL,</div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;        0x2E1B21385C26C926ULL, 0x4D2C6DFC5AC42AEDULL, 0x53380D139D95B3DFULL,</div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;        0x650A73548BAF63DEULL, 0x766A0ABB3C77B2A8ULL, 0x81C2C92E47EDAEE6ULL,</div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;        0x92722C851482353BULL, 0xA2BFE8A14CF10364ULL, 0xA81A664BBC423001ULL,</div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;        0xC24B8B70D0F89791ULL, 0xC76C51A30654BE30ULL, 0xD192E819D6EF5218ULL,</div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;        0xD69906245565A910ULL, 0xF40E35855771202AULL, 0x106AA07032BBD1B8ULL,</div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;        0x19A4C116B8D2D0C8ULL, 0x1E376C085141AB53ULL, 0x2748774CDF8EEB99ULL,</div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;        0x34B0BCB5E19B48A8ULL, 0x391C0CB3C5C95A63ULL, 0x4ED8AA4AE3418ACBULL,</div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;        0x5B9CCA4F7763E373ULL, 0x682E6FF3D6B2B8A3ULL, 0x748F82EE5DEFB2FCULL,</div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;        0x78A5636F43172F60ULL, 0x84C87814A1F0AB72ULL, 0x8CC702081A6439ECULL,</div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;        0x90BEFFFA23631E28ULL, 0xA4506CEBDE82BDE9ULL, 0xBEF9A3F7B2C67915ULL,</div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;        0xC67178F2E372532BULL, 0xCA273ECEEA26619CULL, 0xD186B8C721C0C207ULL,</div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;        0xEADA7DD6CDE0EB1EULL, 0xF57D4F7FEE6ED178ULL, 0x06F067AA72176FBAULL,</div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;        0x0A637DC5A2C898A6ULL, 0x113F9804BEF90DAEULL, 0x1B710B35131C471BULL,</div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;        0x28DB77F523047D84ULL, 0x32CAAB7B40C72493ULL, 0x3C9EBE0A15C9BEBCULL,</div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;        0x431D67C49C100D4CULL, 0x4CC5D4BECB3E42B6ULL, 0x597F299CFC657E2AULL,</div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;        0x5FCB6FAB3AD6FAECULL, 0x6C44198C4A475817ULL</div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;    };</div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;</div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;    <span class="comment">// Convert the first 16 words from big endian to host byte order.</span></div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;    uint8_t index;</div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;    <span class="keywordflow">for</span> (index = 0; index &lt; 16; ++index)</div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;        state.w[index] = be64toh(state.w[index]);</div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;</div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;    <span class="comment">// Initialise working variables to the current hash value.</span></div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;    uint64_t a = state.h[0];</div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;    uint64_t b = state.h[1];</div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;    uint64_t c = state.h[2];</div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;    uint64_t d = state.h[3];</div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;    uint64_t e = state.h[4];</div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;    uint64_t f = state.h[5];</div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;    uint64_t g = state.h[6];</div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;    uint64_t h = state.h[7];</div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;</div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;    <span class="comment">// Perform the first 16 rounds of the compression function main loop.</span></div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;    uint64_t temp1, temp2;</div>
+<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;    <span class="keywordflow">for</span> (index = 0; index &lt; 16; ++index) {</div>
+<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;        temp1 = h + pgm_read_qword(k + index) + state.w[index] +</div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;                (rightRotate14_64(e) ^ rightRotate18_64(e) ^</div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;                 rightRotate41_64(e)) + ((e &amp; f) ^ ((~e) &amp; g));</div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;        temp2 = (rightRotate28_64(a) ^ rightRotate34_64(a) ^</div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;                 rightRotate39_64(a)) + ((a &amp; b) ^ (a &amp; c) ^ (b &amp; c));</div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;        h = g;</div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;        g = f;</div>
+<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;        f = e;</div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;        e = d + temp1;</div>
+<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;        d = c;</div>
+<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;        c = b;</div>
+<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;        b = a;</div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;        a = temp1 + temp2;</div>
+<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;    }</div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;</div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;    <span class="comment">// Perform the 64 remaining rounds.  We expand the first 16 words to</span></div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;    <span class="comment">// 80 in-place in the &quot;w&quot; array.  This saves 512 bytes of memory</span></div>
+<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;    <span class="comment">// that would have otherwise need to be allocated to the &quot;w&quot; array.</span></div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;    <span class="keywordflow">for</span> (; index &lt; 80; ++index) {</div>
+<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;        <span class="comment">// Expand the next word.</span></div>
+<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;        temp1 = state.w[(index - 15) &amp; 0x0F];</div>
+<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;        temp2 = state.w[(index - 2) &amp; 0x0F];</div>
+<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;        temp1 = state.w[index &amp; 0x0F] =</div>
+<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;            state.w[(index - 16) &amp; 0x0F] + state.w[(index - 7) &amp; 0x0F] +</div>
+<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;                (rightRotate1_64(temp1) ^ rightRotate8_64(temp1) ^</div>
+<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;                 (temp1 &gt;&gt; 7)) +</div>
+<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;                (rightRotate19_64(temp2) ^ rightRotate61_64(temp2) ^</div>
+<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;                 (temp2 &gt;&gt; 6));</div>
+<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;</div>
+<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;        <span class="comment">// Perform the round.</span></div>
+<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;        temp1 = h + pgm_read_qword(k + index) + temp1 +</div>
+<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;                (rightRotate14_64(e) ^ rightRotate18_64(e) ^</div>
+<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;                 rightRotate41_64(e)) + ((e &amp; f) ^ ((~e) &amp; g));</div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;        temp2 = (rightRotate28_64(a) ^ rightRotate34_64(a) ^</div>
+<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;                 rightRotate39_64(a)) + ((a &amp; b) ^ (a &amp; c) ^ (b &amp; c));</div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;        h = g;</div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;        g = f;</div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;        f = e;</div>
+<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;        e = d + temp1;</div>
+<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;        d = c;</div>
+<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;        c = b;</div>
+<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;        b = a;</div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;        a = temp1 + temp2;</div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;    }</div>
+<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;</div>
+<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;    <span class="comment">// Add the compressed chunk to the current hash value.</span></div>
+<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;    state.h[0] += a;</div>
+<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;    state.h[1] += b;</div>
+<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;    state.h[2] += c;</div>
+<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;    state.h[3] += d;</div>
+<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;    state.h[4] += e;</div>
+<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;    state.h[5] += f;</div>
+<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;    state.h[6] += g;</div>
+<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;    state.h[7] += h;</div>
+<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;</div>
+<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;    <span class="comment">// Attempt to clean up the stack.</span></div>
+<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;    a = b = c = d = e = f = g = h = temp1 = temp2 = 0;</div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;}</div>
 <div class="ttc" id="classSHA512_html_a6ab3cc1e172eecf4796e4cac629e0a44"><div class="ttname"><a href="classSHA512.html#a6ab3cc1e172eecf4796e4cac629e0a44">SHA512::hashSize</a></div><div class="ttdeci">size_t hashSize() const </div><div class="ttdoc">Size of the hash result from finalize(). </div><div class="ttdef"><b>Definition:</b> <a href="SHA512_8cpp_source.html#l00056">SHA512.cpp:56</a></div></div>
 <div class="ttc" id="classSHA512_html_acf8b9bcb6be91ee70acc3700a2ffa1a1"><div class="ttname"><a href="classSHA512.html#acf8b9bcb6be91ee70acc3700a2ffa1a1">SHA512::blockSize</a></div><div class="ttdeci">size_t blockSize() const </div><div class="ttdoc">Size of the internal block used by the hash algorithm. </div><div class="ttdef"><b>Definition:</b> <a href="SHA512_8cpp_source.html#l00061">SHA512.cpp:61</a></div></div>
 <div class="ttc" id="classSHA512_html_a777ec274fa838684b0208369c5f66391"><div class="ttname"><a href="classSHA512.html#a777ec274fa838684b0208369c5f66391">SHA512::~SHA512</a></div><div class="ttdeci">virtual ~SHA512()</div><div class="ttdoc">Destroys this SHA-512 hash object after clearing sensitive information. </div><div class="ttdef"><b>Definition:</b> <a href="SHA512_8cpp_source.html#l00051">SHA512.cpp:51</a></div></div>
@@ -329,11 +348,14 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="ttc" id="classSHA512_html_a0d009e8d9157c3f14323e68631c33e97"><div class="ttname"><a href="classSHA512.html#a0d009e8d9157c3f14323e68631c33e97">SHA512::reset</a></div><div class="ttdeci">void reset()</div><div class="ttdoc">Resets the hash ready for a new hashing process. </div><div class="ttdef"><b>Definition:</b> <a href="SHA512_8cpp_source.html#l00066">SHA512.cpp:66</a></div></div>
 <div class="ttc" id="classSHA512_html_a7d37a20d7ab431ab15d094f768b6a695"><div class="ttname"><a href="classSHA512.html#a7d37a20d7ab431ab15d094f768b6a695">SHA512::update</a></div><div class="ttdeci">void update(const void *data, size_t len)</div><div class="ttdoc">Updates the hash with more data. </div><div class="ttdef"><b>Definition:</b> <a href="SHA512_8cpp_source.html#l00079">SHA512.cpp:79</a></div></div>
 <div class="ttc" id="classSHA512_html_afc136ad0e77de527b031db3fb8b32464"><div class="ttname"><a href="classSHA512.html#afc136ad0e77de527b031db3fb8b32464">SHA512::finalize</a></div><div class="ttdeci">void finalize(void *hash, size_t len)</div><div class="ttdoc">Finalizes the hashing process and returns the hash. </div><div class="ttdef"><b>Definition:</b> <a href="SHA512_8cpp_source.html#l00105">SHA512.cpp:105</a></div></div>
+<div class="ttc" id="classSHA512_html_a1fe9533f0d3dfdb426eb3dc4bdc31904"><div class="ttname"><a href="classSHA512.html#a1fe9533f0d3dfdb426eb3dc4bdc31904">SHA512::finalizeHMAC</a></div><div class="ttdeci">void finalizeHMAC(const void *key, size_t keyLen, void *hash, size_t hashLen)</div><div class="ttdoc">Finalizes the HMAC hashing process and returns the hash. </div><div class="ttdef"><b>Definition:</b> <a href="SHA512_8cpp_source.html#l00149">SHA512.cpp:149</a></div></div>
 <div class="ttc" id="classSHA512_html_a520d966d99c0008e3cc58bd3b77dafcd"><div class="ttname"><a href="classSHA512.html#a520d966d99c0008e3cc58bd3b77dafcd">SHA512::SHA512</a></div><div class="ttdeci">SHA512()</div><div class="ttdoc">Constructs a SHA-512 hash object. </div><div class="ttdef"><b>Definition:</b> <a href="SHA512_8cpp_source.html#l00042">SHA512.cpp:42</a></div></div>
+<div class="ttc" id="classHash_html_ab6f40c9af91dc3d738d9fcce59af63cc"><div class="ttname"><a href="classHash.html#ab6f40c9af91dc3d738d9fcce59af63cc">Hash::formatHMACKey</a></div><div class="ttdeci">void formatHMACKey(void *block, const void *key, size_t len, uint8_t pad)</div><div class="ttdoc">Formats a HMAC key into a block. </div><div class="ttdef"><b>Definition:</b> <a href="Hash_8cpp_source.html#l00162">Hash.cpp:162</a></div></div>
+<div class="ttc" id="classSHA512_html_a2427ad8bf8b6958df91bd5806986167c"><div class="ttname"><a href="classSHA512.html#a2427ad8bf8b6958df91bd5806986167c">SHA512::resetHMAC</a></div><div class="ttdeci">void resetHMAC(const void *key, size_t keyLen)</div><div class="ttdoc">Resets the hash ready for a new HMAC hashing process. </div><div class="ttdef"><b>Definition:</b> <a href="SHA512_8cpp_source.html#l00142">SHA512.cpp:142</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Mar 22 2015 15:54:26 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Mar 25 2015 19:36:07 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

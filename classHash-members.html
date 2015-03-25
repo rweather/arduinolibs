@@ -93,15 +93,18 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <tr class="even"><td class="entry"><a class="el" href="classHash.html#a4e4297812e3483410556830fe5d47bdf">blockSize</a>() const =0</td><td class="entry"><a class="el" href="classHash.html">Hash</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
   <tr><td class="entry"><a class="el" href="classHash.html#a4a959469433cd9348ab7f3ac6228bb34">clear</a>()=0</td><td class="entry"><a class="el" href="classHash.html">Hash</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classHash.html#a09b3ccec22763fc86b1415695862977c">finalize</a>(void *hash, size_t len)=0</td><td class="entry"><a class="el" href="classHash.html">Hash</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classHash.html#aab42fa5420cc0bda4321a3d3866cfd06">finalizeHMAC</a>(const void *key, size_t keyLen, void *hash, size_t hashLen)=0</td><td class="entry"><a class="el" href="classHash.html">Hash</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classHash.html#ab6f40c9af91dc3d738d9fcce59af63cc">formatHMACKey</a>(void *block, const void *key, size_t len, uint8_t pad)</td><td class="entry"><a class="el" href="classHash.html">Hash</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
   <tr><td class="entry"><a class="el" href="classHash.html#af482880ad75b67a09d2dcb5e86244d80">Hash</a>()</td><td class="entry"><a class="el" href="classHash.html">Hash</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classHash.html#adcdd30de3e5ecaa2f798c0c5644d9ef8">hashSize</a>() const =0</td><td class="entry"><a class="el" href="classHash.html">Hash</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
   <tr><td class="entry"><a class="el" href="classHash.html#a7b94309acaa5f52386785fb780e5be61">reset</a>()=0</td><td class="entry"><a class="el" href="classHash.html">Hash</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="classHash.html#aec9761ee427d122e7450de8df200265c">update</a>(const void *data, size_t len)=0</td><td class="entry"><a class="el" href="classHash.html">Hash</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
-  <tr><td class="entry"><a class="el" href="classHash.html#a4e4b4797dda8678aaed058bae155813e">~Hash</a>()</td><td class="entry"><a class="el" href="classHash.html">Hash</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classHash.html#adf50359c1f525af884721cc9034e7945">resetHMAC</a>(const void *key, size_t keyLen)=0</td><td class="entry"><a class="el" href="classHash.html">Hash</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classHash.html#aec9761ee427d122e7450de8df200265c">update</a>(const void *data, size_t len)=0</td><td class="entry"><a class="el" href="classHash.html">Hash</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classHash.html#a4e4b4797dda8678aaed058bae155813e">~Hash</a>()</td><td class="entry"><a class="el" href="classHash.html">Hash</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
 </table></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Mar 22 2015 15:54:26 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Mar 25 2015 19:36:08 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

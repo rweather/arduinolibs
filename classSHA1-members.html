@@ -94,20 +94,23 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <tr bgcolor="#f0f0f0"><td class="entry"><b>chunkSize</b> (defined in <a class="el" href="classSHA1.html">SHA1</a>)</td><td class="entry"><a class="el" href="classSHA1.html">SHA1</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classSHA1.html#a41a159d6565b04d3f620dcd720faaf3f">clear</a>()</td><td class="entry"><a class="el" href="classSHA1.html">SHA1</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
   <tr><td class="entry"><a class="el" href="classSHA1.html#a5a6a8a6169aa48e0bccadb22a149ab7c">finalize</a>(void *hash, size_t len)</td><td class="entry"><a class="el" href="classSHA1.html">SHA1</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classSHA1.html#a791db53fe9d6cc0e383b25f1da0a97b8">finalizeHMAC</a>(const void *key, size_t keyLen, void *hash, size_t hashLen)</td><td class="entry"><a class="el" href="classSHA1.html">SHA1</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classHash.html#ab6f40c9af91dc3d738d9fcce59af63cc">formatHMACKey</a>(void *block, const void *key, size_t len, uint8_t pad)</td><td class="entry"><a class="el" href="classHash.html">Hash</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
   <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>h</b> (defined in <a class="el" href="classSHA1.html">SHA1</a>)</td><td class="entry"><a class="el" href="classSHA1.html">SHA1</a></td><td class="entry"></td></tr>
   <tr><td class="entry"><a class="el" href="classHash.html#af482880ad75b67a09d2dcb5e86244d80">Hash</a>()</td><td class="entry"><a class="el" href="classHash.html">Hash</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classSHA1.html#ab8cdb7233a8b81be07877049960ddfdd">hashSize</a>() const </td><td class="entry"><a class="el" href="classSHA1.html">SHA1</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
   <tr bgcolor="#f0f0f0"><td class="entry"><b>length</b> (defined in <a class="el" href="classSHA1.html">SHA1</a>)</td><td class="entry"><a class="el" href="classSHA1.html">SHA1</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classSHA1.html#ab71aaf39ed956320054861a2fbfa454f">reset</a>()</td><td class="entry"><a class="el" href="classSHA1.html">SHA1</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
-  <tr><td class="entry"><a class="el" href="classSHA1.html#ad49a5108ffd6996b1133bf41224ff726">SHA1</a>()</td><td class="entry"><a class="el" href="classSHA1.html">SHA1</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="classSHA1.html#aec77fbc5015f82bbf7055e535085656a">update</a>(const void *data, size_t len)</td><td class="entry"><a class="el" href="classSHA1.html">SHA1</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
-  <tr bgcolor="#f0f0f0"><td class="entry"><b>w</b> (defined in <a class="el" href="classSHA1.html">SHA1</a>)</td><td class="entry"><a class="el" href="classSHA1.html">SHA1</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="classHash.html#a4e4b4797dda8678aaed058bae155813e">~Hash</a>()</td><td class="entry"><a class="el" href="classHash.html">Hash</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
-  <tr><td class="entry"><a class="el" href="classSHA1.html#a8485d7c14fa29286cd3c7acfe438606d">~SHA1</a>()</td><td class="entry"><a class="el" href="classSHA1.html">SHA1</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classSHA1.html#ad0a09a5100d59ff90c04ed5d4071b606">resetHMAC</a>(const void *key, size_t keyLen)</td><td class="entry"><a class="el" href="classSHA1.html">SHA1</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classSHA1.html#ad49a5108ffd6996b1133bf41224ff726">SHA1</a>()</td><td class="entry"><a class="el" href="classSHA1.html">SHA1</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="classSHA1.html#aec77fbc5015f82bbf7055e535085656a">update</a>(const void *data, size_t len)</td><td class="entry"><a class="el" href="classSHA1.html">SHA1</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
+  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>w</b> (defined in <a class="el" href="classSHA1.html">SHA1</a>)</td><td class="entry"><a class="el" href="classSHA1.html">SHA1</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="classHash.html#a4e4b4797dda8678aaed058bae155813e">~Hash</a>()</td><td class="entry"><a class="el" href="classHash.html">Hash</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classSHA1.html#a8485d7c14fa29286cd3c7acfe438606d">~SHA1</a>()</td><td class="entry"><a class="el" href="classSHA1.html">SHA1</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
 </table></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Mar 22 2015 15:54:26 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Mar 25 2015 19:36:08 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

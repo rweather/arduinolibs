@@ -246,82 +246,106 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;    clean(state);</div>
 <div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;}</div>
 <div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;</div>
-<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;<span class="keywordtype">void</span> KeccakCore::keccakp()</div>
-<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;{</div>
-<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;    <span class="keyword">static</span> <span class="keyword">const</span> uint8_t addMod5Table[9] PROGMEM = {</div>
-<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;        0, 1, 2, 3, 4, 0, 1, 2, 3</div>
-<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;    };</div>
-<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;<span class="preprocessor">    #define addMod5(x, y) (pgm_read_byte(&amp;(addMod5Table[(x) + (y)])))</span></div>
-<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;<span class="preprocessor"></span>    uint64_t D;</div>
-<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;    uint8_t index, index2;</div>
-<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;    <span class="keywordflow">for</span> (uint8_t round = 0; round &lt; 24; ++round) {</div>
-<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;        <span class="comment">// Step mapping theta.  The specification mentions two temporary</span></div>
-<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;        <span class="comment">// arrays of size 5 called C and D.  To save a bit of memory,</span></div>
-<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;        <span class="comment">// we use the first row of B to store C and compute D on the fly.</span></div>
-<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;        <span class="keywordflow">for</span> (index = 0; index &lt; 5; ++index) {</div>
-<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;            state.B[0][index] = state.A[0][index] ^ state.A[1][index] ^</div>
-<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;                                state.A[2][index] ^ state.A[3][index] ^</div>
-<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;                                state.A[4][index];</div>
-<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;        }</div>
-<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;        <span class="keywordflow">for</span> (index = 0; index &lt; 5; ++index) {</div>
-<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;            D = state.B[0][addMod5(index, 4)] ^</div>
-<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;                leftRotate1_64(state.B[0][addMod5(index, 1)]);</div>
-<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;            <span class="keywordflow">for</span> (index2 = 0; index2 &lt; 5; ++index2)</div>
-<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;                state.A[index2][index] ^= D;</div>
-<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;        }</div>
-<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;</div>
-<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;        <span class="comment">// Step mapping rho and pi combined into a single step.</span></div>
-<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;        <span class="comment">// Rotate all lanes by a specific offset and rearrange.</span></div>
-<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;        state.B[0][0] = state.A[0][0];</div>
-<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;        state.B[1][0] = leftRotate28_64(state.A[0][3]);</div>
-<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;        state.B[2][0] = leftRotate1_64 (state.A[0][1]);</div>
-<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;        state.B[3][0] = leftRotate27_64(state.A[0][4]);</div>
-<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;        state.B[4][0] = leftRotate62_64(state.A[0][2]);</div>
-<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;        state.B[0][1] = leftRotate44_64(state.A[1][1]);</div>
-<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;        state.B[1][1] = leftRotate20_64(state.A[1][4]);</div>
-<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;        state.B[2][1] = leftRotate6_64 (state.A[1][2]);</div>
-<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;        state.B[3][1] = leftRotate36_64(state.A[1][0]);</div>
-<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;        state.B[4][1] = leftRotate55_64(state.A[1][3]);</div>
-<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;        state.B[0][2] = leftRotate43_64(state.A[2][2]);</div>
-<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;        state.B[1][2] = leftRotate3_64 (state.A[2][0]);</div>
-<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;        state.B[2][2] = leftRotate25_64(state.A[2][3]);</div>
-<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;        state.B[3][2] = leftRotate10_64(state.A[2][1]);</div>
-<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;        state.B[4][2] = leftRotate39_64(state.A[2][4]);</div>
-<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;        state.B[0][3] = leftRotate21_64(state.A[3][3]);</div>
-<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;        state.B[1][3] = leftRotate45_64(state.A[3][1]);</div>
-<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;        state.B[2][3] = leftRotate8_64 (state.A[3][4]);</div>
-<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;        state.B[3][3] = leftRotate15_64(state.A[3][2]);</div>
-<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;        state.B[4][3] = leftRotate41_64(state.A[3][0]);</div>
-<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;        state.B[0][4] = leftRotate14_64(state.A[4][4]);</div>
-<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;        state.B[1][4] = leftRotate61_64(state.A[4][2]);</div>
-<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;        state.B[2][4] = leftRotate18_64(state.A[4][0]);</div>
-<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;        state.B[3][4] = leftRotate56_64(state.A[4][3]);</div>
-<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;        state.B[4][4] = leftRotate2_64 (state.A[4][1]);</div>
-<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;</div>
-<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;        <span class="comment">// Step mapping chi.  Combine each lane with two other lanes in its row.</span></div>
-<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;        <span class="keywordflow">for</span> (index = 0; index &lt; 5; ++index) {</div>
-<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;            <span class="keywordflow">for</span> (index2 = 0; index2 &lt; 5; ++index2) {</div>
-<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;                state.A[index2][index] =</div>
-<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;                    state.B[index2][index] ^</div>
-<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;                    ((~state.B[index2][addMod5(index, 1)]) &amp;</div>
-<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;                     state.B[index2][addMod5(index, 2)]);</div>
-<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;            }</div>
-<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;        }</div>
-<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;</div>
-<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;        <span class="comment">// Step mapping iota.  XOR A[0][0] with the round constant.</span></div>
-<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;        <span class="keyword">static</span> uint64_t <span class="keyword">const</span> RC[24] PROGMEM = {</div>
-<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;            0x0000000000000001ULL, 0x0000000000008082ULL, 0x800000000000808AULL,</div>
-<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;            0x8000000080008000ULL, 0x000000000000808BULL, 0x0000000080000001ULL,</div>
-<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;            0x8000000080008081ULL, 0x8000000000008009ULL, 0x000000000000008AULL,</div>
-<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;            0x0000000000000088ULL, 0x0000000080008009ULL, 0x000000008000000AULL,</div>
-<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;            0x000000008000808BULL, 0x800000000000008BULL, 0x8000000000008089ULL,</div>
-<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;            0x8000000000008003ULL, 0x8000000000008002ULL, 0x8000000000000080ULL,</div>
-<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;            0x000000000000800AULL, 0x800000008000000AULL, 0x8000000080008081ULL,</div>
-<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;            0x8000000000008080ULL, 0x0000000080000001ULL, 0x8000000080008008ULL</div>
-<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;        };</div>
-<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;        state.A[0][0] ^= pgm_read_qword(RC + round);</div>
-<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;    }</div>
-<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;}</div>
+<div class="line"><a name="l00263"></a><span class="lineno"><a class="line" href="classKeccakCore.html#aeff6b3357916bf426b60d3629db52628">  263</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classKeccakCore.html#aeff6b3357916bf426b60d3629db52628">KeccakCore::setHMACKey</a>(<span class="keyword">const</span> <span class="keywordtype">void</span> *key, <span class="keywordtype">size_t</span> len, uint8_t pad, <span class="keywordtype">size_t</span> hashSize)</div>
+<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;{</div>
+<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;    uint8_t *b = (uint8_t *)state.B;</div>
+<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;    <span class="keywordtype">size_t</span> size = <a class="code" href="classKeccakCore.html#a3742ed39151811b5d1c263c75ee5b20a">blockSize</a>();</div>
+<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;    <a class="code" href="classKeccakCore.html#a5a322eb7e3b5c1eaad127c9c6e6a529b">reset</a>();</div>
+<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;    <span class="keywordflow">if</span> (len &lt;= size) {</div>
+<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;        memcpy(b, key, len);</div>
+<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;        <a class="code" href="classKeccakCore.html#aaaa0355ccec0f469ac8eb577bdf853ed">update</a>(key, len);</div>
+<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;        this-&gt;<a class="code" href="classKeccakCore.html#a97852ee4381ced17ee6d21704cf0b4d7">pad</a>(0x06);</div>
+<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;        <a class="code" href="classKeccakCore.html#aad83ece853c0cc15fcab947fdcba924f">extract</a>(b, hashSize);</div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;        len = hashSize;</div>
+<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;        <a class="code" href="classKeccakCore.html#a5a322eb7e3b5c1eaad127c9c6e6a529b">reset</a>();</div>
+<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;    }</div>
+<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;    memset(b + len, pad, size - len);</div>
+<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;    <span class="keywordflow">while</span> (len &gt; 0) {</div>
+<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;        *b++ ^= <a class="code" href="classKeccakCore.html#a97852ee4381ced17ee6d21704cf0b4d7">pad</a>;</div>
+<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;        --len;</div>
+<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;    }</div>
+<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;    <a class="code" href="classKeccakCore.html#aaaa0355ccec0f469ac8eb577bdf853ed">update</a>(state.B, size);</div>
+<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;}</div>
+<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;</div>
+<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;<span class="keywordtype">void</span> KeccakCore::keccakp()</div>
+<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;{</div>
+<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;    <span class="keyword">static</span> <span class="keyword">const</span> uint8_t addMod5Table[9] PROGMEM = {</div>
+<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;        0, 1, 2, 3, 4, 0, 1, 2, 3</div>
+<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;    };</div>
+<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;<span class="preprocessor">    #define addMod5(x, y) (pgm_read_byte(&amp;(addMod5Table[(x) + (y)])))</span></div>
+<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;<span class="preprocessor"></span>    uint64_t D;</div>
+<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;    uint8_t index, index2;</div>
+<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;    <span class="keywordflow">for</span> (uint8_t round = 0; round &lt; 24; ++round) {</div>
+<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;        <span class="comment">// Step mapping theta.  The specification mentions two temporary</span></div>
+<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;        <span class="comment">// arrays of size 5 called C and D.  To save a bit of memory,</span></div>
+<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;        <span class="comment">// we use the first row of B to store C and compute D on the fly.</span></div>
+<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;        <span class="keywordflow">for</span> (index = 0; index &lt; 5; ++index) {</div>
+<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;            state.B[0][index] = state.A[0][index] ^ state.A[1][index] ^</div>
+<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;                                state.A[2][index] ^ state.A[3][index] ^</div>
+<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;                                state.A[4][index];</div>
+<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;        }</div>
+<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;        <span class="keywordflow">for</span> (index = 0; index &lt; 5; ++index) {</div>
+<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;            D = state.B[0][addMod5(index, 4)] ^</div>
+<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;                leftRotate1_64(state.B[0][addMod5(index, 1)]);</div>
+<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;            <span class="keywordflow">for</span> (index2 = 0; index2 &lt; 5; ++index2)</div>
+<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;                state.A[index2][index] ^= D;</div>
+<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;        }</div>
+<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;</div>
+<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;        <span class="comment">// Step mapping rho and pi combined into a single step.</span></div>
+<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;        <span class="comment">// Rotate all lanes by a specific offset and rearrange.</span></div>
+<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;        state.B[0][0] = state.A[0][0];</div>
+<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;        state.B[1][0] = leftRotate28_64(state.A[0][3]);</div>
+<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;        state.B[2][0] = leftRotate1_64 (state.A[0][1]);</div>
+<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;        state.B[3][0] = leftRotate27_64(state.A[0][4]);</div>
+<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;        state.B[4][0] = leftRotate62_64(state.A[0][2]);</div>
+<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;        state.B[0][1] = leftRotate44_64(state.A[1][1]);</div>
+<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;        state.B[1][1] = leftRotate20_64(state.A[1][4]);</div>
+<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;        state.B[2][1] = leftRotate6_64 (state.A[1][2]);</div>
+<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;        state.B[3][1] = leftRotate36_64(state.A[1][0]);</div>
+<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;        state.B[4][1] = leftRotate55_64(state.A[1][3]);</div>
+<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;        state.B[0][2] = leftRotate43_64(state.A[2][2]);</div>
+<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;        state.B[1][2] = leftRotate3_64 (state.A[2][0]);</div>
+<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;        state.B[2][2] = leftRotate25_64(state.A[2][3]);</div>
+<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;        state.B[3][2] = leftRotate10_64(state.A[2][1]);</div>
+<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;        state.B[4][2] = leftRotate39_64(state.A[2][4]);</div>
+<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;        state.B[0][3] = leftRotate21_64(state.A[3][3]);</div>
+<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;        state.B[1][3] = leftRotate45_64(state.A[3][1]);</div>
+<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;        state.B[2][3] = leftRotate8_64 (state.A[3][4]);</div>
+<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;        state.B[3][3] = leftRotate15_64(state.A[3][2]);</div>
+<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;        state.B[4][3] = leftRotate41_64(state.A[3][0]);</div>
+<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;        state.B[0][4] = leftRotate14_64(state.A[4][4]);</div>
+<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;        state.B[1][4] = leftRotate61_64(state.A[4][2]);</div>
+<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;        state.B[2][4] = leftRotate18_64(state.A[4][0]);</div>
+<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;        state.B[3][4] = leftRotate56_64(state.A[4][3]);</div>
+<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;        state.B[4][4] = leftRotate2_64 (state.A[4][1]);</div>
+<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;</div>
+<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;        <span class="comment">// Step mapping chi.  Combine each lane with two other lanes in its row.</span></div>
+<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;        <span class="keywordflow">for</span> (index = 0; index &lt; 5; ++index) {</div>
+<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;            <span class="keywordflow">for</span> (index2 = 0; index2 &lt; 5; ++index2) {</div>
+<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;                state.A[index2][index] =</div>
+<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;                    state.B[index2][index] ^</div>
+<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;                    ((~state.B[index2][addMod5(index, 1)]) &amp;</div>
+<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;                     state.B[index2][addMod5(index, 2)]);</div>
+<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;            }</div>
+<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;        }</div>
+<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;</div>
+<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;        <span class="comment">// Step mapping iota.  XOR A[0][0] with the round constant.</span></div>
+<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;        <span class="keyword">static</span> uint64_t <span class="keyword">const</span> RC[24] PROGMEM = {</div>
+<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;            0x0000000000000001ULL, 0x0000000000008082ULL, 0x800000000000808AULL,</div>
+<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;            0x8000000080008000ULL, 0x000000000000808BULL, 0x0000000080000001ULL,</div>
+<div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;            0x8000000080008081ULL, 0x8000000000008009ULL, 0x000000000000008AULL,</div>
+<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;            0x0000000000000088ULL, 0x0000000080008009ULL, 0x000000008000000AULL,</div>
+<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;            0x000000008000808BULL, 0x800000000000008BULL, 0x8000000000008089ULL,</div>
+<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;            0x8000000000008003ULL, 0x8000000000008002ULL, 0x8000000000000080ULL,</div>
+<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;            0x000000000000800AULL, 0x800000008000000AULL, 0x8000000080008081ULL,</div>
+<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;            0x8000000000008080ULL, 0x0000000080000001ULL, 0x8000000080008008ULL</div>
+<div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;        };</div>
+<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;        state.A[0][0] ^= pgm_read_qword(RC + round);</div>
+<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;    }</div>
+<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;}</div>
+<div class="ttc" id="classKeccakCore_html_a3742ed39151811b5d1c263c75ee5b20a"><div class="ttname"><a href="classKeccakCore.html#a3742ed39151811b5d1c263c75ee5b20a">KeccakCore::blockSize</a></div><div class="ttdeci">size_t blockSize() const </div><div class="ttdoc">Returns the input block size for the sponge function in bytes. </div><div class="ttdef"><b>Definition:</b> <a href="KeccakCore_8h_source.html#l00038">KeccakCore.h:38</a></div></div>
+<div class="ttc" id="classKeccakCore_html_aeff6b3357916bf426b60d3629db52628"><div class="ttname"><a href="classKeccakCore.html#aeff6b3357916bf426b60d3629db52628">KeccakCore::setHMACKey</a></div><div class="ttdeci">void setHMACKey(const void *key, size_t len, uint8_t pad, size_t hashSize)</div><div class="ttdoc">Sets a HMAC key for a Keccak-based hash algorithm. </div><div class="ttdef"><b>Definition:</b> <a href="KeccakCore_8cpp_source.html#l00263">KeccakCore.cpp:263</a></div></div>
 <div class="ttc" id="classKeccakCore_html_ab3c1905f2002e49aca085d6f0b5546f7"><div class="ttname"><a href="classKeccakCore.html#ab3c1905f2002e49aca085d6f0b5546f7">KeccakCore::setCapacity</a></div><div class="ttdeci">void setCapacity(size_t capacity)</div><div class="ttdoc">Sets the capacity of the Keccak sponge function in bits. </div><div class="ttdef"><b>Definition:</b> <a href="KeccakCore_8cpp_source.html#l00089">KeccakCore.cpp:89</a></div></div>
 <div class="ttc" id="classKeccakCore_html_a4579e3a9b24f1d615fa8d660c23e77a4"><div class="ttname"><a href="classKeccakCore.html#a4579e3a9b24f1d615fa8d660c23e77a4">KeccakCore::~KeccakCore</a></div><div class="ttdeci">~KeccakCore()</div><div class="ttdoc">Destroys this Keccak sponge function after clearing all sensitive information. </div><div class="ttdef"><b>Definition:</b> <a href="KeccakCore_8cpp_source.html#l00061">KeccakCore.cpp:61</a></div></div>
 <div class="ttc" id="classKeccakCore_html_aad83ece853c0cc15fcab947fdcba924f"><div class="ttname"><a href="classKeccakCore.html#aad83ece853c0cc15fcab947fdcba924f">KeccakCore::extract</a></div><div class="ttdeci">void extract(void *data, size_t size)</div><div class="ttdoc">Extracts data from the Keccak sponge function. </div><div class="ttdef"><b>Definition:</b> <a href="KeccakCore_8cpp_source.html#l00201">KeccakCore.cpp:201</a></div></div>
@@ -334,7 +358,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Mar 22 2015 15:54:26 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Mar 25 2015 19:36:07 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

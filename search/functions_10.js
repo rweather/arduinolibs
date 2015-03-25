@@ -15,6 +15,7 @@ var searchData=
   ['setdoublebuffer',['setDoubleBuffer',['../classDMD.html#a6fbdcf8832f91d02500cb7a9b84d2723',1,'DMD']]],
   ['setfalselabel',['setFalseLabel',['../classBoolField.html#ae6a29d27139fd78f2ca96152059fb30a',1,'BoolField']]],
   ['setfont',['setFont',['../classBitmap.html#a64d7a9651d5c385a044cc910a3b82837',1,'Bitmap']]],
+  ['sethmackey',['setHMACKey',['../classKeccakCore.html#aeff6b3357916bf426b60d3629db52628',1,'KeccakCore']]],
   ['setholdtime',['setHoldTime',['../classCharlieplex.html#a8502f4c752faba37023ced587695f6a4',1,'Charlieplex']]],
   ['setitems',['setItems',['../classListField.html#ae6709bce9355451b651893691456704e',1,'ListField']]],
   ['setiv',['setIV',['../classCBCCommon.html#ac7a586217835055b3a354bb932db160c',1,'CBCCommon::setIV()'],['../classCFBCommon.html#a597040eb7df40adbbef94b4c3975cd80',1,'CFBCommon::setIV()'],['../classChaCha.html#a734f3246b1e6810c63637b8cda26b259',1,'ChaCha::setIV()'],['../classCipher.html#a3777acd8ff776a4e945bb7c9f2d044d9',1,'Cipher::setIV()'],['../classCTRCommon.html#aad289af3eb013cb3ffda6d7e8e8b3d04',1,'CTRCommon::setIV()'],['../classOFBCommon.html#a4a35364cf30d78f1968cc00803686caf',1,'OFBCommon::setIV()']]],

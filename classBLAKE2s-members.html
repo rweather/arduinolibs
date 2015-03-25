@@ -95,6 +95,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>chunkSize</b> (defined in <a class="el" href="classBLAKE2s.html">BLAKE2s</a>)</td><td class="entry"><a class="el" href="classBLAKE2s.html">BLAKE2s</a></td><td class="entry"></td></tr>
   <tr><td class="entry"><a class="el" href="classBLAKE2s.html#a0848885f52df51dc53949d32a206e72d">clear</a>()</td><td class="entry"><a class="el" href="classBLAKE2s.html">BLAKE2s</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classBLAKE2s.html#a751a3d772cbe1cd1dad83dbd09853b1b">finalize</a>(void *hash, size_t len)</td><td class="entry"><a class="el" href="classBLAKE2s.html">BLAKE2s</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classBLAKE2s.html#a3f910f3bd48cc4a9c5330c31bcda31fc">finalizeHMAC</a>(const void *key, size_t keyLen, void *hash, size_t hashLen)</td><td class="entry"><a class="el" href="classBLAKE2s.html">BLAKE2s</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classHash.html#ab6f40c9af91dc3d738d9fcce59af63cc">formatHMACKey</a>(void *block, const void *key, size_t len, uint8_t pad)</td><td class="entry"><a class="el" href="classHash.html">Hash</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
   <tr bgcolor="#f0f0f0"><td class="entry"><b>h</b> (defined in <a class="el" href="classBLAKE2s.html">BLAKE2s</a>)</td><td class="entry"><a class="el" href="classBLAKE2s.html">BLAKE2s</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classHash.html#af482880ad75b67a09d2dcb5e86244d80">Hash</a>()</td><td class="entry"><a class="el" href="classHash.html">Hash</a></td><td class="entry"></td></tr>
   <tr><td class="entry"><a class="el" href="classBLAKE2s.html#af9f50aac096f92ba27b1b2dd48df4c52">hashSize</a>() const </td><td class="entry"><a class="el" href="classBLAKE2s.html">BLAKE2s</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
@@ -102,14 +104,15 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <tr bgcolor="#f0f0f0"><td class="entry"><b>m</b> (defined in <a class="el" href="classBLAKE2s.html">BLAKE2s</a>)</td><td class="entry"><a class="el" href="classBLAKE2s.html">BLAKE2s</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classBLAKE2s.html#a778776d15316c182fdb2df5a89b3ca02">reset</a>()</td><td class="entry"><a class="el" href="classBLAKE2s.html">BLAKE2s</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
   <tr><td class="entry"><a class="el" href="classBLAKE2s.html#a91ba6bc39e42002ac61114ced1d0af6d">reset</a>(uint8_t outputLength)</td><td class="entry"><a class="el" href="classBLAKE2s.html">BLAKE2s</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="classBLAKE2s.html#aa192da2fa044b03cccaf11e87fdf9911">update</a>(const void *data, size_t len)</td><td class="entry"><a class="el" href="classBLAKE2s.html">BLAKE2s</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
-  <tr bgcolor="#f0f0f0"><td class="entry"><b>v</b> (defined in <a class="el" href="classBLAKE2s.html">BLAKE2s</a>)</td><td class="entry"><a class="el" href="classBLAKE2s.html">BLAKE2s</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="classBLAKE2s.html#a4b3187ecaa3d3c8febfbb40c0f779aa7">~BLAKE2s</a>()</td><td class="entry"><a class="el" href="classBLAKE2s.html">BLAKE2s</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
-  <tr><td class="entry"><a class="el" href="classHash.html#a4e4b4797dda8678aaed058bae155813e">~Hash</a>()</td><td class="entry"><a class="el" href="classHash.html">Hash</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classBLAKE2s.html#a7f9745854704b34a508497105ca5e2fd">resetHMAC</a>(const void *key, size_t keyLen)</td><td class="entry"><a class="el" href="classBLAKE2s.html">BLAKE2s</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classBLAKE2s.html#aa192da2fa044b03cccaf11e87fdf9911">update</a>(const void *data, size_t len)</td><td class="entry"><a class="el" href="classBLAKE2s.html">BLAKE2s</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
+  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>v</b> (defined in <a class="el" href="classBLAKE2s.html">BLAKE2s</a>)</td><td class="entry"><a class="el" href="classBLAKE2s.html">BLAKE2s</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="classBLAKE2s.html#a4b3187ecaa3d3c8febfbb40c0f779aa7">~BLAKE2s</a>()</td><td class="entry"><a class="el" href="classBLAKE2s.html">BLAKE2s</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classHash.html#a4e4b4797dda8678aaed058bae155813e">~Hash</a>()</td><td class="entry"><a class="el" href="classHash.html">Hash</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
 </table></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Mar 22 2015 15:54:26 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Mar 25 2015 19:36:07 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

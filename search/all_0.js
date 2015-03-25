@@ -1,6 +1,7 @@
 var searchData=
 [
   ['addfield',['addField',['../classForm.html#a5cb056ace428e75e321610555bfecac7',1,'Form']]],
+  ['addnoisesource',['addNoiseSource',['../classRNGClass.html#aacf23b192b0e4cc8726d9abe05f5a9db',1,'RNGClass']]],
   ['adjustdays',['adjustDays',['../classRTC.html#adc29d7c43efc5a192d21965da5c3ee1d',1,'RTC']]],
   ['adjustmonths',['adjustMonths',['../classRTC.html#aeca597e6e37a05716e664242f9cfc5f4',1,'RTC']]],
   ['adjustyears',['adjustYears',['../classRTC.html#a31d10cb2f7cac8839bd4be2d858b802d',1,'RTC']]],

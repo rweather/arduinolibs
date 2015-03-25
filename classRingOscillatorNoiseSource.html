@@ -159,14 +159,14 @@ Additional Inherited Members</h2></td></tr>
 <div class="line">    <span class="comment">// &quot;MyApp 1.0&quot; and load the previous seed from EEPROM address 500.</span></div>
 <div class="line">    RNG.<a class="code" href="classRNGClass.html#a7f1aab3c324f8e8a424d683425e0fcf8">begin</a>(<span class="stringliteral">&quot;MyApp 1.0&quot;</span>, 500);</div>
 <div class="line"></div>
+<div class="line">    <span class="comment">// Add the noise source to the list of sources known to RNG.</span></div>
+<div class="line">    RNG.<a class="code" href="classRNGClass.html#aacf23b192b0e4cc8726d9abe05f5a9db">addNoiseSource</a>(noise);</div>
+<div class="line"></div>
 <div class="line">    <span class="comment">// ...</span></div>
 <div class="line">}</div>
 <div class="line"></div>
 <div class="line"><span class="keywordtype">void</span> loop() {</div>
 <div class="line">    <span class="comment">// ...</span></div>
-<div class="line"></div>
-<div class="line">    <span class="comment">// If the noise source has accumulated new entropy, then stir it in.</span></div>
-<div class="line">    RNG.<a class="code" href="classRNGClass.html#ad99535ea23ae2fec55bdebb8c24def02">stir</a>(noise);</div>
 <div class="line"></div>
 <div class="line">    <span class="comment">// Perform regular housekeeping on the random number generator.</span></div>
 <div class="line">    RNG.<a class="code" href="classRNGClass.html#a8cb91e39f0c4591de5bf98b1e2880b13">loop</a>();</div>
@@ -250,7 +250,7 @@ Additional Inherited Members</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Mar 22 2015 15:54:26 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Mar 25 2015 19:36:08 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

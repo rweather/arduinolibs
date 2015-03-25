@@ -136,20 +136,23 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classKeccakCore.html#aeff1df56e4a3103c99c1fe4307e60c66">clear</a>();</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <span class="keyword">struct </span>{</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        uint64_t A[5][5];</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        uint64_t B[5][5];</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        uint8_t inputSize;</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        uint8_t outputSize;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    } state;</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    uint8_t _blockSize;</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <span class="keywordtype">void</span> keccakp();</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;};</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classKeccakCore.html#aeff6b3357916bf426b60d3629db52628">setHMACKey</a>(<span class="keyword">const</span> <span class="keywordtype">void</span> *key, <span class="keywordtype">size_t</span> len, uint8_t <a class="code" href="classKeccakCore.html#a97852ee4381ced17ee6d21704cf0b4d7">pad</a>, <span class="keywordtype">size_t</span> hashSize);</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <span class="keyword">struct </span>{</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        uint64_t A[5][5];</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        uint64_t B[5][5];</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        uint8_t inputSize;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        uint8_t outputSize;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    } state;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    uint8_t _blockSize;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <span class="keywordtype">void</span> keccakp();</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;};</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="ttc" id="classKeccakCore_html_a3742ed39151811b5d1c263c75ee5b20a"><div class="ttname"><a href="classKeccakCore.html#a3742ed39151811b5d1c263c75ee5b20a">KeccakCore::blockSize</a></div><div class="ttdeci">size_t blockSize() const </div><div class="ttdoc">Returns the input block size for the sponge function in bytes. </div><div class="ttdef"><b>Definition:</b> <a href="KeccakCore_8h_source.html#l00038">KeccakCore.h:38</a></div></div>
+<div class="ttc" id="classKeccakCore_html_aeff6b3357916bf426b60d3629db52628"><div class="ttname"><a href="classKeccakCore.html#aeff6b3357916bf426b60d3629db52628">KeccakCore::setHMACKey</a></div><div class="ttdeci">void setHMACKey(const void *key, size_t len, uint8_t pad, size_t hashSize)</div><div class="ttdoc">Sets a HMAC key for a Keccak-based hash algorithm. </div><div class="ttdef"><b>Definition:</b> <a href="KeccakCore_8cpp_source.html#l00263">KeccakCore.cpp:263</a></div></div>
 <div class="ttc" id="classKeccakCore_html_ab3c1905f2002e49aca085d6f0b5546f7"><div class="ttname"><a href="classKeccakCore.html#ab3c1905f2002e49aca085d6f0b5546f7">KeccakCore::setCapacity</a></div><div class="ttdeci">void setCapacity(size_t capacity)</div><div class="ttdoc">Sets the capacity of the Keccak sponge function in bits. </div><div class="ttdef"><b>Definition:</b> <a href="KeccakCore_8cpp_source.html#l00089">KeccakCore.cpp:89</a></div></div>
 <div class="ttc" id="classKeccakCore_html_a4579e3a9b24f1d615fa8d660c23e77a4"><div class="ttname"><a href="classKeccakCore.html#a4579e3a9b24f1d615fa8d660c23e77a4">KeccakCore::~KeccakCore</a></div><div class="ttdeci">~KeccakCore()</div><div class="ttdoc">Destroys this Keccak sponge function after clearing all sensitive information. </div><div class="ttdef"><b>Definition:</b> <a href="KeccakCore_8cpp_source.html#l00061">KeccakCore.cpp:61</a></div></div>
 <div class="ttc" id="classKeccakCore_html_aad83ece853c0cc15fcab947fdcba924f"><div class="ttname"><a href="classKeccakCore.html#aad83ece853c0cc15fcab947fdcba924f">KeccakCore::extract</a></div><div class="ttdeci">void extract(void *data, size_t size)</div><div class="ttdoc">Extracts data from the Keccak sponge function. </div><div class="ttdef"><b>Definition:</b> <a href="KeccakCore_8cpp_source.html#l00201">KeccakCore.cpp:201</a></div></div>
@@ -163,7 +166,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Mar 22 2015 15:54:26 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Mar 25 2015 19:36:07 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>
