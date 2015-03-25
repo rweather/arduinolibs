@@ -29,6 +29,9 @@ void setup() {
     // Initialize the random number generator.
     RNG.begin(RNG_APP_TAG, RNG_EEPROM_ADDRESS);
 
+    // Add the noise source to the list of sources known to RNG.
+    RNG.addNoiseSource(noise);
+
     startTime = millis();
 }
 
@@ -57,9 +60,6 @@ void loop() {
         if (calibrating)
             Serial.println("calibrating");
     }
-
-    // If the noise source has accumulated new entropy, then stir it in.
-    RNG.stir(noise);
 
     // Perform regular housekeeping on the random number generator.
     RNG.loop();

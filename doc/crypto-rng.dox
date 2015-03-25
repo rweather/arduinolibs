@@ -103,13 +103,18 @@ TransistorNoiseSource noise(A1);
 \endcode
 
 Then in the setup() function we call \link RNGClass::begin() RNG.begin()\endlink
-to start the random number generator running:
+to start the random number generator running and call
+\link RNGClass::addNoiseSource() RNG.addNoiseSource()\endlink to register
+all of the application's noise sources:
 
 \code
 void setup() {
     // Initialize the random number generator with the application tag
     // "MyApp 1.0" and load the previous seed from EEPROM address 500.
     RNG.begin("MyApp 1.0", 500);
+
+    // Add the noise source to the list of sources known to RNG.
+    RNG.addNoiseSource(noise);
 
     // ...
 }
@@ -128,6 +133,7 @@ void setup() {
     RNG.begin("MyApp 1.0", 500);
     RNG.stir(serial_number, sizeof(serial_number));
     RNG.stir(mac_address, sizeof(mac_address));
+    RNG.addNoiseSource(noise);
     ...
 }
 \endcode
@@ -147,17 +153,13 @@ fills up, a save will be automatically forced.
 
 To use the random number generator properly, there are some regular tasks
 that must be performed every time around the application's main loop().
-Newly accumulated noise must be mixed in with
-\link RNGClass::stir() RNG.stir()\endlink and the
-\link RNGClass::loop() RNG.loop()\endlink function must be called to
-perform auto-saves:
+Newly accumulated noise must be mixed in and auto-saves must be performed
+on a regular basis.  The \link RNGClass::loop() RNG.loop()\endlink
+function takes care of these tasks for us:
 
 \code
 void loop() {
     // ...
-
-    // If the noise source has accumulated new entropy, then stir it in.
-    RNG.stir(noise);
 
     // Perform regular housekeeping on the random number generator.
     RNG.loop();

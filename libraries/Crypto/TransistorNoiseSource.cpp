@@ -56,14 +56,14 @@
  *     // "MyApp 1.0" and load the previous seed from EEPROM address 500.
  *     RNG.begin("MyApp 1.0", 500);
  *
+ *     // Add the noise source to the list of sources known to RNG.
+ *     RNG.addNoiseSource(noise);
+ *
  *     // ...
  * }
  *
  * void loop() {
  *     // ...
- *
- *     // If the noise source has accumulated new entropy, then stir it in.
- *     RNG.stir(noise);
  *
  *     // Perform regular housekeeping on the random number generator.
  *     RNG.loop();

@@ -35,6 +35,7 @@ public:
     ~RNGClass();
 
     void begin(const char *tag, int eepromAddress);
+    void addNoiseSource(NoiseSource &source);
 
     void setAutoSaveTime(uint16_t minutes);
 
@@ -60,6 +61,8 @@ private:
     uint16_t firstSave : 1;
     unsigned long timer;
     unsigned long timeout;
+    NoiseSource *noiseSources[4];
+    uint8_t count;
 
     void rekey();
 };

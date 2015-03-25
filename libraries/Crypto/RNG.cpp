@@ -70,19 +70,19 @@
  *     // Stir in the Ethernet MAC address.
  *     RNG.stir(mac_address, sizeof(mac_address));
  *
+ *     // Add the noise source to the list of sources known to RNG.
+ *     RNG.addNoiseSource(noise);
+ *
  *     // ...
  * }
  * \endcode
  *
- * The application should regularly call stir() to mix in new data from
- * the noise source and also regularly call loop():
+ * The application should regularly call loop() to stir in new data
+ * from the registered noise sources and to periodically save the seed:
  *
  * \code
  * void loop() {
  *     // ...
- *
- *     // If the noise source has accumulated new entropy, then stir it in.
- *     RNG.stir(noise);
  *
  *     // Perform regular housekeeping on the random number generator.
  *     RNG.loop();
@@ -170,6 +170,7 @@ RNGClass::RNGClass()
     , firstSave(1)
     , timer(0)
     , timeout(3600000UL)    // 1 hour in milliseconds
+    , count(0)
 {
 }
 
@@ -197,7 +198,7 @@ RNGClass::~RNGClass()
  * additional entropy data from noise sources to initialize the random
  * number generator properly.
  *
- * \sa stir(), save()
+ * \sa addNoiseSource(), stir(), save()
  */
 void RNGClass::begin(const char *tag, int eepromAddress)
 {
@@ -232,6 +233,25 @@ void RNGClass::begin(const char *tag, int eepromAddress)
     // that if the system is reset without a call to save() that we won't
     // accidentally generate the same sequence of random data again.
     save();
+}
+
+/**
+ * \brief Adds a noise source to the random number generator.
+ *
+ * \param source The noise source to add, which will be polled regularly
+ * by loop() to accumulate noise-based entropy from the source.
+ *
+ * RNG supports a maximum of four noise sources.  If the application needs
+ * more than that then the application must poll the noise sources itself by
+ * calling NoiseSource::stir() directly.
+ *
+ * \sa loop(), begin()
+ */
+void RNGClass::addNoiseSource(NoiseSource &source)
+{
+    #define MAX_NOISE_SOURCES (sizeof(noiseSources) / sizeof(noiseSources[0]))
+    if (count < MAX_NOISE_SOURCES)
+        noiseSources[count++] = &source;
 }
 
 /**
@@ -485,6 +505,10 @@ void RNGClass::save()
  */
 void RNGClass::loop()
 {
+    // Stir in the entropy from all registered noise sources.
+    for (uint8_t posn = 0; posn < count; ++posn)
+        noiseSources[posn]->stir();
+
     // Save the seed if the auto-save timer has expired.
     if ((millis() - timer) >= timeout)
         save();
