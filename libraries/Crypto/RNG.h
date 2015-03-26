@@ -43,7 +43,6 @@ public:
     bool available(size_t len) const;
 
     void stir(const uint8_t *data, size_t len, unsigned int credit = 0);
-    void stir(NoiseSource &source);
 
     void save();
 

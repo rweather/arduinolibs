@@ -194,9 +194,8 @@ RNGClass::~RNGClass()
  * seed from and to save new seeds when save() is called.  There must be
  * at least SEED_SIZE (49) bytes of EEPROM space available at the address.
  *
- * This function should be followed by calls to stir() to mix in
- * additional entropy data from noise sources to initialize the random
- * number generator properly.
+ * This function should be followed by calls to addNoiseSource() to
+ * register the application's noise sources.
  *
  * \sa addNoiseSource(), stir(), save()
  */
@@ -448,18 +447,6 @@ void RNGClass::stir(const uint8_t *data, size_t len, unsigned int credit)
 }
 
 /**
- * \brief Stirs in data from a noise source into the random pool.
- *
- * \param source The noise source to obtain entropy data from.
- *
- * \sa save(), NoiseSource::stir()
- */
-void RNGClass::stir(NoiseSource &source)
-{
-    source.stir();
-}
-
-/**
  * \brief Saves the random seed to EEPROM.
  *
  * During system startup, noise sources typically won't have accumulated
@@ -523,8 +510,7 @@ void RNGClass::loop()
  * if the device is captured, sold, or otherwise compromised.
  *
  * After this function is called, begin() must be called again to
- * re-initialize the random number generator, followed by stir() to
- * add in new entropy from system noise sources.
+ * re-initialize the random number generator.
  *
  * \note The rand() and save() functions take some care to manage the
  * random number pool in a way that makes prediction of past outputs from a
