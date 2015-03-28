@@ -461,6 +461,20 @@ RTC::DayOfWeek RTC::dayOfWeek(const RTCDate *date)
  */
 
 /**
+ * \var RTCAlarm::day
+ * \brief Day of the month for the alarm if not zero.
+ *
+ * \note Currently this field only works with the DS3231RTC class.
+ */
+
+/**
+ * \var RTCAlarm::dow
+ * \brief Day of the week for the alarm if not zero.
+ *
+ * \note Currently this field only works with the DS3231RTC class.
+ */
+
+/**
  * \var RTCAlarm::hour
  * \brief Hour of the day for the alarm (0-23).
  */
@@ -468,6 +482,13 @@ RTC::DayOfWeek RTC::dayOfWeek(const RTCDate *date)
 /**
  * \var RTCAlarm::minute
  * \brief Minute of the hour for the alarm (0-59).
+ */
+
+/**
+ * \var RTCAlarm::second
+ * \brief Second of the minute for the alarm (0-59).
+ *
+ * \note Currently this field only works with the DS3231RTC class.
  */
 
 /**

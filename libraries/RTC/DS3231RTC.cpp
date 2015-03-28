@@ -154,6 +154,11 @@ DS3231RTC::DS3231RTC(I2CMaster &bus, uint8_t oneHzPin)
 }
 
 /**
+ * \fn bool DS3231RTC::isRealTime() const
+ * \brief Returns true if the realtime clock is on the I2C bus; false if the time and date are simulated.
+ */
+
+/**
  * \fn bool DS3231RTC::hasUpdates()
  * \brief Returns true if there are updates
  */
@@ -391,6 +396,15 @@ void DS3231RTC::clearAlarm(uint8_t alarmNum) {
   }
 }
 
+/**
+ * \brief Sets the alarm with index \a alarmNum from \a value.
+ *
+ * The \a alarmNum parameter must be between 0 and \ref ALARM_COUNT - 1.
+ *
+ * \return Returns true if the alarm was set; false otherwise.
+ *
+ * \sa writeAlarm()
+ */
 bool DS3231RTC::setAlarm(uint8_t alarmNum, const RTCAlarm* value) {
   if ( _isRealTime ) {
     uint8_t alarm_mask_bits = value->flags;
@@ -582,6 +596,13 @@ bool DS3231RTC::writeRegister(uint8_t reg, uint8_t value) {
   return _bus->endWrite();
 }
 
+/**
+ * \brief Enables a specific alarm.
+ *
+ * \param alarmNum The alarm to enable.
+ *
+ * \sa disableAlarm()
+ */
 void DS3231RTC::enableAlarm(uint8_t alarmNum) {
   uint8_t value = readRegister(DS3231_CONTROL);
 
@@ -594,6 +615,13 @@ void DS3231RTC::enableAlarm(uint8_t alarmNum) {
   writeRegister(DS3231_CONTROL, value);
 }
 
+/**
+ * \brief Disables a specific alarm.
+ *
+ * \param alarmNum The alarm to disable.
+ *
+ * \sa enableAlarm()
+ */
 void DS3231RTC::disableAlarm(uint8_t alarmNum) {
   uint8_t value = readRegister(DS3231_CONTROL);
 
