@@ -105,7 +105,8 @@ Inheritance diagram for RTC:</div>
   <img src="classRTC.png" usemap="#RTC_map" alt=""/>
   <map id="RTC_map" name="RTC_map">
 <area href="classDS1307RTC.html" title="Communicates with a DS1307 realtime clock chip via I2C. " alt="DS1307RTC" shape="rect" coords="0,56,81,80"/>
-<area href="classDS3232RTC.html" title="Communicates with a DS3232 realtime clock chip via I2C. " alt="DS3232RTC" shape="rect" coords="91,56,172,80"/>
+<area href="classDS3231RTC.html" title="Communicates with a DS3231 realtime clock chip via I2C. " alt="DS3231RTC" shape="rect" coords="91,56,172,80"/>
+<area href="classDS3232RTC.html" title="Communicates with a DS3232 realtime clock chip via I2C. " alt="DS3232RTC" shape="rect" coords="182,56,263,80"/>
 </map>
  </div></div>
 <table class="memberdecls">
@@ -209,7 +210,7 @@ static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class
 <p>Because the common DS1307 and DS3232 realtime clock chips use a 2-digit year, this class is also limited to dates between 2000 and 2099 inclusive.</p>
 <dl class="section see"><dt>See Also</dt><dd><a class="el" href="structRTCTime.html" title="Stores time information from a realtime clock chip. ">RTCTime</a>, <a class="el" href="structRTCDate.html" title="Stores date information from a realtime clock chip. ">RTCDate</a>, <a class="el" href="structRTCAlarm.html" title="Stores alarm information from a realtime clock chip. ">RTCAlarm</a>, <a class="el" href="classDS1307RTC.html" title="Communicates with a DS1307 realtime clock chip via I2C. ">DS1307RTC</a>, <a class="el" href="classDS3232RTC.html" title="Communicates with a DS3232 realtime clock chip via I2C. ">DS3232RTC</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="RTC_8h_source.html#l00049">49</a> of file <a class="el" href="RTC_8h_source.html">RTC.h</a>.</p>
+<p>Definition at line <a class="el" href="RTC_8h_source.html#l00052">52</a> of file <a class="el" href="RTC_8h_source.html">RTC.h</a>.</p>
 </div><h2 class="groupheader">Member Enumeration Documentation</h2>
 <a class="anchor" id="ab2ca0cbee608ec32d3d6e04d40298f11"></a>
 <div class="memitem">
@@ -224,7 +225,7 @@ static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class
 <p>Day of the week corresponding to a date. </p>
 <dl class="section see"><dt>See Also</dt><dd><a class="el" href="classRTC.html#a525a9c1dad89613708f47a683eb316aa" title="Returns the day of the week corresponding to date. ">dayOfWeek()</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="RTC_8h_source.html#l00055">55</a> of file <a class="el" href="RTC_8h_source.html">RTC.h</a>.</p>
+<p>Definition at line <a class="el" href="RTC_8h_source.html#l00058">58</a> of file <a class="el" href="RTC_8h_source.html">RTC.h</a>.</p>
 
 </div>
 </div>
@@ -450,7 +451,7 @@ static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class
 <p>Returns true if the realtime clock has updated since the last call to this function. </p>
 <p>The default implementation returns true, indicating that an update is always available to be read. </p>
 
-<p>Reimplemented in <a class="el" href="classDS1307RTC.html#a6fec8ff71f33cc1a129eb0bd009600b0">DS1307RTC</a>, and <a class="el" href="classDS3232RTC.html#a619ffee1bc013c9ddf4ae415115798bc">DS3232RTC</a>.</p>
+<p>Reimplemented in <a class="el" href="classDS3231RTC.html#a180bea03bd68df8f696e529cd1582095">DS3231RTC</a>, <a class="el" href="classDS1307RTC.html#a6fec8ff71f33cc1a129eb0bd009600b0">DS1307RTC</a>, and <a class="el" href="classDS3232RTC.html#a619ffee1bc013c9ddf4ae415115798bc">DS3232RTC</a>.</p>
 
 <p>Definition at line <a class="el" href="RTC_8cpp_source.html#l00134">134</a> of file <a class="el" href="RTC_8cpp_source.html">RTC.cpp</a>.</p>
 
@@ -493,7 +494,7 @@ static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class
 <p>Alarm details are stored at the end of the realtime clock's non-volatile memory.</p>
 <dl class="section see"><dt>See Also</dt><dd><a class="el" href="classRTC.html#a0e96c91efd9e7a6340effdae3eadf17e" title="Updates the details of the alarm with index alarmNum from value. ">writeAlarm()</a>, alarmCount() </dd></dl>
 
-<p>Reimplemented in <a class="el" href="classDS1307RTC.html#aab608eb1630520ee122306b721fdc47a">DS1307RTC</a>, and <a class="el" href="classDS3232RTC.html#a09c7073c687dcbbc423baf48074c7873">DS3232RTC</a>.</p>
+<p>Reimplemented in <a class="el" href="classDS3231RTC.html#aab56929e759a49a90785729cceb72f2e">DS3231RTC</a>, <a class="el" href="classDS1307RTC.html#aab608eb1630520ee122306b721fdc47a">DS1307RTC</a>, and <a class="el" href="classDS3232RTC.html#a09c7073c687dcbbc423baf48074c7873">DS3232RTC</a>.</p>
 
 <p>Definition at line <a class="el" href="RTC_8cpp_source.html#l00209">209</a> of file <a class="el" href="RTC_8cpp_source.html">RTC.cpp</a>.</p>
 
@@ -557,7 +558,7 @@ static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class
 <p>The time should be read first with <a class="el" href="classRTC.html#aaf0a5c1f32f210a49718d148620b5bec" title="Reads the current time from the realtime clock into value. ">readTime()</a> as the default implementation only advances the date when the time is read and it crosses midnight.</p>
 <dl class="section see"><dt>See Also</dt><dd><a class="el" href="classRTC.html#ae667600d05c8e7b06a93574dd068a4d7" title="Updates the date in the realtime clock to match value. ">writeDate()</a>, <a class="el" href="classRTC.html#aaf0a5c1f32f210a49718d148620b5bec" title="Reads the current time from the realtime clock into value. ">readTime()</a> </dd></dl>
 
-<p>Reimplemented in <a class="el" href="classDS1307RTC.html#a6fb56d1690bc30e7995961a5b5e5fdc4">DS1307RTC</a>, and <a class="el" href="classDS3232RTC.html#ab03358e3b5996e38d766e2f9f6ab62ca">DS3232RTC</a>.</p>
+<p>Reimplemented in <a class="el" href="classDS3231RTC.html#a498a1a37b78993ab52780198c5b4a9df">DS3231RTC</a>, <a class="el" href="classDS1307RTC.html#a6fb56d1690bc30e7995961a5b5e5fdc4">DS1307RTC</a>, and <a class="el" href="classDS3232RTC.html#ab03358e3b5996e38d766e2f9f6ab62ca">DS3232RTC</a>.</p>
 
 <p>Definition at line <a class="el" href="RTC_8cpp_source.html#l00169">169</a> of file <a class="el" href="RTC_8cpp_source.html">RTC.cpp</a>.</p>
 
@@ -587,7 +588,7 @@ static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class
 <p>Reads the value of the temperature sensor and returns the temperature in quarters of a degree celcius. </p>
 <p>Returns the value NO_TEMPERATURE if the realtime clock chip cannot determine the temperature. </p>
 
-<p>Reimplemented in <a class="el" href="classDS3232RTC.html#a0faf40c25ab019a326a60f301c2bb41b">DS3232RTC</a>.</p>
+<p>Reimplemented in <a class="el" href="classDS3231RTC.html#ad1dcb7897fd14ae745720a19fbe71e37">DS3231RTC</a>, and <a class="el" href="classDS3232RTC.html#a0faf40c25ab019a326a60f301c2bb41b">DS3232RTC</a>.</p>
 
 <p>Definition at line <a class="el" href="RTC_8cpp_source.html#l00288">288</a> of file <a class="el" href="RTC_8cpp_source.html">RTC.cpp</a>.</p>
 
@@ -618,7 +619,7 @@ static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class
 <p>Reads the current time from the realtime clock into <em>value</em>. </p>
 <dl class="section see"><dt>See Also</dt><dd><a class="el" href="classRTC.html#a102e2ec15bf0273d8f7e9ce4b6dcc96e" title="Updates the time in the realtime clock to match value. ">writeTime()</a>, <a class="el" href="classRTC.html#aa1e21bf42ebd4456919744ae0f4f631e" title="Reads the current date from the realtime clock into value. ">readDate()</a> </dd></dl>
 
-<p>Reimplemented in <a class="el" href="classDS1307RTC.html#acd9800d6df2244b8e4e790480a1d62a6">DS1307RTC</a>, and <a class="el" href="classDS3232RTC.html#af89e68c68f1c4b7e94286f800b5b2747">DS3232RTC</a>.</p>
+<p>Reimplemented in <a class="el" href="classDS3231RTC.html#a3a2c448b152c401fb598c487ef0ed288">DS3231RTC</a>, <a class="el" href="classDS1307RTC.html#acd9800d6df2244b8e4e790480a1d62a6">DS1307RTC</a>, and <a class="el" href="classDS3232RTC.html#af89e68c68f1c4b7e94286f800b5b2747">DS3232RTC</a>.</p>
 
 <p>Definition at line <a class="el" href="RTC_8cpp_source.html#l00144">144</a> of file <a class="el" href="RTC_8cpp_source.html">RTC.cpp</a>.</p>
 
@@ -661,7 +662,7 @@ static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class
 <p>Alarm details are stored at the end of the realtime clock's non-volatile memory.</p>
 <dl class="section see"><dt>See Also</dt><dd><a class="el" href="classRTC.html#ade282d7a60147c3f0269f1fcd59c8d66" title="Reads the details of the alarm with index alarmNum into value. ">readAlarm()</a>, alarmCount() </dd></dl>
 
-<p>Reimplemented in <a class="el" href="classDS1307RTC.html#a7354aed91d7c94d0d7b2144b1bf32c75">DS1307RTC</a>, and <a class="el" href="classDS3232RTC.html#a8b0a65e0ac479aec8fad6ca3147dbe75">DS3232RTC</a>.</p>
+<p>Reimplemented in <a class="el" href="classDS3231RTC.html#a1ed8945018024816600f709c6eb0c749">DS3231RTC</a>, <a class="el" href="classDS1307RTC.html#a7354aed91d7c94d0d7b2144b1bf32c75">DS1307RTC</a>, and <a class="el" href="classDS3232RTC.html#a8b0a65e0ac479aec8fad6ca3147dbe75">DS3232RTC</a>.</p>
 
 <p>Definition at line <a class="el" href="RTC_8cpp_source.html#l00224">224</a> of file <a class="el" href="RTC_8cpp_source.html">RTC.cpp</a>.</p>
 
@@ -734,7 +735,7 @@ static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class
 <p>Updates the date in the realtime clock to match <em>value</em>. </p>
 <dl class="section see"><dt>See Also</dt><dd><a class="el" href="classRTC.html#aa1e21bf42ebd4456919744ae0f4f631e" title="Reads the current date from the realtime clock into value. ">readDate()</a>, <a class="el" href="classRTC.html#a102e2ec15bf0273d8f7e9ce4b6dcc96e" title="Updates the time in the realtime clock to match value. ">writeTime()</a> </dd></dl>
 
-<p>Reimplemented in <a class="el" href="classDS1307RTC.html#a4f7346be33612cf9ecd96080eb046230">DS1307RTC</a>, and <a class="el" href="classDS3232RTC.html#a31c004a90c724979d8267c31f2dbf5ed">DS3232RTC</a>.</p>
+<p>Reimplemented in <a class="el" href="classDS3231RTC.html#a450a143514a5aa228f8ef7a23d83d036">DS3231RTC</a>, <a class="el" href="classDS1307RTC.html#a4f7346be33612cf9ecd96080eb046230">DS1307RTC</a>, and <a class="el" href="classDS3232RTC.html#a31c004a90c724979d8267c31f2dbf5ed">DS3232RTC</a>.</p>
 
 <p>Definition at line <a class="el" href="RTC_8cpp_source.html#l00194">194</a> of file <a class="el" href="RTC_8cpp_source.html">RTC.cpp</a>.</p>
 
@@ -765,7 +766,7 @@ static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class
 <p>Updates the time in the realtime clock to match <em>value</em>. </p>
 <dl class="section see"><dt>See Also</dt><dd><a class="el" href="classRTC.html#aaf0a5c1f32f210a49718d148620b5bec" title="Reads the current time from the realtime clock into value. ">readTime()</a>, <a class="el" href="classRTC.html#ae667600d05c8e7b06a93574dd068a4d7" title="Updates the date in the realtime clock to match value. ">writeDate()</a> </dd></dl>
 
-<p>Reimplemented in <a class="el" href="classDS1307RTC.html#a0a5d0d86a0345420ebb289ea724b19e8">DS1307RTC</a>, and <a class="el" href="classDS3232RTC.html#ab0ca13a8b80da856b37fc53b84e27c78">DS3232RTC</a>.</p>
+<p>Reimplemented in <a class="el" href="classDS3231RTC.html#ae9bee8f68f9e124562230175ca9d15c3">DS3231RTC</a>, <a class="el" href="classDS1307RTC.html#a0a5d0d86a0345420ebb289ea724b19e8">DS1307RTC</a>, and <a class="el" href="classDS3232RTC.html#ab0ca13a8b80da856b37fc53b84e27c78">DS3232RTC</a>.</p>
 
 <p>Definition at line <a class="el" href="RTC_8cpp_source.html#l00179">179</a> of file <a class="el" href="RTC_8cpp_source.html">RTC.cpp</a>.</p>
 
@@ -778,7 +779,7 @@ static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Mar 25 2015 19:36:08 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Mar 29 2015 08:30:13 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

@@ -1,8 +1,9 @@
 var searchData=
 [
   ['eeprom24',['EEPROM24',['../classEEPROM24.html',1,'EEPROM24'],['../classEEPROM24.html#ae8547f6ff7711496e1959ee24a142995',1,'EEPROM24::EEPROM24()']]],
-  ['enable32khzoutput',['enable32kHzOutput',['../classDS3232RTC.html#a3966de6f4241d86f198a8b9dd5e7e59a',1,'DS3232RTC']]],
-  ['enablealarminterrupts',['enableAlarmInterrupts',['../classDS3232RTC.html#ab91e79271a1f8e75b07bddbb04445dc9',1,'DS3232RTC']]],
+  ['enable32khzoutput',['enable32kHzOutput',['../classDS3231RTC.html#a032cf784eb82ccf6ff0a9745b47ac86b',1,'DS3231RTC::enable32kHzOutput()'],['../classDS3232RTC.html#a3966de6f4241d86f198a8b9dd5e7e59a',1,'DS3232RTC::enable32kHzOutput()']]],
+  ['enablealarm',['enableAlarm',['../classDS3231RTC.html#ad0a0614c48d4f809fee6017cd7350372',1,'DS3231RTC']]],
+  ['enablealarminterrupts',['enableAlarmInterrupts',['../classDS3231RTC.html#a0e9509219b2c7259accd68a55aaa5faf',1,'DS3231RTC::enableAlarmInterrupts()'],['../classDS3232RTC.html#ab91e79271a1f8e75b07bddbb04445dc9',1,'DS3232RTC::enableAlarmInterrupts()']]],
   ['enablescreensaver',['enableScreenSaver',['../classLCD.html#af9a2326d034fa159d384ec16223c924f',1,'LCD']]],
   ['enabletimer1',['enableTimer1',['../classDMD.html#a4c3b04b384f3d656a9b59690836775e2',1,'DMD']]],
   ['enabletimer2',['enableTimer2',['../classDMD.html#a5469775db7fafebca2cdbc6a6372fb97',1,'DMD']]],

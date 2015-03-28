@@ -98,6 +98,12 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
+<tr class="memitem:a9cbc0c2bd8cee02917539af77e845fc4"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structRTCAlarm.html#a9cbc0c2bd8cee02917539af77e845fc4">day</a></td></tr>
+<tr class="memdesc:a9cbc0c2bd8cee02917539af77e845fc4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Day of the month for the alarm if not zero.  <a href="#a9cbc0c2bd8cee02917539af77e845fc4">More...</a><br/></td></tr>
+<tr class="separator:a9cbc0c2bd8cee02917539af77e845fc4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a764061bcf84755b4b9db07dead0d46b9"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structRTCAlarm.html#a764061bcf84755b4b9db07dead0d46b9">dow</a></td></tr>
+<tr class="memdesc:a764061bcf84755b4b9db07dead0d46b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Day of the week for the alarm if not zero.  <a href="#a764061bcf84755b4b9db07dead0d46b9">More...</a><br/></td></tr>
+<tr class="separator:a764061bcf84755b4b9db07dead0d46b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a75bdc42acd3ab3ad495680c6b6a34692"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a75bdc42acd3ab3ad495680c6b6a34692"></a>
 uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structRTCAlarm.html#a75bdc42acd3ab3ad495680c6b6a34692">hour</a></td></tr>
 <tr class="memdesc:a75bdc42acd3ab3ad495680c6b6a34692"><td class="mdescLeft">&#160;</td><td class="mdescRight">Hour of the day for the alarm (0-23). <br/></td></tr>
@@ -106,6 +112,9 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="s
 uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structRTCAlarm.html#ad9a75ceb4b4b3474baa66dd5466e62fe">minute</a></td></tr>
 <tr class="memdesc:ad9a75ceb4b4b3474baa66dd5466e62fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Minute of the hour for the alarm (0-59). <br/></td></tr>
 <tr class="separator:ad9a75ceb4b4b3474baa66dd5466e62fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab749e3695ee5c5dd703aec71f72d46a1"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structRTCAlarm.html#ab749e3695ee5c5dd703aec71f72d46a1">second</a></td></tr>
+<tr class="memdesc:ab749e3695ee5c5dd703aec71f72d46a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Second of the minute for the alarm (0-59).  <a href="#ab749e3695ee5c5dd703aec71f72d46a1">More...</a><br/></td></tr>
+<tr class="separator:ab749e3695ee5c5dd703aec71f72d46a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0f2ef7363cb60a26642d5295b77ca19e"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structRTCAlarm.html#a0f2ef7363cb60a26642d5295b77ca19e">flags</a></td></tr>
 <tr class="memdesc:a0f2ef7363cb60a26642d5295b77ca19e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Additional flags for the alarm.  <a href="#a0f2ef7363cb60a26642d5295b77ca19e">More...</a><br/></td></tr>
 <tr class="separator:a0f2ef7363cb60a26642d5295b77ca19e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -116,6 +125,40 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="s
 
 <p>Definition at line <a class="el" href="RTC_8h_source.html#l00042">42</a> of file <a class="el" href="RTC_8h_source.html">RTC.h</a>.</p>
 </div><h2 class="groupheader">Member Data Documentation</h2>
+<a class="anchor" id="a9cbc0c2bd8cee02917539af77e845fc4"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">RTCAlarm::day</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Day of the month for the alarm if not zero. </p>
+<dl class="section note"><dt>Note</dt><dd>Currently this field only works with the <a class="el" href="classDS3231RTC.html" title="Communicates with a DS3231 realtime clock chip via I2C. ">DS3231RTC</a> class. </dd></dl>
+
+<p>Definition at line <a class="el" href="RTC_8h_source.html#l00044">44</a> of file <a class="el" href="RTC_8h_source.html">RTC.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a764061bcf84755b4b9db07dead0d46b9"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">RTCAlarm::dow</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Day of the week for the alarm if not zero. </p>
+<dl class="section note"><dt>Note</dt><dd>Currently this field only works with the <a class="el" href="classDS3231RTC.html" title="Communicates with a DS3231 realtime clock chip via I2C. ">DS3231RTC</a> class. </dd></dl>
+
+<p>Definition at line <a class="el" href="RTC_8h_source.html#l00045">45</a> of file <a class="el" href="RTC_8h_source.html">RTC.h</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="a0f2ef7363cb60a26642d5295b77ca19e"></a>
 <div class="memitem">
 <div class="memproto">
@@ -129,7 +172,24 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="s
 <p>Additional flags for the alarm. </p>
 <p>The least significant bit will be 0 if the alarm is disabled or 1 if the alarm is enabled. Other bits can be used by the application for any purpose. </p>
 
-<p>Definition at line <a class="el" href="RTC_8h_source.html#l00046">46</a> of file <a class="el" href="RTC_8h_source.html">RTC.h</a>.</p>
+<p>Definition at line <a class="el" href="RTC_8h_source.html#l00049">49</a> of file <a class="el" href="RTC_8h_source.html">RTC.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ab749e3695ee5c5dd703aec71f72d46a1"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">RTCAlarm::second</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Second of the minute for the alarm (0-59). </p>
+<dl class="section note"><dt>Note</dt><dd>Currently this field only works with the <a class="el" href="classDS3231RTC.html" title="Communicates with a DS3231 realtime clock chip via I2C. ">DS3231RTC</a> class. </dd></dl>
+
+<p>Definition at line <a class="el" href="RTC_8h_source.html#l00048">48</a> of file <a class="el" href="RTC_8h_source.html">RTC.h</a>.</p>
 
 </div>
 </div>
@@ -140,7 +200,7 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="s
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Mar 25 2015 19:36:08 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Mar 29 2015 08:30:13 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

@@ -122,8 +122,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a067bc741cf27f143aba5d9f147908401"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLCD.html#a067bc741cf27f143aba5d9f147908401">LCD</a> (uint8_t pin9)</td></tr>
 <tr class="memdesc:a067bc741cf27f143aba5d9f147908401"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the Freetronics <a class="el" href="classLCD.html" title="Enhanced library for Freetronics 16x2 LCD shields. ">LCD</a> display for USBDroid.  <a href="#a067bc741cf27f143aba5d9f147908401">More...</a><br/></td></tr>
 <tr class="separator:a067bc741cf27f143aba5d9f147908401"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a203d268bef6c61fa293562dbb0e9f51e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a203d268bef6c61fa293562dbb0e9f51e"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>LCD</b> (uint8_t rs, uint8_t enable, uint8_t d0, uint8_t d1, uint8_t d2, uint8_t d3)</td></tr>
+<tr class="memitem:a203d268bef6c61fa293562dbb0e9f51e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLCD.html#a203d268bef6c61fa293562dbb0e9f51e">LCD</a> (uint8_t rs, uint8_t enable, uint8_t d0, uint8_t d1, uint8_t d2, uint8_t d3)</td></tr>
+<tr class="memdesc:a203d268bef6c61fa293562dbb0e9f51e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the Freetronics <a class="el" href="classLCD.html" title="Enhanced library for Freetronics 16x2 LCD shields. ">LCD</a> display with custom pins.  <a href="#a203d268bef6c61fa293562dbb0e9f51e">More...</a><br/></td></tr>
 <tr class="separator:a203d268bef6c61fa293562dbb0e9f51e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a171f59ba80e7775ebd3a399f56482a9c"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLCD.html#a171f59ba80e7775ebd3a399f56482a9c">backlightPin</a> () const </td></tr>
 <tr class="memdesc:a171f59ba80e7775ebd3a399f56482a9c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the pin that is being used to control the back light. The default is 3.  <a href="#a171f59ba80e7775ebd3a399f56482a9c">More...</a><br/></td></tr>
@@ -277,6 +277,70 @@ Support for DFRobot LCD Shield</h1>
 
 </div>
 </div>
+<a class="anchor" id="a203d268bef6c61fa293562dbb0e9f51e"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">LCD::LCD </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>rs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>enable</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>d0</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>d1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>d2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>d3</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Initialize the Freetronics <a class="el" href="classLCD.html" title="Enhanced library for Freetronics 16x2 LCD shields. ">LCD</a> display with custom pins. </p>
+<p>For compatibility with other shields, it may be desirable to rewire some of the pins entirely. This version of the constructor allows any pins to be reassigned from the defaults (which are rs = 8, enable = 9, d0 = 4, d1 = 5, d2 = 6, d3 = 7.)</p>
+<div class="fragment"><div class="line"><a class="code" href="classLCD.html">LCD</a> lcd(8,9,4,5,10,11);</div>
+</div><!-- fragment --> 
+<p>Definition at line <a class="el" href="LCD_8h_source.html#l00052">52</a> of file <a class="el" href="LCD_8h_source.html">LCD.h</a>.</p>
+
+</div>
+</div>
 <h2 class="groupheader">Member Function Documentation</h2>
 <a class="anchor" id="a171f59ba80e7775ebd3a399f56482a9c"></a>
 <div class="memitem">
@@ -322,7 +386,7 @@ Support for DFRobot LCD Shield</h1>
 <p>Disables the screen saver. </p>
 <dl class="section see"><dt>See Also</dt><dd><a class="el" href="classLCD.html#af9a2326d034fa159d384ec16223c924f" title="Enables the screen saver and causes it to activate after timeoutSecs of inactivity on the buttons...">enableScreenSaver()</a>, <a class="el" href="classLCD.html#a5b07cf05e8e5e7c53654f5ca0cf58b89" title="Turns on the display of text on the LCD and the back light. ">display()</a>, <a class="el" href="classLCD.html#af5d5ca618a3161aa352027b58fe09d0e" title="Returns true if the screen has been saved; false otherwise. ">isScreenSaved()</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="LCD_8cpp_source.html#l00308">308</a> of file <a class="el" href="LCD_8cpp_source.html">LCD.cpp</a>.</p>
+<p>Definition at line <a class="el" href="LCD_8cpp_source.html#l00323">323</a> of file <a class="el" href="LCD_8cpp_source.html">LCD.cpp</a>.</p>
 
 </div>
 </div>
@@ -343,7 +407,7 @@ Support for DFRobot LCD Shield</h1>
 <p>If the screen saver is active, then calling this function will deactivate the screen saver and reset the timeout. Thus, this function can be called for force the screen to restore.</p>
 <dl class="section see"><dt>See Also</dt><dd><a class="el" href="classLCD.html#af3974da6d988ba2d21c25135ada12108" title="Turns off the display of text on the LCD and the back light. ">noDisplay()</a>, <a class="el" href="classLCD.html#af9a2326d034fa159d384ec16223c924f" title="Enables the screen saver and causes it to activate after timeoutSecs of inactivity on the buttons...">enableScreenSaver()</a>, <a class="el" href="classLCD.html#a56d1f68532c779c65fbbd071fb444801" title="Sets the current screen saver mode. ">setScreenSaverMode()</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="LCD_8cpp_source.html#l00206">206</a> of file <a class="el" href="LCD_8cpp_source.html">LCD.cpp</a>.</p>
+<p>Definition at line <a class="el" href="LCD_8cpp_source.html#l00221">221</a> of file <a class="el" href="LCD_8cpp_source.html">LCD.cpp</a>.</p>
 
 </div>
 </div>
@@ -367,7 +431,7 @@ Support for DFRobot LCD Shield</h1>
 <p>If the <em>timeoutSecs</em> parameter is not supplied, the default is 10 seconds.</p>
 <dl class="section see"><dt>See Also</dt><dd><a class="el" href="classLCD.html#a85c3a4694b105731404df36e35e5b26e" title="Disables the screen saver. ">disableScreenSaver()</a>, <a class="el" href="classLCD.html#a5b07cf05e8e5e7c53654f5ca0cf58b89" title="Turns on the display of text on the LCD and the back light. ">display()</a>, <a class="el" href="classLCD.html#ac1e80e2603bd1cf0276c36092c416292" title="Gets the next button press, release, or idle event. ">getButton()</a>, <a class="el" href="classLCD.html#af5d5ca618a3161aa352027b58fe09d0e" title="Returns true if the screen has been saved; false otherwise. ">isScreenSaved()</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="LCD_8cpp_source.html#l00294">294</a> of file <a class="el" href="LCD_8cpp_source.html">LCD.cpp</a>.</p>
+<p>Definition at line <a class="el" href="LCD_8cpp_source.html#l00309">309</a> of file <a class="el" href="LCD_8cpp_source.html">LCD.cpp</a>.</p>
 
 </div>
 </div>
@@ -391,7 +455,7 @@ Support for DFRobot LCD Shield</h1>
 <p>This function debounces the button state automatically so there is no need for the caller to worry about spurious button events.</p>
 <dl class="section see"><dt>See Also</dt><dd><a class="el" href="classLCD.html#af9a2326d034fa159d384ec16223c924f" title="Enables the screen saver and causes it to activate after timeoutSecs of inactivity on the buttons...">enableScreenSaver()</a>, <a class="el" href="classLCD.html#a5b07cf05e8e5e7c53654f5ca0cf58b89" title="Turns on the display of text on the LCD and the back light. ">display()</a>, <a class="el" href="classForm.html#a89bd3850e87caa2ca7b2e946f923d0ee" title="Dispatches event to the currently active field using Field::dispatch(). ">Form::dispatch()</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="LCD_8cpp_source.html#l00353">353</a> of file <a class="el" href="LCD_8cpp_source.html">LCD.cpp</a>.</p>
+<p>Definition at line <a class="el" href="LCD_8cpp_source.html#l00368">368</a> of file <a class="el" href="LCD_8cpp_source.html">LCD.cpp</a>.</p>
 
 </div>
 </div>
@@ -440,7 +504,7 @@ Support for DFRobot LCD Shield</h1>
 <p>This function can be called to force the screen saver to activate.</p>
 <dl class="section see"><dt>See Also</dt><dd><a class="el" href="classLCD.html#a5b07cf05e8e5e7c53654f5ca0cf58b89" title="Turns on the display of text on the LCD and the back light. ">display()</a>, <a class="el" href="classLCD.html#af9a2326d034fa159d384ec16223c924f" title="Enables the screen saver and causes it to activate after timeoutSecs of inactivity on the buttons...">enableScreenSaver()</a>, <a class="el" href="classLCD.html#a56d1f68532c779c65fbbd071fb444801" title="Sets the current screen saver mode. ">setScreenSaverMode()</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="LCD_8cpp_source.html#l00223">223</a> of file <a class="el" href="LCD_8cpp_source.html">LCD.cpp</a>.</p>
+<p>Definition at line <a class="el" href="LCD_8cpp_source.html#l00238">238</a> of file <a class="el" href="LCD_8cpp_source.html">LCD.cpp</a>.</p>
 
 </div>
 </div>
@@ -496,7 +560,7 @@ Support for DFRobot LCD Shield</h1>
 </div><!-- fragment --><p>The back light pin is configured for output the next time the application calls <a class="el" href="classLCD.html#ac1e80e2603bd1cf0276c36092c416292" title="Gets the next button press, release, or idle event. ">getButton()</a>.</p>
 <dl class="section see"><dt>See Also</dt><dd><a class="el" href="classLCD.html#a171f59ba80e7775ebd3a399f56482a9c" title="Returns the pin that is being used to control the back light. The default is 3. ">backlightPin()</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="LCD_8cpp_source.html#l00182">182</a> of file <a class="el" href="LCD_8cpp_source.html">LCD.cpp</a>.</p>
+<p>Definition at line <a class="el" href="LCD_8cpp_source.html#l00197">197</a> of file <a class="el" href="LCD_8cpp_source.html">LCD.cpp</a>.</p>
 
 </div>
 </div>
@@ -517,7 +581,7 @@ Support for DFRobot LCD Shield</h1>
 <p>Sets the current screen saver <em>mode</em>. </p>
 <dl class="section see"><dt>See Also</dt><dd><a class="el" href="classLCD.html#a1917fa285f81f476b4c7cc20d15456b8" title="Returns the current screen saver mode; default is DisplayOff. ">screenSaverMode()</a>, <a class="el" href="classLCD.html#af9a2326d034fa159d384ec16223c924f" title="Enables the screen saver and causes it to activate after timeoutSecs of inactivity on the buttons...">enableScreenSaver()</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="LCD_8cpp_source.html#l00268">268</a> of file <a class="el" href="LCD_8cpp_source.html">LCD.cpp</a>.</p>
+<p>Definition at line <a class="el" href="LCD_8cpp_source.html#l00283">283</a> of file <a class="el" href="LCD_8cpp_source.html">LCD.cpp</a>.</p>
 
 </div>
 </div>
@@ -528,7 +592,7 @@ Support for DFRobot LCD Shield</h1>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Mar 25 2015 19:36:08 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Mar 29 2015 08:30:13 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

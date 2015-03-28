@@ -8,8 +8,9 @@ var searchData=
   ['destroy',['destroy',['../classRNGClass.html#a9901367d86f2303a59bbc12fe91cad00',1,'RNGClass']]],
   ['dh1',['dh1',['../classCurve25519.html#a2b6911583d17ea9a36bbbb40d58b3d89',1,'Curve25519']]],
   ['dh2',['dh2',['../classCurve25519.html#a14022d6ac68ec691ffb0247275078ab9',1,'Curve25519']]],
-  ['disable32khzoutput',['disable32kHzOutput',['../classDS3232RTC.html#ada732bae42fc2833e59ae293aa27ddcb',1,'DS3232RTC']]],
-  ['disablealarminterrupts',['disableAlarmInterrupts',['../classDS3232RTC.html#a225b8c62d617aa1b7be7d20e8a033be9',1,'DS3232RTC']]],
+  ['disable32khzoutput',['disable32kHzOutput',['../classDS3231RTC.html#a7c9c197c6f27c26e0cb9c5ddc95633c8',1,'DS3231RTC::disable32kHzOutput()'],['../classDS3232RTC.html#ada732bae42fc2833e59ae293aa27ddcb',1,'DS3232RTC::disable32kHzOutput()']]],
+  ['disablealarm',['disableAlarm',['../classDS3231RTC.html#a21e2667c53d30aa425043ec08a117c47',1,'DS3231RTC']]],
+  ['disablealarminterrupts',['disableAlarmInterrupts',['../classDS3231RTC.html#a245a56a9396ef49a4e089d743c759cdb',1,'DS3231RTC::disableAlarmInterrupts()'],['../classDS3232RTC.html#a225b8c62d617aa1b7be7d20e8a033be9',1,'DS3232RTC::disableAlarmInterrupts()']]],
   ['disablescreensaver',['disableScreenSaver',['../classLCD.html#a85c3a4694b105731404df36e35e5b26e',1,'LCD']]],
   ['disabletimer1',['disableTimer1',['../classDMD.html#a39af27e216f654ecc7e60b0614cb6b33',1,'DMD']]],
   ['disabletimer2',['disableTimer2',['../classDMD.html#a52fe885bfb380b74df54c96221811cff',1,'DMD']]],
@@ -27,5 +28,6 @@ var searchData=
   ['drawrect',['drawRect',['../classBitmap.html#aac61e3f7f625db568e37d88b52b3b2fc',1,'Bitmap']]],
   ['drawtext',['drawText',['../classBitmap.html#a3e9bcbfb584d5020bd6f0a313ee275f0',1,'Bitmap::drawText(int x, int y, const char *str, int len=-1)'],['../classBitmap.html#a802f5d6bd19a3727670e61e7a88a0cac',1,'Bitmap::drawText(int x, int y, const String &amp;str, int start=0, int len=-1)']]],
   ['ds1307rtc',['DS1307RTC',['../classDS1307RTC.html#a092805d75bea323dc4be062638bff866',1,'DS1307RTC']]],
+  ['ds3231rtc',['DS3231RTC',['../classDS3231RTC.html#a45df320cabed4ea2d5c34b437eda7e9f',1,'DS3231RTC']]],
   ['ds3232rtc',['DS3232RTC',['../classDS3232RTC.html#aa959454ae01b11c48d6ec7ec192b4ccb',1,'DS3232RTC']]]
 ];

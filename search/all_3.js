@@ -1,7 +1,7 @@
 var searchData=
 [
   ['data',['data',['../classBitmap.html#a5eeed27c176eb6e4a2c39ea83444e27d',1,'Bitmap::data()'],['../classBitmap.html#a20fea2a946545aa3b5edd78245149e5f',1,'Bitmap::data() const ']]],
-  ['day',['day',['../structRTCDate.html#a2d68ff3fb90240df522b41222362704c',1,'RTCDate']]],
+  ['day',['day',['../structRTCDate.html#a2d68ff3fb90240df522b41222362704c',1,'RTCDate::day()'],['../structRTCAlarm.html#a9cbc0c2bd8cee02917539af77e845fc4',1,'RTCAlarm::day()']]],
   ['dayofweek',['dayOfWeek',['../classRTC.html#a525a9c1dad89613708f47a683eb316aa',1,'RTC::dayOfWeek(const RTCDate *date)'],['../classRTC.html#ab2ca0cbee608ec32d3d6e04d40298f11',1,'RTC::DayOfWeek()']]],
   ['decrement',['DECREMENT',['../classRTC.html#a05b1bd1479afc80682abdd4f3e58dc6f',1,'RTC']]],
   ['decrypt',['decrypt',['../classCBCCommon.html#ab46a2625cae9a654c708e1f31a0e22b6',1,'CBCCommon::decrypt()'],['../classCFBCommon.html#aaaa3d61c5743e30e355207c193c0b0ef',1,'CFBCommon::decrypt()'],['../classChaCha.html#a1f54b2b51b59428010f81a6c4dc4e42c',1,'ChaCha::decrypt()'],['../classCipher.html#ac6099d1a0d7f2ff67b0e4ccb4a17eb08',1,'Cipher::decrypt()'],['../classCTRCommon.html#a0943387cf1124258389702e0690740fe',1,'CTRCommon::decrypt()'],['../classOFBCommon.html#aeb3636d7175b150e2bf16367e51c2e36',1,'OFBCommon::decrypt()']]],
@@ -10,8 +10,9 @@ var searchData=
   ['destroy',['destroy',['../classRNGClass.html#a9901367d86f2303a59bbc12fe91cad00',1,'RNGClass']]],
   ['dh1',['dh1',['../classCurve25519.html#a2b6911583d17ea9a36bbbb40d58b3d89',1,'Curve25519']]],
   ['dh2',['dh2',['../classCurve25519.html#a14022d6ac68ec691ffb0247275078ab9',1,'Curve25519']]],
-  ['disable32khzoutput',['disable32kHzOutput',['../classDS3232RTC.html#ada732bae42fc2833e59ae293aa27ddcb',1,'DS3232RTC']]],
-  ['disablealarminterrupts',['disableAlarmInterrupts',['../classDS3232RTC.html#a225b8c62d617aa1b7be7d20e8a033be9',1,'DS3232RTC']]],
+  ['disable32khzoutput',['disable32kHzOutput',['../classDS3231RTC.html#a7c9c197c6f27c26e0cb9c5ddc95633c8',1,'DS3231RTC::disable32kHzOutput()'],['../classDS3232RTC.html#ada732bae42fc2833e59ae293aa27ddcb',1,'DS3232RTC::disable32kHzOutput()']]],
+  ['disablealarm',['disableAlarm',['../classDS3231RTC.html#a21e2667c53d30aa425043ec08a117c47',1,'DS3231RTC']]],
+  ['disablealarminterrupts',['disableAlarmInterrupts',['../classDS3231RTC.html#a245a56a9396ef49a4e089d743c759cdb',1,'DS3231RTC::disableAlarmInterrupts()'],['../classDS3232RTC.html#a225b8c62d617aa1b7be7d20e8a033be9',1,'DS3232RTC::disableAlarmInterrupts()']]],
   ['disablescreensaver',['disableScreenSaver',['../classLCD.html#a85c3a4694b105731404df36e35e5b26e',1,'LCD']]],
   ['disabletimer1',['disableTimer1',['../classDMD.html#a39af27e216f654ecc7e60b0614cb6b33',1,'DMD']]],
   ['disabletimer2',['disableTimer2',['../classDMD.html#a52fe885bfb380b74df54c96221811cff',1,'DMD']]],
@@ -23,6 +24,7 @@ var searchData=
   ['dmd_2drunning_2dfigure_2edox',['dmd-running-figure.dox',['../dmd-running-figure_8dox.html',1,'']]],
   ['dot_20matrix_20display_20demo',['Dot Matrix Display Demo',['../dmd_demo.html',1,'']]],
   ['doublebuffer',['doubleBuffer',['../classDMD.html#aab1f3ba29c053d630ae12865d22166ec',1,'DMD']]],
+  ['dow',['dow',['../structRTCAlarm.html#a764061bcf84755b4b9db07dead0d46b9',1,'RTCAlarm']]],
   ['drawbitmap',['drawBitmap',['../classBitmap.html#a491e9c0bb20ddf5a5eb4933077c8ed72',1,'Bitmap::drawBitmap(int x, int y, const Bitmap &amp;bitmap, Color color=White)'],['../classBitmap.html#a5e4f23e8f14e193410b5f071149401e4',1,'Bitmap::drawBitmap(int x, int y, Bitmap::ProgMem bitmap, Color color=White)']]],
   ['drawchar',['drawChar',['../classBitmap.html#a1a11f29863ee7f36a3b15c91963102bd',1,'Bitmap']]],
   ['drawcircle',['drawCircle',['../classBitmap.html#a933763a4f3cba79fbcf97ae6d0a864aa',1,'Bitmap']]],
@@ -33,6 +35,7 @@ var searchData=
   ['drawrect',['drawRect',['../classBitmap.html#aac61e3f7f625db568e37d88b52b3b2fc',1,'Bitmap']]],
   ['drawtext',['drawText',['../classBitmap.html#a3e9bcbfb584d5020bd6f0a313ee275f0',1,'Bitmap::drawText(int x, int y, const char *str, int len=-1)'],['../classBitmap.html#a802f5d6bd19a3727670e61e7a88a0cac',1,'Bitmap::drawText(int x, int y, const String &amp;str, int start=0, int len=-1)']]],
   ['ds1307rtc',['DS1307RTC',['../classDS1307RTC.html',1,'DS1307RTC'],['../classDS1307RTC.html#a092805d75bea323dc4be062638bff866',1,'DS1307RTC::DS1307RTC()']]],
+  ['ds3231rtc',['DS3231RTC',['../classDS3231RTC.html',1,'DS3231RTC'],['../classDS3231RTC.html#a45df320cabed4ea2d5c34b437eda7e9f',1,'DS3231RTC::DS3231RTC()']]],
   ['ds3232rtc',['DS3232RTC',['../classDS3232RTC.html',1,'DS3232RTC'],['../classDS3232RTC.html#aa959454ae01b11c48d6ec7ec192b4ccb',1,'DS3232RTC::DS3232RTC()']]],
   ['dumping_20infrared_20remote_20control_20codes',['Dumping Infrared Remote Control Codes',['../ir_dumpir.html',1,'']]]
 ];
