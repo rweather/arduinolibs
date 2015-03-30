@@ -23,14 +23,8 @@
 #ifndef CRYPTO_CURVE15519_h
 #define CRYPTO_CURVE15519_h
 
-#include <inttypes.h>
+#include "BigNumberUtil.h"
 #include <stddef.h>
-
-// Define exactly one of these to 1 to set the size of the basic limb type.
-// 16-bit limbs seems to give the best performance on 8-bit AVR micros.
-#define CURVE25519_LIMB_8BIT  0
-#define CURVE25519_LIMB_16BIT 1
-#define CURVE25519_LIMB_32BIT 0
 
 class Curve25519
 {
@@ -45,23 +39,6 @@ public:
 #else
 private:
 #endif
-    // Define the limb types to use on this platform.
-    #if CURVE25519_LIMB_8BIT
-    typedef uint8_t limb_t;
-    typedef int8_t slimb_t;
-    typedef uint16_t dlimb_t;
-    #elif CURVE25519_LIMB_16BIT
-    typedef uint16_t limb_t;
-    typedef int16_t slimb_t;
-    typedef uint32_t dlimb_t;
-    #elif CURVE25519_LIMB_32BIT
-    typedef uint32_t limb_t;
-    typedef int32_t slimb_t;
-    typedef uint64_t dlimb_t;
-    #else
-    #error "limb_t must be 8, 16, or 32 bits in size"
-    #endif
-
     static uint8_t isWeakPoint(const uint8_t k[32]);
 
     static void reduce(limb_t *result, limb_t *x, uint8_t size);

@@ -20,34 +20,32 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-#ifndef CRYPTO_POLY1305_h
-#define CRYPTO_POLY1305_h
+#ifndef CRYPTO_BIGNUMBERUTIL_h
+#define CRYPTO_BIGNUMBERUTIL_h
 
-#include "BigNumberUtil.h"
-#include <stddef.h>
+#include <inttypes.h>
 
-class Poly1305
-{
-public:
-    Poly1305();
-    ~Poly1305();
+// Define exactly one of these to 1 to set the size of the basic limb type.
+// 16-bit limbs seem to give the best performance on 8-bit AVR micros.
+#define BIGNUMBER_LIMB_8BIT  0
+#define BIGNUMBER_LIMB_16BIT 1
+#define BIGNUMBER_LIMB_32BIT 0
 
-    void reset(const void *key);
-    void update(const void *data, size_t len);
-    void finalize(const void *nonce, void *token, size_t len);
-
-    void clear();
-
-private:
-    struct {
-        limb_t h[(16 / sizeof(limb_t)) + 1];
-        limb_t c[(16 / sizeof(limb_t)) + 1];
-        limb_t r[(16 / sizeof(limb_t))];
-        limb_t t[(32 / sizeof(limb_t)) + 1];
-        uint8_t chunkSize;
-    } state;
-
-    void processChunk();
-};
+// Define the limb types to use on this platform.
+#if BIGNUMBER_LIMB_8BIT
+typedef uint8_t limb_t;
+typedef int8_t slimb_t;
+typedef uint16_t dlimb_t;
+#elif BIGNUMBER_LIMB_16BIT
+typedef uint16_t limb_t;
+typedef int16_t slimb_t;
+typedef uint32_t dlimb_t;
+#elif BIGNUMBER_LIMB_32BIT
+typedef uint32_t limb_t;
+typedef int32_t slimb_t;
+typedef uint64_t dlimb_t;
+#else
+#error "limb_t must be 8, 16, or 32 bits in size"
+#endif
 
 #endif

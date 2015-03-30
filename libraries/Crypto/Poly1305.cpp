@@ -63,9 +63,17 @@
 #define NUM_LIMBS_130BIT    ((16 / sizeof(limb_t)) + 1)
 #define LIMB_BITS           (sizeof(limb_t) * 8)
 
-// Endian helper macros.  Need modification if the size of limb_t changes.
+// Endian helper macros for limbs and arrays of limbs.
+#if BIGNUMBER_LIMB_8BIT
+#define lelimbtoh(x)        (x)
+#define htolelimb(x)        (x)
+#elif BIGNUMBER_LIMB_16BIT
 #define lelimbtoh(x)        (le16toh((x)))
 #define htolelimb(x)        (htole16((x)))
+#elif BIGNUMBER_LIMB_32BIT
+#define lelimbtoh(x)        (le32toh((x)))
+#define htolelimb(x)        (htole32((x)))
+#endif
 #if defined(CRYPTO_LITTLE_ENDIAN)
 #define littleToHost(r,size)    do { ; } while (0)
 #else

@@ -34,19 +34,17 @@ of the full curve operation itself.
 #include <string.h>
 
 // Copy some definitions from the Curve25519 class for convenience.
-#define NUM_LIMBS   (32 / sizeof(Curve25519::limb_t))
-#define LIMB_BITS   (8 * sizeof(Curve25519::limb_t))
-#define limb_t Curve25519::limb_t
-#define dlimb_t Curve25519::dlimb_t
+#define NUM_LIMBS   (32 / sizeof(limb_t))
+#define LIMB_BITS   (8 * sizeof(limb_t))
 #define INVERSE_LIMB (~((limb_t)0))
 
 // For simpleMod() below we need a type that is 4 times the size of limb_t.
-#if CURVE25519_LIMB_8BIT
+#if BIGNUMBER_LIMB_8BIT
 #define qlimb_t uint32_t
-#elif CURVE25519_LIMB_16BIT
+#elif BIGNUMBER_LIMB_16BIT
 #define qlimb_t uint64_t
 #else
-#define CURVE25519_NO_QLIMB 1
+#define BIGNUMBER_NO_QLIMB 1
 #endif
 
 limb_t arg1[NUM_LIMBS];
@@ -222,7 +220,7 @@ void simpleMul(limb_t *result, const limb_t *x, const limb_t *y)
     }
 }
 
-#if defined(CURVE25519_NO_QLIMB)
+#if defined(BIGNUMBER_NO_QLIMB)
 
 // Quick check to correct the estimate on a quotient word.
 static inline limb_t correctEstimate
@@ -314,7 +312,7 @@ void simpleMod(limb_t *x)
         // One subtlety of Knuth's algorithm is that it looks like the test
         // is working with double-word quantities but it is actually using
         // double-word plus a carry bit.  So we need to use qlimb_t for this.
-#if !defined(CURVE25519_NO_QLIMB)
+#if !defined(BIGNUMBER_NO_QLIMB)
         qlimb_t test = ((((qlimb_t)uword) - ((dlimb_t)q) * v[1]) << LIMB_BITS) + u[0];
         if ((((dlimb_t)q) * v[0]) > test) {
             --q;

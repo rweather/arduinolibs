@@ -468,7 +468,7 @@ void Curve25519::reduce(limb_t *result, limb_t *x, uint8_t size)
  * the caller knows that \a x is within the described range.  A single
  * trial subtraction is all that is needed to reduce the number.
  */
-Curve25519::limb_t Curve25519::reduceQuick(limb_t *x)
+limb_t Curve25519::reduceQuick(limb_t *x)
 {
     limb_t temp[NUM_LIMBS];
     dlimb_t carry;
@@ -570,13 +570,13 @@ void Curve25519::mul(limb_t *result, const limb_t *x, const limb_t *y)
 void Curve25519::mulA24(limb_t *result, const limb_t *x)
 {
     // The constant a24 = 121665 (0x1DB41) as a limb array.
-#if CURVE25519_LIMB_8BIT
+#if BIGNUMBER_LIMB_8BIT
     static limb_t const a24[3] PROGMEM = {0x41, 0xDB, 0x01};
     #define pgm_read_a24(index) (pgm_read_byte(&(a24[(index)])))
-#elif CURVE25519_LIMB_16BIT
+#elif BIGNUMBER_LIMB_16BIT
     static limb_t const a24[2] PROGMEM = {0xDB41, 0x0001};
     #define pgm_read_a24(index) (pgm_read_word(&(a24[(index)])))
-#elif CURVE25519_LIMB_32BIT
+#elif BIGNUMBER_LIMB_32BIT
     static limb_t const a24[1] PROGMEM = {0x0001DB41};
     #define pgm_read_a24(index) (pgm_read_dword(&(a24[(index)])))
 #else
@@ -781,15 +781,15 @@ void Curve25519::recip(limb_t *result, const limb_t *x)
  */
 void Curve25519::unpack(limb_t *result, const uint8_t *x)
 {
-#if CURVE25519_LIMB_8BIT
+#if BIGNUMBER_LIMB_8BIT
     memcpy(result, x, 32);
     result[31] &= 0x7F;
-#elif CURVE25519_LIMB_16BIT
+#elif BIGNUMBER_LIMB_16BIT
     for (uint8_t posn = 0; posn < 16; ++posn) {
         result[posn] = ((limb_t)x[posn * 2]) | (((limb_t)x[posn * 2 + 1]) << 8);
     }
     result[15] &= 0x7FFF;
-#elif CURVE25519_LIMB_32BIT
+#elif BIGNUMBER_LIMB_32BIT
     for (uint8_t posn = 0; posn < 8; ++posn) {
         result[posn] = ((limb_t)x[posn * 4]) |
                       (((limb_t)x[posn * 4 + 1]) << 8) |
@@ -811,15 +811,15 @@ void Curve25519::unpack(limb_t *result, const uint8_t *x)
  */
 void Curve25519::pack(uint8_t *result, const limb_t *x)
 {
-#if CURVE25519_LIMB_8BIT
+#if BIGNUMBER_LIMB_8BIT
     memcpy(result, x, 32);
-#elif CURVE25519_LIMB_16BIT
+#elif BIGNUMBER_LIMB_16BIT
     for (uint8_t posn = 0; posn < 16; ++posn) {
         limb_t value = x[posn];
         result[posn * 2]     = (uint8_t)value;
         result[posn * 2 + 1] = (uint8_t)(value >> 8);
     }
-#elif CURVE25519_LIMB_32BIT
+#elif BIGNUMBER_LIMB_32BIT
     for (uint8_t posn = 0; posn < 8; ++posn) {
         limb_t value = x[posn];
         result[posn * 4]     = (uint8_t)value;
