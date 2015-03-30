@@ -20,47 +20,37 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-#ifndef CRYPTO_ENDIANUTIL_H
-#define CRYPTO_ENDIANUTIL_H
+#ifndef CRYPTO_POLY1305_h
+#define CRYPTO_POLY1305_h
 
 #include <inttypes.h>
+#include <stddef.h>
 
-// CPU is assumed to be little endian.   Edit this file if you
-// need to port this library to a big endian CPU.
+class Poly1305
+{
+public:
+    Poly1305();
+    ~Poly1305();
 
-#define CRYPTO_LITTLE_ENDIAN 1
+    void reset(const void *key);
+    void update(const void *data, size_t len);
+    void finalize(const void *nonce, void *token, size_t len);
 
-#define htole16(x)  (x)
-#define le16toh(x)  (x)
-#define htobe16(x)  \
-    (__extension__ ({ \
-        uint16_t _temp = (x); \
-        ((_temp >> 8) & 0x00FF) | \
-        ((_temp << 8) & 0xFF00); \
-    }))
-#define be16toh(x)  (htobe16((x)))
+    void clear();
 
-#define htole32(x)  (x)
-#define le32toh(x)  (x)
-#define htobe32(x)  \
-    (__extension__ ({ \
-        uint32_t _temp = (x); \
-        ((_temp >> 24) & 0x000000FF) | \
-        ((_temp >>  8) & 0x0000FF00) | \
-        ((_temp <<  8) & 0x00FF0000) | \
-        ((_temp << 24) & 0xFF000000); \
-    }))
-#define be32toh(x)  (htobe32((x)))
+private:
+    typedef uint16_t limb_t;
+    typedef int16_t  slimb_t;
+    typedef uint32_t dlimb_t;
+    struct {
+        limb_t h[(16 / sizeof(limb_t)) + 1];
+        limb_t c[(16 / sizeof(limb_t)) + 1];
+        limb_t r[(16 / sizeof(limb_t))];
+        limb_t t[(32 / sizeof(limb_t)) + 1];
+        uint8_t chunkSize;
+    } state;
 
-#define htole64(x)  (x)
-#define le64toh(x)  (x)
-#define htobe64(x)  \
-    (__extension__ ({ \
-        uint64_t __temp = (x); \
-        uint32_t __low = htobe32((uint32_t)__temp); \
-        uint32_t __high = htobe32((uint32_t)(__temp >> 32)); \
-        (((uint64_t)__low) << 32) | __high; \
-    }))
-#define be64toh(x)  (htobe64((x)))
+    void processChunk();
+};
 
 #endif
