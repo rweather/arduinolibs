@@ -138,7 +138,7 @@ void Poly1305::reset(const void *key)
  * If finalize() has already been called, then the behavior of update() will
  * be undefined.  Call reset() first to start a new authentication process.
  *
- * \sa reset(), finalize()
+ * \sa pad(), reset(), finalize()
  */
 void Poly1305::update(const void *data, size_t len)
 {
@@ -241,6 +241,21 @@ void Poly1305::finalize(const void *nonce, void *token, size_t len)
     if (len > 16)
         len = 16;
     memcpy(token, state.h, len);
+}
+
+/**
+ * \brief Pads the input stream with zero bytes to a multiple of 16.
+ *
+ * \sa update()
+ */
+void Poly1305::pad()
+{
+    if (state.chunkSize != 0) {
+        memset(((uint8_t *)state.c) + state.chunkSize, 0, 16 - state.chunkSize);
+        state.c[NUM_LIMBS_128BIT] = 1;
+        processChunk();
+        state.chunkSize = 0;
+    }
 }
 
 /**

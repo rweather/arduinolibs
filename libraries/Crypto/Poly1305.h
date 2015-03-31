@@ -36,6 +36,8 @@ public:
     void update(const void *data, size_t len);
     void finalize(const void *nonce, void *token, size_t len);
 
+    void pad();
+
     void clear();
 
 private:
