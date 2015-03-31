@@ -53,3 +53,27 @@ void clean(void *dest, size_t size)
  * Unlike memset(), this function attempts to prevent the compiler
  * from optimizing away the variable clear.
  */
+
+/**
+ * \brief Compares two memory blocks for equality.
+ *
+ * \param data1 Points to the first memory block.
+ * \param data2 Points to the second memory block.
+ * \param len The size of the memory blocks in bytes.
+ *
+ * Unlike memcmp(), this function attempts to compare the two memory blocks
+ * in a way that will not reveal the contents in the instruction timing.
+ * In particular, this function will not stop early if a byte is different.
+ * It will instead continue onto the end of the array.
+ */
+bool secure_compare(const void *data1, const void *data2, size_t len)
+{
+    uint8_t result = 0;
+    const uint8_t *d1 = (const uint8_t *)data1;
+    const uint8_t *d2 = (const uint8_t *)data2;
+    while (len > 0) {
+        result |= (*d1++ ^ *d2++);
+        --len;
+    }
+    return (bool)((((uint16_t)0x0100) - result) >> 8);
+}

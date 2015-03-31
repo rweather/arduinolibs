@@ -34,4 +34,6 @@ inline void clean(T &var)
     clean(&var, sizeof(T));
 }
 
+bool secure_compare(const void *data1, const void *data2, size_t len);
+
 #endif
