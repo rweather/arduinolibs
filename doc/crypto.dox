@@ -28,10 +28,10 @@
 
 \li Block ciphers: AES128, AES192, AES256
 \li Block cipher modes: CTR, CFB, CBC, OFB
-\li Stream ciphers: ChaCha
+li Stream ciphers: ChaCha
 \li Authenticated encryption with associated data (AEAD): ChaChaPoly
 \li Hash algorithms: SHA1, SHA256, SHA512, SHA3_256, SHA3_512, BLAKE2s, BLAKE2b (regular and HMAC modes)
-\li Message authenticators: Poly1305
+\li Message authenticators: Poly1305, GHASH
 \li Public key algorithms: Curve25519
 \li Random number generation: \link RNGClass RNG\endlink, TransistorNoiseSource, RingOscillatorNoiseSource
 
@@ -78,6 +78,7 @@ Ardunino Mega 2560 running at 16 MHz are similar:
 <tr><td>BLAKE2s</td><td align="right">18.54us</td><td> </td><td align="right"> </td><td align="right">171</td></tr>
 <tr><td>BLAKE2b</td><td align="right">50.58us</td><td> </td><td align="right"> </td><td align="right">339</td></tr>
 <tr><td>Poly1305</td><td align="right">26.29us</td><td> </td><td align="right"> </td><td align="right">87</td></tr>
+<tr><td>GHASH</td><td align="right">148.14us</td><td> </td><td align="right"> </td><td align="right">33</td></tr>
 </table>
 
 Where a cipher supports more than one key size (such as ChaCha), the values
