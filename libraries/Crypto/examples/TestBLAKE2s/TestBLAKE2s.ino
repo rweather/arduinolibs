@@ -214,6 +214,10 @@ void setup()
 
     Serial.println();
 
+    Serial.print("State Size ... ");
+    Serial.println(sizeof(BLAKE2s));
+    Serial.println();
+
     Serial.println("Test Vectors:");
     testHash(&blake2s, &testVectorBLAKE2s_1);
     testHash(&blake2s, &testVectorBLAKE2s_2);

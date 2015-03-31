@@ -145,6 +145,15 @@ void setup()
 
     Serial.println();
 
+    Serial.println("State Sizes:");
+    Serial.print("AES128 ... ");
+    Serial.println(sizeof(AES128));
+    Serial.print("AES192 ... ");
+    Serial.println(sizeof(AES192));
+    Serial.print("AES256 ... ");
+    Serial.println(sizeof(AES256));
+    Serial.println();
+
     Serial.println("Test Vectors:");
     testCipher(&aes128, &testVectorAES128);
     testCipher(&aes192, &testVectorAES192);

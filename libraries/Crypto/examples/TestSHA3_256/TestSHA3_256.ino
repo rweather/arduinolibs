@@ -267,6 +267,10 @@ void setup()
 
     Serial.println();
 
+    Serial.print("State Size ...");
+    Serial.println(sizeof(SHA3_256));
+    Serial.println();
+
     Serial.println("Test Vectors:");
     testHash(&sha3_256, &testVectorSHA3_256_1);
     testHash(&sha3_256, &testVectorSHA3_256_2);

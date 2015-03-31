@@ -390,6 +390,10 @@ void setup()
 
     Serial.println();
 
+    Serial.print("State Size ...");
+    Serial.println(sizeof(ChaCha));
+    Serial.println();
+
     Serial.println("Test Vectors:");
     testCipher(&chacha, &testVectorChaCha20_128);
     testCipher(&chacha, &testVectorChaCha20_256);

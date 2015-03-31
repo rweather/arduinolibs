@@ -234,6 +234,10 @@ void setup()
 
     Serial.println();
 
+    Serial.print("State Size ...");
+    Serial.println(sizeof(SHA256));
+    Serial.println();
+
     Serial.println("Test Vectors:");
     testHash(&sha256, &testVectorSHA256_1);
     testHash(&sha256, &testVectorSHA256_2);

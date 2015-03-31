@@ -173,6 +173,10 @@ void setup()
 
     Serial.println();
 
+    Serial.print("State Size ...");
+    Serial.println(sizeof(Poly1305));
+    Serial.println();
+
     Serial.println("Test Vectors:");
     testPoly1305(&poly1305, &testVectorPoly1305_1);
     testPoly1305(&poly1305, &testVectorPoly1305_2);

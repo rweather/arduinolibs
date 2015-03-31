@@ -217,6 +217,10 @@ void setup()
 
     Serial.println();
 
+    Serial.print("State Size ...");
+    Serial.println(sizeof(SHA512));
+    Serial.println();
+
     Serial.println("Test Vectors:");
     testHash(&sha512, &testVectorSHA512_1);
     testHash(&sha512, &testVectorSHA512_2);
