@@ -79,6 +79,7 @@ AuthenticatedCipher::~AuthenticatedCipher()
  * \brief Adds extra data that will be authenticated but not encrypted.
  *
  * \param data The extra data to be authenticated.
+ * \param len The number of bytes of extra data to be authenticated.
  *
  * This function must be called before the first call to encrypt() or
  * decrypt().  That is, it is assumed that all extra data for authentication
@@ -93,7 +94,7 @@ AuthenticatedCipher::~AuthenticatedCipher()
  */
 
 /**
- * \fn void AuthenticatedCipher::AuthenticatedCipher::computeTag(void *tag, size_t len)
+ * \fn void AuthenticatedCipher::computeTag(void *tag, size_t len)
  * \brief Finalizes the encryption process and computes the authentication tag.
  *
  * \param tag Points to the buffer to write the tag to.
@@ -104,7 +105,7 @@ AuthenticatedCipher::~AuthenticatedCipher()
  */
 
 /**
- * \fn bool AuthenticatedCipher::AuthenticatedCipher::checkTag(const void *tag, size_t len)
+ * \fn bool AuthenticatedCipher::checkTag(const void *tag, size_t len)
  * \brief Finalizes the decryption process and checks the authentication tag.
  *
  * \param tag The tag value from the incoming ciphertext to be checked.

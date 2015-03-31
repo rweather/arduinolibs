@@ -20,45 +20,46 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-#ifndef CRYPTO_CHACHA_h
-#define CRYPTO_CHACHA_h
+#ifndef CRYPTO_CHACHAPOLY_H
+#define CRYPTO_CHACHAPOLY_H
 
-#include "Cipher.h"
+#include "AuthenticatedCipher.h"
+#include "ChaCha.h"
+#include "Poly1305.h"
 
-class ChaChaPoly;
-
-class ChaCha : public Cipher
+class ChaChaPoly : public AuthenticatedCipher
 {
 public:
-    explicit ChaCha(uint8_t numRounds = 20);
-    virtual ~ChaCha();
+    ChaChaPoly();
+    virtual ~ChaChaPoly();
 
     size_t keySize() const;
     size_t ivSize() const;
-
-    uint8_t numRounds() const { return rounds; }
-    void setNumRounds(uint8_t numRounds) { rounds = numRounds; }
+    size_t tagSize() const;
 
     bool setKey(const uint8_t *key, size_t len);
     bool setIV(const uint8_t *iv, size_t len);
-    bool setCounter(const uint8_t *counter, size_t len);
 
     void encrypt(uint8_t *output, const uint8_t *input, size_t len);
     void decrypt(uint8_t *output, const uint8_t *input, size_t len);
 
+    void addAuthData(const void *data, size_t len);
+
+    void computeTag(void *tag, size_t len);
+    bool checkTag(const void *tag, size_t len);
+
     void clear();
 
-    static void hashCore(uint32_t *output, const uint32_t *input, uint8_t rounds);
-
 private:
-    uint8_t block[64];
-    uint8_t stream[64];
-    uint8_t rounds;
-    uint8_t posn;
-
-    void keystreamBlock(uint32_t *output);
-
-    friend class ChaChaPoly;
+    ChaCha chacha;
+    Poly1305 poly1305;
+    struct {
+        uint8_t nonce[16];
+        uint64_t authSize;
+        uint64_t dataSize;
+        bool dataStarted;
+        uint8_t ivSize;
+    } state;
 };
 
 #endif

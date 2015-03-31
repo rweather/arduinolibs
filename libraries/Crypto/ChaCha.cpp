@@ -110,7 +110,7 @@ bool ChaCha::setKey(const uint8_t *key, size_t len)
 
 bool ChaCha::setIV(const uint8_t *iv, size_t len)
 {
-    // From draft-nir-cfrg-chacha20-poly1305-04.txt, we can use either
+    // From draft-nir-cfrg-chacha20-poly1305-10.txt, we can use either
     // 64-bit or 96-bit nonces.  The 96-bit nonce consists of the high
     // word of the counter prepended to a regular 64-bit nonce for ChaCha.
     if (len == 8) {
@@ -190,6 +190,29 @@ void ChaCha::encrypt(uint8_t *output, const uint8_t *input, size_t len)
 void ChaCha::decrypt(uint8_t *output, const uint8_t *input, size_t len)
 {
     encrypt(output, input, len);
+}
+
+/**
+ * \brief Generates a single block of output direct from the keystream.
+ *
+ * \param output The output buffer to fill with keystream bytes.
+ *
+ * Unlike encrypt(), this function does not XOR the keystream with
+ * plaintext data.  Instead it generates the keystream directly into
+ * the caller-supplied buffer.  This is useful if the caller knows
+ * that the plaintext is all-zeroes.
+ *
+ * \sa encrypt()
+ */
+void ChaCha::keystreamBlock(uint32_t *output)
+{
+    // Generate the hash output directly into the caller-supplied buffer.
+    hashCore(output, (const uint32_t *)block, rounds);
+    posn = 64;
+
+    // Increment the lowest counter byte.  We are assuming that the caller
+    // is ChaChaPoly::setKey() and that the previous counter value was zero.
+    block[48] = 1;
 }
 
 void ChaCha::clear()

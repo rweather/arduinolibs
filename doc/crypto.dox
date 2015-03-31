@@ -29,6 +29,7 @@
 \li Block ciphers: AES128, AES192, AES256
 \li Block cipher modes: CTR, CFB, CBC, OFB
 \li Stream ciphers: ChaCha
+\li Authenticated encryption with associated data (AEAD): ChaChaPoly
 \li Hash algorithms: SHA1, SHA256, SHA512, SHA3_256, SHA3_512, BLAKE2s, BLAKE2b (regular and HMAC modes)
 \li Message authenticators: Poly1305
 \li Public key algorithms: Curve25519
@@ -68,6 +69,7 @@ Ardunino Mega 2560 running at 16 MHz are similar:
 <tr><td>ChaCha (20 rounds)</td><td align="right">14.87us</td><td align="right">14.88us</td><td align="right">43.74us</td><td align="right">132</td></tr>
 <tr><td>ChaCha (12 rounds)</td><td align="right">10.38us</td><td align="right">10.38us</td><td align="right">43.74us</td><td align="right">132</td></tr>
 <tr><td>ChaCha (8 rounds)</td><td align="right">8.13us</td><td align="right">8.14us</td><td align="right">43.74us</td><td align="right">132</td></tr>
+<tr><td>ChaChaPoly</td><td align="right">41.23us</td><td align="right">41.23us</td><td align="right">902.55us</td><td align="right">255</td></tr>
 <tr><td>SHA1</td><td align="right">21.90us</td><td> </td><td align="right"> </td><td align="right">95</td></tr>
 <tr><td>SHA256</td><td align="right">43.85us</td><td> </td><td align="right"> </td><td align="right">107</td></tr>
 <tr><td>SHA512</td><td align="right">123.24us</td><td> </td><td align="right"> </td><td align="right">211</td></tr>

@@ -252,6 +252,7 @@ void Poly1305::pad()
 {
     if (state.chunkSize != 0) {
         memset(((uint8_t *)state.c) + state.chunkSize, 0, 16 - state.chunkSize);
+        littleToHost(state.c, NUM_LIMBS_128BIT);
         state.c[NUM_LIMBS_128BIT] = 1;
         processChunk();
         state.chunkSize = 0;
