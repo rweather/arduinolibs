@@ -143,7 +143,7 @@ specified address to store the previous seed.  When the system is started
 next time, the previous saved seed is loaded and then deliberately
 overwritten with a new seed.  This ensures that the device will not
 accidentally generate the same sequence of random numbers if it is
-restarted before a new seed can be saved.
+restarted before the first automatic save of the seed.
 
 By default the seed is saved once an hour, although this can be changed
 with \link RNGClass::setAutoSaveTime() RNG.setAutoSaveTime()\endlink.
@@ -199,10 +199,9 @@ compromised).
 
 In Linux terms we want the effect of the <tt>/dev/random</tt> device which
 blocks until sufficient entropy is available to service the request.
-Blocking isn't compatible with the Arduino way of doing things,
-so the library instead provides the
-\link RNGClass::available() RNG.available()\endlink function to poll
-how much entropy is in the global random number pool:
+Blocking isn't very friendly to other application tasks, so the library
+instead provides the \link RNGClass::available() RNG.available()\endlink
+function to poll how much entropy is in the global random number pool:
 
 \code
 byte key[32];
