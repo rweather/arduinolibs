@@ -21,6 +21,7 @@ TransistorNoiseSource noise(A1);
 bool calibrating = false;
 byte data[32];
 unsigned long startTime;
+size_t length = 48; // First block should wait for the pool to fill up.
 
 void setup() {
     Serial.begin(9600);
@@ -65,8 +66,10 @@ void loop() {
     RNG.loop();
 
     // Generate output whenever 32 bytes of entropy have been accumulated.
-    if (RNG.available(sizeof(data))) {
+    // The first time through, we wait for 48 bytes for a full entropy pool.
+    if (RNG.available(length)) {
         RNG.rand(data, sizeof(data));
         printHex(data, sizeof(data));
+        length = 32;
     }
 }
