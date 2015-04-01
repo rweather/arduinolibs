@@ -665,6 +665,7 @@ INPUT                  = ../libraries/LCD \
                          ../libraries/IR \
                          ../libraries/Crypto \
                          ../libraries/RingOscillatorNoiseSource \
+                         ../libraries/TransistorNoiseSource \
                          .
 
 # This tag can be used to specify the character encoding of the source files
@@ -756,6 +757,7 @@ IMAGE_PATH             = ../libraries/BlinkLED/examples/Cylon \
                          ../libraries/RTC/examples/AlarmClock \
                          ../libraries/Crypto \
                          ../libraries/RingOscillatorNoiseSource \
+                         ../libraries/TransistorNoiseSource \
                          ../libraries/DMD \
                          ../libraries/IR \
                          ../libraries/I2C
