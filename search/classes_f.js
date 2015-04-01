@@ -1,6 +1,9 @@
 var searchData=
 [
-  ['textfield',['TextField',['../classTextField.html',1,'']]],
-  ['timefield',['TimeField',['../classTimeField.html',1,'']]],
-  ['transistornoisesource',['TransistorNoiseSource',['../classTransistorNoiseSource.html',1,'']]]
+  ['ringoscillatornoisesource',['RingOscillatorNoiseSource',['../classRingOscillatorNoiseSource.html',1,'']]],
+  ['rngclass',['RNGClass',['../classRNGClass.html',1,'']]],
+  ['rtc',['RTC',['../classRTC.html',1,'']]],
+  ['rtcalarm',['RTCAlarm',['../structRTCAlarm.html',1,'']]],
+  ['rtcdate',['RTCDate',['../structRTCDate.html',1,'']]],
+  ['rtctime',['RTCTime',['../structRTCTime.html',1,'']]]
 ];

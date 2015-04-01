@@ -83,9 +83,11 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 Supported Algorithms</h1>
 <ul>
 <li>Block ciphers: <a class="el" href="classAES128.html" title="AES block cipher with 128-bit keys. ">AES128</a>, <a class="el" href="classAES192.html" title="AES block cipher with 192-bit keys. ">AES192</a>, <a class="el" href="classAES256.html" title="AES block cipher with 256-bit keys. ">AES256</a> </li>
-<li>Block cipher modes: <a class="el" href="classCTR.html" title="Implementation of the Counter (CTR) mode for 128-bit block ciphers. ">CTR</a>, <a class="el" href="classCFB.html" title="Implementation of the Cipher Feedback (CFB) mode for 128-bit block ciphers. ">CFB</a>, <a class="el" href="classCBC.html" title="Implementation of the Cipher Block Chaining (CBC) mode for 128-bit block ciphers. ...">CBC</a>, <a class="el" href="classOFB.html" title="Implementation of the Output Feedback (OFB) mode for 128-bit block ciphers. ">OFB</a> </li>
+<li>Block cipher modes: <a class="el" href="classCTR.html" title="Implementation of the Counter (CTR) mode for 128-bit block ciphers. ">CTR</a>, <a class="el" href="classCFB.html" title="Implementation of the Cipher Feedback (CFB) mode for 128-bit block ciphers. ">CFB</a>, <a class="el" href="classCBC.html" title="Implementation of the Cipher Block Chaining (CBC) mode for 128-bit block ciphers. ...">CBC</a>, <a class="el" href="classOFB.html" title="Implementation of the Output Feedback (OFB) mode for 128-bit block ciphers. ">OFB</a>, <a class="el" href="classGCM.html" title="Implementation of the Galois Counter Mode (GCM). ">GCM</a> </li>
 <li>Stream ciphers: <a class="el" href="classChaCha.html" title="ChaCha stream cipher. ">ChaCha</a> </li>
+<li>Authenticated encryption with associated data (AEAD): <a class="el" href="classChaChaPoly.html" title="Authenticated cipher based on ChaCha and Poly1305. ">ChaChaPoly</a>, <a class="el" href="classGCM.html" title="Implementation of the Galois Counter Mode (GCM). ">GCM</a> </li>
 <li><a class="el" href="classHash.html" title="Abstract base class for cryptographic hash algorithms. ">Hash</a> algorithms: <a class="el" href="classSHA1.html" title="SHA-1 hash algorithm. ">SHA1</a>, <a class="el" href="classSHA256.html" title="SHA-256 hash algorithm. ">SHA256</a>, <a class="el" href="classSHA512.html" title="SHA-512 hash algorithm. ">SHA512</a>, <a class="el" href="classSHA3__256.html" title="SHA3-256 hash algorithm. ">SHA3_256</a>, <a class="el" href="classSHA3__512.html" title="SHA3-512 hash algorithm. ">SHA3_512</a>, <a class="el" href="classBLAKE2s.html" title="BLAKE2s hash algorithm. ">BLAKE2s</a>, <a class="el" href="classBLAKE2b.html" title="BLAKE2b hash algorithm. ">BLAKE2b</a> (regular and HMAC modes) </li>
+<li>Message authenticators: <a class="el" href="classPoly1305.html" title="Poly1305 message authenticator. ">Poly1305</a>, <a class="el" href="classGHASH.html" title="Implementation of the GHASH message authenticator. ">GHASH</a> </li>
 <li>Public key algorithms: <a class="el" href="classCurve25519.html" title="Diffie-Hellman key agreement based on the elliptic curve modulo 2^255 - 19. ">Curve25519</a> </li>
 <li>Random number generation: <a class="el" href="classRNGClass.html">RNG</a>, <a class="el" href="classTransistorNoiseSource.html" title="Processes the signal from a transistor-based noise source. ">TransistorNoiseSource</a>, <a class="el" href="classRingOscillatorNoiseSource.html" title="Processes the signal from a ring oscillator based noise source. ">RingOscillatorNoiseSource</a></li>
 </ul>
@@ -102,33 +104,53 @@ Performance</h1>
 <p>All figures are for the Arduino Uno running at 16 MHz. Figures for the Ardunino Mega 2560 running at 16 MHz are similar:</p>
 <table class="doxtable">
 <tr>
-<td>Algorithm</td><td>Encryption / Hashing (per byte)</td><td>Decryption (per byte)</td><td>Key Setup</td><td>State Size (bytes) </td></tr>
+<td>Encryption Algorithm</td><td align="right">Encryption (per byte)</td><td align="right">Decryption (per byte)</td><td>Key Setup</td><td>State Size (bytes) </td></tr>
 <tr>
-<td><a class="el" href="classAES128.html" title="AES block cipher with 128-bit keys. ">AES128</a> (ECB mode)</td><td align="right">36.90us</td><td align="right">66.48us</td><td align="right">160.00us</td><td align="right">208 </td></tr>
+<td><a class="el" href="classAES128.html" title="AES block cipher with 128-bit keys. ">AES128</a> (ECB mode)</td><td align="right">36.90us</td><td align="right">66.48us</td><td align="right">160.00us</td><td align="right">213 </td></tr>
 <tr>
-<td><a class="el" href="classAES192.html" title="AES block cipher with 192-bit keys. ">AES192</a> (ECB mode)</td><td align="right">44.20us</td><td align="right">80.35us</td><td align="right">166.54us</td><td align="right">240 </td></tr>
+<td><a class="el" href="classAES192.html" title="AES block cipher with 192-bit keys. ">AES192</a> (ECB mode)</td><td align="right">44.20us</td><td align="right">80.35us</td><td align="right">166.54us</td><td align="right">245 </td></tr>
 <tr>
-<td><a class="el" href="classAES256.html" title="AES block cipher with 256-bit keys. ">AES256</a> (ECB mode)</td><td align="right">51.50us</td><td align="right">94.22us</td><td align="right">227.97us</td><td align="right">272 </td></tr>
+<td><a class="el" href="classAES256.html" title="AES block cipher with 256-bit keys. ">AES256</a> (ECB mode)</td><td align="right">51.50us</td><td align="right">94.22us</td><td align="right">227.97us</td><td align="right">277 </td></tr>
 <tr>
-<td><a class="el" href="classChaCha.html" title="ChaCha stream cipher. ">ChaCha</a> (20 rounds)</td><td align="right">14.87us</td><td align="right">14.88us</td><td align="right">43.74us</td><td align="right">130 </td></tr>
+<td><a class="el" href="classChaCha.html" title="ChaCha stream cipher. ">ChaCha</a> (20 rounds)</td><td align="right">14.87us</td><td align="right">14.88us</td><td align="right">43.74us</td><td align="right">132 </td></tr>
 <tr>
-<td><a class="el" href="classChaCha.html" title="ChaCha stream cipher. ">ChaCha</a> (12 rounds)</td><td align="right">10.38us</td><td align="right">10.38us</td><td align="right">43.74us</td><td align="right">130 </td></tr>
+<td><a class="el" href="classChaCha.html" title="ChaCha stream cipher. ">ChaCha</a> (12 rounds)</td><td align="right">10.38us</td><td align="right">10.38us</td><td align="right">43.74us</td><td align="right">132 </td></tr>
 <tr>
-<td><a class="el" href="classChaCha.html" title="ChaCha stream cipher. ">ChaCha</a> (8 rounds)</td><td align="right">8.13us</td><td align="right">8.14us</td><td align="right">43.74us</td><td align="right">130 </td></tr>
+<td><a class="el" href="classChaCha.html" title="ChaCha stream cipher. ">ChaCha</a> (8 rounds)</td><td align="right">8.13us</td><td align="right">8.14us</td><td align="right">43.74us</td><td align="right">132 </td></tr>
 <tr>
-<td><a class="el" href="classSHA1.html" title="SHA-1 hash algorithm. ">SHA1</a></td><td align="right">21.90us</td><td></td><td align="right"></td><td align="right">93 </td></tr>
+<td colspan="5"></td></tr>
 <tr>
-<td><a class="el" href="classSHA256.html" title="SHA-256 hash algorithm. ">SHA256</a></td><td align="right">43.85us</td><td></td><td align="right"></td><td align="right">105 </td></tr>
+<td>AEAD Algorithm</td><td align="right">Encryption (per byte)</td><td align="right">Decryption (per byte)</td><td>Key Setup</td><td>State Size (bytes) </td></tr>
 <tr>
-<td><a class="el" href="classSHA512.html" title="SHA-512 hash algorithm. ">SHA512</a></td><td align="right">123.24us</td><td></td><td align="right"></td><td align="right">209 </td></tr>
+<td><a class="el" href="classChaChaPoly.html" title="Authenticated cipher based on ChaCha and Poly1305. ">ChaChaPoly</a></td><td align="right">41.23us</td><td align="right">41.23us</td><td align="right">902.55us</td><td align="right">255 </td></tr>
 <tr>
-<td><a class="el" href="classSHA3__256.html" title="SHA3-256 hash algorithm. ">SHA3_256</a></td><td align="right">121.69us</td><td></td><td align="right"></td><td align="right">403 </td></tr>
+<td><a class="el" href="classGCM.html" title="Implementation of the Galois Counter Mode (GCM). ">GCM</a>&lt;<a class="el" href="classAES128.html" title="AES block cipher with 128-bit keys. ">AES128</a>&gt;</td><td align="right">186.47us</td><td align="right">186.42us</td><td align="right">1388.43us</td><td align="right">316 </td></tr>
 <tr>
-<td><a class="el" href="classSHA3__512.html" title="SHA3-512 hash algorithm. ">SHA3_512</a></td><td align="right">229.12us</td><td></td><td align="right"></td><td align="right">403 </td></tr>
+<td><a class="el" href="classGCM.html" title="Implementation of the Galois Counter Mode (GCM). ">GCM</a>&lt;<a class="el" href="classAES192.html" title="AES block cipher with 192-bit keys. ">AES192</a>&gt;</td><td align="right">194.17us</td><td align="right">193.72us</td><td align="right">1628.67us</td><td align="right">348 </td></tr>
 <tr>
-<td><a class="el" href="classBLAKE2s.html" title="BLAKE2s hash algorithm. ">BLAKE2s</a></td><td align="right">18.54us</td><td></td><td align="right"></td><td align="right">169 </td></tr>
+<td><a class="el" href="classGCM.html" title="Implementation of the Galois Counter Mode (GCM). ">GCM</a>&lt;<a class="el" href="classAES256.html" title="AES block cipher with 256-bit keys. ">AES256</a>&gt;</td><td align="right">201.47us</td><td align="right">201.02us</td><td align="right">1923.78us</td><td align="right">380 </td></tr>
 <tr>
-<td><a class="el" href="classBLAKE2b.html" title="BLAKE2b hash algorithm. ">BLAKE2b</a></td><td align="right">50.58us</td><td></td><td align="right"></td><td align="right">337 </td></tr>
+<td colspan="5"></td></tr>
+<tr>
+<td><a class="el" href="classHash.html" title="Abstract base class for cryptographic hash algorithms. ">Hash</a> Algorithm</td><td align="right">Hashing (per byte)</td><td align="right">Finalization</td><td>Key Setup</td><td>State Size (bytes) </td></tr>
+<tr>
+<td><a class="el" href="classSHA1.html" title="SHA-1 hash algorithm. ">SHA1</a></td><td align="right">21.90us</td><td></td><td align="right"></td><td align="right">95 </td></tr>
+<tr>
+<td><a class="el" href="classSHA256.html" title="SHA-256 hash algorithm. ">SHA256</a></td><td align="right">43.85us</td><td></td><td align="right"></td><td align="right">107 </td></tr>
+<tr>
+<td><a class="el" href="classSHA512.html" title="SHA-512 hash algorithm. ">SHA512</a></td><td align="right">123.24us</td><td></td><td align="right"></td><td align="right">211 </td></tr>
+<tr>
+<td><a class="el" href="classSHA3__256.html" title="SHA3-256 hash algorithm. ">SHA3_256</a></td><td align="right">121.69us</td><td></td><td align="right"></td><td align="right">405 </td></tr>
+<tr>
+<td><a class="el" href="classSHA3__512.html" title="SHA3-512 hash algorithm. ">SHA3_512</a></td><td align="right">229.12us</td><td></td><td align="right"></td><td align="right">405 </td></tr>
+<tr>
+<td><a class="el" href="classBLAKE2s.html" title="BLAKE2s hash algorithm. ">BLAKE2s</a></td><td align="right">18.54us</td><td></td><td align="right"></td><td align="right">171 </td></tr>
+<tr>
+<td><a class="el" href="classBLAKE2b.html" title="BLAKE2b hash algorithm. ">BLAKE2b</a></td><td align="right">50.58us</td><td></td><td align="right"></td><td align="right">339 </td></tr>
+<tr>
+<td><a class="el" href="classPoly1305.html" title="Poly1305 message authenticator. ">Poly1305</a></td><td align="right">26.29us</td><td></td><td align="right"></td><td align="right">87 </td></tr>
+<tr>
+<td><a class="el" href="classGHASH.html" title="Implementation of the GHASH message authenticator. ">GHASH</a></td><td align="right">148.14us</td><td></td><td align="right"></td><td align="right">33 </td></tr>
 </table>
 <p>Where a cipher supports more than one key size (such as <a class="el" href="classChaCha.html" title="ChaCha stream cipher. ">ChaCha</a>), the values are typically almost identical for 128-bit and 256-bit keys so only the maximum is shown above.</p>
 <p>Public key algorithms have the following results on an Arduino Uno:</p>
@@ -145,7 +167,7 @@ Performance</h1>
 </div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Mar 29 2015 08:30:13 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Apr 1 2015 16:36:10 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

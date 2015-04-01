@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['ofb',['OFB',['../classOFB.html',1,'']]],
-  ['ofbcommon',['OFBCommon',['../classOFBCommon.html',1,'']]]
+  ['noisesource',['NoiseSource',['../classNoiseSource.html',1,'']]]
 ];

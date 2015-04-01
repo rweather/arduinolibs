@@ -436,7 +436,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00455"></a><span class="lineno">  455</span>&#160;    }</div>
 <div class="line"><a name="l00456"></a><span class="lineno">  456</span>&#160;}</div>
 <div class="line"><a name="l00457"></a><span class="lineno">  457</span>&#160;</div>
-<div class="line"><a name="l00471"></a><span class="lineno">  471</span>&#160;Curve25519::limb_t Curve25519::reduceQuick(limb_t *x)</div>
+<div class="line"><a name="l00471"></a><span class="lineno">  471</span>&#160;limb_t Curve25519::reduceQuick(limb_t *x)</div>
 <div class="line"><a name="l00472"></a><span class="lineno">  472</span>&#160;{</div>
 <div class="line"><a name="l00473"></a><span class="lineno">  473</span>&#160;    limb_t temp[NUM_LIMBS];</div>
 <div class="line"><a name="l00474"></a><span class="lineno">  474</span>&#160;    dlimb_t carry;</div>
@@ -509,13 +509,13 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00570"></a><span class="lineno">  570</span>&#160;<span class="keywordtype">void</span> Curve25519::mulA24(limb_t *result, <span class="keyword">const</span> limb_t *x)</div>
 <div class="line"><a name="l00571"></a><span class="lineno">  571</span>&#160;{</div>
 <div class="line"><a name="l00572"></a><span class="lineno">  572</span>&#160;    <span class="comment">// The constant a24 = 121665 (0x1DB41) as a limb array.</span></div>
-<div class="line"><a name="l00573"></a><span class="lineno">  573</span>&#160;<span class="preprocessor">#if CURVE25519_LIMB_8BIT</span></div>
+<div class="line"><a name="l00573"></a><span class="lineno">  573</span>&#160;<span class="preprocessor">#if BIGNUMBER_LIMB_8BIT</span></div>
 <div class="line"><a name="l00574"></a><span class="lineno">  574</span>&#160;<span class="preprocessor"></span>    <span class="keyword">static</span> limb_t <span class="keyword">const</span> a24[3] PROGMEM = {0x41, 0xDB, 0x01};</div>
 <div class="line"><a name="l00575"></a><span class="lineno">  575</span>&#160;<span class="preprocessor">    #define pgm_read_a24(index) (pgm_read_byte(&amp;(a24[(index)])))</span></div>
-<div class="line"><a name="l00576"></a><span class="lineno">  576</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#elif CURVE25519_LIMB_16BIT</span></div>
+<div class="line"><a name="l00576"></a><span class="lineno">  576</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#elif BIGNUMBER_LIMB_16BIT</span></div>
 <div class="line"><a name="l00577"></a><span class="lineno">  577</span>&#160;<span class="preprocessor"></span>    <span class="keyword">static</span> limb_t <span class="keyword">const</span> a24[2] PROGMEM = {0xDB41, 0x0001};</div>
 <div class="line"><a name="l00578"></a><span class="lineno">  578</span>&#160;<span class="preprocessor">    #define pgm_read_a24(index) (pgm_read_word(&amp;(a24[(index)])))</span></div>
-<div class="line"><a name="l00579"></a><span class="lineno">  579</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#elif CURVE25519_LIMB_32BIT</span></div>
+<div class="line"><a name="l00579"></a><span class="lineno">  579</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#elif BIGNUMBER_LIMB_32BIT</span></div>
 <div class="line"><a name="l00580"></a><span class="lineno">  580</span>&#160;<span class="preprocessor"></span>    <span class="keyword">static</span> limb_t <span class="keyword">const</span> a24[1] PROGMEM = {0x0001DB41};</div>
 <div class="line"><a name="l00581"></a><span class="lineno">  581</span>&#160;<span class="preprocessor">    #define pgm_read_a24(index) (pgm_read_dword(&amp;(a24[(index)])))</span></div>
 <div class="line"><a name="l00582"></a><span class="lineno">  582</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#else</span></div>
@@ -671,15 +671,15 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00769"></a><span class="lineno">  769</span>&#160;</div>
 <div class="line"><a name="l00782"></a><span class="lineno">  782</span>&#160;<span class="keywordtype">void</span> Curve25519::unpack(limb_t *result, <span class="keyword">const</span> uint8_t *x)</div>
 <div class="line"><a name="l00783"></a><span class="lineno">  783</span>&#160;{</div>
-<div class="line"><a name="l00784"></a><span class="lineno">  784</span>&#160;<span class="preprocessor">#if CURVE25519_LIMB_8BIT</span></div>
+<div class="line"><a name="l00784"></a><span class="lineno">  784</span>&#160;<span class="preprocessor">#if BIGNUMBER_LIMB_8BIT</span></div>
 <div class="line"><a name="l00785"></a><span class="lineno">  785</span>&#160;<span class="preprocessor"></span>    memcpy(result, x, 32);</div>
 <div class="line"><a name="l00786"></a><span class="lineno">  786</span>&#160;    result[31] &amp;= 0x7F;</div>
-<div class="line"><a name="l00787"></a><span class="lineno">  787</span>&#160;<span class="preprocessor">#elif CURVE25519_LIMB_16BIT</span></div>
+<div class="line"><a name="l00787"></a><span class="lineno">  787</span>&#160;<span class="preprocessor">#elif BIGNUMBER_LIMB_16BIT</span></div>
 <div class="line"><a name="l00788"></a><span class="lineno">  788</span>&#160;<span class="preprocessor"></span>    <span class="keywordflow">for</span> (uint8_t posn = 0; posn &lt; 16; ++posn) {</div>
 <div class="line"><a name="l00789"></a><span class="lineno">  789</span>&#160;        result[posn] = ((limb_t)x[posn * 2]) | (((limb_t)x[posn * 2 + 1]) &lt;&lt; 8);</div>
 <div class="line"><a name="l00790"></a><span class="lineno">  790</span>&#160;    }</div>
 <div class="line"><a name="l00791"></a><span class="lineno">  791</span>&#160;    result[15] &amp;= 0x7FFF;</div>
-<div class="line"><a name="l00792"></a><span class="lineno">  792</span>&#160;<span class="preprocessor">#elif CURVE25519_LIMB_32BIT</span></div>
+<div class="line"><a name="l00792"></a><span class="lineno">  792</span>&#160;<span class="preprocessor">#elif BIGNUMBER_LIMB_32BIT</span></div>
 <div class="line"><a name="l00793"></a><span class="lineno">  793</span>&#160;<span class="preprocessor"></span>    <span class="keywordflow">for</span> (uint8_t posn = 0; posn &lt; 8; ++posn) {</div>
 <div class="line"><a name="l00794"></a><span class="lineno">  794</span>&#160;        result[posn] = ((limb_t)x[posn * 4]) |</div>
 <div class="line"><a name="l00795"></a><span class="lineno">  795</span>&#160;                      (((limb_t)x[posn * 4 + 1]) &lt;&lt; 8) |</div>
@@ -692,15 +692,15 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00802"></a><span class="lineno">  802</span>&#160;</div>
 <div class="line"><a name="l00812"></a><span class="lineno">  812</span>&#160;<span class="keywordtype">void</span> Curve25519::pack(uint8_t *result, <span class="keyword">const</span> limb_t *x)</div>
 <div class="line"><a name="l00813"></a><span class="lineno">  813</span>&#160;{</div>
-<div class="line"><a name="l00814"></a><span class="lineno">  814</span>&#160;<span class="preprocessor">#if CURVE25519_LIMB_8BIT</span></div>
+<div class="line"><a name="l00814"></a><span class="lineno">  814</span>&#160;<span class="preprocessor">#if BIGNUMBER_LIMB_8BIT</span></div>
 <div class="line"><a name="l00815"></a><span class="lineno">  815</span>&#160;<span class="preprocessor"></span>    memcpy(result, x, 32);</div>
-<div class="line"><a name="l00816"></a><span class="lineno">  816</span>&#160;<span class="preprocessor">#elif CURVE25519_LIMB_16BIT</span></div>
+<div class="line"><a name="l00816"></a><span class="lineno">  816</span>&#160;<span class="preprocessor">#elif BIGNUMBER_LIMB_16BIT</span></div>
 <div class="line"><a name="l00817"></a><span class="lineno">  817</span>&#160;<span class="preprocessor"></span>    <span class="keywordflow">for</span> (uint8_t posn = 0; posn &lt; 16; ++posn) {</div>
 <div class="line"><a name="l00818"></a><span class="lineno">  818</span>&#160;        limb_t value = x[posn];</div>
 <div class="line"><a name="l00819"></a><span class="lineno">  819</span>&#160;        result[posn * 2]     = (uint8_t)value;</div>
 <div class="line"><a name="l00820"></a><span class="lineno">  820</span>&#160;        result[posn * 2 + 1] = (uint8_t)(value &gt;&gt; 8);</div>
 <div class="line"><a name="l00821"></a><span class="lineno">  821</span>&#160;    }</div>
-<div class="line"><a name="l00822"></a><span class="lineno">  822</span>&#160;<span class="preprocessor">#elif CURVE25519_LIMB_32BIT</span></div>
+<div class="line"><a name="l00822"></a><span class="lineno">  822</span>&#160;<span class="preprocessor">#elif BIGNUMBER_LIMB_32BIT</span></div>
 <div class="line"><a name="l00823"></a><span class="lineno">  823</span>&#160;<span class="preprocessor"></span>    <span class="keywordflow">for</span> (uint8_t posn = 0; posn &lt; 8; ++posn) {</div>
 <div class="line"><a name="l00824"></a><span class="lineno">  824</span>&#160;        limb_t value = x[posn];</div>
 <div class="line"><a name="l00825"></a><span class="lineno">  825</span>&#160;        result[posn * 4]     = (uint8_t)value;</div>
@@ -717,7 +717,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Mar 29 2015 08:30:13 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Apr 1 2015 16:36:10 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

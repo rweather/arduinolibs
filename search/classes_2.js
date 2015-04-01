@@ -5,6 +5,7 @@ var searchData=
   ['cfb',['CFB',['../classCFB.html',1,'']]],
   ['cfbcommon',['CFBCommon',['../classCFBCommon.html',1,'']]],
   ['chacha',['ChaCha',['../classChaCha.html',1,'']]],
+  ['chachapoly',['ChaChaPoly',['../classChaChaPoly.html',1,'']]],
   ['charlieplex',['Charlieplex',['../classCharlieplex.html',1,'']]],
   ['chaseleds',['ChaseLEDs',['../classChaseLEDs.html',1,'']]],
   ['cipher',['Cipher',['../classCipher.html',1,'']]],

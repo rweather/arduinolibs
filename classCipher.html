@@ -101,15 +101,19 @@ Inheritance diagram for Cipher:</div>
  <div class="center">
   <img src="classCipher.png" usemap="#Cipher_map" alt=""/>
   <map id="Cipher_map" name="Cipher_map">
-<area href="classCBCCommon.html" title="Concrete base class to assist with implementing CBC for 128-bit block ciphers. " alt="CBCCommon" shape="rect" coords="0,56,86,80"/>
-<area href="classCFBCommon.html" title="Concrete base class to assist with implementing CFB for 128-bit block ciphers. " alt="CFBCommon" shape="rect" coords="96,56,182,80"/>
-<area href="classChaCha.html" title="ChaCha stream cipher. " alt="ChaCha" shape="rect" coords="192,56,278,80"/>
-<area href="classCTRCommon.html" title="Concrete base class to assist with implementing CTR mode for 128-bit block ciphers. " alt="CTRCommon" shape="rect" coords="288,56,374,80"/>
-<area href="classOFBCommon.html" title="Concrete base class to assist with implementing OFB for 128-bit block ciphers. " alt="OFBCommon" shape="rect" coords="384,56,470,80"/>
-<area href="classCBC.html" title="Implementation of the Cipher Block Chaining (CBC) mode for 128-bit block ciphers. ..." alt="CBC&lt; T &gt;" shape="rect" coords="0,112,86,136"/>
-<area href="classCFB.html" title="Implementation of the Cipher Feedback (CFB) mode for 128-bit block ciphers. " alt="CFB&lt; T &gt;" shape="rect" coords="96,112,182,136"/>
-<area href="classCTR.html" title="Implementation of the Counter (CTR) mode for 128-bit block ciphers. " alt="CTR&lt; T &gt;" shape="rect" coords="288,112,374,136"/>
-<area href="classOFB.html" title="Implementation of the Output Feedback (OFB) mode for 128-bit block ciphers. " alt="OFB&lt; T &gt;" shape="rect" coords="384,112,470,136"/>
+<area href="classAuthenticatedCipher.html" title="Abstract base class for authenticated ciphers. " alt="AuthenticatedCipher" shape="rect" coords="68,56,195,80"/>
+<area href="classCBCCommon.html" title="Concrete base class to assist with implementing CBC for 128-bit block ciphers. " alt="CBCCommon" shape="rect" coords="274,56,401,80"/>
+<area href="classCFBCommon.html" title="Concrete base class to assist with implementing CFB for 128-bit block ciphers. " alt="CFBCommon" shape="rect" coords="411,56,538,80"/>
+<area href="classChaCha.html" title="ChaCha stream cipher. " alt="ChaCha" shape="rect" coords="548,56,675,80"/>
+<area href="classCTRCommon.html" title="Concrete base class to assist with implementing CTR mode for 128-bit block ciphers. " alt="CTRCommon" shape="rect" coords="685,56,812,80"/>
+<area href="classOFBCommon.html" title="Concrete base class to assist with implementing OFB for 128-bit block ciphers. " alt="OFBCommon" shape="rect" coords="822,56,949,80"/>
+<area href="classChaChaPoly.html" title="Authenticated cipher based on ChaCha and Poly1305. " alt="ChaChaPoly" shape="rect" coords="0,112,127,136"/>
+<area href="classGCMCommon.html" title="Concrete base class to assist with implementing GCM for 128-bit block ciphers. " alt="GCMCommon" shape="rect" coords="137,112,264,136"/>
+<area href="classCBC.html" title="Implementation of the Cipher Block Chaining (CBC) mode for 128-bit block ciphers. ..." alt="CBC&lt; T &gt;" shape="rect" coords="274,112,401,136"/>
+<area href="classCFB.html" title="Implementation of the Cipher Feedback (CFB) mode for 128-bit block ciphers. " alt="CFB&lt; T &gt;" shape="rect" coords="411,112,538,136"/>
+<area href="classCTR.html" title="Implementation of the Counter (CTR) mode for 128-bit block ciphers. " alt="CTR&lt; T &gt;" shape="rect" coords="685,112,812,136"/>
+<area href="classOFB.html" title="Implementation of the Output Feedback (OFB) mode for 128-bit block ciphers. " alt="OFB&lt; T &gt;" shape="rect" coords="822,112,949,136"/>
+<area href="classGCM.html" title="Implementation of the Galois Counter Mode (GCM). " alt="GCM&lt; T &gt;" shape="rect" coords="137,168,264,192"/>
 </map>
  </div></div>
 <table class="memberdecls">
@@ -205,7 +209,7 @@ Public Member Functions</h2></td></tr>
 <p>Clears all security-sensitive state from this cipher. </p>
 <p>Security-sensitive information includes key schedules, initialization vectors, and any temporary state that is used by <a class="el" href="classCipher.html#ad2832bd61039d61560e34ea3382ca562" title="Encrypts an input buffer and writes the ciphertext to an output buffer. ">encrypt()</a> or <a class="el" href="classCipher.html#ac6099d1a0d7f2ff67b0e4ccb4a17eb08" title="Decrypts an input buffer and writes the plaintext to an output buffer. ">decrypt()</a> which is stored in the cipher itself. </p>
 
-<p>Implemented in <a class="el" href="classChaCha.html#af533905f679066c41f4d6cd76bddb4cb">ChaCha</a>, <a class="el" href="classCTRCommon.html#ac0d6381c02fe2a8a017ad66d006a6ef2">CTRCommon</a>, <a class="el" href="classCBCCommon.html#a7befadfe7384e0e857a96a59bf3845e9">CBCCommon</a>, <a class="el" href="classCFBCommon.html#a847d320b0fe7f329385f26511b42c40d">CFBCommon</a>, and <a class="el" href="classOFBCommon.html#a55bf2396beb91c457bfc4c20ef5c8123">OFBCommon</a>.</p>
+<p>Implemented in <a class="el" href="classChaChaPoly.html#a2d7fc3fd05a0b6c7c9c21fff6e939c9a">ChaChaPoly</a>, <a class="el" href="classGCMCommon.html#a06868ebd67a571aa68d88d5d072cece9">GCMCommon</a>, <a class="el" href="classChaCha.html#af533905f679066c41f4d6cd76bddb4cb">ChaCha</a>, <a class="el" href="classCTRCommon.html#ac0d6381c02fe2a8a017ad66d006a6ef2">CTRCommon</a>, <a class="el" href="classCBCCommon.html#a7befadfe7384e0e857a96a59bf3845e9">CBCCommon</a>, <a class="el" href="classCFBCommon.html#a847d320b0fe7f329385f26511b42c40d">CFBCommon</a>, and <a class="el" href="classOFBCommon.html#a55bf2396beb91c457bfc4c20ef5c8123">OFBCommon</a>.</p>
 
 </div>
 </div>
@@ -259,7 +263,7 @@ Public Member Functions</h2></td></tr>
 <p>The <a class="el" href="classCipher.html#ac6099d1a0d7f2ff67b0e4ccb4a17eb08" title="Decrypts an input buffer and writes the plaintext to an output buffer. ">decrypt()</a> function can be called multiple times with different regions of the ciphertext data.</p>
 <dl class="section see"><dt>See Also</dt><dd><a class="el" href="classCipher.html#ad2832bd61039d61560e34ea3382ca562" title="Encrypts an input buffer and writes the ciphertext to an output buffer. ">encrypt()</a> </dd></dl>
 
-<p>Implemented in <a class="el" href="classChaCha.html#a1f54b2b51b59428010f81a6c4dc4e42c">ChaCha</a>, <a class="el" href="classCTRCommon.html#a0943387cf1124258389702e0690740fe">CTRCommon</a>, <a class="el" href="classCBCCommon.html#ab46a2625cae9a654c708e1f31a0e22b6">CBCCommon</a>, <a class="el" href="classCFBCommon.html#aaaa3d61c5743e30e355207c193c0b0ef">CFBCommon</a>, and <a class="el" href="classOFBCommon.html#aeb3636d7175b150e2bf16367e51c2e36">OFBCommon</a>.</p>
+<p>Implemented in <a class="el" href="classChaCha.html#a1f54b2b51b59428010f81a6c4dc4e42c">ChaCha</a>, <a class="el" href="classChaChaPoly.html#a42f556f202b1166486434ee15b6d95a0">ChaChaPoly</a>, <a class="el" href="classCTRCommon.html#a0943387cf1124258389702e0690740fe">CTRCommon</a>, <a class="el" href="classGCMCommon.html#a60912d3ab5766aa68dc9b3111ac2c0d7">GCMCommon</a>, <a class="el" href="classCBCCommon.html#ab46a2625cae9a654c708e1f31a0e22b6">CBCCommon</a>, <a class="el" href="classCFBCommon.html#aaaa3d61c5743e30e355207c193c0b0ef">CFBCommon</a>, and <a class="el" href="classOFBCommon.html#aeb3636d7175b150e2bf16367e51c2e36">OFBCommon</a>.</p>
 
 </div>
 </div>
@@ -313,7 +317,7 @@ Public Member Functions</h2></td></tr>
 <p>The <a class="el" href="classCipher.html#ad2832bd61039d61560e34ea3382ca562" title="Encrypts an input buffer and writes the ciphertext to an output buffer. ">encrypt()</a> function can be called multiple times with different regions of the plaintext data.</p>
 <dl class="section see"><dt>See Also</dt><dd><a class="el" href="classCipher.html#ac6099d1a0d7f2ff67b0e4ccb4a17eb08" title="Decrypts an input buffer and writes the plaintext to an output buffer. ">decrypt()</a> </dd></dl>
 
-<p>Implemented in <a class="el" href="classChaCha.html#acd4fff140b8871c233d9a31abf753ed8">ChaCha</a>, <a class="el" href="classCTRCommon.html#a201bda584d111552ce8ec09fac759963">CTRCommon</a>, <a class="el" href="classCBCCommon.html#a41d2f655a7df13cfcd009b2882e13147">CBCCommon</a>, <a class="el" href="classCFBCommon.html#a57af3692389bed300d3cfdf351351c51">CFBCommon</a>, and <a class="el" href="classOFBCommon.html#a984d81a460e0799895b19dc48c3b5cf8">OFBCommon</a>.</p>
+<p>Implemented in <a class="el" href="classChaCha.html#acd4fff140b8871c233d9a31abf753ed8">ChaCha</a>, <a class="el" href="classChaChaPoly.html#a7df4acd04f459ecf9d3b24317bde94a3">ChaChaPoly</a>, <a class="el" href="classCTRCommon.html#a201bda584d111552ce8ec09fac759963">CTRCommon</a>, <a class="el" href="classGCMCommon.html#a01ac69afe3d9fc4d72b2ea5dc242e55c">GCMCommon</a>, <a class="el" href="classCBCCommon.html#a41d2f655a7df13cfcd009b2882e13147">CBCCommon</a>, <a class="el" href="classCFBCommon.html#a57af3692389bed300d3cfdf351351c51">CFBCommon</a>, and <a class="el" href="classOFBCommon.html#a984d81a460e0799895b19dc48c3b5cf8">OFBCommon</a>.</p>
 
 </div>
 </div>
@@ -341,7 +345,7 @@ Public Member Functions</h2></td></tr>
 <p>Size of the initialization vector for this cipher, in bytes. </p>
 <p>If the cipher does not need an initialization vector, this function will return zero. </p>
 
-<p>Implemented in <a class="el" href="classCBCCommon.html#a016277533730284a38bb6ad8cd6f91ce">CBCCommon</a>, <a class="el" href="classCFBCommon.html#a55db1be69de87aafe5601d31be918ebb">CFBCommon</a>, <a class="el" href="classChaCha.html#afaa3df343a7d07976bd7e03a0c1bf43c">ChaCha</a>, <a class="el" href="classCTRCommon.html#a98c1717d11d8da8e1fa108607358774a">CTRCommon</a>, and <a class="el" href="classOFBCommon.html#a67b4639aaece17a796fcba3a2ce8b43c">OFBCommon</a>.</p>
+<p>Implemented in <a class="el" href="classChaCha.html#afaa3df343a7d07976bd7e03a0c1bf43c">ChaCha</a>, <a class="el" href="classChaChaPoly.html#ac3ebfaaaffe9d607905681949e75140d">ChaChaPoly</a>, <a class="el" href="classGCMCommon.html#a01cff072505e861fd20f6cfee1e10fb2">GCMCommon</a>, <a class="el" href="classCBCCommon.html#a016277533730284a38bb6ad8cd6f91ce">CBCCommon</a>, <a class="el" href="classCFBCommon.html#a55db1be69de87aafe5601d31be918ebb">CFBCommon</a>, <a class="el" href="classCTRCommon.html#a98c1717d11d8da8e1fa108607358774a">CTRCommon</a>, and <a class="el" href="classOFBCommon.html#a67b4639aaece17a796fcba3a2ce8b43c">OFBCommon</a>.</p>
 
 </div>
 </div>
@@ -370,7 +374,7 @@ Public Member Functions</h2></td></tr>
 <p>If the cipher supports variable-sized keys, <a class="el" href="classCipher.html#a4cea432ea0278c865441f17cbb88b1ab" title="Default size of the key for this cipher, in bytes. ">keySize()</a> indicates the default or recommended key size. The cipher may support other key sizes.</p>
 <dl class="section see"><dt>See Also</dt><dd><a class="el" href="classCipher.html#a0dfe133bda81dfa680b668f5908ccbe5" title="Sets the key to use for future encryption and decryption operations. ">setKey()</a>, <a class="el" href="classCipher.html#ab8b53ddc4ce431f03c2a1903d70ace9c" title="Size of the initialization vector for this cipher, in bytes. ">ivSize()</a> </dd></dl>
 
-<p>Implemented in <a class="el" href="classCBCCommon.html#adb7daacfe2a4fca3d13b62b75372fe4e">CBCCommon</a>, <a class="el" href="classCFBCommon.html#a82899da983bc70bc8152ee67f424552e">CFBCommon</a>, <a class="el" href="classChaCha.html#af286083291fab2bd36dc7ad1f54d5cd7">ChaCha</a>, <a class="el" href="classCTRCommon.html#a29ce8e13a302350397fc6790a686bea2">CTRCommon</a>, and <a class="el" href="classOFBCommon.html#a76ea9f9ea9dd137778338813e534a8ce">OFBCommon</a>.</p>
+<p>Implemented in <a class="el" href="classChaCha.html#af286083291fab2bd36dc7ad1f54d5cd7">ChaCha</a>, <a class="el" href="classChaChaPoly.html#a666760e68cb53f28ba0a8dc09039c0fb">ChaChaPoly</a>, <a class="el" href="classGCMCommon.html#a134ba35e740a18bee3c45502b4149eae">GCMCommon</a>, <a class="el" href="classCBCCommon.html#adb7daacfe2a4fca3d13b62b75372fe4e">CBCCommon</a>, <a class="el" href="classCFBCommon.html#a82899da983bc70bc8152ee67f424552e">CFBCommon</a>, <a class="el" href="classCTRCommon.html#a29ce8e13a302350397fc6790a686bea2">CTRCommon</a>, and <a class="el" href="classOFBCommon.html#a76ea9f9ea9dd137778338813e534a8ce">OFBCommon</a>.</p>
 
 </div>
 </div>
@@ -419,7 +423,7 @@ Public Member Functions</h2></td></tr>
 <dl class="section note"><dt>Note</dt><dd>The IV is not encoded into the output stream by <a class="el" href="classCipher.html#ad2832bd61039d61560e34ea3382ca562" title="Encrypts an input buffer and writes the ciphertext to an output buffer. ">encrypt()</a>. The caller is responsible for communicating the IV to the other party.</dd></dl>
 <dl class="section see"><dt>See Also</dt><dd><a class="el" href="classCipher.html#ab8b53ddc4ce431f03c2a1903d70ace9c" title="Size of the initialization vector for this cipher, in bytes. ">ivSize()</a> </dd></dl>
 
-<p>Implemented in <a class="el" href="classChaCha.html#a734f3246b1e6810c63637b8cda26b259">ChaCha</a>, <a class="el" href="classCTRCommon.html#aad289af3eb013cb3ffda6d7e8e8b3d04">CTRCommon</a>, <a class="el" href="classCBCCommon.html#ac7a586217835055b3a354bb932db160c">CBCCommon</a>, <a class="el" href="classCFBCommon.html#a597040eb7df40adbbef94b4c3975cd80">CFBCommon</a>, and <a class="el" href="classOFBCommon.html#a4a35364cf30d78f1968cc00803686caf">OFBCommon</a>.</p>
+<p>Implemented in <a class="el" href="classChaCha.html#a734f3246b1e6810c63637b8cda26b259">ChaCha</a>, <a class="el" href="classChaChaPoly.html#a308056b17b3a4a496e9612ae19a2fd6f">ChaChaPoly</a>, <a class="el" href="classCTRCommon.html#aad289af3eb013cb3ffda6d7e8e8b3d04">CTRCommon</a>, <a class="el" href="classGCMCommon.html#a2545135fe42c832e40e057b603824524">GCMCommon</a>, <a class="el" href="classCBCCommon.html#ac7a586217835055b3a354bb932db160c">CBCCommon</a>, <a class="el" href="classCFBCommon.html#a597040eb7df40adbbef94b4c3975cd80">CFBCommon</a>, and <a class="el" href="classOFBCommon.html#a4a35364cf30d78f1968cc00803686caf">OFBCommon</a>.</p>
 
 </div>
 </div>
@@ -468,7 +472,7 @@ Public Member Functions</h2></td></tr>
 <p>Calling <a class="el" href="classCipher.html#a0dfe133bda81dfa680b668f5908ccbe5" title="Sets the key to use for future encryption and decryption operations. ">setKey()</a> resets the cipher. Any temporary data that was being retained for encrypting partial blocks will be abandoned.</p>
 <dl class="section see"><dt>See Also</dt><dd><a class="el" href="classCipher.html#a4cea432ea0278c865441f17cbb88b1ab" title="Default size of the key for this cipher, in bytes. ">keySize()</a>, <a class="el" href="classCipher.html#a4b7c3965646441a70d9ab934a7c92ab1" title="Clears all security-sensitive state from this cipher. ">clear()</a> </dd></dl>
 
-<p>Implemented in <a class="el" href="classChaCha.html#a6b2bdffbd3705e388bb458edb2f40c90">ChaCha</a>, <a class="el" href="classCTRCommon.html#a79da937dc2c444a174176beab33c055a">CTRCommon</a>, <a class="el" href="classCBCCommon.html#add75ea4342a190e560cee26a8e9efc37">CBCCommon</a>, <a class="el" href="classCFBCommon.html#a45b9be25fb96f0e3ca5211b064e2baea">CFBCommon</a>, and <a class="el" href="classOFBCommon.html#ac3a98e81d95ebc6c883baef5f4cfbefb">OFBCommon</a>.</p>
+<p>Implemented in <a class="el" href="classChaCha.html#a6b2bdffbd3705e388bb458edb2f40c90">ChaCha</a>, <a class="el" href="classChaChaPoly.html#ae300892647dd92cbce711b834aa20c09">ChaChaPoly</a>, <a class="el" href="classCTRCommon.html#a79da937dc2c444a174176beab33c055a">CTRCommon</a>, <a class="el" href="classGCMCommon.html#a397c5dddde828c59eb63367385aec562">GCMCommon</a>, <a class="el" href="classCBCCommon.html#add75ea4342a190e560cee26a8e9efc37">CBCCommon</a>, <a class="el" href="classCFBCommon.html#a45b9be25fb96f0e3ca5211b064e2baea">CFBCommon</a>, and <a class="el" href="classOFBCommon.html#ac3a98e81d95ebc6c883baef5f4cfbefb">OFBCommon</a>.</p>
 
 </div>
 </div>
@@ -479,7 +483,7 @@ Public Member Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Mar 29 2015 08:30:13 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Apr 1 2015 16:36:10 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>
