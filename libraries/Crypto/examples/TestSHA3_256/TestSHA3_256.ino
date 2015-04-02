@@ -261,6 +261,32 @@ void testHMAC(Hash *hash, size_t keyLen)
         Serial.println("Failed");
 }
 
+/*
+void perfFinalize(Hash *hash)
+{
+    unsigned long start;
+    unsigned long elapsed;
+    int count;
+    // Reuse one of the test vectors as a large temporary buffer.
+    uint8_t *buffer = (uint8_t *)&testVectorSHA3_256_5;
+
+    Serial.print("Finalizing ... ");
+
+    hash->reset();
+    hash->update("abc", 3);
+    start = micros();
+    for (count = 0; count < 1000; ++count) {
+        hash->finalize(buffer, hash->hashSize());
+    }
+    elapsed = micros() - start;
+
+    Serial.print(elapsed / 1000.0);
+    Serial.print("us per op, ");
+    Serial.print((1000.0 * 1000000.0) / elapsed);
+    Serial.println(" ops per second");
+}
+*/
+
 void setup()
 {
     Serial.begin(9600);
@@ -288,6 +314,7 @@ void setup()
 
     Serial.println("Performance Tests:");
     perfHash(&sha3_256);
+    //perfFinalize(&sha3_256);
 }
 
 void loop()

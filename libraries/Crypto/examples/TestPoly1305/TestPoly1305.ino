@@ -167,6 +167,48 @@ void perfPoly1305(Poly1305 *hash)
     Serial.println(" bytes per second");
 }
 
+void perfPoly1305SetKey(Poly1305 *hash)
+{
+    unsigned long start;
+    unsigned long elapsed;
+    int count;
+
+    Serial.print("Set Key ... ");
+
+    start = micros();
+    for (count = 0; count < 1000; ++count) {
+        hash->reset(testVectorPoly1305_1.key);
+    }
+    elapsed = micros() - start;
+
+    Serial.print(elapsed / 1000.0);
+    Serial.print("us per op, ");
+    Serial.print((1000.0 * 1000000.0) / elapsed);
+    Serial.println(" ops per second");
+}
+
+void perfPoly1305Finalize(Poly1305 *hash)
+{
+    unsigned long start;
+    unsigned long elapsed;
+    int count;
+
+    Serial.print("Finalize ... ");
+
+    hash->reset(testVectorPoly1305_1.key);
+    hash->update("abc", 3);
+    start = micros();
+    for (count = 0; count < 1000; ++count) {
+        hash->finalize(testVectorPoly1305_1.nonce, buffer, 16);
+    }
+    elapsed = micros() - start;
+
+    Serial.print(elapsed / 1000.0);
+    Serial.print("us per op, ");
+    Serial.print((1000.0 * 1000000.0) / elapsed);
+    Serial.println(" ops per second");
+}
+
 void setup()
 {
     Serial.begin(9600);
@@ -187,6 +229,8 @@ void setup()
 
     Serial.println("Performance Tests:");
     perfPoly1305(&poly1305);
+    perfPoly1305SetKey(&poly1305);
+    perfPoly1305Finalize(&poly1305);
 }
 
 void loop()

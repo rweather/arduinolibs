@@ -174,6 +174,48 @@ void perfGHASH(GHASH *hash)
     Serial.println(" bytes per second");
 }
 
+void perfGHASHSetKey(GHASH *hash)
+{
+    unsigned long start;
+    unsigned long elapsed;
+    int count;
+
+    Serial.print("Set Key ... ");
+
+    start = micros();
+    for (count = 0; count < 1000; ++count) {
+        hash->reset(testVectorGHASH_1.key);
+    }
+    elapsed = micros() - start;
+
+    Serial.print(elapsed / 1000.0);
+    Serial.print("us per op, ");
+    Serial.print((1000.0 * 1000000.0) / elapsed);
+    Serial.println(" ops per second");
+}
+
+void perfGHASHFinalize(GHASH *hash)
+{
+    unsigned long start;
+    unsigned long elapsed;
+    int count;
+
+    Serial.print("Finalize ... ");
+
+    hash->reset(testVectorGHASH_1.key);
+    hash->update("abc", 3);
+    start = micros();
+    for (count = 0; count < 1000; ++count) {
+        hash->finalize(buffer, 16);
+    }
+    elapsed = micros() - start;
+
+    Serial.print(elapsed / 1000.0);
+    Serial.print("us per op, ");
+    Serial.print((1000.0 * 1000000.0) / elapsed);
+    Serial.println(" ops per second");
+}
+
 void setup()
 {
     Serial.begin(9600);
@@ -194,6 +236,8 @@ void setup()
 
     Serial.println("Performance Tests:");
     perfGHASH(&ghash);
+    perfGHASHSetKey(&ghash);
+    perfGHASHFinalize(&ghash);
 }
 
 void loop()

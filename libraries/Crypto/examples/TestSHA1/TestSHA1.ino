@@ -224,6 +224,66 @@ void perfHash(Hash *hash)
     Serial.println(" bytes per second");
 }
 
+void perfFinalize(Hash *hash)
+{
+    unsigned long start;
+    unsigned long elapsed;
+    int count;
+
+    Serial.print("Finalizing ... ");
+
+    hash->reset();
+    hash->update("abc", 3);
+    start = micros();
+    for (count = 0; count < 1000; ++count) {
+        hash->finalize(buffer, hash->hashSize());
+    }
+    elapsed = micros() - start;
+
+    Serial.print(elapsed / 1000.0);
+    Serial.print("us per op, ");
+    Serial.print((1000.0 * 1000000.0) / elapsed);
+    Serial.println(" ops per second");
+}
+
+void perfHMAC(Hash *hash)
+{
+    unsigned long start;
+    unsigned long elapsed;
+    int count;
+
+    Serial.print("HMAC Reset ... ");
+
+    for (size_t posn = 0; posn < sizeof(buffer); ++posn)
+        buffer[posn] = (uint8_t)posn;
+
+    start = micros();
+    for (count = 0; count < 1000; ++count) {
+        hash->resetHMAC(buffer, hash->hashSize());
+    }
+    elapsed = micros() - start;
+
+    Serial.print(elapsed / 1000.0);
+    Serial.print("us per op, ");
+    Serial.print((1000.0 * 1000000.0) / elapsed);
+    Serial.println(" ops per second");
+
+    Serial.print("HMAC Finalize ... ");
+
+    hash->resetHMAC(buffer, hash->hashSize());
+    hash->update("abc", 3);
+    start = micros();
+    for (count = 0; count < 1000; ++count) {
+        hash->finalizeHMAC(buffer, hash->hashSize(), buffer, hash->hashSize());
+    }
+    elapsed = micros() - start;
+
+    Serial.print(elapsed / 1000.0);
+    Serial.print("us per op, ");
+    Serial.print((1000.0 * 1000000.0) / elapsed);
+    Serial.println(" ops per second");
+}
+
 void setup()
 {
     Serial.begin(9600);
@@ -250,6 +310,8 @@ void setup()
 
     Serial.println("Performance Tests:");
     perfHash(&sha1);
+    perfFinalize(&sha1);
+    perfHMAC(&sha1);
 }
 
 void loop()
