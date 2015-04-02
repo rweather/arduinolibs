@@ -249,8 +249,10 @@ void RNGClass::begin(const char *tag, int eepromAddress)
 void RNGClass::addNoiseSource(NoiseSource &source)
 {
     #define MAX_NOISE_SOURCES (sizeof(noiseSources) / sizeof(noiseSources[0]))
-    if (count < MAX_NOISE_SOURCES)
+    if (count < MAX_NOISE_SOURCES) {
         noiseSources[count++] = &source;
+        source.added();
+    }
 }
 
 /**

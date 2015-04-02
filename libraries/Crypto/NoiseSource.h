@@ -35,6 +35,8 @@ public:
     virtual bool calibrating() const = 0;
     virtual void stir() = 0;
 
+    virtual void added();
+
 protected:
     virtual void output(const uint8_t *data, size_t len, unsigned int credit);
 };

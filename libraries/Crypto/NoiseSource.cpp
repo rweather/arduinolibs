@@ -83,6 +83,21 @@ NoiseSource::~NoiseSource()
  */
 
 /**
+ * \brief Called when the noise source is added to RNG with
+ * \link RNGClass::addNoiseSource() RNG.addNoiseSource()\endlink.
+ *
+ * This function is intended for noise source initialization tasks that
+ * must be performed after \link RNGClass::begin() RNG.begin()\endlink
+ * has been called to initialize the global random number pool.
+ * For example, if the noise source has a unique identifier or serial
+ * number then this function can stir it into the pool at startup time.
+ */
+void NoiseSource::added()
+{
+    // Nothing to do here.
+}
+
+/**
  * \brief Called from subclasses to output noise to the global random
  * number pool.
  *
