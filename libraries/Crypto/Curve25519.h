@@ -24,7 +24,6 @@
 #define CRYPTO_CURVE25519_h
 
 #include "BigNumberUtil.h"
-#include <stddef.h>
 
 class Curve25519
 {
@@ -58,9 +57,6 @@ private:
     static void cswap(uint8_t select, limb_t *x, limb_t *y);
 
     static void recip(limb_t *result, const limb_t *x);
-
-    static void unpack(limb_t *result, const uint8_t *x);
-    static void pack(uint8_t *result, const limb_t *x);
 
     // Constructor and destructor are private - cannot instantiate this class.
     Curve25519() {}

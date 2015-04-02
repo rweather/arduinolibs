@@ -101,7 +101,9 @@ bool Curve25519::eval(uint8_t result[32], const uint8_t s[32], const uint8_t x[3
     // Unpack the "x" argument into the limb representation
     // which also masks off the high bit.  NULL means 9.
     if (x) {
-        unpack(x_1, x);                 // x_1 = x
+        // x1 = x
+        BigNumberUtil::unpackLE(x_1, NUM_LIMBS, x, 32);
+        x_1[NUM_LIMBS - 1] &= ((((limb_t)1) << (LIMB_BITS - 1)) - 1);
     } else {
         memset(x_1, 0, sizeof(x_1));    // x_1 = 9
         x_1[0] = 9;
@@ -176,7 +178,7 @@ bool Curve25519::eval(uint8_t result[32], const uint8_t s[32], const uint8_t x[3
     mul(x_2, x_2, z_3);
 
     // Pack the result into the return array.
-    pack(result, x_2);
+    BigNumberUtil::packLE(result, 32, x_2, NUM_LIMBS);
 
     // Clean up and exit.
     clean(x_1);
@@ -796,67 +798,4 @@ void Curve25519::recip(limb_t *result, const limb_t *x)
 
     // Clean up and exit.
     clean(t1);
-}
-
-/**
- * \brief Unpacks the little-endian byte representation of a field element
- * into a limb array.
- *
- * \param result The limb array.
- * \param x The byte representation.
- *
- * The top-most bit of \a result will be set to zero so that the value
- * is guaranteed to be 255 bits rather than 256.
- *
- * \sa pack()
- */
-void Curve25519::unpack(limb_t *result, const uint8_t *x)
-{
-#if BIGNUMBER_LIMB_8BIT
-    memcpy(result, x, 32);
-    result[31] &= 0x7F;
-#elif BIGNUMBER_LIMB_16BIT
-    for (uint8_t posn = 0; posn < 16; ++posn) {
-        result[posn] = ((limb_t)x[posn * 2]) | (((limb_t)x[posn * 2 + 1]) << 8);
-    }
-    result[15] &= 0x7FFF;
-#elif BIGNUMBER_LIMB_32BIT
-    for (uint8_t posn = 0; posn < 8; ++posn) {
-        result[posn] = ((limb_t)x[posn * 4]) |
-                      (((limb_t)x[posn * 4 + 1]) << 8) |
-                      (((limb_t)x[posn * 4 + 2]) << 16) |
-                      (((limb_t)x[posn * 4 + 3]) << 24);
-    }
-    result[7] &= 0x7FFFFFFF;
-#endif
-}
-
-/**
- * \brief Packs the limb array representation of a field element into a
- * byte array.
- *
- * \param result The byte array.
- * \param x The limb representation.
- *
- * \sa unpack()
- */
-void Curve25519::pack(uint8_t *result, const limb_t *x)
-{
-#if BIGNUMBER_LIMB_8BIT
-    memcpy(result, x, 32);
-#elif BIGNUMBER_LIMB_16BIT
-    for (uint8_t posn = 0; posn < 16; ++posn) {
-        limb_t value = x[posn];
-        result[posn * 2]     = (uint8_t)value;
-        result[posn * 2 + 1] = (uint8_t)(value >> 8);
-    }
-#elif BIGNUMBER_LIMB_32BIT
-    for (uint8_t posn = 0; posn < 8; ++posn) {
-        limb_t value = x[posn];
-        result[posn * 4]     = (uint8_t)value;
-        result[posn * 4 + 1] = (uint8_t)(value >> 8);
-        result[posn * 4 + 2] = (uint8_t)(value >> 16);
-        result[posn * 4 + 3] = (uint8_t)(value >> 24);
-    }
-#endif
 }
