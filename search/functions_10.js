@@ -54,7 +54,7 @@ var searchData=
   ['startwrite',['startWrite',['../classI2CMaster.html#a01960fc821cb25e4c88c26d2c6107e35',1,'I2CMaster::startWrite()'],['../classSoftI2C.html#aa8a3219f4e6ff52306cc3c219f37d8f9',1,'SoftI2C::startWrite()']]],
   ['state',['state',['../classBlinkLED.html#ab89b5b3435998ea6699d4bf94866e233',1,'BlinkLED']]],
   ['stepvalue',['stepValue',['../classIntField.html#a49025ee3473fe066a6a6c546af98bfbd',1,'IntField']]],
-  ['stir',['stir',['../classNoiseSource.html#a7ce647815524fe84f562aca5256e12f3',1,'NoiseSource::stir()'],['../classRingOscillatorNoiseSource.html#ad71698b5c92b41eef2f1322999b3eff9',1,'RingOscillatorNoiseSource::stir()'],['../classRNGClass.html#ad99535ea23ae2fec55bdebb8c24def02',1,'RNGClass::stir()'],['../classTransistorNoiseSource.html#add25c6a14b0506bc30ca781f2d923917',1,'TransistorNoiseSource::stir()']]],
+  ['stir',['stir',['../classNoiseSource.html#a7ce647815524fe84f562aca5256e12f3',1,'NoiseSource::stir()'],['../classRNGClass.html#ad99535ea23ae2fec55bdebb8c24def02',1,'RNGClass::stir()'],['../classRingOscillatorNoiseSource.html#ad71698b5c92b41eef2f1322999b3eff9',1,'RingOscillatorNoiseSource::stir()'],['../classTransistorNoiseSource.html#add25c6a14b0506bc30ca781f2d923917',1,'TransistorNoiseSource::stir()']]],
   ['stop',['stop',['../classMelody.html#ac0c552233c41d85f2766d2e4df376b2b',1,'Melody']]],
   ['stride',['stride',['../classBitmap.html#af30df263729385ea2330effe3c80a1bc',1,'Bitmap']]],
   ['suffix',['suffix',['../classIntField.html#a1a1de6a1836dfdb820c92b7f188a1b05',1,'IntField']]],

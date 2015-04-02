@@ -132,42 +132,51 @@ Performance</h1>
 <tr>
 <td colspan="5"></td></tr>
 <tr>
-<td><a class="el" href="classHash.html" title="Abstract base class for cryptographic hash algorithms. ">Hash</a> Algorithm</td><td align="right">Hashing (per byte)</td><td align="right">Finalization</td><td>Key Setup</td><td>State Size (bytes) </td></tr>
+<td><a class="el" href="classHash.html" title="Abstract base class for cryptographic hash algorithms. ">Hash</a> Algorithm</td><td align="right">Hashing (per byte)</td><td align="right">Finalization</td><td></td><td>State Size (bytes) </td></tr>
 <tr>
-<td><a class="el" href="classSHA1.html" title="SHA-1 hash algorithm. ">SHA1</a></td><td align="right">21.90us</td><td></td><td align="right"></td><td align="right">95 </td></tr>
+<td><a class="el" href="classSHA1.html" title="SHA-1 hash algorithm. ">SHA1</a></td><td align="right">21.90us</td><td align="right">1423.28us</td><td align="right"></td><td align="right">95 </td></tr>
 <tr>
-<td><a class="el" href="classSHA256.html" title="SHA-256 hash algorithm. ">SHA256</a></td><td align="right">43.85us</td><td></td><td align="right"></td><td align="right">107 </td></tr>
+<td><a class="el" href="classSHA256.html" title="SHA-256 hash algorithm. ">SHA256</a></td><td align="right">43.85us</td><td align="right">2841.04us</td><td align="right"></td><td align="right">107 </td></tr>
 <tr>
-<td><a class="el" href="classSHA512.html" title="SHA-512 hash algorithm. ">SHA512</a></td><td align="right">123.24us</td><td></td><td align="right"></td><td align="right">211 </td></tr>
+<td><a class="el" href="classSHA512.html" title="SHA-512 hash algorithm. ">SHA512</a></td><td align="right">122.82us</td><td align="right">15953.42us</td><td align="right"></td><td align="right">211 </td></tr>
 <tr>
-<td><a class="el" href="classSHA3__256.html" title="SHA3-256 hash algorithm. ">SHA3_256</a></td><td align="right">121.69us</td><td></td><td align="right"></td><td align="right">405 </td></tr>
+<td><a class="el" href="classSHA3__256.html" title="SHA3-256 hash algorithm. ">SHA3_256</a></td><td align="right">121.69us</td><td align="right">16486.33us</td><td align="right"></td><td align="right">405 </td></tr>
 <tr>
-<td><a class="el" href="classSHA3__512.html" title="SHA3-512 hash algorithm. ">SHA3_512</a></td><td align="right">229.12us</td><td></td><td align="right"></td><td align="right">405 </td></tr>
+<td><a class="el" href="classSHA3__512.html" title="SHA3-512 hash algorithm. ">SHA3_512</a></td><td align="right">229.12us</td><td align="right">16502.34us</td><td align="right"></td><td align="right">405 </td></tr>
 <tr>
-<td><a class="el" href="classBLAKE2s.html" title="BLAKE2s hash algorithm. ">BLAKE2s</a></td><td align="right">18.54us</td><td></td><td align="right"></td><td align="right">171 </td></tr>
+<td><a class="el" href="classBLAKE2s.html" title="BLAKE2s hash algorithm. ">BLAKE2s</a></td><td align="right">18.54us</td><td align="right">1200.06us</td><td align="right"></td><td align="right">171 </td></tr>
 <tr>
-<td><a class="el" href="classBLAKE2b.html" title="BLAKE2b hash algorithm. ">BLAKE2b</a></td><td align="right">50.58us</td><td></td><td align="right"></td><td align="right">339 </td></tr>
+<td><a class="el" href="classBLAKE2b.html" title="BLAKE2b hash algorithm. ">BLAKE2b</a></td><td align="right">50.70us</td><td align="right">6515.87us</td><td align="right"></td><td align="right">339 </td></tr>
 <tr>
-<td><a class="el" href="classPoly1305.html" title="Poly1305 message authenticator. ">Poly1305</a></td><td align="right">26.29us</td><td></td><td align="right"></td><td align="right">87 </td></tr>
+<td colspan="5"></td></tr>
 <tr>
-<td><a class="el" href="classGHASH.html" title="Implementation of the GHASH message authenticator. ">GHASH</a></td><td align="right">148.14us</td><td></td><td align="right"></td><td align="right">33 </td></tr>
+<td>Authentication Algorithm</td><td align="right">Hashing (per byte)</td><td align="right">Finalization</td><td>Key Setup</td><td>State Size (bytes) </td></tr>
+<tr>
+<td><a class="el" href="classSHA1.html" title="SHA-1 hash algorithm. ">SHA1</a> (HMAC mode)</td><td align="right">21.90us</td><td align="right">4296.33us</td><td align="right">1420.24us</td><td align="right">95 </td></tr>
+<tr>
+<td><a class="el" href="classSHA256.html" title="SHA-256 hash algorithm. ">SHA256</a> (HMAC mode)</td><td align="right">43.85us</td><td align="right">8552.61us</td><td align="right">2836.49us</td><td align="right">107 </td></tr>
+<tr>
+<td><a class="el" href="classBLAKE2s.html" title="BLAKE2s hash algorithm. ">BLAKE2s</a> (HMAC mode)</td><td align="right">18.54us</td><td align="right">3649.98us</td><td align="right">1214.81us</td><td align="right">171 </td></tr>
+<tr>
+<td><a class="el" href="classPoly1305.html" title="Poly1305 message authenticator. ">Poly1305</a></td><td align="right">26.29us</td><td align="right">486.15us</td><td align="right">17.26us</td><td align="right">87 </td></tr>
+<tr>
+<td><a class="el" href="classGHASH.html" title="Implementation of the GHASH message authenticator. ">GHASH</a></td><td align="right">148.14us</td><td align="right">17.09us</td><td align="right">21.87us</td><td align="right">33 </td></tr>
+<tr>
+<td colspan="5"></td></tr>
+<tr>
+<td>Public Key Operation</td><td align="right">Time (per operation)</td><td colspan="3">Comment </td></tr>
+<tr>
+<td><a class="el" href="classCurve25519.html#a2e4b7dd83a019b32c76584c99bfda21a" title="Evaluates the raw Curve25519 function. ">Curve25519::eval()</a></td><td align="right">3738ms</td><td colspan="3">Raw curve evaluation </td></tr>
+<tr>
+<td><a class="el" href="classCurve25519.html#a2b6911583d17ea9a36bbbb40d58b3d89" title="Performs phase 1 of a Diffie-Hellman key exchange using Curve25519. ">Curve25519::dh1()</a></td><td align="right">3740ms</td><td colspan="3">First half of Diffie-Hellman key agreement </td></tr>
+<tr>
+<td><a class="el" href="classCurve25519.html#a14022d6ac68ec691ffb0247275078ab9" title="Performs phase 2 of a Diffie-Hellman key exchange using Curve25519. ">Curve25519::dh2()</a></td><td align="right">3738ms</td><td colspan="3">Second half of Diffie-Hellman key agreement </td></tr>
 </table>
-<p>Where a cipher supports more than one key size (such as <a class="el" href="classChaCha.html" title="ChaCha stream cipher. ">ChaCha</a>), the values are typically almost identical for 128-bit and 256-bit keys so only the maximum is shown above.</p>
-<p>Public key algorithms have the following results on an Arduino Uno:</p>
-<table class="doxtable">
-<tr>
-<td>Algorithm</td><td>Operation</td><td>Time</td><td>Comment </td></tr>
-<tr>
-<td><a class="el" href="classCurve25519.html" title="Diffie-Hellman key agreement based on the elliptic curve modulo 2^255 - 19. ">Curve25519</a></td><td><a class="el" href="classCurve25519.html#a2e4b7dd83a019b32c76584c99bfda21a">eval()</a></td><td>3738 ms</td><td>Raw curve evaluation </td></tr>
-<tr>
-<td><a class="el" href="classCurve25519.html" title="Diffie-Hellman key agreement based on the elliptic curve modulo 2^255 - 19. ">Curve25519</a></td><td><a class="el" href="classCurve25519.html#a2b6911583d17ea9a36bbbb40d58b3d89">dh1()</a></td><td>3740 ms</td><td>First half of Diffie-Hellman key agreement </td></tr>
-<tr>
-<td><a class="el" href="classCurve25519.html" title="Diffie-Hellman key agreement based on the elliptic curve modulo 2^255 - 19. ">Curve25519</a></td><td><a class="el" href="classCurve25519.html#a14022d6ac68ec691ffb0247275078ab9">dh2()</a></td><td>3738 ms</td><td>Second half of Diffie-Hellman key agreement </td></tr>
-</table>
+<p>Where a cipher supports more than one key size (such as <a class="el" href="classChaCha.html" title="ChaCha stream cipher. ">ChaCha</a>), the values are typically almost identical for 128-bit and 256-bit keys so only the maximum is shown above. </p>
 </div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Apr 1 2015 16:36:10 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Apr 2 2015 16:36:51 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

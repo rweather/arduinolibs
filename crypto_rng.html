@@ -129,7 +129,7 @@ Initializing the random number generator</h1>
 <div class="line">    RNG.<a class="code" href="classRNGClass.html#aacf23b192b0e4cc8726d9abe05f5a9db">addNoiseSource</a>(noise);</div>
 <div class="line">    ...</div>
 <div class="line">}</div>
-</div><!-- fragment --><p>The random number generator needs 49 bytes of EEPROM space at the specified address to store the previous seed. When the system is started next time, the previous saved seed is loaded and then deliberately overwritten with a new seed. This ensures that the device will not accidentally generate the same sequence of random numbers if it is restarted before a new seed can be saved.</p>
+</div><!-- fragment --><p>The random number generator needs 49 bytes of EEPROM space at the specified address to store the previous seed. When the system is started next time, the previous saved seed is loaded and then deliberately overwritten with a new seed. This ensures that the device will not accidentally generate the same sequence of random numbers if it is restarted before the first automatic save of the seed.</p>
 <p>By default the seed is saved once an hour, although this can be changed with <a class="el" href="classRNGClass.html#a5848e87a5f2f0302c88b0377f0e3366d">RNG.setAutoSaveTime()</a>. Because the device may be restarted before the first hour expires, there is a special case in the code: the first time that the entropy pool fills up, a save will be automatically forced.</p>
 <p>To use the random number generator properly, there are some regular tasks that must be performed every time around the application's main loop(). Newly accumulated noise must be mixed in and auto-saves must be performed on a regular basis. The <a class="el" href="classRNGClass.html#a8cb91e39f0c4591de5bf98b1e2880b13">RNG.loop()</a> function takes care of these tasks for us:</p>
 <div class="fragment"><div class="line"><span class="keywordtype">void</span> loop() {</div>
@@ -153,7 +153,7 @@ Generating data with the random number generator</h1>
 <div class="line">}</div>
 </div><!-- fragment --><p>The data will be generated immediately, using whatever entropy happens to be in the global random number pool at the time. In Linux terms, the rand() function acts like the <code>/dev/urandom</code> device.</p>
 <p>If the system has been running for a while then this should be safe as the noise source would have already permuted the pool with noise-based entropy. However, when the system first starts up there may not be much entropy available other than that from the saved seed (which could have been compromised).</p>
-<p>In Linux terms we want the effect of the <code>/dev/random</code> device which blocks until sufficient entropy is available to service the request. Blocking isn't compatible with the Arduino way of doing things, so the library instead provides the <a class="el" href="classRNGClass.html#a49e3231ba65a5e4b045bc90976e0a659">RNG.available()</a> function to poll how much entropy is in the global random number pool:</p>
+<p>In Linux terms we want the effect of the <code>/dev/random</code> device which blocks until sufficient entropy is available to service the request. Blocking isn't very friendly to other application tasks, so the library instead provides the <a class="el" href="classRNGClass.html#a49e3231ba65a5e4b045bc90976e0a659">RNG.available()</a> function to poll how much entropy is in the global random number pool:</p>
 <div class="fragment"><div class="line">byte key[32];</div>
 <div class="line">byte iv[16];</div>
 <div class="line"><span class="keywordtype">bool</span> haveKeys = <span class="keyword">false</span>;</div>
@@ -182,7 +182,7 @@ Destroying secret data</h1>
 </div><!-- fragment --> </div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Apr 1 2015 16:36:10 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Apr 2 2015 16:36:51 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

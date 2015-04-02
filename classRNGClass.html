@@ -283,7 +283,7 @@ static const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el
 </div><!-- fragment --><p>If <em>len</em> is larger than the maximum number of entropy credits supported by the random number pool (384 bits, 48 bytes), then the maximum will be used instead. For example, asking if 512 bits (64 bytes) are available will return true if in reality only 384 bits are available. If this is a problem for the application's security requirements, then large requests for random data should be broken up into smaller chunks with the application waiting for the entropy pool to refill between chunks.</p>
 <dl class="section see"><dt>See Also</dt><dd><a class="el" href="classRNGClass.html#a418a833cf18198fd7e5d6dbd78c99c29" title="Generates random bytes into a caller-supplied buffer. ">rand()</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="RNG_8cpp_source.html#l00373">373</a> of file <a class="el" href="RNG_8cpp_source.html">RNG.cpp</a>.</p>
+<p>Definition at line <a class="el" href="RNG_8cpp_source.html#l00375">375</a> of file <a class="el" href="RNG_8cpp_source.html">RNG.cpp</a>.</p>
 
 </div>
 </div>
@@ -345,7 +345,7 @@ static const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el
 <dl class="section note"><dt>Note</dt><dd>The <a class="el" href="classRNGClass.html#a418a833cf18198fd7e5d6dbd78c99c29" title="Generates random bytes into a caller-supplied buffer. ">rand()</a> and <a class="el" href="classRNGClass.html#a139584fb249148e2058d1d645d090db7" title="Saves the random seed to EEPROM. ">save()</a> functions take some care to manage the random number pool in a way that makes prediction of past outputs from a captured state very difficult. Future outputs may be predictable if noise or other high-entropy data is not mixed in with <a class="el" href="classRNGClass.html#ad99535ea23ae2fec55bdebb8c24def02" title="Stirs additional entropy data into the random pool. ">stir()</a> on a regular basis.</dd></dl>
 <dl class="section see"><dt>See Also</dt><dd><a class="el" href="classRNGClass.html#a7f1aab3c324f8e8a424d683425e0fcf8" title="Initializes the random number generator. ">begin()</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="RNG_8cpp_source.html#l00523">523</a> of file <a class="el" href="RNG_8cpp_source.html">RNG.cpp</a>.</p>
+<p>Definition at line <a class="el" href="RNG_8cpp_source.html#l00525">525</a> of file <a class="el" href="RNG_8cpp_source.html">RNG.cpp</a>.</p>
 
 </div>
 </div>
@@ -365,7 +365,7 @@ static const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el
 <p>Run periodic housekeeping tasks on the random number generator. </p>
 <p>This function must be called on a regular basis from the application's main "loop()" function. </p>
 
-<p>Definition at line <a class="el" href="RNG_8cpp_source.html#l00493">493</a> of file <a class="el" href="RNG_8cpp_source.html">RNG.cpp</a>.</p>
+<p>Definition at line <a class="el" href="RNG_8cpp_source.html#l00495">495</a> of file <a class="el" href="RNG_8cpp_source.html">RNG.cpp</a>.</p>
 
 </div>
 </div>
@@ -405,7 +405,7 @@ static const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el
 <p>If the application requires a specific amount of entropy before generating important values, the <a class="el" href="classRNGClass.html#a49e3231ba65a5e4b045bc90976e0a659" title="Determine if there is sufficient entropy available for a specific request size. ">available()</a> function can be polled to determine when sufficient entropy is available.</p>
 <dl class="section see"><dt>See Also</dt><dd><a class="el" href="classRNGClass.html#a49e3231ba65a5e4b045bc90976e0a659" title="Determine if there is sufficient entropy available for a specific request size. ">available()</a>, <a class="el" href="classRNGClass.html#ad99535ea23ae2fec55bdebb8c24def02" title="Stirs additional entropy data into the random pool. ">stir()</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="RNG_8cpp_source.html#l00296">296</a> of file <a class="el" href="RNG_8cpp_source.html">RNG.cpp</a>.</p>
+<p>Definition at line <a class="el" href="RNG_8cpp_source.html#l00298">298</a> of file <a class="el" href="RNG_8cpp_source.html">RNG.cpp</a>.</p>
 
 </div>
 </div>
@@ -429,7 +429,7 @@ static const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el
 <p>The seed that is saved is generated in such a way that it cannot be used to predict random values that were generated previously or subsequently in the current session. So a compromise of the EEPROM contents of a captured device should not result in compromise of random values that have already been generated. However, if power is lost and the system restarted, then there will be a short period of time where the random state will be predictable from the seed. For this reason it is very important to <a class="el" href="classRNGClass.html#ad99535ea23ae2fec55bdebb8c24def02" title="Stirs additional entropy data into the random pool. ">stir()</a> in new noise data at startup.</p>
 <dl class="section see"><dt>See Also</dt><dd><a class="el" href="classRNGClass.html#a8cb91e39f0c4591de5bf98b1e2880b13" title="Run periodic housekeeping tasks on the random number generator. ">loop()</a>, <a class="el" href="classRNGClass.html#ad99535ea23ae2fec55bdebb8c24def02" title="Stirs additional entropy data into the random pool. ">stir()</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="RNG_8cpp_source.html#l00475">475</a> of file <a class="el" href="RNG_8cpp_source.html">RNG.cpp</a>.</p>
+<p>Definition at line <a class="el" href="RNG_8cpp_source.html#l00477">477</a> of file <a class="el" href="RNG_8cpp_source.html">RNG.cpp</a>.</p>
 
 </div>
 </div>
@@ -458,7 +458,7 @@ static const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el
 <p>This function is intended to help with EEPROM wear by slowing down how often seed data is saved as noise is stirred into the random pool. The exact period to use depends upon how long you intend to field the device before replacing it. For example, an EEPROM rated for 100k erase/write cycles will last about 69 days saving once a minute or 11 years saving once an hour.</p>
 <dl class="section see"><dt>See Also</dt><dd><a class="el" href="classRNGClass.html#a139584fb249148e2058d1d645d090db7" title="Saves the random seed to EEPROM. ">save()</a>, <a class="el" href="classRNGClass.html#ad99535ea23ae2fec55bdebb8c24def02" title="Stirs additional entropy data into the random pool. ">stir()</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="RNG_8cpp_source.html#l00272">272</a> of file <a class="el" href="RNG_8cpp_source.html">RNG.cpp</a>.</p>
+<p>Definition at line <a class="el" href="RNG_8cpp_source.html#l00274">274</a> of file <a class="el" href="RNG_8cpp_source.html">RNG.cpp</a>.</p>
 
 </div>
 </div>
@@ -506,7 +506,7 @@ static const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el
 </div><!-- fragment --><p>If <em>credit</em> is zero, then the <em>data</em> will be stirred in but no entropy credit is given. This is useful for static values like serial numbers and MAC addresses that are different between devices but highly predictable.</p>
 <dl class="section see"><dt>See Also</dt><dd><a class="el" href="classRNGClass.html#a8cb91e39f0c4591de5bf98b1e2880b13" title="Run periodic housekeeping tasks on the random number generator. ">loop()</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="RNG_8cpp_source.html#l00406">406</a> of file <a class="el" href="RNG_8cpp_source.html">RNG.cpp</a>.</p>
+<p>Definition at line <a class="el" href="RNG_8cpp_source.html#l00408">408</a> of file <a class="el" href="RNG_8cpp_source.html">RNG.cpp</a>.</p>
 
 </div>
 </div>
@@ -517,7 +517,7 @@ static const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Apr 1 2015 16:36:10 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Apr 2 2015 16:36:51 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

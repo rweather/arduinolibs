@@ -123,6 +123,9 @@ virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 <tr class="memitem:a7ce647815524fe84f562aca5256e12f3"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNoiseSource.html#a7ce647815524fe84f562aca5256e12f3">stir</a> ()=0</td></tr>
 <tr class="memdesc:a7ce647815524fe84f562aca5256e12f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stirs entropy from this noise source into the global random number pool.  <a href="#a7ce647815524fe84f562aca5256e12f3">More...</a><br/></td></tr>
 <tr class="separator:a7ce647815524fe84f562aca5256e12f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a48d0efabd71ff6e557a0898be79c49ba"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNoiseSource.html#a48d0efabd71ff6e557a0898be79c49ba">added</a> ()</td></tr>
+<tr class="memdesc:a48d0efabd71ff6e557a0898be79c49ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called when the noise source is added to RNG with <a class="el" href="classRNGClass.html#aacf23b192b0e4cc8726d9abe05f5a9db">RNG.addNoiseSource()</a>.  <a href="#a48d0efabd71ff6e557a0898be79c49ba">More...</a><br/></td></tr>
+<tr class="separator:a48d0efabd71ff6e557a0898be79c49ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
@@ -136,6 +139,34 @@ Protected Member Functions</h2></td></tr>
 
 <p>Definition at line <a class="el" href="NoiseSource_8h_source.html#l00029">29</a> of file <a class="el" href="NoiseSource_8h_source.html">NoiseSource.h</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="a48d0efabd71ff6e557a0898be79c49ba"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void NoiseSource::added </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Called when the noise source is added to RNG with <a class="el" href="classRNGClass.html#aacf23b192b0e4cc8726d9abe05f5a9db">RNG.addNoiseSource()</a>. </p>
+<p>This function is intended for noise source initialization tasks that must be performed after <a class="el" href="classRNGClass.html#a7f1aab3c324f8e8a424d683425e0fcf8">RNG.begin()</a> has been called to initialize the global random number pool. For example, if the noise source has a unique identifier or serial number then this function can stir it into the pool at startup time. </p>
+
+<p>Definition at line <a class="el" href="NoiseSource_8cpp_source.html#l00095">95</a> of file <a class="el" href="NoiseSource_8cpp_source.html">NoiseSource.cpp</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="ac8ac086f830efb5ffe3e8d506aa61c85"></a>
 <div class="memitem">
 <div class="memproto">
@@ -217,7 +248,7 @@ Protected Member Functions</h2></td></tr>
 <p>The default implementation of this function calls <a class="el" href="classRNGClass.html#ad99535ea23ae2fec55bdebb8c24def02">RNG.stir()</a> to add the entropy from this noise source to the global random number pool.</p>
 <p>This function may be overridden by subclasses to capture the raw output from the noise source before it is mixed into the pool to allow the raw data to be analyzed for randomness. </p>
 
-<p>Definition at line <a class="el" href="NoiseSource_8cpp_source.html#l00102">102</a> of file <a class="el" href="NoiseSource_8cpp_source.html">NoiseSource.cpp</a>.</p>
+<p>Definition at line <a class="el" href="NoiseSource_8cpp_source.html#l00117">117</a> of file <a class="el" href="NoiseSource_8cpp_source.html">NoiseSource.cpp</a>.</p>
 
 </div>
 </div>
@@ -258,7 +289,7 @@ Protected Member Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Apr 1 2015 16:36:10 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Apr 2 2015 16:36:51 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>
