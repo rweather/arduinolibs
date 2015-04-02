@@ -31,7 +31,7 @@
  * \brief Diffie-Hellman key agreement based on the elliptic curve
  * modulo 2^255 - 19.
  *
- * \note This public functions in this class need a substantial amount of
+ * \note The public functions in this class need a substantial amount of
  * stack space to store intermediate results while the curve function is
  * being evaluated.  About 1k of free stack space is recommended for safety.
  *
@@ -45,6 +45,17 @@
 
 // Number of bits in limb_t.
 #define LIMB_BITS   (8 * sizeof(limb_t))
+
+// The overhead of clean() calls in mul(), reduceQuick(), etc can
+// add up to a lot of processing time during eval().  Only do such
+// cleanups if strict mode has been enabled.  Other implementations
+// like curve25519-donna don't do any cleaning at all so the value
+// of cleaning up the stack is dubious at best anyway.
+#if defined(CURVE25519_STRICT_CLEAN)
+#define strict_clean(x)     clean(x)
+#else
+#define strict_clean(x)     do { ; } while (0)
+#endif
 
 /**
  * \brief Evaluates the raw Curve25519 function.
@@ -473,14 +484,18 @@ limb_t Curve25519::reduceQuick(limb_t *x)
     limb_t temp[NUM_LIMBS];
     dlimb_t carry;
     uint8_t posn;
+    limb_t *xx;
+    limb_t *tt;
     
     // Perform a trial subtraction of (2^255 - 19) from "x" which is
     // equivalent to adding 19 and subtracting 2^255.  We add 19 here;
     // the subtraction of 2^255 occurs in the next step.
     carry = 19U;
+    xx = x;
+    tt = temp;
     for (posn = 0; posn < NUM_LIMBS; ++posn) {
-        carry += x[posn];
-        temp[posn] = (limb_t)carry;
+        carry += *xx++;
+        *tt++ = (limb_t)carry;
         carry >>= LIMB_BITS;
     }
 
@@ -492,12 +507,15 @@ limb_t Curve25519::reduceQuick(limb_t *x)
     limb_t mask = (limb_t)(((slimb_t)(temp[NUM_LIMBS - 1])) >> (LIMB_BITS - 1));
     limb_t nmask = ~mask;
     temp[NUM_LIMBS - 1] &= ((((limb_t)1) << (LIMB_BITS - 1)) - 1);
+    xx = x;
+    tt = temp;
     for (posn = 0; posn < NUM_LIMBS; ++posn) {
-        x[posn] = (x[posn] & nmask) | (temp[posn] & mask);
+        *xx = ((*xx) & nmask) | ((*tt++) & mask);
+        ++xx;
     }
 
     // Clean up "temp".
-    clean(temp);
+    strict_clean(temp);
 
     // Return a zero value if we actually subtracted (2^255 - 19) from "x".
     return nmask;
@@ -519,33 +537,39 @@ void Curve25519::mul(limb_t *result, const limb_t *x, const limb_t *y)
     uint8_t i, j;
     dlimb_t carry;
     limb_t word;
+    const limb_t *yy;
+    limb_t *tt;
 
     // Multiply the lowest word of x by y.
     carry = 0;
     word = x[0];
+    yy = y;
+    tt = temp;
     for (i = 0; i < NUM_LIMBS; ++i) {
-        carry += ((dlimb_t)(y[i])) * word;
-        temp[i] = (limb_t)carry;
+        carry += ((dlimb_t)(*yy++)) * word;
+        *tt++ = (limb_t)carry;
         carry >>= LIMB_BITS;
     }
-    temp[NUM_LIMBS] = (limb_t)carry;
+    *tt = (limb_t)carry;
 
     // Multiply and add the remaining words of x by y.
     for (i = 1; i < NUM_LIMBS; ++i) {
         word = x[i];
         carry = 0;
+        yy = y;
+        tt = temp + i;
         for (j = 0; j < NUM_LIMBS; ++j) {
-            carry += ((dlimb_t)(y[j])) * word;
-            carry += temp[i + j];
-            temp[i + j] = (limb_t)carry;
+            carry += ((dlimb_t)(*yy++)) * word;
+            carry += *tt;
+            *tt++ = (limb_t)carry;
             carry >>= LIMB_BITS;
         }
-        temp[i + NUM_LIMBS] = (limb_t)carry;
+        *tt = (limb_t)carry;
     }
 
     // Reduce the intermediate result modulo 2^255 - 19.
     reduce(result, temp, NUM_LIMBS);
-    clean(temp);
+    strict_clean(temp);
 }
 
 /**
@@ -589,29 +613,33 @@ void Curve25519::mulA24(limb_t *result, const limb_t *x)
     uint8_t i, j;
     dlimb_t carry = 0;
     limb_t word = pgm_read_a24(0);
+    const limb_t *xx = x;
+    limb_t *tt = temp;
     for (i = 0; i < NUM_LIMBS; ++i) {
-        carry += ((dlimb_t)(x[i])) * word;
-        temp[i] = (limb_t)carry;
+        carry += ((dlimb_t)(*xx++)) * word;
+        *tt++ = (limb_t)carry;
         carry >>= LIMB_BITS;
     }
-    temp[NUM_LIMBS] = (limb_t)carry;
+    *tt = (limb_t)carry;
 
     // Multiply and add the remaining limbs of a24.
     for (i = 1; i < NUM_A24_LIMBS; ++i) {
         word = pgm_read_a24(i);
         carry = 0;
+        xx = x;
+        tt = temp + i;
         for (j = 0; j < NUM_LIMBS; ++j) {
-            carry += ((dlimb_t)(x[j])) * word;
-            carry += temp[i + j];
-            temp[i + j] = (limb_t)carry;
+            carry += ((dlimb_t)(*xx++)) * word;
+            carry += *tt;
+            *tt++ = (limb_t)carry;
             carry >>= LIMB_BITS;
         }
-        temp[i + NUM_LIMBS] = (limb_t)carry;
+        *tt = (limb_t)carry;
     }
 
     // Reduce the intermediate result modulo 2^255 - 19.
     reduce(result, temp, NUM_A24_LIMBS);
-    clean(temp);
+    strict_clean(temp);
 }
 
 /**
@@ -628,12 +656,13 @@ void Curve25519::add(limb_t *result, const limb_t *x, const limb_t *y)
 {
     dlimb_t carry = 0;
     uint8_t posn;
+    limb_t *rr = result;
 
     // Add the two arrays to obtain the intermediate result.
     for (posn = 0; posn < NUM_LIMBS; ++posn) {
-        carry += x[posn];
-        carry += y[posn];
-        result[posn] = (limb_t)carry;
+        carry += *x++;
+        carry += *y++;
+        *rr++ = (limb_t)carry;
         carry >>= LIMB_BITS;
     }
 
@@ -655,12 +684,13 @@ void Curve25519::sub(limb_t *result, const limb_t *x, const limb_t *y)
 {
     dlimb_t borrow;
     uint8_t posn;
+    limb_t *rr = result;
 
     // Subtract y from x to generate the intermediate result.
     borrow = 0;
     for (posn = 0; posn < NUM_LIMBS; ++posn) {
-        borrow = ((dlimb_t)x[posn]) - y[posn] - ((borrow >> LIMB_BITS) & 0x01);
-        result[posn] = (limb_t)borrow;
+        borrow = ((dlimb_t)(*x++)) - (*y++) - ((borrow >> LIMB_BITS) & 0x01);
+        *rr++ = (limb_t)borrow;
     }
 
     // If we had a borrow, then the result has gone negative and we
@@ -668,14 +698,15 @@ void Curve25519::sub(limb_t *result, const limb_t *x, const limb_t *y)
     // The top bits of "borrow" will be all 1's if there is a borrow
     // or it will be all 0's if there was no borrow.  Easiest is to
     // conditionally subtract 19 and then mask off the high bit.
+    rr = result;
     borrow = (borrow >> LIMB_BITS) & 19U;
-    borrow = ((dlimb_t)result[0]) - borrow;
-    result[0] = (limb_t)borrow;
+    borrow = ((dlimb_t)(*rr)) - borrow;
+    *rr++ = (limb_t)borrow;
     for (posn = 1; posn < NUM_LIMBS; ++posn) {
-        borrow = ((dlimb_t)result[posn]) - ((borrow >> LIMB_BITS) & 0x01);
-        result[posn] = (limb_t)borrow;
+        borrow = ((dlimb_t)(*rr)) - ((borrow >> LIMB_BITS) & 0x01);
+        *rr++ = (limb_t)borrow;
     }
-    result[NUM_LIMBS - 1] &= ((((limb_t)1) << (LIMB_BITS - 1)) - 1);
+    *(--rr) &= ((((limb_t)1) << (LIMB_BITS - 1)) - 1);
 }
 
 /**

@@ -93,9 +93,9 @@ Ardunino Mega 2560 running at 16 MHz are similar:
 <tr><td>GHASH</td><td align="right">148.14us</td><td align="right">17.09us</td><td align="right">21.87us</td><td align="right">33</td></tr>
 <tr><td colspan="5"> </td></tr>
 <tr><td>Public Key Operation</td><td align="right">Time (per operation)</td><td colspan="3">Comment</td></tr>
-<tr><td>Curve25519::eval()</td><td align="right">3738ms</td><td colspan="3">Raw curve evaluation</td></tr>
-<tr><td>Curve25519::dh1()</td><td align="right">3740ms</td><td colspan="3">First half of Diffie-Hellman key agreement</td></tr>
-<tr><td>Curve25519::dh2()</td><td align="right">3738ms</td><td colspan="3">Second half of Diffie-Hellman key agreement</td></tr>
+<tr><td>Curve25519::eval()</td><td align="right">3119ms</td><td colspan="3">Raw curve evaluation</td></tr>
+<tr><td>Curve25519::dh1()</td><td align="right">3121ms</td><td colspan="3">First half of Diffie-Hellman key agreement</td></tr>
+<tr><td>Curve25519::dh2()</td><td align="right">3120ms</td><td colspan="3">Second half of Diffie-Hellman key agreement</td></tr>
 </table>
 
 Where a cipher supports more than one key size (such as ChaCha), the values

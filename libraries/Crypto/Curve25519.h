@@ -20,8 +20,8 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-#ifndef CRYPTO_CURVE15519_h
-#define CRYPTO_CURVE15519_h
+#ifndef CRYPTO_CURVE25519_h
+#define CRYPTO_CURVE25519_h
 
 #include "BigNumberUtil.h"
 #include <stddef.h>
