@@ -65,7 +65,7 @@ void BigNumberUtil::unpackLE(limb_t *limbs, size_t count,
     count *= sizeof(limb_t);
     if (len < count) {
         memcpy(limbs, bytes, len);
-        memset(limbs + len, 0, count - len);
+        memset(((uint8_t *)limbs) + len, 0, count - len);
     } else {
         memcpy(limbs, bytes, count);
     }
