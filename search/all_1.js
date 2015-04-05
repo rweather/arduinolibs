@@ -4,6 +4,7 @@ var searchData=
   ['backlightonselect',['BacklightOnSelect',['../classLCD.html#a264bf94308c95d8598426e13dc8cdb28a781f3c5e42506bf4f86ba06d69b23d35',1,'LCD']]],
   ['backlightpin',['backlightPin',['../classLCD.html#a171f59ba80e7775ebd3a399f56482a9c',1,'LCD']]],
   ['begin',['begin',['../classRNGClass.html#a7f1aab3c324f8e8a424d683425e0fcf8',1,'RNGClass']]],
+  ['bignumberutil',['BigNumberUtil',['../classBigNumberUtil.html',1,'']]],
   ['bitmap',['Bitmap',['../classBitmap.html',1,'Bitmap'],['../classBitmap.html#a40526748415c8bbc58a8510d636c20f4',1,'Bitmap::Bitmap()']]],
   ['bitsperpixel',['bitsPerPixel',['../classBitmap.html#ad18d3d5a1e77d541a95e93ad1f958411',1,'Bitmap']]],
   ['black',['Black',['../classBitmap.html#a2c7faeeb89d3624b5bbca58871785adc',1,'Bitmap']]],
