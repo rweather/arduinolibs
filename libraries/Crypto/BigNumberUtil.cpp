@@ -22,6 +22,7 @@
 
 #include "BigNumberUtil.h"
 #include "utility/EndianUtil.h"
+#include "utility/LimbUtil.h"
 #include <string.h>
 
 /**
@@ -362,4 +363,274 @@ void BigNumberUtil::packBE(uint8_t *bytes, size_t len,
         *bytes++ = (uint8_t)word;
     }
 #endif
+}
+
+/**
+ * \brief Adds two big numbers.
+ *
+ * \param result The result of the addition.  This can be the same
+ * as either \a x or \a y.
+ * \param x The first big number.
+ * \param y The second big number.
+ * \param size The size of the values in limbs.
+ *
+ * \return Returns 1 if there was a carry out or 0 if there was no carry out.
+ *
+ * \sa sub(), mul()
+ */
+limb_t BigNumberUtil::add(limb_t *result, const limb_t *x,
+                          const limb_t *y, size_t size)
+{
+    dlimb_t carry = 0;
+    while (size > 0) {
+        carry += *x++;
+        carry += *y++;
+        *result++ = (limb_t)carry;
+        carry >>= LIMB_BITS;
+        --size;
+    }
+    return (limb_t)carry;
+}
+
+/**
+ * \brief Subtracts one big number from another.
+ *
+ * \param result The result of the subtraction.  This can be the same
+ * as either \a x or \a y.
+ * \param x The first big number.
+ * \param y The second big number to subtract from \a x.
+ * \param size The size of the values in limbs.
+ *
+ * \return Returns 1 if there was a borrow, or 0 if there was no borrow.
+ *
+ * \sa add(), mul()
+ */
+limb_t BigNumberUtil::sub(limb_t *result, const limb_t *x,
+                          const limb_t *y, size_t size)
+{
+    dlimb_t borrow = 0;
+    while (size > 0) {
+        borrow = ((dlimb_t)(*x++)) - (*y++) - ((borrow >> LIMB_BITS) & 0x01);
+        *result++ = (limb_t)borrow;
+        --size;
+    }
+    return ((limb_t)(borrow >> LIMB_BITS)) & 0x01;
+}
+
+/**
+ * \brief Multiplies two big numbers.
+ *
+ * \param result The result of the multiplication.  The array must be
+ * \a xcount + \a ycount limbs in size.
+ * \param x Points to the first value to multiply.
+ * \param xcount The number of limbs in \a x.
+ * \param y Points to the second value to multiply.
+ * \param ycount The number of limbs in \a y.
+ *
+ * \sa mul_P()
+ */
+void BigNumberUtil::mul(limb_t *result, const limb_t *x, size_t xcount,
+                        const limb_t *y, size_t ycount)
+{
+    size_t i, j;
+    dlimb_t carry;
+    limb_t word;
+    const limb_t *xx;
+    limb_t *rr;
+
+    // Multiply the lowest limb of y by x.
+    carry = 0;
+    word = y[0];
+    xx = x;
+    rr = result;
+    for (i = 0; i < xcount; ++i) {
+        carry += ((dlimb_t)(*xx++)) * word;
+        *rr++ = (limb_t)carry;
+        carry >>= LIMB_BITS;
+    }
+    *rr = (limb_t)carry;
+
+    // Multiply and add the remaining limbs of y by x.
+    for (i = 1; i < ycount; ++i) {
+        word = y[i];
+        carry = 0;
+        xx = x;
+        rr = result + i;
+        for (j = 0; j < xcount; ++j) {
+            carry += ((dlimb_t)(*xx++)) * word;
+            carry += *rr;
+            *rr++ = (limb_t)carry;
+            carry >>= LIMB_BITS;
+        }
+        *rr = (limb_t)carry;
+    }
+}
+
+/**
+ * \brief Reduces \a x modulo \a y using subtraction.
+ *
+ * \param result The result of the reduction.  This can be the
+ * same as \a x.
+ * \param x The number to be reduced.
+ * \param y The base to use for the modulo reduction.
+ * \param size The size of the values in limbs.
+ *
+ * It is assumed that \a x is less than \a y * 2 so that a single
+ * conditional subtraction will bring it down below \a y.  The reduction
+ * is performed in constant time.
+ *
+ * \sa reduceQuick_P()
+ */
+void BigNumberUtil::reduceQuick(limb_t *result, const limb_t *x,
+                                const limb_t *y, size_t size)
+{
+    // Subtract "y" from "x" and turn the borrow into an AND mask.
+    limb_t mask = sub(result, x, y, size);
+    mask = (~mask) + 1;
+
+    // Add "y" back to the result if the mask is non-zero.
+    dlimb_t carry = 0;
+    while (size > 0) {
+        carry += *result;
+        carry += (*y++ & mask);
+        *result++ = (limb_t)carry;
+        carry >>= LIMB_BITS;
+        --size;
+    }
+}
+
+/**
+ * \brief Adds two big numbers where one of them is in program memory.
+ *
+ * \param result The result of the addition.  This can be the same as \a x.
+ * \param x The first big number.
+ * \param y The second big number.  This must point into program memory.
+ * \param size The size of the values in limbs.
+ *
+ * \return Returns 1 if there was a carry out or 0 if there was no carry out.
+ *
+ * \sa sub_P(), mul_P()
+ */
+limb_t BigNumberUtil::add_P(limb_t *result, const limb_t *x,
+                            const limb_t *y, size_t size)
+{
+    dlimb_t carry = 0;
+    while (size > 0) {
+        carry += *x++;
+        carry += pgm_read_limb(y++);
+        *result++ = (limb_t)carry;
+        carry >>= LIMB_BITS;
+        --size;
+    }
+    return (limb_t)carry;
+}
+
+/**
+ * \brief Subtracts one big number from another where one is in program memory.
+ *
+ * \param result The result of the subtraction.  This can be the same as \a x.
+ * \param x The first big number.
+ * \param y The second big number to subtract from \a x.  This must point
+ * into program memory.
+ * \param size The size of the values in limbs.
+ *
+ * \return Returns 1 if there was a borrow, or 0 if there was no borrow.
+ *
+ * \sa add_P(), mul_P()
+ */
+limb_t BigNumberUtil::sub_P(limb_t *result, const limb_t *x,
+                            const limb_t *y, size_t size)
+{
+    dlimb_t borrow = 0;
+    while (size > 0) {
+        borrow = ((dlimb_t)(*x++)) - pgm_read_limb(y++) - ((borrow >> LIMB_BITS) & 0x01);
+        *result++ = (limb_t)borrow;
+        --size;
+    }
+    return ((limb_t)(borrow >> LIMB_BITS)) & 0x01;
+}
+
+/**
+ * \brief Multiplies two big numbers where one is in program memory.
+ *
+ * \param result The result of the multiplication.  The array must be
+ * \a xcount + \a ycount limbs in size.
+ * \param x Points to the first value to multiply.
+ * \param xcount The number of limbs in \a x.
+ * \param y Points to the second value to multiply.  This must point
+ * into program memory.
+ * \param ycount The number of limbs in \a y.
+ *
+ * \sa mul()
+ */
+void BigNumberUtil::mul_P(limb_t *result, const limb_t *x, size_t xcount,
+                          const limb_t *y, size_t ycount)
+{
+    size_t i, j;
+    dlimb_t carry;
+    limb_t word;
+    const limb_t *xx;
+    limb_t *rr;
+
+    // Multiply the lowest limb of y by x.
+    carry = 0;
+    word = pgm_read_limb(&(y[0]));
+    xx = x;
+    rr = result;
+    for (i = 0; i < xcount; ++i) {
+        carry += ((dlimb_t)(*xx++)) * word;
+        *rr++ = (limb_t)carry;
+        carry >>= LIMB_BITS;
+    }
+    *rr = (limb_t)carry;
+
+    // Multiply and add the remaining limb of y by x.
+    for (i = 1; i < ycount; ++i) {
+        word = pgm_read_limb(&(y[i]));
+        carry = 0;
+        xx = x;
+        rr = result + i;
+        for (j = 0; j < xcount; ++j) {
+            carry += ((dlimb_t)(*xx++)) * word;
+            carry += *rr;
+            *rr++ = (limb_t)carry;
+            carry >>= LIMB_BITS;
+        }
+        *rr = (limb_t)carry;
+    }
+}
+
+/**
+ * \brief Reduces \a x modulo \a y using subtraction where \a y is
+ * in program memory.
+ *
+ * \param result The result of the reduction.  This can be the
+ * same as \a x.
+ * \param x The number to be reduced.
+ * \param y The base to use for the modulo reduction.  This must point
+ * into program memory.
+ * \param size The size of the values in limbs.
+ *
+ * It is assumed that \a x is less than \a y * 2 so that a single
+ * conditional subtraction will bring it down below \a y.  The reduction
+ * is performed in constant time.
+ *
+ * \sa reduceQuick()
+ */
+void BigNumberUtil::reduceQuick_P(limb_t *result, const limb_t *x,
+                                  const limb_t *y, size_t size)
+{
+    // Subtract "y" from "x" and turn the borrow into an AND mask.
+    limb_t mask = sub_P(result, x, y, size);
+    mask = (~mask) + 1;
+
+    // Add "y" back to the result if the mask is non-zero.
+    dlimb_t carry = 0;
+    while (size > 0) {
+        carry += *result;
+        carry += (pgm_read_limb(y++) & mask);
+        *result++ = (limb_t)carry;
+        carry >>= LIMB_BITS;
+        --size;
+    }
 }

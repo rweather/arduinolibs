@@ -25,6 +25,8 @@
 
 #include "BigNumberUtil.h"
 
+class Ed25519;
+
 class Curve25519
 {
 public:
@@ -43,6 +45,8 @@ private:
     static void reduce(limb_t *result, limb_t *x, uint8_t size);
     static limb_t reduceQuick(limb_t *x);
 
+    static void mulNoReduce(limb_t *result, const limb_t *x, const limb_t *y);
+
     static void mul(limb_t *result, const limb_t *x, const limb_t *y);
     static void square(limb_t *result, const limb_t *x)
     {
@@ -51,16 +55,23 @@ private:
 
     static void mulA24(limb_t *result, const limb_t *x);
 
+    static void mul_P(limb_t *result, const limb_t *x, const limb_t *y);
+
     static void add(limb_t *result, const limb_t *x, const limb_t *y);
     static void sub(limb_t *result, const limb_t *x, const limb_t *y);
 
-    static void cswap(uint8_t select, limb_t *x, limb_t *y);
+    static void cswap(limb_t select, limb_t *x, limb_t *y);
+    static void cmove(limb_t select, limb_t *x, const limb_t *y);
 
+    static void pow250(limb_t *result, const limb_t *x);
     static void recip(limb_t *result, const limb_t *x);
+    static bool sqrt(limb_t *result, const limb_t *x);
 
     // Constructor and destructor are private - cannot instantiate this class.
     Curve25519() {}
     ~Curve25519() {}
+
+    friend class Ed25519;
 };
 
 #endif

@@ -61,6 +61,24 @@ public:
     static void packBE(uint8_t *bytes, size_t len,
                        const limb_t *limbs, size_t count);
 
+    static limb_t add(limb_t *result, const limb_t *x,
+                      const limb_t *y, size_t size);
+    static limb_t sub(limb_t *result, const limb_t *x,
+                      const limb_t *y, size_t size);
+    static void mul(limb_t *result, const limb_t *x, size_t xcount,
+                    const limb_t *y, size_t ycount);
+    static void reduceQuick(limb_t *result, const limb_t *x,
+                            const limb_t *y, size_t size);
+
+    static limb_t add_P(limb_t *result, const limb_t *x,
+                        const limb_t *y, size_t size);
+    static limb_t sub_P(limb_t *result, const limb_t *x,
+                        const limb_t *y, size_t size);
+    static void mul_P(limb_t *result, const limb_t *x, size_t xcount,
+                      const limb_t *y, size_t ycount);
+    static void reduceQuick_P(limb_t *result, const limb_t *x,
+                              const limb_t *y, size_t size);
+
 private:
     // Constructor and destructor are private - cannot instantiate this class.
     BigNumberUtil() {}

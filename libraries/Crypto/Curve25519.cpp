@@ -23,7 +23,7 @@
 #include "Curve25519.h"
 #include "Crypto.h"
 #include "RNG.h"
-#include "utility/ProgMemUtil.h"
+#include "utility/LimbUtil.h"
 #include <string.h>
 
 /**
@@ -37,14 +37,9 @@
  *
  * References: http://cr.yp.to/ecdh.html
  * https://tools.ietf.org/html/draft-irtf-cfrg-curves-02
+ *
+ * \sa Ed25519
  */
-
-// Number of limbs in a value from the field modulo 2^255 - 19.
-// We assume that sizeof(limb_t) is a power of 2: 1, 2, 4, etc.
-#define NUM_LIMBS   (32 / sizeof(limb_t))
-
-// Number of bits in limb_t.
-#define LIMB_BITS   (8 * sizeof(limb_t))
 
 // The overhead of clean() calls in mul(), reduceQuick(), etc can
 // add up to a lot of processing time during eval().  Only do such
@@ -78,20 +73,20 @@
  */
 bool Curve25519::eval(uint8_t result[32], const uint8_t s[32], const uint8_t x[32])
 {
-    limb_t x_1[NUM_LIMBS];
-    limb_t x_2[NUM_LIMBS];
-    limb_t x_3[NUM_LIMBS];
-    limb_t z_2[NUM_LIMBS];
-    limb_t z_3[NUM_LIMBS];
-    limb_t A[NUM_LIMBS];
-    limb_t B[NUM_LIMBS];
-    limb_t C[NUM_LIMBS];
-    limb_t D[NUM_LIMBS];
-    limb_t E[NUM_LIMBS];
-    limb_t AA[NUM_LIMBS];
-    limb_t BB[NUM_LIMBS];
-    limb_t DA[NUM_LIMBS];
-    limb_t CB[NUM_LIMBS];
+    limb_t x_1[NUM_LIMBS_256BIT];
+    limb_t x_2[NUM_LIMBS_256BIT];
+    limb_t x_3[NUM_LIMBS_256BIT];
+    limb_t z_2[NUM_LIMBS_256BIT];
+    limb_t z_3[NUM_LIMBS_256BIT];
+    limb_t A[NUM_LIMBS_256BIT];
+    limb_t B[NUM_LIMBS_256BIT];
+    limb_t C[NUM_LIMBS_256BIT];
+    limb_t D[NUM_LIMBS_256BIT];
+    limb_t E[NUM_LIMBS_256BIT];
+    limb_t AA[NUM_LIMBS_256BIT];
+    limb_t BB[NUM_LIMBS_256BIT];
+    limb_t DA[NUM_LIMBS_256BIT];
+    limb_t CB[NUM_LIMBS_256BIT];
     uint8_t mask;
     uint8_t sposn;
     uint8_t select;
@@ -102,8 +97,8 @@ bool Curve25519::eval(uint8_t result[32], const uint8_t s[32], const uint8_t x[3
     // which also masks off the high bit.  NULL means 9.
     if (x) {
         // x1 = x
-        BigNumberUtil::unpackLE(x_1, NUM_LIMBS, x, 32);
-        x_1[NUM_LIMBS - 1] &= ((((limb_t)1) << (LIMB_BITS - 1)) - 1);
+        BigNumberUtil::unpackLE(x_1, NUM_LIMBS_256BIT, x, 32);
+        x_1[NUM_LIMBS_256BIT - 1] &= ((((limb_t)1) << (LIMB_BITS - 1)) - 1);
     } else {
         memset(x_1, 0, sizeof(x_1));    // x_1 = 9
         x_1[0] = 9;
@@ -178,7 +173,7 @@ bool Curve25519::eval(uint8_t result[32], const uint8_t s[32], const uint8_t x[3
     mul(x_2, x_2, z_3);
 
     // Pack the result into the return array.
-    BigNumberUtil::packLE(result, 32, x_2, NUM_LIMBS);
+    BigNumberUtil::packLE(result, 32, x_2, NUM_LIMBS_256BIT);
 
     // Clean up and exit.
     clean(x_1);
@@ -354,13 +349,13 @@ uint8_t Curve25519::isWeakPoint(const uint8_t k[32])
  * \brief Reduces a number modulo 2^255 - 19.
  *
  * \param result The array that will contain the result when the
- * function exits.  Must be NUM_LIMBS limbs in size.
- * \param x The number to be reduced, which must be NUM_LIMBS * 2 limbs in
- * size and less than or equal to square(2^255 - 19 - 1).  This array will
- * be modified by the reduction process.
+ * function exits.  Must be NUM_LIMBS_256BIT limbs in size.
+ * \param x The number to be reduced, which must be NUM_LIMBS_512BIT
+ * limbs in size and less than or equal to square(2^255 - 19 - 1).
+ * This array will be modified by the reduction process.
  * \param size The size of the high order half of \a x.  This indicates
- * the size of \a x in limbs.  If it is shorter than NUM_LIMBS then the
- * reduction can be performed quicker.
+ * the size of \a x in limbs.  If it is shorter than NUM_LIMBS_256BIT
+ * then the reduction can be performed quicker.
  */
 void Curve25519::reduce(limb_t *result, limb_t *x, uint8_t size)
 {
@@ -411,18 +406,18 @@ void Curve25519::reduce(limb_t *result, limb_t *x, uint8_t size)
     // Calculate (x mod 2^255) + ((x / 2^255) * 19) which will
     // either produce the answer we want or it will produce a
     // value of the form "answer + j * (2^255 - 19)".
-    carry = ((dlimb_t)(x[NUM_LIMBS - 1] >> (LIMB_BITS - 1))) * 19U;
-    x[NUM_LIMBS - 1] &= ((((limb_t)1) << (LIMB_BITS - 1)) - 1);
+    carry = ((dlimb_t)(x[NUM_LIMBS_256BIT - 1] >> (LIMB_BITS - 1))) * 19U;
+    x[NUM_LIMBS_256BIT - 1] &= ((((limb_t)1) << (LIMB_BITS - 1)) - 1);
     for (posn = 0; posn < size; ++posn) {
-        carry += ((dlimb_t)(x[posn + NUM_LIMBS])) * 38U;
+        carry += ((dlimb_t)(x[posn + NUM_LIMBS_256BIT])) * 38U;
         carry += x[posn];
         x[posn] = (limb_t)carry;
         carry >>= LIMB_BITS;
     }
-    if (size < NUM_LIMBS) {
+    if (size < NUM_LIMBS_256BIT) {
         // The high order half of the number is short; e.g. for mulA24().
         // Propagate the carry through the rest of the low order part.
-        for (posn = size; posn < NUM_LIMBS; ++posn) {
+        for (posn = size; posn < NUM_LIMBS_256BIT; ++posn) {
             carry += x[posn];
             x[posn] = (limb_t)carry;
             carry >>= LIMB_BITS;
@@ -434,9 +429,9 @@ void Curve25519::reduce(limb_t *result, limb_t *x, uint8_t size)
     // then this won't do any harm but we must still do the calculation
     // to preserve the overall timing.
     carry *= 38U;
-    carry += ((dlimb_t)(x[NUM_LIMBS - 1] >> (LIMB_BITS - 1))) * 19U;
-    x[NUM_LIMBS - 1] &= ((((limb_t)1) << (LIMB_BITS - 1)) - 1);
-    for (posn = 0; posn < NUM_LIMBS; ++posn) {
+    carry += ((dlimb_t)(x[NUM_LIMBS_256BIT - 1] >> (LIMB_BITS - 1))) * 19U;
+    x[NUM_LIMBS_256BIT - 1] &= ((((limb_t)1) << (LIMB_BITS - 1)) - 1);
+    for (posn = 0; posn < NUM_LIMBS_256BIT; ++posn) {
         carry += x[posn];
         x[posn] = (limb_t)carry;
         carry >>= LIMB_BITS;
@@ -448,9 +443,9 @@ void Curve25519::reduce(limb_t *result, limb_t *x, uint8_t size)
     // trial answer into the top-most limbs of the original "x" array.
     // We add 19 here; the subtraction of 2^255 occurs in the next step.
     carry = 19U;
-    for (posn = 0; posn < NUM_LIMBS; ++posn) {
+    for (posn = 0; posn < NUM_LIMBS_256BIT; ++posn) {
         carry += x[posn];
-        x[posn + NUM_LIMBS] = (limb_t)carry;
+        x[posn + NUM_LIMBS_256BIT] = (limb_t)carry;
         carry >>= LIMB_BITS;
     }
 
@@ -460,22 +455,22 @@ void Curve25519::reduce(limb_t *result, limb_t *x, uint8_t size)
     // it in a way that instruction timing will not reveal which value
     // was selected.  Borrow will occur if the high bit of the previous
     // result is 0: turn the high bit into a selection mask.
-    limb_t mask = (limb_t)(((slimb_t)(x[NUM_LIMBS * 2 - 1])) >> (LIMB_BITS - 1));
+    limb_t mask = (limb_t)(((slimb_t)(x[NUM_LIMBS_512BIT - 1])) >> (LIMB_BITS - 1));
     limb_t nmask = ~mask;
-    x[NUM_LIMBS * 2 - 1] &= ((((limb_t)1) << (LIMB_BITS - 1)) - 1);
-    for (posn = 0; posn < NUM_LIMBS; ++posn) {
-        result[posn] = (x[posn] & nmask) | (x[posn + NUM_LIMBS] & mask);
+    x[NUM_LIMBS_512BIT - 1] &= ((((limb_t)1) << (LIMB_BITS - 1)) - 1);
+    for (posn = 0; posn < NUM_LIMBS_256BIT; ++posn) {
+        result[posn] = (x[posn] & nmask) | (x[posn + NUM_LIMBS_256BIT] & mask);
     }
 }
 
 /**
  * \brief Quickly reduces a number modulo 2^255 - 19.
  *
- * \param x The number to be reduced, which must be NUM_LIMBS limbs in size
- * and less than or equal to 2 * (2^255 - 19 - 1).
+ * \param x The number to be reduced, which must be NUM_LIMBS_256BIT
+ ( limbs in size and less than or equal to 2 * (2^255 - 19 - 1).
  * \return Zero if \a x was greater than or equal to (2^255 - 19).
  *
- * The answer is also put into \a x and will consist of NUM_LIMBS limbs.
+ * The answer is also put into \a x and will consist of NUM_LIMBS_256BIT limbs.
  *
  * This function is intended for reducing the result of additions where
  * the caller knows that \a x is within the described range.  A single
@@ -483,7 +478,7 @@ void Curve25519::reduce(limb_t *result, limb_t *x, uint8_t size)
  */
 limb_t Curve25519::reduceQuick(limb_t *x)
 {
-    limb_t temp[NUM_LIMBS];
+    limb_t temp[NUM_LIMBS_256BIT];
     dlimb_t carry;
     uint8_t posn;
     limb_t *xx;
@@ -495,7 +490,7 @@ limb_t Curve25519::reduceQuick(limb_t *x)
     carry = 19U;
     xx = x;
     tt = temp;
-    for (posn = 0; posn < NUM_LIMBS; ++posn) {
+    for (posn = 0; posn < NUM_LIMBS_256BIT; ++posn) {
         carry += *xx++;
         *tt++ = (limb_t)carry;
         carry >>= LIMB_BITS;
@@ -506,12 +501,12 @@ limb_t Curve25519::reduceQuick(limb_t *x)
     // correct answer but do it in a way that instruction timing will not
     // reveal which value was selected.  Borrow will occur if the high bit
     // of "temp" is 0: turn the high bit into a selection mask.
-    limb_t mask = (limb_t)(((slimb_t)(temp[NUM_LIMBS - 1])) >> (LIMB_BITS - 1));
+    limb_t mask = (limb_t)(((slimb_t)(temp[NUM_LIMBS_256BIT - 1])) >> (LIMB_BITS - 1));
     limb_t nmask = ~mask;
-    temp[NUM_LIMBS - 1] &= ((((limb_t)1) << (LIMB_BITS - 1)) - 1);
+    temp[NUM_LIMBS_256BIT - 1] &= ((((limb_t)1) << (LIMB_BITS - 1)) - 1);
     xx = x;
     tt = temp;
-    for (posn = 0; posn < NUM_LIMBS; ++posn) {
+    for (posn = 0; posn < NUM_LIMBS_256BIT; ++posn) {
         *xx = ((*xx) & nmask) | ((*tt++) & mask);
         ++xx;
     }
@@ -524,53 +519,68 @@ limb_t Curve25519::reduceQuick(limb_t *x)
 }
 
 /**
- * \brief Multiplies two values and then reduces the result modulo 2^255 - 19.
+ * \brief Multiplies two 256-bit values to produce a 512-bit result.
  *
- * \param result The result, which must be NUM_LIMBS limbs in size and can
- * be the same array as \a x or \a y.
- * \param x The first value to multiply, which must be NUM_LIMBS limbs in size
- * and less than 2^255 - 19.
- * \param y The second value to multiply, which must be NUM_LIMBS limbs in size
- * and less than 2^255 - 19.  This can be the same array as \a x.
+ * \param result The result, which must be NUM_LIMBS_512BIT limbs in size
+ * and must not overlap with \a x or \a y.
+ * \param x The first value to multiply, which must be NUM_LIMBS_256BIT
+ * limbs in size.
+ * \param y The second value to multiply, which must be NUM_LIMBS_256BIT
+ * limbs in size.
+ *
+ * \sa mul()
  */
-void Curve25519::mul(limb_t *result, const limb_t *x, const limb_t *y)
+void Curve25519::mulNoReduce(limb_t *result, const limb_t *x, const limb_t *y)
 {
-    limb_t temp[NUM_LIMBS * 2];
     uint8_t i, j;
     dlimb_t carry;
     limb_t word;
     const limb_t *yy;
-    limb_t *tt;
+    limb_t *rr;
 
     // Multiply the lowest word of x by y.
     carry = 0;
     word = x[0];
     yy = y;
-    tt = temp;
-    for (i = 0; i < NUM_LIMBS; ++i) {
+    rr = result;
+    for (i = 0; i < NUM_LIMBS_256BIT; ++i) {
         carry += ((dlimb_t)(*yy++)) * word;
-        *tt++ = (limb_t)carry;
+        *rr++ = (limb_t)carry;
         carry >>= LIMB_BITS;
     }
-    *tt = (limb_t)carry;
+    *rr = (limb_t)carry;
 
     // Multiply and add the remaining words of x by y.
-    for (i = 1; i < NUM_LIMBS; ++i) {
+    for (i = 1; i < NUM_LIMBS_256BIT; ++i) {
         word = x[i];
         carry = 0;
         yy = y;
-        tt = temp + i;
-        for (j = 0; j < NUM_LIMBS; ++j) {
+        rr = result + i;
+        for (j = 0; j < NUM_LIMBS_256BIT; ++j) {
             carry += ((dlimb_t)(*yy++)) * word;
-            carry += *tt;
-            *tt++ = (limb_t)carry;
+            carry += *rr;
+            *rr++ = (limb_t)carry;
             carry >>= LIMB_BITS;
         }
-        *tt = (limb_t)carry;
+        *rr = (limb_t)carry;
     }
+}
 
-    // Reduce the intermediate result modulo 2^255 - 19.
-    reduce(result, temp, NUM_LIMBS);
+/**
+ * \brief Multiplies two values and then reduces the result modulo 2^255 - 19.
+ *
+ * \param result The result, which must be NUM_LIMBS_256BIT limbs in size
+ * and can be the same array as \a x or \a y.
+ * \param x The first value to multiply, which must be NUM_LIMBS_256BIT limbs
+ * in size and less than 2^255 - 19.
+ * \param y The second value to multiply, which must be NUM_LIMBS_256BIT limbs
+ * in size and less than 2^255 - 19.  This can be the same array as \a x.
+ */
+void Curve25519::mul(limb_t *result, const limb_t *x, const limb_t *y)
+{
+    limb_t temp[NUM_LIMBS_512BIT];
+    mulNoReduce(temp, x, y);
+    reduce(result, temp, NUM_LIMBS_256BIT);
     strict_clean(temp);
 }
 
@@ -578,9 +588,9 @@ void Curve25519::mul(limb_t *result, const limb_t *x, const limb_t *y)
  * \fn void Curve25519::square(limb_t *result, const limb_t *x)
  * \brief Squares a value and then reduces it modulo 2^255 - 19.
  *
- * \param result The result, which must be NUM_LIMBS limbs in size and
+ * \param result The result, which must be NUM_LIMBS_256BIT limbs in size and
  * can be the same array as \a x.
- * \param x The value to square, which must be NUM_LIMBS limbs in size
+ * \param x The value to square, which must be NUM_LIMBS_256BIT limbs in size
  * and less than 2^255 - 19.
  */
 
@@ -588,36 +598,33 @@ void Curve25519::mul(limb_t *result, const limb_t *x, const limb_t *y)
  * \brief Multiplies a value by the a24 constant and then reduces the result
  * modulo 2^255 - 19.
  *
- * \param result The result, which must be NUM_LIMBS limbs in size and can
- * be the same array as \a x.
- * \param x The value to multiply by a24, which must be NUM_LIMBS limbs in size
- * and less than 2^255 - 19.
+ * \param result The result, which must be NUM_LIMBS_256BIT limbs in size
+ * and can be the same array as \a x.
+ * \param x The value to multiply by a24, which must be NUM_LIMBS_256BIT
+ * limbs in size and less than 2^255 - 19.
  */
 void Curve25519::mulA24(limb_t *result, const limb_t *x)
 {
     // The constant a24 = 121665 (0x1DB41) as a limb array.
 #if BIGNUMBER_LIMB_8BIT
     static limb_t const a24[3] PROGMEM = {0x41, 0xDB, 0x01};
-    #define pgm_read_a24(index) (pgm_read_byte(&(a24[(index)])))
 #elif BIGNUMBER_LIMB_16BIT
     static limb_t const a24[2] PROGMEM = {0xDB41, 0x0001};
-    #define pgm_read_a24(index) (pgm_read_word(&(a24[(index)])))
 #elif BIGNUMBER_LIMB_32BIT
     static limb_t const a24[1] PROGMEM = {0x0001DB41};
-    #define pgm_read_a24(index) (pgm_read_dword(&(a24[(index)])))
 #else
     #error "limb_t must be 8, 16, or 32 bits in size"
 #endif
     #define NUM_A24_LIMBS   (sizeof(a24) / sizeof(limb_t))
 
     // Multiply the lowest limb of a24 by x and zero-extend into the result.
-    limb_t temp[NUM_LIMBS * 2];
+    limb_t temp[NUM_LIMBS_512BIT];
     uint8_t i, j;
     dlimb_t carry = 0;
-    limb_t word = pgm_read_a24(0);
+    limb_t word = pgm_read_limb(&(a24[0]));
     const limb_t *xx = x;
     limb_t *tt = temp;
-    for (i = 0; i < NUM_LIMBS; ++i) {
+    for (i = 0; i < NUM_LIMBS_256BIT; ++i) {
         carry += ((dlimb_t)(*xx++)) * word;
         *tt++ = (limb_t)carry;
         carry >>= LIMB_BITS;
@@ -626,11 +633,11 @@ void Curve25519::mulA24(limb_t *result, const limb_t *x)
 
     // Multiply and add the remaining limbs of a24.
     for (i = 1; i < NUM_A24_LIMBS; ++i) {
-        word = pgm_read_a24(i);
+        word = pgm_read_limb(&(a24[i]));
         carry = 0;
         xx = x;
         tt = temp + i;
-        for (j = 0; j < NUM_LIMBS; ++j) {
+        for (j = 0; j < NUM_LIMBS_256BIT; ++j) {
             carry += ((dlimb_t)(*xx++)) * word;
             carry += *tt;
             *tt++ = (limb_t)carry;
@@ -645,14 +652,68 @@ void Curve25519::mulA24(limb_t *result, const limb_t *x)
 }
 
 /**
+ * \brief Multiplies two values and then reduces the result modulo 2^255 - 19,
+ * where one of the values is in program memory.
+ *
+ * \param result The result, which must be NUM_LIMBS_256BIT limbs in size
+ * and can be the same array as \a x or \a y.
+ * \param x The first value to multiply, which must be NUM_LIMBS_256BIT limbs
+ * in size and less than 2^255 - 19.
+ * \param y The second value to multiply, which must be NUM_LIMBS_256BIT limbs
+ * in size and less than 2^255 - 19.  This array must be in program memory.
+ */
+void Curve25519::mul_P(limb_t *result, const limb_t *x, const limb_t *y)
+{
+    limb_t temp[NUM_LIMBS_512BIT];
+    uint8_t i, j;
+    dlimb_t carry;
+    limb_t word;
+    const limb_t *yy;
+    limb_t *tt;
+
+    // Multiply the lowest word of x by y.
+    carry = 0;
+    word = x[0];
+    yy = y;
+    tt = temp;
+    for (i = 0; i < NUM_LIMBS_256BIT; ++i) {
+        carry += ((dlimb_t)(pgm_read_limb(yy))) * word;
+        *tt++ = (limb_t)carry;
+        carry >>= LIMB_BITS;
+        ++yy;
+    }
+    *tt = (limb_t)carry;
+
+    // Multiply and add the remaining words of x by y.
+    for (i = 1; i < NUM_LIMBS_256BIT; ++i) {
+        word = x[i];
+        carry = 0;
+        yy = y;
+        tt = temp + i;
+        for (j = 0; j < NUM_LIMBS_256BIT; ++j) {
+            carry += ((dlimb_t)(pgm_read_limb(yy))) * word;
+            carry += *tt;
+            *tt++ = (limb_t)carry;
+            carry >>= LIMB_BITS;
+            ++yy;
+        }
+        *tt = (limb_t)carry;
+    }
+
+    // Reduce the intermediate result modulo 2^255 - 19.
+    reduce(result, temp, NUM_LIMBS_256BIT);
+    strict_clean(temp);
+}
+
+/**
  * \brief Adds two values and then reduces the result modulo 2^255 - 19.
  *
- * \param result The result, which must be NUM_LIMBS limbs in size and can
- * be the same array as \a x or \a y.
- * \param x The first value to multiply, which must be NUM_LIMBS limbs in size
- * and less than 2^255 - 19.
- * \param y The second value to multiply, which must be NUM_LIMBS limbs in size
- * and less than 2^255 - 19.
+ * \param result The result, which must be NUM_LIMBS_256BIT limbs in size
+ * and can be the same array as \a x or \a y.
+ * \param x The first value to multiply, which must be NUM_LIMBS_256BIT
+ * limbs in size and less than 2^255 - 19.
+ * \param y The second value to multiply, which must be NUM_LIMBS_256BIT
+ * limbs in size and less than 2^255 - 19.
  */
 void Curve25519::add(limb_t *result, const limb_t *x, const limb_t *y)
 {
@@ -661,7 +722,7 @@ void Curve25519::add(limb_t *result, const limb_t *x, const limb_t *y)
     limb_t *rr = result;
 
     // Add the two arrays to obtain the intermediate result.
-    for (posn = 0; posn < NUM_LIMBS; ++posn) {
+    for (posn = 0; posn < NUM_LIMBS_256BIT; ++posn) {
         carry += *x++;
         carry += *y++;
         *rr++ = (limb_t)carry;
@@ -675,12 +736,12 @@ void Curve25519::add(limb_t *result, const limb_t *x, const limb_t *y)
 /**
  * \brief Subtracts two values and then reduces the result modulo 2^255 - 19.
  *
- * \param result The result, which must be NUM_LIMBS limbs in size and can
- * be the same array as \a x or \a y.
- * \param x The first value to multiply, which must be NUM_LIMBS limbs in size
- * and less than 2^255 - 19.
- * \param y The second value to multiply, which must be NUM_LIMBS limbs in size
- * and less than 2^255 - 19.
+ * \param result The result, which must be NUM_LIMBS_256BIT limbs in size
+ * and can be the same array as \a x or \a y.
+ * \param x The first value to multiply, which must be NUM_LIMBS_256BIT
+ * limbs in size and less than 2^255 - 19.
+ * \param y The second value to multiply, which must be NUM_LIMBS_256BIT
+ * limbs in size and less than 2^255 - 19.
  */
 void Curve25519::sub(limb_t *result, const limb_t *x, const limb_t *y)
 {
@@ -690,7 +751,7 @@ void Curve25519::sub(limb_t *result, const limb_t *x, const limb_t *y)
 
     // Subtract y from x to generate the intermediate result.
     borrow = 0;
-    for (posn = 0; posn < NUM_LIMBS; ++posn) {
+    for (posn = 0; posn < NUM_LIMBS_256BIT; ++posn) {
         borrow = ((dlimb_t)(*x++)) - (*y++) - ((borrow >> LIMB_BITS) & 0x01);
         *rr++ = (limb_t)borrow;
     }
@@ -704,7 +765,7 @@ void Curve25519::sub(limb_t *result, const limb_t *x, const limb_t *y)
     borrow = (borrow >> LIMB_BITS) & 19U;
     borrow = ((dlimb_t)(*rr)) - borrow;
     *rr++ = (limb_t)borrow;
-    for (posn = 1; posn < NUM_LIMBS; ++posn) {
+    for (posn = 1; posn < NUM_LIMBS_256BIT; ++posn) {
         borrow = ((dlimb_t)(*rr)) - ((borrow >> LIMB_BITS) & 0x01);
         *rr++ = (limb_t)borrow;
     }
@@ -720,8 +781,10 @@ void Curve25519::sub(limb_t *result, const limb_t *x, const limb_t *y)
  *
  * The swap is performed in a way that it should take the same amount of
  * time irrespective of the value of \a select.
+ *
+ * \sa cmove()
  */
-void Curve25519::cswap(uint8_t select, limb_t *x, limb_t *y)
+void Curve25519::cswap(limb_t select, limb_t *x, limb_t *y)
 {
     uint8_t posn;
     limb_t dummy;
@@ -734,7 +797,7 @@ void Curve25519::cswap(uint8_t select, limb_t *x, limb_t *y)
 
     // Swap the two values based on "select".  Algorithm from:
     // https://tools.ietf.org/html/draft-irtf-cfrg-curves-02
-    for (posn = 0; posn < NUM_LIMBS; ++posn) {
+    for (posn = 0; posn < NUM_LIMBS_256BIT; ++posn) {
         dummy = sel & (x[posn] ^ y[posn]);
         x[posn] ^= dummy;
         y[posn] ^= dummy;
@@ -742,20 +805,48 @@ void Curve25519::cswap(uint8_t select, limb_t *x, limb_t *y)
 }
 
 /**
- * \brief Computes the reciprocal of a number modulo 2^255 - 19.
+ * \brief Conditionally moves \a y into \a x if a selection value is non-zero.
  *
- * \param result The result as a array of NUM_LIMBS limbs in size.  This can
- * be the same array as \a x.
- * \param x The number to compute the reciprocal for.
+ * \param select Non-zero to move \a y into \a x, zero to leave \a x unchanged.
+ * \param x The destination to move into.
+ * \param y The value to conditionally move.
+ *
+ * The move is performed in a way that it should take the same amount of
+ * time irrespective of the value of \a select.
+ *
+ * \sa cswap()
  */
-void Curve25519::recip(limb_t *result, const limb_t *x)
+void Curve25519::cmove(limb_t select, limb_t *x, const limb_t *y)
 {
-    limb_t t1[NUM_LIMBS];
+    uint8_t posn;
+    limb_t dummy;
+    limb_t sel;
+
+    // Turn "select" into an all-zeroes or all-ones mask.  We don't care
+    // which bit or bits is set in the original "select" value.
+    sel = (limb_t)(((((dlimb_t)1) << LIMB_BITS) - select) >> LIMB_BITS);
+    --sel;
+
+    // Move y into x based on "select".  Similar to conditional swap above.
+    for (posn = 0; posn < NUM_LIMBS_256BIT; ++posn) {
+        dummy = sel & (x[posn] ^ y[posn]);
+        x[posn] ^= dummy;
+    }
+}
+
+/**
+ * \brief Raise x to the power of (2^250 - 1).
+ *
+ * \param result The result array, which must be NUM_LIMBS_256BIT limbs in size.
+ * \param x The value to raise.
+ */
+void Curve25519::pow250(limb_t *result, const limb_t *x)
+{
+    limb_t t1[NUM_LIMBS_256BIT];
     uint8_t i, j;
 
-    // The reciprocal is the same as x ^ (p - 2) where p = 2^255 - 19.
-    // The big-endian hexadecimal expansion of (p - 2) is:
-    // 7FFFFFFF FFFFFFFF FFFFFFFF FFFFFFFF FFFFFFFF FFFFFFFF FFFFFFFF FFFFFFEB
+    // The big-endian hexadecimal expansion of (2^250 - 1) is:
+    // 03FFFFFF FFFFFFFF FFFFFFFF FFFFFFFF FFFFFFFF FFFFFFFF FFFFFFFF FFFFFFFF
     //
     // The naive implementation needs to do 2 multiplications per 1 bit and
     // 1 multiplication per 0 bit.  We can improve upon this by creating a
@@ -786,6 +877,25 @@ void Curve25519::recip(limb_t *result, const limb_t *x)
         mul(result, result, t1);
     }
 
+    // Clean up and exit.
+    clean(t1);
+}
+
+/**
+ * \brief Computes the reciprocal of a number modulo 2^255 - 19.
+ *
+ * \param result The result as a array of NUM_LIMBS_256BIT limbs in size.
+ * This cannot be the same array as \a x.
+ * \param x The number to compute the reciprocal for.
+ */
+void Curve25519::recip(limb_t *result, const limb_t *x)
+{
+    // The reciprocal is the same as x ^ (p - 2) where p = 2^255 - 19.
+    // The big-endian hexadecimal expansion of (p - 2) is:
+    // 7FFFFFFF FFFFFFFF FFFFFFFF FFFFFFFF FFFFFFFF FFFFFFFF FFFFFFFF FFFFFFEB
+    // Start with the 250 upper bits of the expansion of (p - 2).
+    pow250(result, x);
+
     // Deal with the 5 lowest bits of (p - 2), 01011, from highest to lowest.
     square(result, result);
     square(result, result);
@@ -795,7 +905,59 @@ void Curve25519::recip(limb_t *result, const limb_t *x)
     mul(result, result, x);
     square(result, result);
     mul(result, result, x);
+}
 
-    // Clean up and exit.
-    clean(t1);
+/**
+ * \brief Computes the square root of a number modulo 2^255 - 19.
+ *
+ * \param result The result as a array of NUM_LIMBS_256BIT limbs in size.
+ * This must not overlap with \a x.
+ * \param x The number to compute the square root for.
+ *
+ * For any number \a x, there are two square roots: positive and negative.
+ * For example, both 2 and -2 are square roots of 4 because 2 * 2 = -2 * -2.
+ * This function will return one or the other.  Callers must determine which
+ * square root they are interested in and invert the result as necessary.
+ *
+ * \note This function is not constant time so it should only be used
+ * on publicly-known values.
+ */
+bool Curve25519::sqrt(limb_t *result, const limb_t *x)
+{
+    // sqrt(-1) mod (2^255 - 19).
+    static limb_t const numSqrtM1[NUM_LIMBS_256BIT] PROGMEM = {
+        LIMB(0x4A0EA0B0), LIMB(0xC4EE1B27), LIMB(0xAD2FE478), LIMB(0x2F431806),
+        LIMB(0x3DFBD7A7), LIMB(0x2B4D0099), LIMB(0x4FC1DF0B), LIMB(0x2B832480)
+    };
+    limb_t y[NUM_LIMBS_256BIT];
+
+    // Algorithm from:
+    // https://tools.ietf.org/id/draft-josefsson-eddsa-ed25519-02.txt
+
+    // Compute a candidate root: result = x^((p + 3) / 8) mod p.
+    // (p + 3) / 8 = (2^252 - 2) which is 251 one bits followed by a zero:
+    // 0FFFFFFF FFFFFFFF FFFFFFFF FFFFFFFF FFFFFFFF FFFFFFFF FFFFFFFF FFFFFFFE
+    pow250(result, x);
+    square(result, result);
+    mul(result, result, x);
+    square(result, result);
+
+    // Did we get the square root immediately?
+    square(y, result);
+    if (memcmp(x, y, sizeof(y)) == 0) {
+        clean(y);
+        return true;
+    }
+
+    // Multiply the result by sqrt(-1) and check again.
+    mul_P(result, result, numSqrtM1);
+    square(y, result);
+    if (memcmp(x, y, sizeof(y)) == 0) {
+        clean(y);
+        return true;
+    }
+
+    // The number does not have a square root.
+    clean(y);
+    return false;
 }

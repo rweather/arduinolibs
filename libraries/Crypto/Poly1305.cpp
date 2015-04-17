@@ -23,6 +23,7 @@
 #include "Poly1305.h"
 #include "Crypto.h"
 #include "utility/EndianUtil.h"
+#include "utility/LimbUtil.h"
 #include <string.h>
 
 /**
@@ -58,10 +59,8 @@
  * http://cr.yp.to/mac.html
  */
 
-// Useful sizes for limb array and word manipulation.
-#define NUM_LIMBS_128BIT    (16 / sizeof(limb_t))
-#define NUM_LIMBS_130BIT    ((16 / sizeof(limb_t)) + 1)
-#define LIMB_BITS           (sizeof(limb_t) * 8)
+// Limb array with enough space for 130 bits.
+#define NUM_LIMBS_130BIT    (NUM_LIMBS_128BIT + 1)
 
 // Endian helper macros for limbs and arrays of limbs.
 #if BIGNUMBER_LIMB_8BIT

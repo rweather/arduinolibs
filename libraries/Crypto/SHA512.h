@@ -25,6 +25,8 @@
 
 #include "Hash.h"
 
+class Ed25519;
+
 class SHA512 : public Hash
 {
 public:
@@ -53,6 +55,8 @@ private:
     } state;
 
     void processChunk();
+
+    friend class Ed25519;
 };
 
 #endif

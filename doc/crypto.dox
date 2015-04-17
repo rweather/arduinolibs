@@ -32,7 +32,7 @@
 \li Authenticated encryption with associated data (AEAD): ChaChaPoly, GCM
 \li Hash algorithms: SHA1, SHA256, SHA512, SHA3_256, SHA3_512, BLAKE2s, BLAKE2b (regular and HMAC modes)
 \li Message authenticators: Poly1305, GHASH
-\li Public key algorithms: Curve25519
+\li Public key algorithms: Curve25519, Ed25519
 \li Random number generation: \link RNGClass RNG\endlink, TransistorNoiseSource, RingOscillatorNoiseSource
 
 All cryptographic algorithms have been optimized for 8-bit Arduino platforms
@@ -96,6 +96,9 @@ Ardunino Mega 2560 running at 16 MHz are similar:
 <tr><td>Curve25519::eval()</td><td align="right">3119ms</td><td colspan="3">Raw curve evaluation</td></tr>
 <tr><td>Curve25519::dh1()</td><td align="right">3121ms</td><td colspan="3">First half of Diffie-Hellman key agreement</td></tr>
 <tr><td>Curve25519::dh2()</td><td align="right">3120ms</td><td colspan="3">Second half of Diffie-Hellman key agreement</td></tr>
+<tr><td>Ed25519::sign()</td><td align="right">5688ms</td><td colspan="3">Digital signature generation</td></tr>
+<tr><td>Ed25519::verify()</td><td align="right">9030ms</td><td colspan="3">Digital signature verification</td></tr>
+<tr><td>Ed25519::derivePublicKey()</td><td align="right">5642ms</td><td colspan="3">Derive a public key from a private key</td></tr>
 </table>
 
 Where a cipher supports more than one key size (such as ChaCha), the values

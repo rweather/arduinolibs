@@ -99,10 +99,10 @@ void printNumber(const char *name, const limb_t *x)
     static const char hexchars[] = "0123456789ABCDEF";
     Serial.print(name);
     Serial.print(" = ");
-    for (uint8_t posn = 0; posn < NUM_LIMBS; ++posn) {
+    for (uint8_t posn = NUM_LIMBS; posn > 0; --posn) {
         for (uint8_t bit = LIMB_BITS; bit > 0; ) {
             bit -= 4;
-            Serial.print(hexchars[(x[posn] >> bit) & 0x0F]);
+            Serial.print(hexchars[(x[posn - 1] >> bit) & 0x0F]);
         }
         Serial.print(' ');
     }
@@ -603,6 +603,68 @@ void testRecip()
     Serial.println();
 }
 
+void testSqrt(const char *x)
+{
+    Serial.print("sqrt(");
+    printProgMem(x);
+    Serial.print("^2): ");
+    Serial.flush();
+
+    fromString(arg1, NUM_LIMBS, x);
+    Curve25519::square(arg2, arg1);
+    bool ok = Curve25519::sqrt(result, arg2);
+
+    if (ok) {
+        ok = (compare(result, arg1) == 0);
+        if (!ok) {
+            // Check the negation of arg1 as well because we could
+            // have ended up with the inverse of the original value.
+            memset(temp, 0, sizeof(temp));
+            Curve25519::sub(temp, temp, arg1);
+            ok = (compare(result, temp) == 0);
+        }
+    } else {
+        Serial.println("no sqrt ... ");
+    }
+
+    if (ok) {
+        Serial.println("ok");
+    } else {
+        Serial.println("failed");
+        printNumber("actual", result);
+        printNumber("expected", arg1);
+    }
+}
+
+void testNoSqrt(const char *x)
+{
+    Serial.print("no sqrt(");
+    printProgMem(x);
+    Serial.print("): ");
+    Serial.flush();
+
+    fromString(arg1, NUM_LIMBS, x);
+    bool ok = !Curve25519::sqrt(result, arg1);
+
+    if (ok) {
+        Serial.println("ok");
+    } else {
+        Serial.println("failed");
+        printNumber("actual", result);
+    }
+}
+
+void testSqrt()
+{
+    Serial.println("Square root:");
+    foreach_number (x) {
+        testSqrt(x);
+    }
+    testNoSqrt(num_128);
+    testNoSqrt(num_pi);
+    Serial.println();
+}
+
 void setup()
 {
     Serial.begin(9600);
@@ -613,6 +675,7 @@ void setup()
     testMulA24();
     testSwap();
     testRecip();
+    testSqrt();
 }
 
 void loop()
