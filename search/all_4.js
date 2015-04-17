@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['ed25519',['Ed25519',['../classEd25519.html',1,'']]],
   ['eeprom24',['EEPROM24',['../classEEPROM24.html',1,'EEPROM24'],['../classEEPROM24.html#ae8547f6ff7711496e1959ee24a142995',1,'EEPROM24::EEPROM24()']]],
   ['enable32khzoutput',['enable32kHzOutput',['../classDS3231RTC.html#a032cf784eb82ccf6ff0a9745b47ac86b',1,'DS3231RTC::enable32kHzOutput()'],['../classDS3232RTC.html#a3966de6f4241d86f198a8b9dd5e7e59a',1,'DS3232RTC::enable32kHzOutput()']]],
   ['enablealarm',['enableAlarm',['../classDS3231RTC.html#ad0a0614c48d4f809fee6017cd7350372',1,'DS3231RTC']]],

@@ -88,7 +88,7 @@ Supported Algorithms</h1>
 <li>Authenticated encryption with associated data (AEAD): <a class="el" href="classChaChaPoly.html" title="Authenticated cipher based on ChaCha and Poly1305. ">ChaChaPoly</a>, <a class="el" href="classGCM.html" title="Implementation of the Galois Counter Mode (GCM). ">GCM</a> </li>
 <li><a class="el" href="classHash.html" title="Abstract base class for cryptographic hash algorithms. ">Hash</a> algorithms: <a class="el" href="classSHA1.html" title="SHA-1 hash algorithm. ">SHA1</a>, <a class="el" href="classSHA256.html" title="SHA-256 hash algorithm. ">SHA256</a>, <a class="el" href="classSHA512.html" title="SHA-512 hash algorithm. ">SHA512</a>, <a class="el" href="classSHA3__256.html" title="SHA3-256 hash algorithm. ">SHA3_256</a>, <a class="el" href="classSHA3__512.html" title="SHA3-512 hash algorithm. ">SHA3_512</a>, <a class="el" href="classBLAKE2s.html" title="BLAKE2s hash algorithm. ">BLAKE2s</a>, <a class="el" href="classBLAKE2b.html" title="BLAKE2b hash algorithm. ">BLAKE2b</a> (regular and HMAC modes) </li>
 <li>Message authenticators: <a class="el" href="classPoly1305.html" title="Poly1305 message authenticator. ">Poly1305</a>, <a class="el" href="classGHASH.html" title="Implementation of the GHASH message authenticator. ">GHASH</a> </li>
-<li>Public key algorithms: <a class="el" href="classCurve25519.html" title="Diffie-Hellman key agreement based on the elliptic curve modulo 2^255 - 19. ">Curve25519</a> </li>
+<li>Public key algorithms: <a class="el" href="classCurve25519.html" title="Diffie-Hellman key agreement based on the elliptic curve modulo 2^255 - 19. ">Curve25519</a>, <a class="el" href="classEd25519.html" title="Digital signatures based on the elliptic curve modulo 2^255 - 19. ">Ed25519</a> </li>
 <li>Random number generation: <a class="el" href="classRNGClass.html">RNG</a>, <a class="el" href="classTransistorNoiseSource.html" title="Processes the signal from a transistor-based noise source. ">TransistorNoiseSource</a>, <a class="el" href="classRingOscillatorNoiseSource.html" title="Processes the signal from a ring oscillator based noise source. ">RingOscillatorNoiseSource</a></li>
 </ul>
 <p>All cryptographic algorithms have been optimized for 8-bit Arduino platforms like the Uno. Memory usage is also reduced, particularly for <a class="el" href="classSHA1.html" title="SHA-1 hash algorithm. ">SHA1</a>, <a class="el" href="classSHA256.html" title="SHA-256 hash algorithm. ">SHA256</a>, and <a class="el" href="classSHA512.html" title="SHA-512 hash algorithm. ">SHA512</a> which save 256, 192, and 512 bytes respectively over traditional implementations. For all algorithms, static sbox tables and the like are placed into program memory to further reduce data memory usage.</p>
@@ -171,12 +171,18 @@ Performance</h1>
 <td><a class="el" href="classCurve25519.html#a2b6911583d17ea9a36bbbb40d58b3d89" title="Performs phase 1 of a Diffie-Hellman key exchange using Curve25519. ">Curve25519::dh1()</a></td><td align="right">3121ms</td><td colspan="3">First half of Diffie-Hellman key agreement </td></tr>
 <tr>
 <td><a class="el" href="classCurve25519.html#a14022d6ac68ec691ffb0247275078ab9" title="Performs phase 2 of a Diffie-Hellman key exchange using Curve25519. ">Curve25519::dh2()</a></td><td align="right">3120ms</td><td colspan="3">Second half of Diffie-Hellman key agreement </td></tr>
+<tr>
+<td><a class="el" href="classEd25519.html#a36ecf67b4c5d2d39a31888f56af1f8a5" title="Signs a message using a specific Ed25519 private key. ">Ed25519::sign()</a></td><td align="right">5688ms</td><td colspan="3">Digital signature generation </td></tr>
+<tr>
+<td><a class="el" href="classEd25519.html#ae3e2fc405c9cd8cb1d3ab9b8b452d3e4" title="Verifies a signature using a specific Ed25519 public key. ">Ed25519::verify()</a></td><td align="right">9030ms</td><td colspan="3">Digital signature verification </td></tr>
+<tr>
+<td><a class="el" href="classEd25519.html#ab62bac52ed07f77f76f3ff0fccd71cb2" title="Derives the public key from a private key. ">Ed25519::derivePublicKey()</a></td><td align="right">5642ms</td><td colspan="3">Derive a public key from a private key </td></tr>
 </table>
 <p>Where a cipher supports more than one key size (such as <a class="el" href="classChaCha.html" title="ChaCha stream cipher. ">ChaCha</a>), the values are typically almost identical for 128-bit and 256-bit keys so only the maximum is shown above. </p>
 </div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Apr 6 2015 09:30:16 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Apr 18 2015 08:44:48 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

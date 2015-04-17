@@ -110,6 +110,30 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:af49dd38173ea0310776d283aabea2ba0"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBigNumberUtil.html#af49dd38173ea0310776d283aabea2ba0">packBE</a> (uint8_t *bytes, size_t len, const limb_t *limbs, size_t count)</td></tr>
 <tr class="memdesc:af49dd38173ea0310776d283aabea2ba0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Packs the big-endian byte representation of a big number into a byte array.  <a href="#af49dd38173ea0310776d283aabea2ba0">More...</a><br/></td></tr>
 <tr class="separator:af49dd38173ea0310776d283aabea2ba0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa6904b2727af6b767fe041b1b7f27414"><td class="memItemLeft" align="right" valign="top">static limb_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBigNumberUtil.html#aa6904b2727af6b767fe041b1b7f27414">add</a> (limb_t *result, const limb_t *x, const limb_t *y, size_t size)</td></tr>
+<tr class="memdesc:aa6904b2727af6b767fe041b1b7f27414"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds two big numbers.  <a href="#aa6904b2727af6b767fe041b1b7f27414">More...</a><br/></td></tr>
+<tr class="separator:aa6904b2727af6b767fe041b1b7f27414"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6618e03bfcb3086961df508b40cc1e67"><td class="memItemLeft" align="right" valign="top">static limb_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBigNumberUtil.html#a6618e03bfcb3086961df508b40cc1e67">sub</a> (limb_t *result, const limb_t *x, const limb_t *y, size_t size)</td></tr>
+<tr class="memdesc:a6618e03bfcb3086961df508b40cc1e67"><td class="mdescLeft">&#160;</td><td class="mdescRight">Subtracts one big number from another.  <a href="#a6618e03bfcb3086961df508b40cc1e67">More...</a><br/></td></tr>
+<tr class="separator:a6618e03bfcb3086961df508b40cc1e67"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1c2c5484f2bf440ae292fd3dfd2d594f"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBigNumberUtil.html#a1c2c5484f2bf440ae292fd3dfd2d594f">mul</a> (limb_t *result, const limb_t *x, size_t xcount, const limb_t *y, size_t ycount)</td></tr>
+<tr class="memdesc:a1c2c5484f2bf440ae292fd3dfd2d594f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Multiplies two big numbers.  <a href="#a1c2c5484f2bf440ae292fd3dfd2d594f">More...</a><br/></td></tr>
+<tr class="separator:a1c2c5484f2bf440ae292fd3dfd2d594f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5af5f50c91594183da4e079d76702d34"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBigNumberUtil.html#a5af5f50c91594183da4e079d76702d34">reduceQuick</a> (limb_t *result, const limb_t *x, const limb_t *y, size_t size)</td></tr>
+<tr class="memdesc:a5af5f50c91594183da4e079d76702d34"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reduces <em>x</em> modulo <em>y</em> using subtraction.  <a href="#a5af5f50c91594183da4e079d76702d34">More...</a><br/></td></tr>
+<tr class="separator:a5af5f50c91594183da4e079d76702d34"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab9a9f532fcfc182433adac44d8e4ee20"><td class="memItemLeft" align="right" valign="top">static limb_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBigNumberUtil.html#ab9a9f532fcfc182433adac44d8e4ee20">add_P</a> (limb_t *result, const limb_t *x, const limb_t *y, size_t size)</td></tr>
+<tr class="memdesc:ab9a9f532fcfc182433adac44d8e4ee20"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds two big numbers where one of them is in program memory.  <a href="#ab9a9f532fcfc182433adac44d8e4ee20">More...</a><br/></td></tr>
+<tr class="separator:ab9a9f532fcfc182433adac44d8e4ee20"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af0fa1527647af42b65eda6b0aab982b3"><td class="memItemLeft" align="right" valign="top">static limb_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBigNumberUtil.html#af0fa1527647af42b65eda6b0aab982b3">sub_P</a> (limb_t *result, const limb_t *x, const limb_t *y, size_t size)</td></tr>
+<tr class="memdesc:af0fa1527647af42b65eda6b0aab982b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Subtracts one big number from another where one is in program memory.  <a href="#af0fa1527647af42b65eda6b0aab982b3">More...</a><br/></td></tr>
+<tr class="separator:af0fa1527647af42b65eda6b0aab982b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aacdee1806a239eb9e58753ef1ddb964a"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBigNumberUtil.html#aacdee1806a239eb9e58753ef1ddb964a">mul_P</a> (limb_t *result, const limb_t *x, size_t xcount, const limb_t *y, size_t ycount)</td></tr>
+<tr class="memdesc:aacdee1806a239eb9e58753ef1ddb964a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Multiplies two big numbers where one is in program memory.  <a href="#aacdee1806a239eb9e58753ef1ddb964a">More...</a><br/></td></tr>
+<tr class="separator:aacdee1806a239eb9e58753ef1ddb964a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a00c9cde0b626788a60552a6bc9ce058b"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBigNumberUtil.html#a00c9cde0b626788a60552a6bc9ce058b">reduceQuick_P</a> (limb_t *result, const limb_t *x, const limb_t *y, size_t size)</td></tr>
+<tr class="memdesc:a00c9cde0b626788a60552a6bc9ce058b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reduces <em>x</em> modulo <em>y</em> using subtraction where <em>y</em> is in program memory.  <a href="#a00c9cde0b626788a60552a6bc9ce058b">More...</a><br/></td></tr>
+<tr class="separator:a00c9cde0b626788a60552a6bc9ce058b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Utilities to assist with implementing big number arithmetic. </p>
@@ -118,6 +142,262 @@ Static Public Member Functions</h2></td></tr>
 
 <p>Definition at line <a class="el" href="BigNumberUtil_8h_source.html#l00052">52</a> of file <a class="el" href="BigNumberUtil_8h_source.html">BigNumberUtil.h</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="aa6904b2727af6b767fe041b1b7f27414"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">limb_t BigNumberUtil::add </td>
+          <td>(</td>
+          <td class="paramtype">limb_t *&#160;</td>
+          <td class="paramname"><em>result</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const limb_t *&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const limb_t *&#160;</td>
+          <td class="paramname"><em>y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Adds two big numbers. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">result</td><td>The result of the addition. This can be the same as either <em>x</em> or <em>y</em>. </td></tr>
+    <tr><td class="paramname">x</td><td>The first big number. </td></tr>
+    <tr><td class="paramname">y</td><td>The second big number. </td></tr>
+    <tr><td class="paramname">size</td><td>The size of the values in limbs.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Returns 1 if there was a carry out or 0 if there was no carry out.</dd></dl>
+<dl class="section see"><dt>See Also</dt><dd><a class="el" href="classBigNumberUtil.html#a6618e03bfcb3086961df508b40cc1e67" title="Subtracts one big number from another. ">sub()</a>, <a class="el" href="classBigNumberUtil.html#a1c2c5484f2bf440ae292fd3dfd2d594f" title="Multiplies two big numbers. ">mul()</a> </dd></dl>
+
+<p>Definition at line <a class="el" href="BigNumberUtil_8cpp_source.html#l00381">381</a> of file <a class="el" href="BigNumberUtil_8cpp_source.html">BigNumberUtil.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ab9a9f532fcfc182433adac44d8e4ee20"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">limb_t BigNumberUtil::add_P </td>
+          <td>(</td>
+          <td class="paramtype">limb_t *&#160;</td>
+          <td class="paramname"><em>result</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const limb_t *&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const limb_t *&#160;</td>
+          <td class="paramname"><em>y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Adds two big numbers where one of them is in program memory. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">result</td><td>The result of the addition. This can be the same as <em>x</em>. </td></tr>
+    <tr><td class="paramname">x</td><td>The first big number. </td></tr>
+    <tr><td class="paramname">y</td><td>The second big number. This must point into program memory. </td></tr>
+    <tr><td class="paramname">size</td><td>The size of the values in limbs.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Returns 1 if there was a carry out or 0 if there was no carry out.</dd></dl>
+<dl class="section see"><dt>See Also</dt><dd><a class="el" href="classBigNumberUtil.html#af0fa1527647af42b65eda6b0aab982b3" title="Subtracts one big number from another where one is in program memory. ">sub_P()</a>, <a class="el" href="classBigNumberUtil.html#aacdee1806a239eb9e58753ef1ddb964a" title="Multiplies two big numbers where one is in program memory. ">mul_P()</a> </dd></dl>
+
+<p>Definition at line <a class="el" href="BigNumberUtil_8cpp_source.html#l00514">514</a> of file <a class="el" href="BigNumberUtil_8cpp_source.html">BigNumberUtil.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a1c2c5484f2bf440ae292fd3dfd2d594f"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void BigNumberUtil::mul </td>
+          <td>(</td>
+          <td class="paramtype">limb_t *&#160;</td>
+          <td class="paramname"><em>result</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const limb_t *&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>xcount</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const limb_t *&#160;</td>
+          <td class="paramname"><em>y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>ycount</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Multiplies two big numbers. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">result</td><td>The result of the multiplication. The array must be <em>xcount</em> + <em>ycount</em> limbs in size. </td></tr>
+    <tr><td class="paramname">x</td><td>Points to the first value to multiply. </td></tr>
+    <tr><td class="paramname">xcount</td><td>The number of limbs in <em>x</em>. </td></tr>
+    <tr><td class="paramname">y</td><td>Points to the second value to multiply. </td></tr>
+    <tr><td class="paramname">ycount</td><td>The number of limbs in <em>y</em>.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See Also</dt><dd><a class="el" href="classBigNumberUtil.html#aacdee1806a239eb9e58753ef1ddb964a" title="Multiplies two big numbers where one is in program memory. ">mul_P()</a> </dd></dl>
+
+<p>Definition at line <a class="el" href="BigNumberUtil_8cpp_source.html#l00432">432</a> of file <a class="el" href="BigNumberUtil_8cpp_source.html">BigNumberUtil.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aacdee1806a239eb9e58753ef1ddb964a"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void BigNumberUtil::mul_P </td>
+          <td>(</td>
+          <td class="paramtype">limb_t *&#160;</td>
+          <td class="paramname"><em>result</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const limb_t *&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>xcount</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const limb_t *&#160;</td>
+          <td class="paramname"><em>y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>ycount</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Multiplies two big numbers where one is in program memory. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">result</td><td>The result of the multiplication. The array must be <em>xcount</em> + <em>ycount</em> limbs in size. </td></tr>
+    <tr><td class="paramname">x</td><td>Points to the first value to multiply. </td></tr>
+    <tr><td class="paramname">xcount</td><td>The number of limbs in <em>x</em>. </td></tr>
+    <tr><td class="paramname">y</td><td>Points to the second value to multiply. This must point into program memory. </td></tr>
+    <tr><td class="paramname">ycount</td><td>The number of limbs in <em>y</em>.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See Also</dt><dd><a class="el" href="classBigNumberUtil.html#a1c2c5484f2bf440ae292fd3dfd2d594f" title="Multiplies two big numbers. ">mul()</a> </dd></dl>
+
+<p>Definition at line <a class="el" href="BigNumberUtil_8cpp_source.html#l00566">566</a> of file <a class="el" href="BigNumberUtil_8cpp_source.html">BigNumberUtil.cpp</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="af49dd38173ea0310776d283aabea2ba0"></a>
 <div class="memitem">
 <div class="memproto">
@@ -175,7 +455,7 @@ Static Public Member Functions</h2></td></tr>
 <p>If <em>len</em> is shorter than the length of <em>limbs</em>, then the number will be truncated to the least significant <em>len</em> bytes. If <em>len</em> is longer than the length of <em>limbs</em>, then the high bytes will be filled with zeroes.</p>
 <dl class="section see"><dt>See Also</dt><dd><a class="el" href="classBigNumberUtil.html#a25041f898c417c8dd63f30536287ed79" title="Unpacks the little-endian byte representation of a big number into a limb array. ">unpackLE()</a>, <a class="el" href="classBigNumberUtil.html#af49dd38173ea0310776d283aabea2ba0" title="Packs the big-endian byte representation of a big number into a byte array. ">packBE()</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="BigNumberUtil_8cpp_source.html#l00293">293</a> of file <a class="el" href="BigNumberUtil_8cpp_source.html">BigNumberUtil.cpp</a>.</p>
+<p>Definition at line <a class="el" href="BigNumberUtil_8cpp_source.html#l00294">294</a> of file <a class="el" href="BigNumberUtil_8cpp_source.html">BigNumberUtil.cpp</a>.</p>
 
 </div>
 </div>
@@ -236,7 +516,251 @@ Static Public Member Functions</h2></td></tr>
 <p>If <em>len</em> is shorter than the length of <em>limbs</em>, then the number will be truncated to the least significant <em>len</em> bytes. If <em>len</em> is longer than the length of <em>limbs</em>, then the high bytes will be filled with zeroes.</p>
 <dl class="section see"><dt>See Also</dt><dd><a class="el" href="classBigNumberUtil.html#a25041f898c417c8dd63f30536287ed79" title="Unpacks the little-endian byte representation of a big number into a limb array. ">unpackLE()</a>, <a class="el" href="classBigNumberUtil.html#af49dd38173ea0310776d283aabea2ba0" title="Packs the big-endian byte representation of a big number into a byte array. ">packBE()</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="BigNumberUtil_8cpp_source.html#l00207">207</a> of file <a class="el" href="BigNumberUtil_8cpp_source.html">BigNumberUtil.cpp</a>.</p>
+<p>Definition at line <a class="el" href="BigNumberUtil_8cpp_source.html#l00208">208</a> of file <a class="el" href="BigNumberUtil_8cpp_source.html">BigNumberUtil.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a5af5f50c91594183da4e079d76702d34"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void BigNumberUtil::reduceQuick </td>
+          <td>(</td>
+          <td class="paramtype">limb_t *&#160;</td>
+          <td class="paramname"><em>result</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const limb_t *&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const limb_t *&#160;</td>
+          <td class="paramname"><em>y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Reduces <em>x</em> modulo <em>y</em> using subtraction. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">result</td><td>The result of the reduction. This can be the same as <em>x</em>. </td></tr>
+    <tr><td class="paramname">x</td><td>The number to be reduced. </td></tr>
+    <tr><td class="paramname">y</td><td>The base to use for the modulo reduction. </td></tr>
+    <tr><td class="paramname">size</td><td>The size of the values in limbs.</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>It is assumed that <em>x</em> is less than <em>y</em> * 2 so that a single conditional subtraction will bring it down below <em>y</em>. The reduction is performed in constant time.</p>
+<dl class="section see"><dt>See Also</dt><dd><a class="el" href="classBigNumberUtil.html#a00c9cde0b626788a60552a6bc9ce058b" title="Reduces x modulo y using subtraction where y is in program memory. ">reduceQuick_P()</a> </dd></dl>
+
+<p>Definition at line <a class="el" href="BigNumberUtil_8cpp_source.html#l00484">484</a> of file <a class="el" href="BigNumberUtil_8cpp_source.html">BigNumberUtil.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a00c9cde0b626788a60552a6bc9ce058b"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void BigNumberUtil::reduceQuick_P </td>
+          <td>(</td>
+          <td class="paramtype">limb_t *&#160;</td>
+          <td class="paramname"><em>result</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const limb_t *&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const limb_t *&#160;</td>
+          <td class="paramname"><em>y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Reduces <em>x</em> modulo <em>y</em> using subtraction where <em>y</em> is in program memory. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">result</td><td>The result of the reduction. This can be the same as <em>x</em>. </td></tr>
+    <tr><td class="paramname">x</td><td>The number to be reduced. </td></tr>
+    <tr><td class="paramname">y</td><td>The base to use for the modulo reduction. This must point into program memory. </td></tr>
+    <tr><td class="paramname">size</td><td>The size of the values in limbs.</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>It is assumed that <em>x</em> is less than <em>y</em> * 2 so that a single conditional subtraction will bring it down below <em>y</em>. The reduction is performed in constant time.</p>
+<dl class="section see"><dt>See Also</dt><dd><a class="el" href="classBigNumberUtil.html#a5af5f50c91594183da4e079d76702d34" title="Reduces x modulo y using subtraction. ">reduceQuick()</a> </dd></dl>
+
+<p>Definition at line <a class="el" href="BigNumberUtil_8cpp_source.html#l00620">620</a> of file <a class="el" href="BigNumberUtil_8cpp_source.html">BigNumberUtil.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a6618e03bfcb3086961df508b40cc1e67"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">limb_t BigNumberUtil::sub </td>
+          <td>(</td>
+          <td class="paramtype">limb_t *&#160;</td>
+          <td class="paramname"><em>result</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const limb_t *&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const limb_t *&#160;</td>
+          <td class="paramname"><em>y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Subtracts one big number from another. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">result</td><td>The result of the subtraction. This can be the same as either <em>x</em> or <em>y</em>. </td></tr>
+    <tr><td class="paramname">x</td><td>The first big number. </td></tr>
+    <tr><td class="paramname">y</td><td>The second big number to subtract from <em>x</em>. </td></tr>
+    <tr><td class="paramname">size</td><td>The size of the values in limbs.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Returns 1 if there was a borrow, or 0 if there was no borrow.</dd></dl>
+<dl class="section see"><dt>See Also</dt><dd><a class="el" href="classBigNumberUtil.html#aa6904b2727af6b767fe041b1b7f27414" title="Adds two big numbers. ">add()</a>, <a class="el" href="classBigNumberUtil.html#a1c2c5484f2bf440ae292fd3dfd2d594f" title="Multiplies two big numbers. ">mul()</a> </dd></dl>
+
+<p>Definition at line <a class="el" href="BigNumberUtil_8cpp_source.html#l00408">408</a> of file <a class="el" href="BigNumberUtil_8cpp_source.html">BigNumberUtil.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="af0fa1527647af42b65eda6b0aab982b3"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">limb_t BigNumberUtil::sub_P </td>
+          <td>(</td>
+          <td class="paramtype">limb_t *&#160;</td>
+          <td class="paramname"><em>result</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const limb_t *&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const limb_t *&#160;</td>
+          <td class="paramname"><em>y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Subtracts one big number from another where one is in program memory. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">result</td><td>The result of the subtraction. This can be the same as <em>x</em>. </td></tr>
+    <tr><td class="paramname">x</td><td>The first big number. </td></tr>
+    <tr><td class="paramname">y</td><td>The second big number to subtract from <em>x</em>. This must point into program memory. </td></tr>
+    <tr><td class="paramname">size</td><td>The size of the values in limbs.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Returns 1 if there was a borrow, or 0 if there was no borrow.</dd></dl>
+<dl class="section see"><dt>See Also</dt><dd><a class="el" href="classBigNumberUtil.html#ab9a9f532fcfc182433adac44d8e4ee20" title="Adds two big numbers where one of them is in program memory. ">add_P()</a>, <a class="el" href="classBigNumberUtil.html#aacdee1806a239eb9e58753ef1ddb964a" title="Multiplies two big numbers where one is in program memory. ">mul_P()</a> </dd></dl>
+
+<p>Definition at line <a class="el" href="BigNumberUtil_8cpp_source.html#l00541">541</a> of file <a class="el" href="BigNumberUtil_8cpp_source.html">BigNumberUtil.cpp</a>.</p>
 
 </div>
 </div>
@@ -297,7 +821,7 @@ Static Public Member Functions</h2></td></tr>
 <p>If <em>len</em> is shorter than the length of <em>limbs</em>, then the high bytes will be filled with zeroes. If <em>len</em> is longer than the length of <em>limbs</em>, then the high bytes will be truncated and lost.</p>
 <dl class="section see"><dt>See Also</dt><dd><a class="el" href="classBigNumberUtil.html#af49dd38173ea0310776d283aabea2ba0" title="Packs the big-endian byte representation of a big number into a byte array. ">packBE()</a>, <a class="el" href="classBigNumberUtil.html#a25041f898c417c8dd63f30536287ed79" title="Unpacks the little-endian byte representation of a big number into a limb array. ">unpackLE()</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="BigNumberUtil_8cpp_source.html#l00133">133</a> of file <a class="el" href="BigNumberUtil_8cpp_source.html">BigNumberUtil.cpp</a>.</p>
+<p>Definition at line <a class="el" href="BigNumberUtil_8cpp_source.html#l00134">134</a> of file <a class="el" href="BigNumberUtil_8cpp_source.html">BigNumberUtil.cpp</a>.</p>
 
 </div>
 </div>
@@ -358,7 +882,7 @@ Static Public Member Functions</h2></td></tr>
 <p>If <em>len</em> is shorter than the length of <em>limbs</em>, then the high bytes will be filled with zeroes. If <em>len</em> is longer than the length of <em>limbs</em>, then the high bytes will be truncated and lost.</p>
 <dl class="section see"><dt>See Also</dt><dd><a class="el" href="classBigNumberUtil.html#a989cd5f389ac5adc798d8767383e2810" title="Packs the little-endian byte representation of a big number into a byte array. ">packLE()</a>, <a class="el" href="classBigNumberUtil.html#a63f9d7884eb36227d39e1b95e219d865" title="Unpacks the big-endian byte representation of a big number into a limb array. ">unpackBE()</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="BigNumberUtil_8cpp_source.html#l00054">54</a> of file <a class="el" href="BigNumberUtil_8cpp_source.html">BigNumberUtil.cpp</a>.</p>
+<p>Definition at line <a class="el" href="BigNumberUtil_8cpp_source.html#l00055">55</a> of file <a class="el" href="BigNumberUtil_8cpp_source.html">BigNumberUtil.cpp</a>.</p>
 
 </div>
 </div>
@@ -369,7 +893,7 @@ Static Public Member Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Apr 6 2015 09:30:16 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Apr 18 2015 08:44:48 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

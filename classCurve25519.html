@@ -85,6 +85,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="header">
   <div class="summary">
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
+<a href="#friends">Friends</a> &#124;
 <a href="classCurve25519-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">Curve25519 Class Reference</div>  </div>
@@ -107,13 +108,20 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a14022d6ac68ec691ffb0247275078ab9"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCurve25519.html#a14022d6ac68ec691ffb0247275078ab9">dh2</a> (uint8_t k[32], uint8_t f[32])</td></tr>
 <tr class="memdesc:a14022d6ac68ec691ffb0247275078ab9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Performs phase 2 of a Diffie-Hellman key exchange using <a class="el" href="classCurve25519.html" title="Diffie-Hellman key agreement based on the elliptic curve modulo 2^255 - 19. ">Curve25519</a>.  <a href="#a14022d6ac68ec691ffb0247275078ab9">More...</a><br/></td></tr>
 <tr class="separator:a14022d6ac68ec691ffb0247275078ab9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
+Friends</h2></td></tr>
+<tr class="memitem:ad0bf073aaa9d8f4d0ad84003096d7990"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad0bf073aaa9d8f4d0ad84003096d7990"></a>
+class&#160;</td><td class="memItemRight" valign="bottom"><b>Ed25519</b></td></tr>
+<tr class="separator:ad0bf073aaa9d8f4d0ad84003096d7990"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Diffie-Hellman key agreement based on the elliptic curve modulo 2^255 - 19. </p>
 <dl class="section note"><dt>Note</dt><dd>The public functions in this class need a substantial amount of stack space to store intermediate results while the curve function is being evaluated. About 1k of free stack space is recommended for safety.</dd></dl>
-<p>References: <a href="http://cr.yp.to/ecdh.html">http://cr.yp.to/ecdh.html</a> <a href="https://tools.ietf.org/html/draft-irtf-cfrg-curves-02">https://tools.ietf.org/html/draft-irtf-cfrg-curves-02</a> </p>
+<p>References: <a href="http://cr.yp.to/ecdh.html">http://cr.yp.to/ecdh.html</a> <a href="https://tools.ietf.org/html/draft-irtf-cfrg-curves-02">https://tools.ietf.org/html/draft-irtf-cfrg-curves-02</a></p>
+<dl class="section see"><dt>See Also</dt><dd><a class="el" href="classEd25519.html" title="Digital signatures based on the elliptic curve modulo 2^255 - 19. ">Ed25519</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="Curve25519_8h_source.html#l00028">28</a> of file <a class="el" href="Curve25519_8h_source.html">Curve25519.h</a>.</p>
+<p>Definition at line <a class="el" href="Curve25519_8h_source.html#l00030">30</a> of file <a class="el" href="Curve25519_8h_source.html">Curve25519.h</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a class="anchor" id="a2b6911583d17ea9a36bbbb40d58b3d89"></a>
 <div class="memitem">
@@ -180,7 +188,7 @@ Static Public Member Functions</h2></td></tr>
 </div><!-- fragment --><p>Reference: <a href="https://tools.ietf.org/html/draft-irtf-cfrg-curves-02">https://tools.ietf.org/html/draft-irtf-cfrg-curves-02</a></p>
 <dl class="section see"><dt>See Also</dt><dd><a class="el" href="classCurve25519.html#a14022d6ac68ec691ffb0247275078ab9" title="Performs phase 2 of a Diffie-Hellman key exchange using Curve25519. ">dh2()</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="Curve25519_8cpp_source.html#l00244">244</a> of file <a class="el" href="Curve25519_8cpp_source.html">Curve25519.cpp</a>.</p>
+<p>Definition at line <a class="el" href="Curve25519_8cpp_source.html#l00239">239</a> of file <a class="el" href="Curve25519_8cpp_source.html">Curve25519.cpp</a>.</p>
 
 </div>
 </div>
@@ -228,7 +236,7 @@ Static Public Member Functions</h2></td></tr>
 <p>Reference: <a href="https://tools.ietf.org/html/draft-irtf-cfrg-curves-02">https://tools.ietf.org/html/draft-irtf-cfrg-curves-02</a></p>
 <dl class="section see"><dt>See Also</dt><dd><a class="el" href="classCurve25519.html#a2b6911583d17ea9a36bbbb40d58b3d89" title="Performs phase 1 of a Diffie-Hellman key exchange using Curve25519. ">dh1()</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="Curve25519_8cpp_source.html#l00282">282</a> of file <a class="el" href="Curve25519_8cpp_source.html">Curve25519.cpp</a>.</p>
+<p>Definition at line <a class="el" href="Curve25519_8cpp_source.html#l00277">277</a> of file <a class="el" href="Curve25519_8cpp_source.html">Curve25519.cpp</a>.</p>
 
 </div>
 </div>
@@ -284,7 +292,7 @@ Static Public Member Functions</h2></td></tr>
 <p>Reference: <a href="https://tools.ietf.org/html/draft-irtf-cfrg-curves-02">https://tools.ietf.org/html/draft-irtf-cfrg-curves-02</a></p>
 <dl class="section see"><dt>See Also</dt><dd><a class="el" href="classCurve25519.html#a2b6911583d17ea9a36bbbb40d58b3d89" title="Performs phase 1 of a Diffie-Hellman key exchange using Curve25519. ">dh1()</a>, <a class="el" href="classCurve25519.html#a14022d6ac68ec691ffb0247275078ab9" title="Performs phase 2 of a Diffie-Hellman key exchange using Curve25519. ">dh2()</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="Curve25519_8cpp_source.html#l00079">79</a> of file <a class="el" href="Curve25519_8cpp_source.html">Curve25519.cpp</a>.</p>
+<p>Definition at line <a class="el" href="Curve25519_8cpp_source.html#l00074">74</a> of file <a class="el" href="Curve25519_8cpp_source.html">Curve25519.cpp</a>.</p>
 
 </div>
 </div>
@@ -295,7 +303,7 @@ Static Public Member Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Apr 6 2015 09:30:16 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Apr 18 2015 08:44:48 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

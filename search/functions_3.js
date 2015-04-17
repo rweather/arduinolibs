@@ -5,6 +5,7 @@ var searchData=
   ['decrypt',['decrypt',['../classCBCCommon.html#ab46a2625cae9a654c708e1f31a0e22b6',1,'CBCCommon::decrypt()'],['../classCFBCommon.html#aaaa3d61c5743e30e355207c193c0b0ef',1,'CFBCommon::decrypt()'],['../classChaCha.html#a1f54b2b51b59428010f81a6c4dc4e42c',1,'ChaCha::decrypt()'],['../classChaChaPoly.html#a42f556f202b1166486434ee15b6d95a0',1,'ChaChaPoly::decrypt()'],['../classCipher.html#ac6099d1a0d7f2ff67b0e4ccb4a17eb08',1,'Cipher::decrypt()'],['../classCTRCommon.html#a0943387cf1124258389702e0690740fe',1,'CTRCommon::decrypt()'],['../classGCMCommon.html#a60912d3ab5766aa68dc9b3111ac2c0d7',1,'GCMCommon::decrypt()'],['../classOFBCommon.html#aeb3636d7175b150e2bf16367e51c2e36',1,'OFBCommon::decrypt()']]],
   ['decryptblock',['decryptBlock',['../classAESCommon.html#a95a806adf42f975765ff62907efdc639',1,'AESCommon::decryptBlock()'],['../classBlockCipher.html#ac3ba2450222aa1ea804ae4881ab6440c',1,'BlockCipher::decryptBlock()']]],
   ['defaultfield',['defaultField',['../classForm.html#aba75b59f68b31dd77dbbac9ab5c3124b',1,'Form']]],
+  ['derivepublickey',['derivePublicKey',['../classEd25519.html#ab62bac52ed07f77f76f3ff0fccd71cb2',1,'Ed25519']]],
   ['destroy',['destroy',['../classRNGClass.html#a9901367d86f2303a59bbc12fe91cad00',1,'RNGClass']]],
   ['dh1',['dh1',['../classCurve25519.html#a2b6911583d17ea9a36bbbb40d58b3d89',1,'Curve25519']]],
   ['dh2',['dh2',['../classCurve25519.html#a14022d6ac68ec691ffb0247275078ab9',1,'Curve25519']]],
