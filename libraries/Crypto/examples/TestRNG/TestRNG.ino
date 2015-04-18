@@ -4,7 +4,7 @@
 #include <Crypto.h>
 #include <RNG.h>
 #include <TransistorNoiseSource.h>
-#include <RingOscillatorNoiseSource.h>
+//#include <RingOscillatorNoiseSource.h>
 
 // Change "MyApp 1.0" to some other tag for your application
 // so that different applications will generate different results

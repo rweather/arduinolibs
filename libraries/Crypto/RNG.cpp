@@ -26,7 +26,14 @@
 #include "Crypto.h"
 #include "utility/ProgMemUtil.h"
 #include <Arduino.h>
+#if defined (__arm__) && defined (__SAM3X8E__)
+// The Arduino Due does not have any EEPROM natively on the main chip.
+// However, it does have a TRNG so seed saving is not as critical.
+#define RNG_NO_EEPROM 1
+#define RNG_DUE_TRNG  1
+#else
 #include <avr/eeprom.h>
+#endif
 #include <string.h>
 
 /**
@@ -106,6 +113,14 @@
  * conditions programmatically, then it may make sense to force a save()
  * of the seed upon shutdown.
  *
+ * \note The Arduino Due does not have EEPROM so it cannot save the random
+ * number seed across system restarts.  Instead the RNG class will mix
+ * in data from the CPU's built-in True Random Number Generator (TRNG).
+ * Assuming that the CPU's TRNG is trustworthy, this should be sufficient
+ * to properly seed the random number generator.  It is recommended to
+ * also mix in data from other noise sources just in case the CPU's TRNG
+ * is not trustworthy.
+ *
  * \sa NoiseSource
  */
 
@@ -171,6 +186,7 @@ RNGClass::RNGClass()
     , timer(0)
     , timeout(3600000UL)    // 1 hour in milliseconds
     , count(0)
+    , trngPosn(0)
 {
 }
 
@@ -179,9 +195,46 @@ RNGClass::RNGClass()
  */
 RNGClass::~RNGClass()
 {
+#if defined(RNG_DUE_TRNG)
+    // Disable the TRNG in the Arduino Due.
+    REG_TRNG_CR = TRNG_CR_KEY(0x524E47);
+#endif
     clean(block);
     clean(stream);
 }
+
+#if defined(RNG_DUE_TRNG)
+
+// Stir in the unique identifier for the Arduino Due's CPU.
+// This function must be in RAM because programs running out of
+// flash memory are not allowed to access the unique identifier.
+// Info from: http://forum.arduino.cc/index.php?topic=289190.0
+__attribute__((section(".ramfunc")))
+static void stirUniqueIdentifier(void)
+{
+    uint32_t id[4];
+
+    // Start Read Unique Identifier.
+    EFC1->EEFC_FCR = (0x5A << 24) | EFC_FCMD_STUI;
+    while ((EFC1->EEFC_FSR & EEFC_FSR_FRDY) != 0)
+        ;   // do nothing until FRDY falls.
+
+    // Read the identifier.
+    id[0] = *((const uint32_t *)IFLASH1_ADDR);
+    id[1] = *((const uint32_t *)(IFLASH1_ADDR + 4));
+    id[2] = *((const uint32_t *)(IFLASH1_ADDR + 8));
+    id[3] = *((const uint32_t *)(IFLASH1_ADDR + 12));
+
+    // Stop Read Unique Identifier.
+    EFC1->EEFC_FCR = (0x5A << 24) | EFC_FCMD_SPUI;
+    while ((EFC1->EEFC_FSR & EEFC_FSR_FRDY) == 0)
+        ;   // do nothing until FRDY rises.
+
+    // Stir the unique identifier into the entropy pool.
+    RNG.stir((uint8_t *)id, sizeof(id));
+}
+
+#endif
 
 /**
  * \brief Initializes the random number generator.
@@ -207,6 +260,7 @@ void RNGClass::begin(const char *tag, int eepromAddress)
     // Initialize the ChaCha20 input block from the saved seed.
     memcpy_P(block, tagRNG, sizeof(tagRNG));
     memcpy_P(block + 4, initRNG, sizeof(initRNG));
+#if !defined(RNG_NO_EEPROM)
     if (eeprom_read_byte((const uint8_t *)address) == 'S') {
         // We have a saved seed: XOR it with the initialization block.
         for (int posn = 0; posn < 12; ++posn) {
@@ -214,6 +268,27 @@ void RNGClass::begin(const char *tag, int eepromAddress)
                 eeprom_read_dword((const uint32_t *)(address + posn * 4 + 1));
         }
     }
+#elif defined(RNG_DUE_TRNG)
+    // The Arduino Due does not have EEPROM so we instead XOR the
+    // initialization block with some output from the CPU's TRNG.
+    int posn, counter;
+    pmc_enable_periph_clk(ID_TRNG);
+    REG_TRNG_CR = TRNG_CR_KEY(0x524E47) | TRNG_CR_ENABLE;
+    REG_TRNG_IDR = TRNG_IDR_DATRDY; // Disable interrupts - we will poll.
+    for (posn = 0; posn < 12; ++posn) {
+        // According to the documentation the TRNG should produce a new
+        // 32-bit random value every 84 clock cycles.  If it still hasn't
+        // produced a value after 200 iterations, then assume that the
+        // TRNG is not producing output and stop.
+        for (counter = 0; counter < 200; ++counter) {
+            if ((REG_TRNG_ISR & TRNG_ISR_DATRDY) != 0)
+                break;
+        }
+        if (counter >= 200)
+            break;
+        block[posn + 4] ^= REG_TRNG_ODATA;
+    }
+#endif
 
     // No entropy credits for the saved seed.
     credits = 0;
@@ -227,6 +302,12 @@ void RNGClass::begin(const char *tag, int eepromAddress)
     // Stir in the supplied tag data but don't credit any entropy to it.
     if (tag)
         stir((const uint8_t *)tag, strlen(tag));
+
+#if defined(RNG_DUE_TRNG)
+    // Stir in the unique identifier for the CPU so that different
+    // devices will give different outputs even without seeding.
+    stirUniqueIdentifier();
+#endif
 
     // Re-save the seed to obliterate the previous value and to ensure
     // that if the system is reset without a call to save() that we won't
@@ -478,10 +559,12 @@ void RNGClass::save()
 {
     // Generate random data from the current state and save
     // that as the seed.  Then force a rekey.
+#if !defined(RNG_NO_EEPROM)
     ++(block[12]);
     ChaCha::hashCore(stream, block, RNG_ROUNDS);
     eeprom_write_block(stream, (void *)(address + 1), 48);
     eeprom_update_byte((uint8_t *)address, 'S');
+#endif
     rekey();
     timer = millis();
 }
@@ -497,6 +580,39 @@ void RNGClass::loop()
     // Stir in the entropy from all registered noise sources.
     for (uint8_t posn = 0; posn < count; ++posn)
         noiseSources[posn]->stir();
+
+#if defined(RNG_DUE_TRNG)
+    // If there is data available from the Arudino Due's TRNG, then XOR
+    // it with the state block and increase the entropy credit.  We don't
+    // call stir() yet because that will seriously slow down the system
+    // given how fast the TRNG is.  Instead we save up the XOR'ed TRNG
+    // data until the next rand() call and then hash it to generate the
+    // desired output.
+    //
+    // The CPU documentation claims that the TRNG output is very good so
+    // this should only make the pool more and more random as time goes on.
+    // However there is a risk that the CPU manufacturer was pressured by
+    // government or intelligence agencies to insert a back door that
+    // generates predictable output.  Or the manufacturer was overly
+    // optimistic about their TRNG design and it is actually flawed in a
+    // way they don't realise.
+    //
+    // If you are concerned about such threats, then make sure to mix in
+    // data from other noise sources.  By hashing together the TRNG with
+    // the other noise data, rand() should produce unpredictable data even
+    // if one of the sources is actually predictable.
+    if ((REG_TRNG_ISR & TRNG_ISR_DATRDY) != 0) {
+        block[4 + trngPosn] ^= REG_TRNG_ODATA;
+        if (++trngPosn >= 12)
+            trngPosn = 0;
+        if (credits < RNG_MAX_CREDITS) {
+            // Credit 1 bit of entropy for the word.  The TRNG should be
+            // better than this but it is so fast that we want to collect
+            // up more data before passing it to the application.
+            ++credits;
+        }
+    }
+#endif
 
     // Save the seed if the auto-save timer has expired.
     if ((millis() - timer) >= timeout)
@@ -526,8 +642,10 @@ void RNGClass::destroy()
 {
     clean(block);
     clean(stream);
+#if !defined(RNG_NO_EEPROM)
     for (int posn = 0; posn < SEED_SIZE; ++posn)
         eeprom_write_byte((uint8_t *)(address + posn), 0xFF);
+#endif
 }
 
 /**

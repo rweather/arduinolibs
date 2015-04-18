@@ -40,6 +40,8 @@ global random number pool.  It has the following features:
 \li Provision for plug-in environmental noise sources and entropy estimation.
 \li Whitening of noise values to scatter the input noise across the entire
     random number pool.
+\li Built-in support for the True Random Number Generator (TRNG) in the
+    Arduino Due's CPU.
 \li Support for mixing in static values like serial numbers and MAC
     addresses so that otherwise identical devices do not generate the
     same sequence of random numbers upon first boot.
@@ -150,6 +152,14 @@ with \link RNGClass::setAutoSaveTime() RNG.setAutoSaveTime()\endlink.
 Because the device may be restarted before the first hour expires, there
 is a special case in the code: the first time that the entropy pool
 fills up, a save will be automatically forced.
+
+\note The Arduino Due does not have EEPROM so it cannot save the random
+number seed across system restarts.  Instead the \link RNGClass RNG\endlink
+class will mix in data from the CPU's built-in True Random Number
+Generator (TRNG).  Assuming that the CPU's TRNG is trustworthy,
+this should be sufficient to properly seed the random number generator.
+It is recommended to also mix in data from other noise sources just in
+case the CPU's TRNG is not trustworthy.
 
 To use the random number generator properly, there are some regular tasks
 that must be performed every time around the application's main loop().

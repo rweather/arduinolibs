@@ -62,6 +62,7 @@ private:
     unsigned long timeout;
     NoiseSource *noiseSources[4];
     uint8_t count;
+    uint8_t trngPosn;
 
     void rekey();
 };
