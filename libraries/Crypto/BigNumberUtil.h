@@ -28,9 +28,16 @@
 
 // Define exactly one of these to 1 to set the size of the basic limb type.
 // 16-bit limbs seem to give the best performance on 8-bit AVR micros.
+#if defined(__AVR__)
 #define BIGNUMBER_LIMB_8BIT  0
 #define BIGNUMBER_LIMB_16BIT 1
 #define BIGNUMBER_LIMB_32BIT 0
+#else
+// On all other platforms, assume 32-bit is best (e.g. ARM).
+#define BIGNUMBER_LIMB_8BIT  0
+#define BIGNUMBER_LIMB_16BIT 0
+#define BIGNUMBER_LIMB_32BIT 1
+#endif
 
 // Define the limb types to use on this platform.
 #if BIGNUMBER_LIMB_8BIT

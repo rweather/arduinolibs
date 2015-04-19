@@ -58,6 +58,8 @@ speed is critical but exact bit-compatibility of hash values is not.
 
 \section crypto_performance Performance
 
+\subsection crypto_performance_avr Performance on AVR
+
 All figures are for the Arduino Uno running at 16 MHz.  Figures for the
 Ardunino Mega 2560 running at 16 MHz are similar:
 
@@ -105,4 +107,47 @@ Where a cipher supports more than one key size (such as ChaCha), the values
 are typically almost identical for 128-bit and 256-bit keys so only the
 maximum is shown above.
 
+\subsection crypto_performance_arm Performance on ARM
+
+All figures are for the Arduino Due running at 84 MHz:
+
+<table>
+<tr><td>Encryption Algorithm</td><td align="right">Encryption (per byte)</td><td align="right">Decryption (per byte)</td><td>Key Setup</td><td>State Size (bytes)</td></tr>
+<tr><td>AES128 (ECB mode)</td><td align="right">6.65us</td><td align="right">11.00us</td><td align="right">35.15us</td><td align="right">220</td></tr>
+<tr><td>AES192 (ECB mode)</td><td align="right">8.02us</td><td align="right">13.31us</td><td align="right">36.59us</td><td align="right">252</td></tr>
+<tr><td>AES256 (ECB mode)</td><td align="right">9.39us</td><td align="right">15.63</td><td align="right">50.19us</td><td align="right">284</td></tr>
+<tr><td>ChaCha (20 rounds)</td><td align="right">0.87us</td><td align="right">0.88us</td><td align="right">4.96us</td><td align="right">136</td></tr>
+<tr><td>ChaCha (12 rounds)</td><td align="right">0.70us</td><td align="right">0.71us</td><td align="right">4.96us</td><td align="right">136</td></tr>
+<tr><td>ChaCha (8 rounds)</td><td align="right">0.62us</td><td align="right">0.62us</td><td align="right">4.96us</td><td align="right">136</td></tr>
+<tr><td colspan="5"> </td></tr>
+<tr><td>AEAD Algorithm</td><td align="right">Encryption (per byte)</td><td align="right">Decryption (per byte)</td><td>Key Setup</td><td>State Size (bytes)</td></tr>
+<tr><td>ChaChaPoly</td><td align="right">1.66us</td><td align="right">1.66us</td><td align="right">45.02us</td><td align="right">280</td></tr>
+<tr><td>GCM&lt;AES128&gt;</td><td align="right">11.01us</td><td align="right">10.92us</td><td align="right">247.90us</td><td align="right">344</td></tr>
+<tr><td>GCM&lt;AES192&gt;</td><td align="right">12.40us</td><td align="right">12.31us</td><td align="right">294.07us</td><td align="right">376</td></tr>
+<tr><td>GCM&lt;AES256&gt;</td><td align="right">13.73us</td><td align="right">13.64us</td><td align="right">347.40us</td><td align="right">408</td></tr>
+<tr><td colspan="5"> </td></tr>
+<tr><td>Hash Algorithm</td><td align="right">Hashing (per byte)</td><td align="right">Finalization</td><td> </td><td>State Size (bytes)</td></tr>
+<tr><td>SHA1</td><td align="right">0.94us</td><td align="right">62.55us</td><td align="right"> </td><td align="right">112</td></tr>
+<tr><td>SHA256</td><td align="right">1.15us</td><td align="right">76.60us</td><td align="right"> </td><td align="right">120</td></tr>
+<tr><td>SHA512</td><td align="right">2.87us</td><td align="right">370.37us</td><td align="right"> </td><td align="right">224</td></tr>
+<tr><td>SHA3_256</td><td align="right">5.36us</td><td align="right">697.65us</td><td align="right"> </td><td align="right">424</td></tr>
+<tr><td>SHA3_512</td><td align="right">9.89us</td><td align="right">697.81us</td><td align="right"> </td><td align="right">424</td></tr>
+<tr><td>BLAKE2s</td><td align="right">0.76us</td><td align="right">50.88us</td><td align="right"> </td><td align="right">184</td></tr>
+<tr><td>BLAKE2b</td><td align="right">1.33us</td><td align="right">170.93us</td><td align="right"> </td><td align="right">352</td></tr>
+<tr><td colspan="5"> </td></tr>
+<tr><td>Authentication Algorithm</td><td align="right">Hashing (per byte)</td><td align="right">Finalization</td><td>Key Setup</td><td>State Size (bytes)</td></tr>
+<tr><td>SHA1 (HMAC mode)</td><td align="right">0.94us</td><td align="right">193.92us</td><td align="right">65.09us</td><td align="right">112</td></tr>
+<tr><td>SHA256 (HMAC mode)</td><td align="right">1.15us</td><td align="right">238.98us</td><td align="right">80.44us</td><td align="right">120</td></tr>
+<tr><td>BLAKE2s (HMAC mode)</td><td align="right">0.76us</td><td align="right">165.64us</td><td align="right">59.92us</td><td align="right">184</td></tr>
+<tr><td>Poly1305</td><td align="right">0.85us</td><td align="right">19.25us</td><td align="right">2.35us</td><td align="right">96</td></tr>
+<tr><td>GHASH</td><td align="right">4.37us</td><td align="right">1.50us</td><td align="right">4.37us</td><td align="right">36</td></tr>
+<tr><td colspan="5"> </td></tr>
+<tr><td>Public Key Operation</td><td align="right">Time (per operation)</td><td colspan="3">Comment</td></tr>
+<tr><td>Curve25519::eval()</td><td align="right">103ms</td><td colspan="3">Raw curve evaluation</td></tr>
+<tr><td>Curve25519::dh1()</td><td align="right">103ms</td><td colspan="3">First half of Diffie-Hellman key agreement</td></tr>
+<tr><td>Curve25519::dh2()</td><td align="right">104ms</td><td colspan="3">Second half of Diffie-Hellman key agreement</td></tr>
+<tr><td>Ed25519::sign()</td><td align="right">195ms</td><td colspan="3">Digital signature generation</td></tr>
+<tr><td>Ed25519::verify()</td><td align="right">306ms</td><td colspan="3">Digital signature verification</td></tr>
+<tr><td>Ed25519::derivePublicKey()</td><td align="right">194ms</td><td colspan="3">Derive a public key from a private key</td></tr>
+</table>
 */
