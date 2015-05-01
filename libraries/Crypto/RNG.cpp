@@ -28,10 +28,10 @@
 #include <Arduino.h>
 #if defined (__arm__) && defined (__SAM3X8E__)
 // The Arduino Due does not have any EEPROM natively on the main chip.
-// However, it does have a TRNG so seed saving is not as critical.
-#define RNG_NO_EEPROM 1
-#define RNG_DUE_TRNG  1
+// However, it does have a TRNG and flash memory.
+#define RNG_DUE_TRNG 1
 #else
+#define RNG_EEPROM 1
 #include <avr/eeprom.h>
 #endif
 #include <string.h>
@@ -113,9 +113,9 @@
  * conditions programmatically, then it may make sense to force a save()
  * of the seed upon shutdown.
  *
- * \note The Arduino Due does not have EEPROM so it cannot save the random
- * number seed across system restarts.  Instead the RNG class will mix
- * in data from the CPU's built-in True Random Number Generator (TRNG).
+ * The Arduino Due does not have EEPROM so RNG saves the seed into
+ * the last page of system flash memory instead.  The RNG class will also
+ * mix in data from the CPU's built-in True Random Number Generator (TRNG).
  * Assuming that the CPU's TRNG is trustworthy, this should be sufficient
  * to properly seed the random number generator.  It is recommended to
  * also mix in data from other noise sources just in case the CPU's TRNG
@@ -205,6 +205,31 @@ RNGClass::~RNGClass()
 
 #if defined(RNG_DUE_TRNG)
 
+// Find the flash memory of interest.  Allow for the possibility
+// of other SAM-based Arduino variants in the future.
+#if defined(IFLASH1_ADDR)
+#define RNG_FLASH_ADDR      IFLASH1_ADDR
+#define RNG_FLASH_SIZE      IFLASH1_SIZE
+#define RNG_FLASH_PAGE_SIZE IFLASH1_PAGE_SIZE
+#define RNG_EFC             EFC1
+#elif defined(IFLASH0_ADDR)
+#define RNG_FLASH_ADDR      IFLASH0_ADDR
+#define RNG_FLASH_SIZE      IFLASH0_SIZE
+#define RNG_FLASH_PAGE_SIZE IFLASH0_PAGE_SIZE
+#define RNG_EFC             EFC0
+#else
+#define RNG_FLASH_ADDR      IFLASH_ADDR
+#define RNG_FLASH_SIZE      IFLASH_SIZE
+#define RNG_FLASH_PAGE_SIZE IFLASH_PAGE_SIZE
+#define RNG_EFC             EFC
+#endif
+
+// Address of the flash page to use for saving the seed on the Due.
+// All SAM variants have a page size of 256 bytes or greater so there is
+// plenty of room for the 48 byte seed in the last page of flash memory.
+#define RNG_SEED_ADDR (RNG_FLASH_ADDR + RNG_FLASH_SIZE - RNG_FLASH_PAGE_SIZE)
+#define RNG_SEED_PAGE ((RNG_FLASH_SIZE / RNG_FLASH_PAGE_SIZE) - 1)
+
 // Stir in the unique identifier for the Arduino Due's CPU.
 // This function must be in RAM because programs running out of
 // flash memory are not allowed to access the unique identifier.
@@ -215,23 +240,36 @@ static void stirUniqueIdentifier(void)
     uint32_t id[4];
 
     // Start Read Unique Identifier.
-    EFC1->EEFC_FCR = (0x5A << 24) | EFC_FCMD_STUI;
-    while ((EFC1->EEFC_FSR & EEFC_FSR_FRDY) != 0)
+    RNG_EFC->EEFC_FCR = (0x5A << 24) | EFC_FCMD_STUI;
+    while ((RNG_EFC->EEFC_FSR & EEFC_FSR_FRDY) != 0)
         ;   // do nothing until FRDY falls.
 
     // Read the identifier.
-    id[0] = *((const uint32_t *)IFLASH1_ADDR);
-    id[1] = *((const uint32_t *)(IFLASH1_ADDR + 4));
-    id[2] = *((const uint32_t *)(IFLASH1_ADDR + 8));
-    id[3] = *((const uint32_t *)(IFLASH1_ADDR + 12));
+    id[0] = *((const uint32_t *)RNG_FLASH_ADDR);
+    id[1] = *((const uint32_t *)(RNG_FLASH_ADDR + 4));
+    id[2] = *((const uint32_t *)(RNG_FLASH_ADDR + 8));
+    id[3] = *((const uint32_t *)(RNG_FLASH_ADDR + 12));
 
     // Stop Read Unique Identifier.
-    EFC1->EEFC_FCR = (0x5A << 24) | EFC_FCMD_SPUI;
-    while ((EFC1->EEFC_FSR & EEFC_FSR_FRDY) == 0)
+    RNG_EFC->EEFC_FCR = (0x5A << 24) | EFC_FCMD_SPUI;
+    while ((RNG_EFC->EEFC_FSR & EEFC_FSR_FRDY) == 0)
         ;   // do nothing until FRDY rises.
 
     // Stir the unique identifier into the entropy pool.
     RNG.stir((uint8_t *)id, sizeof(id));
+}
+
+// Erases the flash page containing the seed and then writes the new seed.
+// It is assumed the seed has already been loaded into the latch registers.
+__attribute__((section(".ramfunc")))
+static void eraseAndWriteSeed()
+{
+    // Execute the "Erase and Write Page" command.
+    RNG_EFC->EEFC_FCR = (0x5A << 24) | (RNG_SEED_PAGE << 8) | EFC_FCMD_EWP;
+
+    // Wait for the FRDY bit to be raised.
+    while ((RNG_EFC->EEFC_FSR & EEFC_FSR_FRDY) == 0)
+        ;   // do nothing until FRDY rises.
 }
 
 #endif
@@ -250,6 +288,9 @@ static void stirUniqueIdentifier(void)
  * This function should be followed by calls to addNoiseSource() to
  * register the application's noise sources.
  *
+ * The \a eepromAddress is ignored on the Arduino Due.  The seed is instead
+ * stored in the last page of system flash memory.
+ *
  * \sa addNoiseSource(), stir(), save()
  */
 void RNGClass::begin(const char *tag, int eepromAddress)
@@ -260,7 +301,7 @@ void RNGClass::begin(const char *tag, int eepromAddress)
     // Initialize the ChaCha20 input block from the saved seed.
     memcpy_P(block, tagRNG, sizeof(tagRNG));
     memcpy_P(block + 4, initRNG, sizeof(initRNG));
-#if !defined(RNG_NO_EEPROM)
+#if defined(RNG_EEPROM)
     if (eeprom_read_byte((const uint8_t *)address) == 'S') {
         // We have a saved seed: XOR it with the initialization block.
         for (int posn = 0; posn < 12; ++posn) {
@@ -269,9 +310,17 @@ void RNGClass::begin(const char *tag, int eepromAddress)
         }
     }
 #elif defined(RNG_DUE_TRNG)
-    // The Arduino Due does not have EEPROM so we instead XOR the
-    // initialization block with some output from the CPU's TRNG.
+    // Do we have a seed saved in the last page of flash memory on the Due?
     int posn, counter;
+    if (((const uint32_t *)RNG_SEED_ADDR)[0] == 'S') {
+        // XOR the saved seed with the initialization block.
+        for (posn = 0; posn < 12; ++posn)
+            block[posn + 4] ^= ((const uint32_t *)RNG_SEED_ADDR)[posn + 1];
+    }
+
+    // If the device has just been reprogrammed, there will be no saved seed.
+    // XOR the initialization block with some output from the CPU's TRNG
+    // to permute the state in a first boot situation after reprogramming.
     pmc_enable_periph_clk(ID_TRNG);
     REG_TRNG_CR = TRNG_CR_KEY(0x524E47) | TRNG_CR_ENABLE;
     REG_TRNG_IDR = TRNG_IDR_DATRDY; // Disable interrupts - we will poll.
@@ -559,11 +608,19 @@ void RNGClass::save()
 {
     // Generate random data from the current state and save
     // that as the seed.  Then force a rekey.
-#if !defined(RNG_NO_EEPROM)
     ++(block[12]);
     ChaCha::hashCore(stream, block, RNG_ROUNDS);
+#if defined(RNG_EEPROM)
     eeprom_write_block(stream, (void *)(address + 1), 48);
     eeprom_update_byte((uint8_t *)address, 'S');
+#elif defined(RNG_DUE_TRNG)
+    unsigned posn;
+    ((uint32_t *)(RNG_SEED_ADDR))[0] = 'S';
+    for (posn = 0; posn < 12; ++posn)
+        ((uint32_t *)(RNG_SEED_ADDR))[posn + 1] = stream[posn];
+    for (posn = 13; posn < (RNG_FLASH_PAGE_SIZE / 4); ++posn)
+        ((uint32_t *)(RNG_SEED_ADDR))[posn + 13] = 0xFFFFFFFF;
+    eraseAndWriteSeed();
 #endif
     rekey();
     timer = millis();
@@ -642,9 +699,13 @@ void RNGClass::destroy()
 {
     clean(block);
     clean(stream);
-#if !defined(RNG_NO_EEPROM)
+#if defined(RNG_EEPROM)
     for (int posn = 0; posn < SEED_SIZE; ++posn)
         eeprom_write_byte((uint8_t *)(address + posn), 0xFF);
+#elif defined(RNG_DUE_TRNG)
+    for (unsigned posn = 0; posn < (RNG_FLASH_PAGE_SIZE / 4); ++posn)
+        ((uint32_t *)(RNG_SEED_ADDR))[posn] = 0xFFFFFFFF;
+    eraseAndWriteSeed();
 #endif
 }
 

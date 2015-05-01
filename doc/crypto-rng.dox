@@ -153,13 +153,13 @@ Because the device may be restarted before the first hour expires, there
 is a special case in the code: the first time that the entropy pool
 fills up, a save will be automatically forced.
 
-\note The Arduino Due does not have EEPROM so it cannot save the random
-number seed across system restarts.  Instead the \link RNGClass RNG\endlink
-class will mix in data from the CPU's built-in True Random Number
-Generator (TRNG).  Assuming that the CPU's TRNG is trustworthy,
-this should be sufficient to properly seed the random number generator.
-It is recommended to also mix in data from other noise sources just in
-case the CPU's TRNG is not trustworthy.
+The Arduino Due does not have EEPROM so RNG saves the seed into
+the last page of system flash memory instead.  The RNG class will also
+mix in data from the CPU's built-in True Random Number Generator (TRNG).
+Assuming that the CPU's TRNG is trustworthy, this should be sufficient
+to properly seed the random number generator.  It is recommended to
+also mix in data from other noise sources just in case the CPU's TRNG
+is not trustworthy.
 
 To use the random number generator properly, there are some regular tasks
 that must be performed every time around the application's main loop().
