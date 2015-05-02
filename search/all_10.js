@@ -3,7 +3,7 @@ var searchData=
   ['star_20trek_20example',['Star Trek Example',['../blink_startrek.html',1,'']]],
   ['snake_20video_20game_20using_20an_20infrared_20remote_20control',['Snake Video Game Using an Infrared Remote Control',['../ir_snake.html',1,'']]],
   ['save',['save',['../classRNGClass.html#a139584fb249148e2058d1d645d090db7',1,'RNGClass']]],
-  ['screensavermode',['screenSaverMode',['../classLCD.html#a1917fa285f81f476b4c7cc20d15456b8',1,'LCD::screenSaverMode() const '],['../classLCD.html#a264bf94308c95d8598426e13dc8cdb28',1,'LCD::ScreenSaverMode()']]],
+  ['screensavermode',['ScreenSaverMode',['../classLCD.html#a264bf94308c95d8598426e13dc8cdb28',1,'LCD::ScreenSaverMode()'],['../classLCD.html#a1917fa285f81f476b4c7cc20d15456b8',1,'LCD::screenSaverMode() const ']]],
   ['scroll',['scroll',['../classBitmap.html#ae08eb6f9086f9923d8dc83a469ae4c4a',1,'Bitmap::scroll(int dx, int dy, Color fillColor=Black)'],['../classBitmap.html#af79ad4432297ff453fddc55625fec485',1,'Bitmap::scroll(int x, int y, int width, int height, int dx, int dy, Color fillColor=Black)']]],
   ['second',['second',['../structRTCTime.html#a87b7c02e535d808dcba04c77e34abb91',1,'RTCTime::second()'],['../structRTCAlarm.html#ab749e3695ee5c5dd703aec71f72d46a1',1,'RTCAlarm::second()']]],
   ['seed_5fsize',['SEED_SIZE',['../classRNGClass.html#ae3a013bfc73795fd26ee36e70d89f4c2',1,'RNGClass']]],

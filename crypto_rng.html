@@ -86,6 +86,7 @@ Features of the random number generator</h1>
 <ul>
 <li>Provision for plug-in environmental noise sources and entropy estimation. </li>
 <li>Whitening of noise values to scatter the input noise across the entire random number pool. </li>
+<li>Built-in support for the True Random Number Generator (TRNG) in the Arduino Due's CPU. </li>
 <li>Support for mixing in static values like serial numbers and MAC addresses so that otherwise identical devices do not generate the same sequence of random numbers upon first boot. </li>
 <li>Cryptographically secure pseudo random number generator (PRNG) for expanding the noise-based seed into an arbitrary amount of random material for the application. </li>
 <li>Periodic saving of the random seed into EEPROM so that the accumulated entropy is not lost across a power restart. </li>
@@ -131,6 +132,7 @@ Initializing the random number generator</h1>
 <div class="line">}</div>
 </div><!-- fragment --><p>The random number generator needs 49 bytes of EEPROM space at the specified address to store the previous seed. When the system is started next time, the previous saved seed is loaded and then deliberately overwritten with a new seed. This ensures that the device will not accidentally generate the same sequence of random numbers if it is restarted before the first automatic save of the seed.</p>
 <p>By default the seed is saved once an hour, although this can be changed with <a class="el" href="classRNGClass.html#a5848e87a5f2f0302c88b0377f0e3366d">RNG.setAutoSaveTime()</a>. Because the device may be restarted before the first hour expires, there is a special case in the code: the first time that the entropy pool fills up, a save will be automatically forced.</p>
+<p>The Arduino Due does not have EEPROM so RNG saves the seed into the last page of system flash memory instead. The RNG class will also mix in data from the CPU's built-in True Random Number Generator (TRNG). Assuming that the CPU's TRNG is trustworthy, this should be sufficient to properly seed the random number generator. It is recommended to also mix in data from other noise sources just in case the CPU's TRNG is not trustworthy.</p>
 <p>To use the random number generator properly, there are some regular tasks that must be performed every time around the application's main loop(). Newly accumulated noise must be mixed in and auto-saves must be performed on a regular basis. The <a class="el" href="classRNGClass.html#a8cb91e39f0c4591de5bf98b1e2880b13">RNG.loop()</a> function takes care of these tasks for us:</p>
 <div class="fragment"><div class="line"><span class="keywordtype">void</span> loop() {</div>
 <div class="line">    <span class="comment">// ...</span></div>
@@ -182,7 +184,7 @@ Destroying secret data</h1>
 </div><!-- fragment --> </div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Apr 18 2015 08:44:48 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat May 2 2015 10:17:20 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>
