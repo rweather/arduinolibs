@@ -207,7 +207,7 @@ void setup()
     // Start the random number generator.  We don't initialise a noise
     // source here because we don't need one for testing purposes.
     // Real DH applications should of course use a proper noise source.
-    RNG.begin("TestCurve25519 1.0", 500);
+    RNG.begin("TestCurve25519 1.0", 950);
 
     // Perform the tests.
     testEval();

@@ -12,7 +12,7 @@
 #define RNG_APP_TAG "MyApp 1.0"
 
 // EEPROM address to save the random number seed at.
-#define RNG_EEPROM_ADDRESS 500
+#define RNG_EEPROM_ADDRESS 950
 
 // Noise source to seed the random number generator.
 TransistorNoiseSource noise(A1);

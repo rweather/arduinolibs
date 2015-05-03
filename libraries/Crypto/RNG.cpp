@@ -71,8 +71,8 @@
  *     Ethernet.begin(mac_address);
  *
  *     // Initialize the random number generator with the application tag
- *     // "MyApp 1.0" and load the previous seed from EEPROM address 500.
- *     RNG.begin("MyApp 1.0", 500);
+ *     // "MyApp 1.0" and load the previous seed from EEPROM address 950.
+ *     RNG.begin("MyApp 1.0", 950);
  *
  *     // Stir in the Ethernet MAC address.
  *     RNG.stir(mac_address, sizeof(mac_address));

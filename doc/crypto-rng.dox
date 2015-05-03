@@ -112,8 +112,8 @@ all of the application's noise sources:
 \code
 void setup() {
     // Initialize the random number generator with the application tag
-    // "MyApp 1.0" and load the previous seed from EEPROM address 500.
-    RNG.begin("MyApp 1.0", 500);
+    // "MyApp 1.0" and load the previous seed from EEPROM address 950.
+    RNG.begin("MyApp 1.0", 950);
 
     // Add the noise source to the list of sources known to RNG.
     RNG.addNoiseSource(noise);
@@ -132,7 +132,7 @@ those can be mixed in during the setup() function after calling begin():
 
 \code
 void setup() {
-    RNG.begin("MyApp 1.0", 500);
+    RNG.begin("MyApp 1.0", 950);
     RNG.stir(serial_number, sizeof(serial_number));
     RNG.stir(mac_address, sizeof(mac_address));
     RNG.addNoiseSource(noise);
