@@ -91,7 +91,7 @@ realtime clock and the LCD library to implement an alarm clock.
 
 \section main_Crypto Cryptographic Library
 
-\li Block ciphers: AES128, AES192, AES256
+\li Block ciphers: AES128, AES192, AES256, Speck
 \li Block cipher modes: CTR, CFB, CBC, OFB, GCM
 \li Stream ciphers: ChaCha
 \li Authenticated encryption with associated data (AEAD): ChaChaPoly, GCM
