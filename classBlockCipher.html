@@ -102,6 +102,7 @@ Inheritance diagram for BlockCipher:</div>
   <img src="classBlockCipher.png" usemap="#BlockCipher_map" alt=""/>
   <map id="BlockCipher_map" name="BlockCipher_map">
 <area href="classAESCommon.html" title="Abstract base class for AES block ciphers. " alt="AESCommon" shape="rect" coords="95,56,180,80"/>
+<area href="classSpeck.html" title="Speck block cipher with a 128-bit block size. " alt="Speck" shape="rect" coords="190,56,275,80"/>
 <area href="classAES128.html" title="AES block cipher with 128-bit keys. " alt="AES128" shape="rect" coords="0,112,85,136"/>
 <area href="classAES192.html" title="AES block cipher with 192-bit keys. " alt="AES192" shape="rect" coords="95,112,180,136"/>
 <area href="classAES256.html" title="AES block cipher with 256-bit keys. " alt="AES256" shape="rect" coords="190,112,275,136"/>
@@ -198,7 +199,7 @@ Public Member Functions</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>Returns the size of a block in bytes.</dd></dl>
 <dl class="section see"><dt>See Also</dt><dd><a class="el" href="classBlockCipher.html#afde6004a859e015d877eab3c37042a0f" title="Default size of the key for this block cipher, in bytes. ">keySize()</a>, <a class="el" href="classBlockCipher.html#aed0788b25f6bb2f1bd47d5a5f0c5db33" title="Encrypts a single block using this cipher. ">encryptBlock()</a> </dd></dl>
 
-<p>Implemented in <a class="el" href="classAESCommon.html#ae26afdcc6d18e8888974acae16df1413">AESCommon</a>.</p>
+<p>Implemented in <a class="el" href="classSpeck.html#a18a3b982a2cbc48befc8d498de08f188">Speck</a>, and <a class="el" href="classAESCommon.html#ae26afdcc6d18e8888974acae16df1413">AESCommon</a>.</p>
 
 </div>
 </div>
@@ -227,7 +228,7 @@ Public Member Functions</h2></td></tr>
 <p>Security-sensitive information includes key schedules and any temporary state that is used by <a class="el" href="classBlockCipher.html#aed0788b25f6bb2f1bd47d5a5f0c5db33" title="Encrypts a single block using this cipher. ">encryptBlock()</a> or <a class="el" href="classBlockCipher.html#ac3ba2450222aa1ea804ae4881ab6440c" title="Decrypts a single block using this cipher. ">decryptBlock()</a> which is stored in the object itself.</p>
 <dl class="section see"><dt>See Also</dt><dd><a class="el" href="classBlockCipher.html#a9a05307664469777592799c8f77397c4" title="Sets the key to use for future encryption and decryption operations. ">setKey()</a>, <a class="el" href="classBlockCipher.html#aed0788b25f6bb2f1bd47d5a5f0c5db33" title="Encrypts a single block using this cipher. ">encryptBlock()</a>, <a class="el" href="classBlockCipher.html#ac3ba2450222aa1ea804ae4881ab6440c" title="Decrypts a single block using this cipher. ">decryptBlock()</a> </dd></dl>
 
-<p>Implemented in <a class="el" href="classAESCommon.html#a83e43f7d07e31d90fd7b768a93ecfce6">AESCommon</a>.</p>
+<p>Implemented in <a class="el" href="classSpeck.html#aa3866273282addabb9d3703c41fdc95f">Speck</a>, and <a class="el" href="classAESCommon.html#a83e43f7d07e31d90fd7b768a93ecfce6">AESCommon</a>.</p>
 
 </div>
 </div>
@@ -273,7 +274,7 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section see"><dt>See Also</dt><dd><a class="el" href="classBlockCipher.html#aed0788b25f6bb2f1bd47d5a5f0c5db33" title="Encrypts a single block using this cipher. ">encryptBlock()</a>, <a class="el" href="classBlockCipher.html#a7059a310487c128db034b0ce0ad425a0" title="Size of a single block processed by this cipher, in bytes. ">blockSize()</a> </dd></dl>
 
-<p>Implemented in <a class="el" href="classAESCommon.html#a95a806adf42f975765ff62907efdc639">AESCommon</a>.</p>
+<p>Implemented in <a class="el" href="classSpeck.html#ad8c040df1c52d2559da8fdb3963d28b4">Speck</a>, and <a class="el" href="classAESCommon.html#a95a806adf42f975765ff62907efdc639">AESCommon</a>.</p>
 
 </div>
 </div>
@@ -319,7 +320,7 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section see"><dt>See Also</dt><dd><a class="el" href="classBlockCipher.html#ac3ba2450222aa1ea804ae4881ab6440c" title="Decrypts a single block using this cipher. ">decryptBlock()</a>, <a class="el" href="classBlockCipher.html#a7059a310487c128db034b0ce0ad425a0" title="Size of a single block processed by this cipher, in bytes. ">blockSize()</a> </dd></dl>
 
-<p>Implemented in <a class="el" href="classAESCommon.html#a2d95f6159abfcd92b5841f9018e44296">AESCommon</a>.</p>
+<p>Implemented in <a class="el" href="classSpeck.html#af6b8b91929e4b5b2023400688c9437f9">Speck</a>, and <a class="el" href="classAESCommon.html#a2d95f6159abfcd92b5841f9018e44296">AESCommon</a>.</p>
 
 </div>
 </div>
@@ -348,7 +349,7 @@ Public Member Functions</h2></td></tr>
 <p>This value indicates the default, or recommended, size for the key.</p>
 <dl class="section see"><dt>See Also</dt><dd><a class="el" href="classBlockCipher.html#a9a05307664469777592799c8f77397c4" title="Sets the key to use for future encryption and decryption operations. ">setKey()</a>, <a class="el" href="classBlockCipher.html#a7059a310487c128db034b0ce0ad425a0" title="Size of a single block processed by this cipher, in bytes. ">blockSize()</a> </dd></dl>
 
-<p>Implemented in <a class="el" href="classAES256.html#af8ed6412bae6fc78274f60344899366a">AES256</a>, <a class="el" href="classAES192.html#ade28843e51e262b30eb55791c83fd791">AES192</a>, and <a class="el" href="classAES128.html#aa871832a156f0ea61b964e489670ae9d">AES128</a>.</p>
+<p>Implemented in <a class="el" href="classAES256.html#af8ed6412bae6fc78274f60344899366a">AES256</a>, <a class="el" href="classAES192.html#ade28843e51e262b30eb55791c83fd791">AES192</a>, <a class="el" href="classAES128.html#aa871832a156f0ea61b964e489670ae9d">AES128</a>, and <a class="el" href="classSpeck.html#a061e43c1363178cda088c3f46e07d87b">Speck</a>.</p>
 
 </div>
 </div>
@@ -396,7 +397,7 @@ Public Member Functions</h2></td></tr>
 <p>Use <a class="el" href="classBlockCipher.html#a6f27d46e9dfa7761d014d828ad5f955b" title="Clears all security-sensitive state from this block cipher. ">clear()</a> or the destructor to remove the key and any other sensitive data from the object once encryption or decryption is complete.</p>
 <dl class="section see"><dt>See Also</dt><dd><a class="el" href="classBlockCipher.html#afde6004a859e015d877eab3c37042a0f" title="Default size of the key for this block cipher, in bytes. ">keySize()</a>, <a class="el" href="classBlockCipher.html#a6f27d46e9dfa7761d014d828ad5f955b" title="Clears all security-sensitive state from this block cipher. ">clear()</a> </dd></dl>
 
-<p>Implemented in <a class="el" href="classAES256.html#a6af085d2d6a730ff1e025f982121bbda">AES256</a>, <a class="el" href="classAES192.html#a4ab37cff19fb05ceef1533ebc5e37cde">AES192</a>, and <a class="el" href="classAES128.html#a42d7548eb5084a2c3e2d5aa5f6f98ba4">AES128</a>.</p>
+<p>Implemented in <a class="el" href="classAES256.html#a6af085d2d6a730ff1e025f982121bbda">AES256</a>, <a class="el" href="classAES192.html#a4ab37cff19fb05ceef1533ebc5e37cde">AES192</a>, <a class="el" href="classAES128.html#a42d7548eb5084a2c3e2d5aa5f6f98ba4">AES128</a>, and <a class="el" href="classSpeck.html#a7a07fc025bd25d832e9899333b5dabef">Speck</a>.</p>
 
 </div>
 </div>
@@ -407,7 +408,7 @@ Public Member Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat May 2 2015 10:17:20 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Dec 5 2015 17:50:26 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

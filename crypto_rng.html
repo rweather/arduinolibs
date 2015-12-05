@@ -114,8 +114,8 @@ Initializing the random number generator</h1>
 </div><!-- fragment --><p>Then in the setup() function we call <a class="el" href="classRNGClass.html#a7f1aab3c324f8e8a424d683425e0fcf8">RNG.begin()</a> to start the random number generator running and call <a class="el" href="classRNGClass.html#aacf23b192b0e4cc8726d9abe05f5a9db">RNG.addNoiseSource()</a> to register all of the application's noise sources:</p>
 <div class="fragment"><div class="line"><span class="keywordtype">void</span> setup() {</div>
 <div class="line">    <span class="comment">// Initialize the random number generator with the application tag</span></div>
-<div class="line">    <span class="comment">// &quot;MyApp 1.0&quot; and load the previous seed from EEPROM address 500.</span></div>
-<div class="line">    RNG.<a class="code" href="classRNGClass.html#a7f1aab3c324f8e8a424d683425e0fcf8">begin</a>(<span class="stringliteral">&quot;MyApp 1.0&quot;</span>, 500);</div>
+<div class="line">    <span class="comment">// &quot;MyApp 1.0&quot; and load the previous seed from EEPROM address 950.</span></div>
+<div class="line">    RNG.<a class="code" href="classRNGClass.html#a7f1aab3c324f8e8a424d683425e0fcf8">begin</a>(<span class="stringliteral">&quot;MyApp 1.0&quot;</span>, 950);</div>
 <div class="line"></div>
 <div class="line">    <span class="comment">// Add the noise source to the list of sources known to RNG.</span></div>
 <div class="line">    RNG.<a class="code" href="classRNGClass.html#aacf23b192b0e4cc8726d9abe05f5a9db">addNoiseSource</a>(noise);</div>
@@ -124,7 +124,7 @@ Initializing the random number generator</h1>
 <div class="line">}</div>
 </div><!-- fragment --><p>The begin() function is passed two arguments: a tag string that should be different for every application and an EEPROM address to use to load and save the random number seed. The tag string ensures that different applications and versions will generate different random numbers upon first boot before the noise source has collected any entropy. If the device also has a unique serial number or a MAC address, then those can be mixed in during the setup() function after calling begin():</p>
 <div class="fragment"><div class="line"><span class="keywordtype">void</span> setup() {</div>
-<div class="line">    RNG.<a class="code" href="classRNGClass.html#a7f1aab3c324f8e8a424d683425e0fcf8">begin</a>(<span class="stringliteral">&quot;MyApp 1.0&quot;</span>, 500);</div>
+<div class="line">    RNG.<a class="code" href="classRNGClass.html#a7f1aab3c324f8e8a424d683425e0fcf8">begin</a>(<span class="stringliteral">&quot;MyApp 1.0&quot;</span>, 950);</div>
 <div class="line">    RNG.<a class="code" href="classRNGClass.html#ad99535ea23ae2fec55bdebb8c24def02">stir</a>(serial_number, <span class="keyword">sizeof</span>(serial_number));</div>
 <div class="line">    RNG.<a class="code" href="classRNGClass.html#ad99535ea23ae2fec55bdebb8c24def02">stir</a>(mac_address, <span class="keyword">sizeof</span>(mac_address));</div>
 <div class="line">    RNG.<a class="code" href="classRNGClass.html#aacf23b192b0e4cc8726d9abe05f5a9db">addNoiseSource</a>(noise);</div>
@@ -184,7 +184,7 @@ Destroying secret data</h1>
 </div><!-- fragment --> </div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat May 2 2015 10:17:20 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Dec 5 2015 17:50:26 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>
