@@ -93,7 +93,7 @@ Supported Algorithms</h1>
 </ul>
 <p>All cryptographic algorithms have been optimized for 8-bit Arduino platforms like the Uno. Memory usage is also reduced, particularly for <a class="el" href="classSHA1.html" title="SHA-1 hash algorithm. ">SHA1</a>, <a class="el" href="classSHA256.html" title="SHA-256 hash algorithm. ">SHA256</a>, and <a class="el" href="classSHA512.html" title="SHA-512 hash algorithm. ">SHA512</a> which save 256, 192, and 512 bytes respectively over traditional implementations. For all algorithms, static sbox tables and the like are placed into program memory to further reduce data memory usage.</p>
 <p><a class="el" href="classChaCha.html" title="ChaCha stream cipher. ">ChaCha</a> with 20 rounds and 256-bit keys is the recommended symmetric encryption algorithm because it is twice as fast as <a class="el" href="classAES128.html" title="AES block cipher with 128-bit keys. ">AES128</a>, constant-time, and much more secure. <a class="el" href="classAES128.html" title="AES block cipher with 128-bit keys. ">AES128</a>, <a class="el" href="classAES192.html" title="AES block cipher with 192-bit keys. ">AES192</a>, and <a class="el" href="classAES256.html" title="AES block cipher with 256-bit keys. ">AES256</a> are provided for use in applications where compatibility with other systems is desirable.</p>
-<p>If code size is an issue for your application (for example on very low end Arduino variants), then <a class="el" href="classSpeck.html" title="Speck block cipher with a 128-bit block size. ">Speck</a> on AVR is less than half the code size of <a class="el" href="classChaCha.html" title="ChaCha stream cipher. ">ChaCha</a>, at the cost of more data memory for the state and longer key setup times.</p>
+<p>If code size is an issue for your application (for example on very low end Arduino variants), then <a class="el" href="classSpeck.html" title="Speck block cipher with a 128-bit block size. ">Speck</a> on AVR is less than half the code size of <a class="el" href="classChaCha.html" title="ChaCha stream cipher. ">ChaCha</a>, at the cost of more data memory for the state and longer key setup times. The <a class="el" href="classSpeckLowMemory.html" title="Speck block cipher with a 128-bit block size (low-memory version). ">SpeckLowMemory</a> class is even smaller at the cost of some performance when encrypting.</p>
 <p><a class="el" href="classBLAKE2s.html" title="BLAKE2s hash algorithm. ">BLAKE2s</a> and <a class="el" href="classBLAKE2b.html" title="BLAKE2b hash algorithm. ">BLAKE2b</a> are variations on the <a class="el" href="classChaCha.html" title="ChaCha stream cipher. ">ChaCha</a> stream cipher, designed for hashing, with 256-bit and 512-bit hash outputs respectively. They are intended as high performance replacements for <a class="el" href="classSHA256.html" title="SHA-256 hash algorithm. ">SHA256</a> and <a class="el" href="classSHA512.html" title="SHA-512 hash algorithm. ">SHA512</a> for when speed is critical but exact bit-compatibility of hash values is not.</p>
 <h1><a class="anchor" id="crypto_other"></a>
 Examples and other topics</h1>
@@ -121,11 +121,17 @@ Performance on AVR</h2>
 <tr>
 <td><a class="el" href="classChaCha.html" title="ChaCha stream cipher. ">ChaCha</a> (8 rounds)</td><td align="right">8.13us</td><td align="right">8.14us</td><td align="right">43.74us</td><td align="right">132 </td></tr>
 <tr>
-<td><a class="el" href="classSpeck.html" title="Speck block cipher with a 128-bit block size. ">Speck</a> (128-bit key, ECB mode)</td><td align="right">10.72us</td><td align="right">11.09us</td><td align="right">304.56us</td><td align="right">275 </td></tr>
+<td><a class="el" href="classSpeck.html" title="Speck block cipher with a 128-bit block size. ">Speck</a> (128-bit key, ECB mode)</td><td align="right">10.72us</td><td align="right">11.09us</td><td align="right">287.02us</td><td align="right">275 </td></tr>
 <tr>
-<td><a class="el" href="classSpeck.html" title="Speck block cipher with a 128-bit block size. ">Speck</a> (192-bit key, ECB mode)</td><td align="right">11.03us</td><td align="right">11.42us</td><td align="right">316.32us</td><td align="right">275 </td></tr>
+<td><a class="el" href="classSpeck.html" title="Speck block cipher with a 128-bit block size. ">Speck</a> (192-bit key, ECB mode)</td><td align="right">11.03us</td><td align="right">11.42us</td><td align="right">298.21us</td><td align="right">275 </td></tr>
 <tr>
-<td><a class="el" href="classSpeck.html" title="Speck block cipher with a 128-bit block size. ">Speck</a> (256-bit key, ECB mode)</td><td align="right">11.35us</td><td align="right">11.74us</td><td align="right">328.33us</td><td align="right">275 </td></tr>
+<td><a class="el" href="classSpeck.html" title="Speck block cipher with a 128-bit block size. ">Speck</a> (256-bit key, ECB mode)</td><td align="right">11.35us</td><td align="right">11.74us</td><td align="right">309.66us</td><td align="right">275 </td></tr>
+<tr>
+<td><a class="el" href="classSpeckLowMemory.html" title="Speck block cipher with a 128-bit block size (low-memory version). ">SpeckLowMemory</a> (128-bit key, ECB mode)</td><td align="right">35.25us</td><td align="right"></td><td align="right">10.22us</td><td align="right">35 </td></tr>
+<tr>
+<td><a class="el" href="classSpeckLowMemory.html" title="Speck block cipher with a 128-bit block size (low-memory version). ">SpeckLowMemory</a> (192-bit key, ECB mode)</td><td align="right">36.56us</td><td align="right"></td><td align="right">13.62us</td><td align="right">35 </td></tr>
+<tr>
+<td><a class="el" href="classSpeckLowMemory.html" title="Speck block cipher with a 128-bit block size (low-memory version). ">SpeckLowMemory</a> (256-bit key, ECB mode)</td><td align="right">37.87us</td><td align="right"></td><td align="right">16.89us</td><td align="right">35 </td></tr>
 <tr>
 <td colspan="5"></td></tr>
 <tr>
@@ -207,11 +213,17 @@ Performance on ARM</h2>
 <tr>
 <td><a class="el" href="classChaCha.html" title="ChaCha stream cipher. ">ChaCha</a> (8 rounds)</td><td align="right">0.62us</td><td align="right">0.62us</td><td align="right">4.96us</td><td align="right">136 </td></tr>
 <tr>
-<td><a class="el" href="classSpeck.html" title="Speck block cipher with a 128-bit block size. ">Speck</a> (128-bit key, ECB mode)</td><td align="right">0.88us</td><td align="right">1.17us</td><td align="right">37.54us</td><td align="right">288 </td></tr>
+<td><a class="el" href="classSpeck.html" title="Speck block cipher with a 128-bit block size. ">Speck</a> (128-bit key, ECB mode)</td><td align="right">0.97us</td><td align="right">0.96us</td><td align="right">36.80us</td><td align="right">288 </td></tr>
 <tr>
-<td><a class="el" href="classSpeck.html" title="Speck block cipher with a 128-bit block size. ">Speck</a> (192-bit key, ECB mode)</td><td align="right">0.90us</td><td align="right">1.20us</td><td align="right">38.92us</td><td align="right">288 </td></tr>
+<td><a class="el" href="classSpeck.html" title="Speck block cipher with a 128-bit block size. ">Speck</a> (192-bit key, ECB mode)</td><td align="right">1.00us</td><td align="right">0.98us</td><td align="right">38.14us</td><td align="right">288 </td></tr>
 <tr>
-<td><a class="el" href="classSpeck.html" title="Speck block cipher with a 128-bit block size. ">Speck</a> (256-bit key, ECB mode)</td><td align="right">0.93us</td><td align="right">1.23us</td><td align="right">40.10us</td><td align="right">288 </td></tr>
+<td><a class="el" href="classSpeck.html" title="Speck block cipher with a 128-bit block size. ">Speck</a> (256-bit key, ECB mode)</td><td align="right">1.03us</td><td align="right">1.01us</td><td align="right">39.31us</td><td align="right">288 </td></tr>
+<tr>
+<td><a class="el" href="classSpeckLowMemory.html" title="Speck block cipher with a 128-bit block size (low-memory version). ">SpeckLowMemory</a> (128-bit key, ECB mode)</td><td align="right">2.72us</td><td align="right"></td><td align="right">1.47us</td><td align="right">48 </td></tr>
+<tr>
+<td><a class="el" href="classSpeckLowMemory.html" title="Speck block cipher with a 128-bit block size (low-memory version). ">SpeckLowMemory</a> (192-bit key, ECB mode)</td><td align="right">2.81us</td><td align="right"></td><td align="right">1.54us</td><td align="right">48 </td></tr>
+<tr>
+<td><a class="el" href="classSpeckLowMemory.html" title="Speck block cipher with a 128-bit block size (low-memory version). ">SpeckLowMemory</a> (256-bit key, ECB mode)</td><td align="right">2.90us</td><td align="right"></td><td align="right">1.83us</td><td align="right">48 </td></tr>
 <tr>
 <td colspan="5"></td></tr>
 <tr>
@@ -276,7 +288,7 @@ Performance on ARM</h2>
 </div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Dec 5 2015 17:50:26 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Dec 18 2015 05:39:07 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

@@ -142,7 +142,9 @@ Public Member Functions</h2></td></tr>
 <p><a class="el" href="classSpeck.html" title="Speck block cipher with a 128-bit block size. ">Speck</a> is a family of lightweight block ciphers designed by the National Security Agency (NSA). The ciphers are highly optimized for software implementation on microcontrollers.</p>
 <p>This class implements the <a class="el" href="classSpeck.html" title="Speck block cipher with a 128-bit block size. ">Speck</a> family that uses 128-bit block sizes with 128-bit, 192-bit, or 256-bit key sizes. Other <a class="el" href="classSpeck.html" title="Speck block cipher with a 128-bit block size. ">Speck</a> families support smaller block sizes of 32, 48, 64, or 96 bits but such block sizes are too small for use in modern cryptosystems.</p>
 <dl class="section note"><dt>Note</dt><dd>Current crytoanalysis (up until 2015) has not revealed any obvious weaknesses in the full-round version of <a class="el" href="classSpeck.html" title="Speck block cipher with a 128-bit block size. ">Speck</a>. But if you are wary of ciphers designed by the NSA, then use <a class="el" href="classChaCha.html" title="ChaCha stream cipher. ">ChaCha</a> or AES instead.</dd></dl>
-<p>References: <a href="https://en.wikipedia.org/wiki/Speck_%28cipher%29,">https://en.wikipedia.org/wiki/Speck_%28cipher%29,</a> <a href="http://eprint.iacr.org/2013/404">http://eprint.iacr.org/2013/404</a> </p>
+<p>The <a class="el" href="classSpeckLowMemory.html" title="Speck block cipher with a 128-bit block size (low-memory version). ">SpeckLowMemory</a> class provides an alternative implementation that has reduced RAM and flash size requirements at the cost of some encryption performance.</p>
+<p>References: <a href="https://en.wikipedia.org/wiki/Speck_%28cipher%29,">https://en.wikipedia.org/wiki/Speck_%28cipher%29,</a> <a href="http://eprint.iacr.org/2013/404">http://eprint.iacr.org/2013/404</a></p>
+<dl class="section see"><dt>See Also</dt><dd><a class="el" href="classSpeckLowMemory.html" title="Speck block cipher with a 128-bit block size (low-memory version). ">SpeckLowMemory</a> </dd></dl>
 
 <p>Definition at line <a class="el" href="Speck_8h_source.html#l00028">28</a> of file <a class="el" href="Speck_8h_source.html">Speck.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
@@ -162,7 +164,7 @@ Public Member Functions</h2></td></tr>
 <p>Constructs a <a class="el" href="classSpeck.html" title="Speck block cipher with a 128-bit block size. ">Speck</a> block cipher with no initial key. </p>
 <p>This constructor must be followed by a call to <a class="el" href="classSpeck.html#a7a07fc025bd25d832e9899333b5dabef" title="Sets the key to use for future encryption and decryption operations. ">setKey()</a> before the block cipher can be used for encryption or decryption. </p>
 
-<p>Definition at line <a class="el" href="Speck_8cpp_source.html#l00066">66</a> of file <a class="el" href="Speck_8cpp_source.html">Speck.cpp</a>.</p>
+<p>Definition at line <a class="el" href="Speck_8cpp_source.html#l00072">72</a> of file <a class="el" href="Speck_8cpp_source.html">Speck.cpp</a>.</p>
 
 </div>
 </div>
@@ -194,7 +196,7 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="classBlockCipher.html#a7059a310487c128db034b0ce0ad425a0">BlockCipher</a>.</p>
 
-<p>Definition at line <a class="el" href="Speck_8cpp_source.html#l00076">76</a> of file <a class="el" href="Speck_8cpp_source.html">Speck.cpp</a>.</p>
+<p>Definition at line <a class="el" href="Speck_8cpp_source.html#l00082">82</a> of file <a class="el" href="Speck_8cpp_source.html">Speck.cpp</a>.</p>
 
 </div>
 </div>
@@ -225,7 +227,7 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="classBlockCipher.html#a6f27d46e9dfa7761d014d828ad5f955b">BlockCipher</a>.</p>
 
-<p>Definition at line <a class="el" href="Speck_8cpp_source.html#l00615">615</a> of file <a class="el" href="Speck_8cpp_source.html">Speck.cpp</a>.</p>
+<p>Definition at line <a class="el" href="Speck_8cpp_source.html#l00611">611</a> of file <a class="el" href="Speck_8cpp_source.html">Speck.cpp</a>.</p>
 
 </div>
 </div>
@@ -273,7 +275,7 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="classBlockCipher.html#ac3ba2450222aa1ea804ae4881ab6440c">BlockCipher</a>.</p>
 
-<p>Definition at line <a class="el" href="Speck_8cpp_source.html#l00461">461</a> of file <a class="el" href="Speck_8cpp_source.html">Speck.cpp</a>.</p>
+<p>Definition at line <a class="el" href="Speck_8cpp_source.html#l00457">457</a> of file <a class="el" href="Speck_8cpp_source.html">Speck.cpp</a>.</p>
 
 </div>
 </div>
@@ -321,7 +323,7 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="classBlockCipher.html#aed0788b25f6bb2f1bd47d5a5f0c5db33">BlockCipher</a>.</p>
 
-<p>Definition at line <a class="el" href="Speck_8cpp_source.html#l00310">310</a> of file <a class="el" href="Speck_8cpp_source.html">Speck.cpp</a>.</p>
+<p>Definition at line <a class="el" href="Speck_8cpp_source.html#l00306">306</a> of file <a class="el" href="Speck_8cpp_source.html">Speck.cpp</a>.</p>
 
 </div>
 </div>
@@ -352,7 +354,7 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="classBlockCipher.html#afde6004a859e015d877eab3c37042a0f">BlockCipher</a>.</p>
 
-<p>Definition at line <a class="el" href="Speck_8cpp_source.html#l00081">81</a> of file <a class="el" href="Speck_8cpp_source.html">Speck.cpp</a>.</p>
+<p>Definition at line <a class="el" href="Speck_8cpp_source.html#l00087">87</a> of file <a class="el" href="Speck_8cpp_source.html">Speck.cpp</a>.</p>
 
 </div>
 </div>
@@ -402,7 +404,7 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="classBlockCipher.html#a9a05307664469777592799c8f77397c4">BlockCipher</a>.</p>
 
-<p>Definition at line <a class="el" href="Speck_8cpp_source.html#l00099">99</a> of file <a class="el" href="Speck_8cpp_source.html">Speck.cpp</a>.</p>
+<p>Definition at line <a class="el" href="Speck_8cpp_source.html#l00105">105</a> of file <a class="el" href="Speck_8cpp_source.html">Speck.cpp</a>.</p>
 
 </div>
 </div>
@@ -413,7 +415,7 @@ Public Member Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Dec 5 2015 17:50:26 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Dec 18 2015 05:39:08 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>
