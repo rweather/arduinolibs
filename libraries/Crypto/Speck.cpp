@@ -43,8 +43,14 @@
  * weaknesses in the full-round version of Speck.  But if you are wary of
  * ciphers designed by the NSA, then use ChaCha or AES instead.
  *
+ * The SpeckLowMemory class provides an alternative implementation that
+ * has reduced RAM and flash size requirements at the cost of some encryption
+ * performance.
+ *
  * References: https://en.wikipedia.org/wiki/Speck_%28cipher%29,
  * http://eprint.iacr.org/2013/404
+ *
+ * \sa SpeckLowMemory
  */
 
 // The "avr-gcc" compiler doesn't do a very good job of compiling
@@ -142,24 +148,14 @@ bool Speck::setKey(const uint8_t *key, size_t len)
         // l[li_out] = (k[i] + rightRotate8_64(l[li_in])) ^ i;
         "add %A1,%2\n"              // X = &(l[li_in])
         "adc %B1,__zero_reg__\n"
-        "ld r8,X+\n"                // x = l[li_in]
+        "ld r15,X+\n"               // x = rightRotate8_64(l[li_in])
+        "ld r8,X+\n"
         "ld r9,X+\n"
         "ld r10,X+\n"
         "ld r11,X+\n"
         "ld r12,X+\n"
         "ld r13,X+\n"
         "ld r14,X+\n"
-        "ld r15,X+\n"
-
-        "mov __tmp_reg__,r8\n"      // x = rightRotate8_64(l[li_in])
-        "mov r8,r9\n"
-        "mov r9,r10\n"
-        "mov r10,r11\n"
-        "mov r11,r12\n"
-        "mov r12,r13\n"
-        "mov r13,r14\n"
-        "mov r14,r15\n"
-        "mov r15,__tmp_reg__\n"
 
         "ld r16,Z+\n"               // y = k[i]
         "ld r17,Z+\n" 
