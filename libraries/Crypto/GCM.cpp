@@ -65,13 +65,13 @@ size_t GCMCommon::keySize() const
 
 size_t GCMCommon::ivSize() const
 {
-    return 16;
+    // The GCM specification recommends an IV size of 96 bits.
+    return 12;
 }
 
 size_t GCMCommon::tagSize() const
 {
-    // The GCM specification recommends an IV size of 96 bits.
-    return 12;
+    return 16;
 }
 
 bool GCMCommon::setKey(const uint8_t *key, size_t len)
