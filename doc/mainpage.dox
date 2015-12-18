@@ -94,7 +94,7 @@ realtime clock and the LCD library to implement an alarm clock.
 \li Block ciphers: AES128, AES192, AES256, Speck
 \li Block cipher modes: CTR, CFB, CBC, OFB, GCM
 \li Stream ciphers: ChaCha
-\li Authenticated encryption with associated data (AEAD): ChaChaPoly, GCM
+\li Authenticated encryption with associated data (AEAD): ChaChaPoly, EAX, GCM
 \li Hash algorithms: SHA1, SHA256, SHA512, SHA3_256, SHA3_512, BLAKE2s, BLAKE2b (regular and HMAC modes)
 \li Message authenticators: Poly1305, GHASH
 \li Public key algorithms: Curve25519, Ed25519
