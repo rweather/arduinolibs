@@ -30,9 +30,11 @@
 // The Arduino Due does not have any EEPROM natively on the main chip.
 // However, it does have a TRNG and flash memory.
 #define RNG_DUE_TRNG 1
-#else
-#define RNG_EEPROM 1
+#elif defined(__AVR__)
+#define RNG_EEPROM 1        // Use EEPROM to save the seed.
+#define RNG_WATCHDOG 1      // Harvest entropy from watchdog jitter.
 #include <avr/eeprom.h>
+#include <avr/wdt.h>
 #endif
 #include <string.h>
 
@@ -169,6 +171,52 @@ static const uint8_t initRNG[48] PROGMEM = {
     0x0B, 0xFB, 0x18, 0x84, 0x60, 0xA5, 0x77, 0x72
 };
 
+#if defined(RNG_WATCHDOG)
+
+// Use jitter between the watchdog timer and the main CPU clock to
+// harvest some entropy on AVR-based systems.  This technique comes from:
+//
+// https://sites.google.com/site/astudyofentropy/project-definition/timer-jitter-entropy-sources/entropy-library
+//
+// The watchdog generates entropy very slowly - it can take around 32 seconds
+// to generate 256 bits of entropy credit.  This is a "better than nothing"
+// entropy source but a real noise source is definitely recommended.
+
+// Helper macros for specific 32-bit shift counts.
+#define leftShift3(value)   ((value) << 3)
+#define leftShift10(value)  ((value) << 10)
+#define leftShift15(value)  ((value) << 15)
+#define rightShift6(value)  ((value) >> 6)
+#define rightShift11(value) ((value) >> 11)
+
+static uint32_t volatile hash = 0;
+static uint8_t volatile outBits = 0;
+
+// Watchdog interrupt handler.  This fires off every 16ms.  We collect
+// 32 bits and then pass them off onto RNGClass::loop().
+ISR(WDT_vect)
+{
+    // Read the low byte of Timer 1.  We assume that the timer was
+    // initialized by the Arduino startup code for PWM use or that the
+    // application is free-running Timer 1 for its own purposes.
+    // Timer 0 is used on systems that don't have a Timer 1.
+#if defined(TCNT1L)
+    unsigned char value = TCNT1L;
+#elif defined(TCNT0L)
+    unsigned char value = TCNT0L;
+#else
+    unsigned char value = TCNT0;
+#endif
+    // Use Jenkin's one-at-a-time hash function to scatter the entropy a bit.
+    // https://en.wikipedia.org/wiki/Jenkins_hash_function
+    hash += value;
+    hash += leftShift10(hash);
+    hash ^= rightShift6(hash);
+    ++outBits;
+}
+
+#endif // RNG_WATCHDOG
+
 /** @endcond */
 
 /**
@@ -198,6 +246,21 @@ RNGClass::~RNGClass()
 #if defined(RNG_DUE_TRNG)
     // Disable the TRNG in the Arduino Due.
     REG_TRNG_CR = TRNG_CR_KEY(0x524E47);
+#endif
+#if defined(RNG_WATCHDOG)
+    // Disable interrupts and reset the watchdog.
+    cli();
+    wdt_reset();
+
+    // Clear the "reset due to watchdog" flag.
+    MCUSR &= ~(1 << WDRF);
+
+    // Disable the watchdog.
+    _WD_CONTROL_REG |= (1 << _WD_CHANGE_BIT) | (1 << WDE);
+    _WD_CONTROL_REG = 0;
+
+    // Re-enable interrupts.  The watchdog should be stopped.
+    sei();
 #endif
     clean(block);
     clean(stream);
@@ -356,6 +419,23 @@ void RNGClass::begin(const char *tag, int eepromAddress)
     // Stir in the unique identifier for the CPU so that different
     // devices will give different outputs even without seeding.
     stirUniqueIdentifier();
+#endif
+
+#if defined(RNG_WATCHDOG)
+    // Disable interrupts and reset the watchdog.
+    cli();
+    wdt_reset();
+
+    // Clear the "reset due to watchdog" flag.
+    MCUSR &= ~(1 << WDRF);
+
+    // Enable the watchdog with the smallest duration (16ms)
+    // and interrupt-only mode.
+    _WD_CONTROL_REG |= (1 << _WD_CHANGE_BIT) | (1 << WDE);
+    _WD_CONTROL_REG = (1 << WDIE);
+
+    // Re-enable interrupts.  The watchdog should be running.
+    sei();
 #endif
 
     // Re-save the seed to obliterate the previous value and to ensure
@@ -538,7 +618,7 @@ bool RNGClass::available(size_t len) const
 void RNGClass::stir(const uint8_t *data, size_t len, unsigned int credit)
 {
     // Increase the entropy credit.
-    if ((credit / 8) >= len)
+    if ((credit / 8) >= len && len)
         credit = len * 8;
     if ((RNG_MAX_CREDITS - credits) > credit)
         credits += credit;
@@ -668,6 +748,34 @@ void RNGClass::loop()
             // up more data before passing it to the application.
             ++credits;
         }
+    }
+#elif defined(RNG_WATCHDOG)
+    // Read the 32 bit buffer from the WDT interrupt.
+    cli();
+    if (outBits >= 32) {
+        uint32_t value = hash;
+        hash = 0;
+        outBits = 0;
+        sei();
+
+        // Final steps of the Jenkin's one-at-a-time hash function.
+        // https://en.wikipedia.org/wiki/Jenkins_hash_function
+        value += leftShift3(value);
+        value ^= rightShift11(value);
+        value += leftShift15(value);
+
+        // XOR the word with the state.  Stir once we accumulate 48 bytes,
+        // which happens about once every 6.4 seconds.
+        block[4 + trngPosn] ^= value;
+        if (++trngPosn >= 12) {
+            trngPosn = 0;
+
+            // Credit 1 bit of entropy for each byte of input.  It can take
+            // between 30 and 40 seconds to accumulate 256 bits of credit.
+            stir(0, 0, 48);
+        }
+    } else {
+        sei();
     }
 #endif
 
