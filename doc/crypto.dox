@@ -97,8 +97,8 @@ Ardunino Mega 2560 running at 16 MHz are similar:
 <tr><td>SHA1</td><td align="right">21.90us</td><td align="right">1423.28us</td><td align="right"> </td><td align="right">95</td></tr>
 <tr><td>SHA256</td><td align="right">43.85us</td><td align="right">2841.04us</td><td align="right"> </td><td align="right">107</td></tr>
 <tr><td>SHA512</td><td align="right">122.82us</td><td align="right">15953.42us</td><td align="right"> </td><td align="right">211</td></tr>
-<tr><td>SHA3_256</td><td align="right">121.69us</td><td align="right">16486.33us</td><td align="right"> </td><td align="right">405</td></tr>
-<tr><td>SHA3_512</td><td align="right">229.12us</td><td align="right">16502.34us</td><td align="right"> </td><td align="right">405</td></tr>
+<tr><td>SHA3_256</td><td align="right">61.78us</td><td align="right">8328.70us</td><td align="right"> </td><td align="right">405</td></tr>
+<tr><td>SHA3_512</td><td align="right">115.94us</td><td align="right">8344.80us</td><td align="right"> </td><td align="right">405</td></tr>
 <tr><td>BLAKE2s</td><td align="right">18.54us</td><td align="right">1200.06us</td><td align="right"> </td><td align="right">171</td></tr>
 <tr><td>BLAKE2b</td><td align="right">50.70us</td><td align="right">6515.87us</td><td align="right"> </td><td align="right">339</td></tr>
 <tr><td colspan="5"> </td></tr>

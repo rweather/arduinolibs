@@ -263,7 +263,6 @@ void testHMAC(Hash *hash, size_t keyLen)
         Serial.println("Failed");
 }
 
-/*
 void perfFinalize(Hash *hash)
 {
     unsigned long start;
@@ -285,7 +284,6 @@ void perfFinalize(Hash *hash)
     Serial.print((1000.0 * 1000000.0) / elapsed);
     Serial.println(" ops per second");
 }
-*/
 
 void setup()
 {
@@ -314,7 +312,7 @@ void setup()
 
     Serial.println("Performance Tests:");
     perfHash(&sha3_512);
-    //perfFinalize(&sha3_512);
+    perfFinalize(&sha3_512);
 }
 
 void loop()
