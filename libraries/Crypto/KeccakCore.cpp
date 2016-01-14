@@ -39,6 +39,11 @@
  * \sa SHA3
  */
 
+#if !defined(CRYPTO_LITTLE_ENDIAN)
+// All of the Arduino platforms we care about are little-endian.
+#error "KeccakCore is not supported on big-endian platforms yet - todo"
+#endif
+
 /**
  * \brief Constructs a new Keccak sponge function.
  *
@@ -132,25 +137,13 @@ void KeccakCore::update(const void *data, size_t size)
 
     // Break the input up into chunks and process each in turn.
     const uint8_t *d = (const uint8_t *)data;
-#if !defined(CRYPTO_LITTLE_ENDIAN)
-    uint64_t *Awords = &(state.A[0][0]);
-    uint8_t index, index2;
-#endif
     while (size > 0) {
         uint8_t len = _blockSize - state.inputSize;
         if (len > size)
             len = size;
-#if defined(CRYPTO_LITTLE_ENDIAN)
         uint8_t *Abytes = ((uint8_t *)state.A) + state.inputSize;
         for (uint8_t posn = 0; posn < len; ++posn)
             Abytes[posn] ^= d[posn];
-#else
-        index2 = state.inputSize;
-        for (index = 0; index < len; ++index) {
-            Awords[index2 / 8] ^= (((uint64_t)d[index]) << ((index2 % 8) * 8));
-            ++index2;
-        }
-#endif
         state.inputSize += len;
         size -= len;
         d += len;
@@ -200,11 +193,6 @@ void KeccakCore::pad(uint8_t tag)
  */
 void KeccakCore::extract(void *data, size_t size)
 {
-#if !defined(CRYPTO_LITTLE_ENDIAN)
-    uint8_t index, index2;
-    const uint64_t *Awords = &(state.A[0][0]);
-#endif
-
     // Stop accepting input while we are generating output.
     state.inputSize = 0;
 
@@ -224,15 +212,7 @@ void KeccakCore::extract(void *data, size_t size)
             tempSize = size;
 
         // Copy the partial output data into the caller's return buffer.
-#if defined(CRYPTO_LITTLE_ENDIAN)
         memcpy(d, ((uint8_t *)(state.A)) + state.outputSize, tempSize);
-#else
-        index2 = state.outputSize;
-        for (index = 0; index < tempSize; ++index) {
-            d[index] = (uint8_t)(Awords[index2 / 8] >> ((index2 % 8) * 8));
-            ++index2;
-        }
-#endif
         state.outputSize += tempSize;
         size -= tempSize;
         d += tempSize;
@@ -262,24 +242,30 @@ void KeccakCore::clear()
  */
 void KeccakCore::setHMACKey(const void *key, size_t len, uint8_t pad, size_t hashSize)
 {
-    uint8_t *b = (uint8_t *)state.B;
+    uint8_t *Abytes = (uint8_t *)state.A;
     size_t size = blockSize();
     reset();
     if (len <= size) {
-        memcpy(b, key, len);
+        // Because the state has just been reset, state.A is set to
+        // all-zeroes.  We can copy the key directly into the state
+        // and then XOR the block with the pad value.
+        memcpy(Abytes, key, len);
     } else {
+        // The key is larger than the block size.  Hash it down.
+        // Afterwards, state.A will contain the first block of data
+        // to be extracted.  We truncate it to the first "hashSize"
+        // bytes and XOR with the padding.
         update(key, len);
         this->pad(0x06);
-        extract(b, hashSize);
-        len = hashSize;
-        reset();
+        memset(Abytes + hashSize, pad, size - hashSize);
+        memset(Abytes + size, 0, sizeof(state.A) - size);
+        size = hashSize;
     }
-    memset(b + len, pad, size - len);
-    while (len > 0) {
-        *b++ ^= pad;
-        --len;
+    while (size > 0) {
+        *Abytes++ ^= pad;
+        --size;
     }
-    update(state.B, size);
+    keccakp();
 }
 
 /**
