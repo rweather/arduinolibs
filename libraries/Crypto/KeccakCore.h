@@ -51,7 +51,6 @@ public:
 private:
     struct {
         uint64_t A[5][5];
-        uint64_t B[5][5];
         uint8_t inputSize;
         uint8_t outputSize;
     } state;
