@@ -231,10 +231,10 @@ void theta(void)
     insn_printf("ldi r%d,5", loop1_reg);
     insn_printf("100:");
 
-    // Load state.A[0][index] into t_reg.
+    // Load A[0][index] into t_reg.
     load64_from_z(t_reg, 0);
 
-    // XOR with state.A[1][index] .. state.A[4][index]
+    // XOR with A[1][index] .. A[4][index]
     insn_printf("ldi r%d,4", loop2_reg);
     insn_printf("101:");
     adjust_pointer_reg(z_reg, 40);
@@ -242,7 +242,7 @@ void theta(void)
     insn_printf("dec r%d", loop2_reg);
     insn_printf("brne 101b");
 
-    // Store into state.B[0][index].
+    // Store into B[0][index].
     store64_to_x(t_reg);
 
     // End of the outer loop.
@@ -250,37 +250,31 @@ void theta(void)
     insn_printf("dec r%d", loop1_reg);
     insn_printf("brne 100b");
     adjust_pointer_reg(z_reg, -40);
+    adjust_pointer_reg(x_reg, -40);
 
-    // Generate the D values into the second row of B.  To make this
-    // easier, we know that the original X value is also in Y so we
-    // can use offsets relative to Y for the first row of B.
+    // Generate D[index] and XOR with every A[x][index] element.
+    // To make this easier, we know that the original X value is also
+    // in Y so we can use offsets relative to Y for the first row of B.
     printf("\n");
-    indent_printf("// Step mapping theta.  Compute D.\n");
+    indent_printf("// Step mapping theta.  Compute D and XOR with A.\n");
     for (index = 0; index < 5; ++index) {
+        // Compute D[index] and put it into t_reg.
         load64_from_y(t_reg, ((index + 1) % 5) * 8);
         leftRotate1(t_reg);
         load64_from_y_combine("eor", t_reg, ((index + 4) % 5) * 8);
-        store64_to_x(t_reg);
-    }
-    adjust_pointer_reg(x_reg, -40);
 
-    // XOR every D[index] with every A[x][index] element.
-    printf("\n");
-    indent_printf("// Step mapping theta.  XOR D with A.\n");
-    insn_printf("ldi r%d,5", loop1_reg);
-    insn_printf("102:");
-    load64_from_x(t_reg);
-    insn_printf("ldi r%d,5", loop2_reg);
-    insn_printf("103:");
-    combine64_with_z("eor", t_reg);
-    adjust_pointer_reg(z_reg, 40);
-    insn_printf("dec r%d", loop2_reg);
-    insn_printf("brne 103b");
-    adjust_pointer_reg(z_reg, -(200 - 8));
-    insn_printf("dec r%d", loop1_reg);
-    insn_printf("brne 102b");
-    adjust_pointer_reg(x_reg, -80);
-    adjust_pointer_reg(z_reg, -40);
+        // XOR the computed D[index] with all A[x][index] elements.
+        insn_printf("ldi r%d,5", loop2_reg);
+        insn_printf("%d:", 103 + index);
+        combine64_with_z("eor", t_reg);
+        adjust_pointer_reg(z_reg, 40);
+        insn_printf("dec r%d", loop2_reg);
+        insn_printf("brne %db", 103 + index);
+        if (index != 4)
+            adjust_pointer_reg(z_reg, -(200 - 8));
+        else
+            adjust_pointer_reg(z_reg, -(200 + 40 - 8));
+    }
 }
 
 void rho_pi(void)
@@ -341,10 +335,10 @@ void rho_pi(void)
             // Heading for this step.
             printf("\n");
             if (rot != 0) {
-                indent_printf("// state.B[%d][%d] = leftRotate%d_64(state.A[%d][%d])\n",
+                indent_printf("// B[%d][%d] = leftRotate%d_64(A[%d][%d])\n",
                               Bx, By, rot, Ax, Ay);
             } else {
-                indent_printf("// state.B[%d][%d] = state.A[%d][%d]\n",
+                indent_printf("// B[%d][%d] = A[%d][%d]\n",
                               Bx, By, Ax, Ay);
             }
 
@@ -469,10 +463,10 @@ void chi(void)
     int index;
 
     // Step mapping chi.  A is pointed to by Z and B is pointed to by X/Y.
-    //      state.A[index2][index] =
-    //          state.B[index2][index] ^
-    //          ((~state.B[index2][(index + 1) % 5]) &
-    //           state.B[index2][(index + 2) % 5]);
+    //      A[index2][index] =
+    //          B[index2][index] ^
+    //          ((~B[index2][(index + 1) % 5]) &
+    //           B[index2][(index + 2) % 5]);
     // We compute this using an interleaving method.  We load five bytes
     // from the 5 words in a row of B and then compute the 5 output bytes
     // from that and store.  Then we move onto the next 5 bytes of each row.

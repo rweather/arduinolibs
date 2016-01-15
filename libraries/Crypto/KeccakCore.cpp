@@ -329,8 +329,9 @@ void KeccakCore::keccakp()
         "dec r20\n"
         "brne 100b\n"
         "sbiw r30,40\n"
+        "sbiw r26,40\n"
 
-        // Step mapping theta.  Compute D.
+        // Step mapping theta.  Compute D and XOR with A.
         "ldd r8,Y+8\n"
         "ldd r9,Y+9\n"
         "ldd r10,Y+10\n"
@@ -364,14 +365,37 @@ void KeccakCore::keccakp()
         "eor r14,__tmp_reg__\n"
         "ldd __tmp_reg__,Y+39\n"
         "eor r15,__tmp_reg__\n"
-        "st X+,r8\n"
-        "st X+,r9\n"
-        "st X+,r10\n"
-        "st X+,r11\n"
-        "st X+,r12\n"
-        "st X+,r13\n"
-        "st X+,r14\n"
-        "st X+,r15\n"
+        "ldi r19,5\n"
+        "103:\n"
+        "ld __tmp_reg__,Z\n"
+        "eor __tmp_reg__,r8\n"
+        "st Z,__tmp_reg__\n"
+        "ldd __tmp_reg__,Z+1\n"
+        "eor __tmp_reg__,r9\n"
+        "std Z+1,__tmp_reg__\n"
+        "ldd __tmp_reg__,Z+2\n"
+        "eor __tmp_reg__,r10\n"
+        "std Z+2,__tmp_reg__\n"
+        "ldd __tmp_reg__,Z+3\n"
+        "eor __tmp_reg__,r11\n"
+        "std Z+3,__tmp_reg__\n"
+        "ldd __tmp_reg__,Z+4\n"
+        "eor __tmp_reg__,r12\n"
+        "std Z+4,__tmp_reg__\n"
+        "ldd __tmp_reg__,Z+5\n"
+        "eor __tmp_reg__,r13\n"
+        "std Z+5,__tmp_reg__\n"
+        "ldd __tmp_reg__,Z+6\n"
+        "eor __tmp_reg__,r14\n"
+        "std Z+6,__tmp_reg__\n"
+        "ldd __tmp_reg__,Z+7\n"
+        "eor __tmp_reg__,r15\n"
+        "std Z+7,__tmp_reg__\n"
+        "adiw r30,40\n"
+        "dec r19\n"
+        "brne 103b\n"
+        "subi r30,192\n"
+        "sbc r31,__zero_reg__\n"
         "ldd r8,Y+16\n"
         "ldd r9,Y+17\n"
         "ldd r10,Y+18\n"
@@ -405,14 +429,37 @@ void KeccakCore::keccakp()
         "eor r14,__tmp_reg__\n"
         "ldd __tmp_reg__,Y+7\n"
         "eor r15,__tmp_reg__\n"
-        "st X+,r8\n"
-        "st X+,r9\n"
-        "st X+,r10\n"
-        "st X+,r11\n"
-        "st X+,r12\n"
-        "st X+,r13\n"
-        "st X+,r14\n"
-        "st X+,r15\n"
+        "ldi r19,5\n"
+        "104:\n"
+        "ld __tmp_reg__,Z\n"
+        "eor __tmp_reg__,r8\n"
+        "st Z,__tmp_reg__\n"
+        "ldd __tmp_reg__,Z+1\n"
+        "eor __tmp_reg__,r9\n"
+        "std Z+1,__tmp_reg__\n"
+        "ldd __tmp_reg__,Z+2\n"
+        "eor __tmp_reg__,r10\n"
+        "std Z+2,__tmp_reg__\n"
+        "ldd __tmp_reg__,Z+3\n"
+        "eor __tmp_reg__,r11\n"
+        "std Z+3,__tmp_reg__\n"
+        "ldd __tmp_reg__,Z+4\n"
+        "eor __tmp_reg__,r12\n"
+        "std Z+4,__tmp_reg__\n"
+        "ldd __tmp_reg__,Z+5\n"
+        "eor __tmp_reg__,r13\n"
+        "std Z+5,__tmp_reg__\n"
+        "ldd __tmp_reg__,Z+6\n"
+        "eor __tmp_reg__,r14\n"
+        "std Z+6,__tmp_reg__\n"
+        "ldd __tmp_reg__,Z+7\n"
+        "eor __tmp_reg__,r15\n"
+        "std Z+7,__tmp_reg__\n"
+        "adiw r30,40\n"
+        "dec r19\n"
+        "brne 104b\n"
+        "subi r30,192\n"
+        "sbc r31,__zero_reg__\n"
         "ldd r8,Y+24\n"
         "ldd r9,Y+25\n"
         "ldd r10,Y+26\n"
@@ -446,14 +493,37 @@ void KeccakCore::keccakp()
         "eor r14,__tmp_reg__\n"
         "ldd __tmp_reg__,Y+15\n"
         "eor r15,__tmp_reg__\n"
-        "st X+,r8\n"
-        "st X+,r9\n"
-        "st X+,r10\n"
-        "st X+,r11\n"
-        "st X+,r12\n"
-        "st X+,r13\n"
-        "st X+,r14\n"
-        "st X+,r15\n"
+        "ldi r19,5\n"
+        "105:\n"
+        "ld __tmp_reg__,Z\n"
+        "eor __tmp_reg__,r8\n"
+        "st Z,__tmp_reg__\n"
+        "ldd __tmp_reg__,Z+1\n"
+        "eor __tmp_reg__,r9\n"
+        "std Z+1,__tmp_reg__\n"
+        "ldd __tmp_reg__,Z+2\n"
+        "eor __tmp_reg__,r10\n"
+        "std Z+2,__tmp_reg__\n"
+        "ldd __tmp_reg__,Z+3\n"
+        "eor __tmp_reg__,r11\n"
+        "std Z+3,__tmp_reg__\n"
+        "ldd __tmp_reg__,Z+4\n"
+        "eor __tmp_reg__,r12\n"
+        "std Z+4,__tmp_reg__\n"
+        "ldd __tmp_reg__,Z+5\n"
+        "eor __tmp_reg__,r13\n"
+        "std Z+5,__tmp_reg__\n"
+        "ldd __tmp_reg__,Z+6\n"
+        "eor __tmp_reg__,r14\n"
+        "std Z+6,__tmp_reg__\n"
+        "ldd __tmp_reg__,Z+7\n"
+        "eor __tmp_reg__,r15\n"
+        "std Z+7,__tmp_reg__\n"
+        "adiw r30,40\n"
+        "dec r19\n"
+        "brne 105b\n"
+        "subi r30,192\n"
+        "sbc r31,__zero_reg__\n"
         "ldd r8,Y+32\n"
         "ldd r9,Y+33\n"
         "ldd r10,Y+34\n"
@@ -487,14 +557,37 @@ void KeccakCore::keccakp()
         "eor r14,__tmp_reg__\n"
         "ldd __tmp_reg__,Y+23\n"
         "eor r15,__tmp_reg__\n"
-        "st X+,r8\n"
-        "st X+,r9\n"
-        "st X+,r10\n"
-        "st X+,r11\n"
-        "st X+,r12\n"
-        "st X+,r13\n"
-        "st X+,r14\n"
-        "st X+,r15\n"
+        "ldi r19,5\n"
+        "106:\n"
+        "ld __tmp_reg__,Z\n"
+        "eor __tmp_reg__,r8\n"
+        "st Z,__tmp_reg__\n"
+        "ldd __tmp_reg__,Z+1\n"
+        "eor __tmp_reg__,r9\n"
+        "std Z+1,__tmp_reg__\n"
+        "ldd __tmp_reg__,Z+2\n"
+        "eor __tmp_reg__,r10\n"
+        "std Z+2,__tmp_reg__\n"
+        "ldd __tmp_reg__,Z+3\n"
+        "eor __tmp_reg__,r11\n"
+        "std Z+3,__tmp_reg__\n"
+        "ldd __tmp_reg__,Z+4\n"
+        "eor __tmp_reg__,r12\n"
+        "std Z+4,__tmp_reg__\n"
+        "ldd __tmp_reg__,Z+5\n"
+        "eor __tmp_reg__,r13\n"
+        "std Z+5,__tmp_reg__\n"
+        "ldd __tmp_reg__,Z+6\n"
+        "eor __tmp_reg__,r14\n"
+        "std Z+6,__tmp_reg__\n"
+        "ldd __tmp_reg__,Z+7\n"
+        "eor __tmp_reg__,r15\n"
+        "std Z+7,__tmp_reg__\n"
+        "adiw r30,40\n"
+        "dec r19\n"
+        "brne 106b\n"
+        "subi r30,192\n"
+        "sbc r31,__zero_reg__\n"
         "ld r8,Y\n"
         "ldd r9,Y+1\n"
         "ldd r10,Y+2\n"
@@ -528,29 +621,8 @@ void KeccakCore::keccakp()
         "eor r14,__tmp_reg__\n"
         "ldd __tmp_reg__,Y+31\n"
         "eor r15,__tmp_reg__\n"
-        "st X+,r8\n"
-        "st X+,r9\n"
-        "st X+,r10\n"
-        "st X+,r11\n"
-        "st X+,r12\n"
-        "st X+,r13\n"
-        "st X+,r14\n"
-        "st X+,r15\n"
-        "sbiw r26,40\n"
-
-        // Step mapping theta.  XOR D with A.
-        "ldi r20,5\n"
-        "102:\n"
-        "ld r8,X+\n"
-        "ld r9,X+\n"
-        "ld r10,X+\n"
-        "ld r11,X+\n"
-        "ld r12,X+\n"
-        "ld r13,X+\n"
-        "ld r14,X+\n"
-        "ld r15,X+\n"
         "ldi r19,5\n"
-        "103:\n"
+        "107:\n"
         "ld __tmp_reg__,Z\n"
         "eor __tmp_reg__,r8\n"
         "st Z,__tmp_reg__\n"
@@ -577,18 +649,13 @@ void KeccakCore::keccakp()
         "std Z+7,__tmp_reg__\n"
         "adiw r30,40\n"
         "dec r19\n"
-        "brne 103b\n"
-        "subi r30,192\n"
+        "brne 107b\n"
+        "subi r30,232\n"
         "sbc r31,__zero_reg__\n"
-        "dec r20\n"
-        "brne 102b\n"
-        "subi r26,80\n"
-        "sbc r27,__zero_reg__\n"
-        "sbiw r30,40\n"
 
         // Step mappings rho and pi combined into one step.
 
-        // state.B[0][0] = state.A[0][0]
+        // B[0][0] = A[0][0]
         "ld r8,Z\n"
         "ldd r9,Z+1\n"
         "ldd r10,Z+2\n"
@@ -606,7 +673,7 @@ void KeccakCore::keccakp()
         "st X+,r14\n"
         "st X+,r15\n"
 
-        // state.B[1][0] = leftRotate28_64(state.A[0][3])
+        // B[1][0] = leftRotate28_64(A[0][3])
         "adiw r26,32\n"
         "ldd r8,Z+24\n"
         "ldd r9,Z+25\n"
@@ -661,7 +728,7 @@ void KeccakCore::keccakp()
         "st X+,r11\n"
         "st X+,r12\n"
 
-        // state.B[2][0] = leftRotate1_64(state.A[0][1])
+        // B[2][0] = leftRotate1_64(A[0][1])
         "adiw r26,32\n"
         "ldd r8,Z+8\n"
         "ldd r9,Z+9\n"
@@ -689,7 +756,7 @@ void KeccakCore::keccakp()
         "st X+,r14\n"
         "st X+,r15\n"
 
-        // state.B[3][0] = leftRotate27_64(state.A[0][4])
+        // B[3][0] = leftRotate27_64(A[0][4])
         "adiw r26,32\n"
         "ldd r8,Z+32\n"
         "ldd r9,Z+33\n"
@@ -735,7 +802,7 @@ void KeccakCore::keccakp()
         "st X+,r11\n"
         "st X+,r12\n"
 
-        // state.B[4][0] = leftRotate62_64(state.A[0][2])
+        // B[4][0] = leftRotate62_64(A[0][2])
         "adiw r26,32\n"
         "ldd r8,Z+16\n"
         "ldd r9,Z+17\n"
@@ -774,7 +841,7 @@ void KeccakCore::keccakp()
         "st X+,r14\n"
         "st X+,r15\n"
 
-        // state.B[0][1] = leftRotate44_64(state.A[1][1])
+        // B[0][1] = leftRotate44_64(A[1][1])
         "subi r26,160\n"
         "sbc r27,__zero_reg__\n"
         "adiw r30,40\n"
@@ -831,7 +898,7 @@ void KeccakCore::keccakp()
         "st X+,r9\n"
         "st X+,r10\n"
 
-        // state.B[1][1] = leftRotate20_64(state.A[1][4])
+        // B[1][1] = leftRotate20_64(A[1][4])
         "adiw r26,32\n"
         "ldd r8,Z+32\n"
         "ldd r9,Z+33\n"
@@ -886,7 +953,7 @@ void KeccakCore::keccakp()
         "st X+,r12\n"
         "st X+,r13\n"
 
-        // state.B[2][1] = leftRotate6_64(state.A[1][2])
+        // B[2][1] = leftRotate6_64(A[1][2])
         "adiw r26,32\n"
         "ldd r8,Z+16\n"
         "ldd r9,Z+17\n"
@@ -925,7 +992,7 @@ void KeccakCore::keccakp()
         "st X+,r13\n"
         "st X+,r14\n"
 
-        // state.B[3][1] = leftRotate36_64(state.A[1][0])
+        // B[3][1] = leftRotate36_64(A[1][0])
         "adiw r26,32\n"
         "ld r8,Z\n"
         "ldd r9,Z+1\n"
@@ -980,7 +1047,7 @@ void KeccakCore::keccakp()
         "st X+,r10\n"
         "st X+,r11\n"
 
-        // state.B[4][1] = leftRotate55_64(state.A[1][3])
+        // B[4][1] = leftRotate55_64(A[1][3])
         "adiw r26,32\n"
         "ldd r8,Z+24\n"
         "ldd r9,Z+25\n"
@@ -1009,7 +1076,7 @@ void KeccakCore::keccakp()
         "st X+,r15\n"
         "st X+,r8\n"
 
-        // state.B[0][2] = leftRotate43_64(state.A[2][2])
+        // B[0][2] = leftRotate43_64(A[2][2])
         "subi r26,160\n"
         "sbc r27,__zero_reg__\n"
         "adiw r30,40\n"
@@ -1057,7 +1124,7 @@ void KeccakCore::keccakp()
         "st X+,r9\n"
         "st X+,r10\n"
 
-        // state.B[1][2] = leftRotate3_64(state.A[2][0])
+        // B[1][2] = leftRotate3_64(A[2][0])
         "adiw r26,32\n"
         "ld r8,Z\n"
         "ldd r9,Z+1\n"
@@ -1103,7 +1170,7 @@ void KeccakCore::keccakp()
         "st X+,r14\n"
         "st X+,r15\n"
 
-        // state.B[2][2] = leftRotate25_64(state.A[2][3])
+        // B[2][2] = leftRotate25_64(A[2][3])
         "adiw r26,32\n"
         "ldd r8,Z+24\n"
         "ldd r9,Z+25\n"
@@ -1131,7 +1198,7 @@ void KeccakCore::keccakp()
         "st X+,r11\n"
         "st X+,r12\n"
 
-        // state.B[3][2] = leftRotate10_64(state.A[2][1])
+        // B[3][2] = leftRotate10_64(A[2][1])
         "adiw r26,32\n"
         "ldd r8,Z+8\n"
         "ldd r9,Z+9\n"
@@ -1168,7 +1235,7 @@ void KeccakCore::keccakp()
         "st X+,r13\n"
         "st X+,r14\n"
 
-        // state.B[4][2] = leftRotate39_64(state.A[2][4])
+        // B[4][2] = leftRotate39_64(A[2][4])
         "adiw r26,32\n"
         "ldd r8,Z+32\n"
         "ldd r9,Z+33\n"
@@ -1197,7 +1264,7 @@ void KeccakCore::keccakp()
         "st X+,r9\n"
         "st X+,r10\n"
 
-        // state.B[0][3] = leftRotate21_64(state.A[3][3])
+        // B[0][3] = leftRotate21_64(A[3][3])
         "subi r26,160\n"
         "sbc r27,__zero_reg__\n"
         "adiw r30,40\n"
@@ -1248,7 +1315,7 @@ void KeccakCore::keccakp()
         "st X+,r11\n"
         "st X+,r12\n"
 
-        // state.B[1][3] = leftRotate45_64(state.A[3][1])
+        // B[1][3] = leftRotate45_64(A[3][1])
         "adiw r26,32\n"
         "ldd r8,Z+8\n"
         "ldd r9,Z+9\n"
@@ -1297,7 +1364,7 @@ void KeccakCore::keccakp()
         "st X+,r8\n"
         "st X+,r9\n"
 
-        // state.B[2][3] = leftRotate8_64(state.A[3][4])
+        // B[2][3] = leftRotate8_64(A[3][4])
         "adiw r26,32\n"
         "ldd r8,Z+32\n"
         "ldd r9,Z+33\n"
@@ -1316,7 +1383,7 @@ void KeccakCore::keccakp()
         "st X+,r13\n"
         "st X+,r14\n"
 
-        // state.B[3][3] = leftRotate15_64(state.A[3][2])
+        // B[3][3] = leftRotate15_64(A[3][2])
         "adiw r26,32\n"
         "ldd r8,Z+16\n"
         "ldd r9,Z+17\n"
@@ -1345,7 +1412,7 @@ void KeccakCore::keccakp()
         "st X+,r12\n"
         "st X+,r13\n"
 
-        // state.B[4][3] = leftRotate41_64(state.A[3][0])
+        // B[4][3] = leftRotate41_64(A[3][0])
         "adiw r26,32\n"
         "ld r8,Z\n"
         "ldd r9,Z+1\n"
@@ -1373,7 +1440,7 @@ void KeccakCore::keccakp()
         "st X+,r9\n"
         "st X+,r10\n"
 
-        // state.B[0][4] = leftRotate14_64(state.A[4][4])
+        // B[0][4] = leftRotate14_64(A[4][4])
         "subi r26,160\n"
         "sbc r27,__zero_reg__\n"
         "adiw r30,40\n"
@@ -1414,7 +1481,7 @@ void KeccakCore::keccakp()
         "st X+,r12\n"
         "st X+,r13\n"
 
-        // state.B[1][4] = leftRotate61_64(state.A[4][2])
+        // B[1][4] = leftRotate61_64(A[4][2])
         "adiw r26,32\n"
         "ldd r8,Z+16\n"
         "ldd r9,Z+17\n"
@@ -1463,7 +1530,7 @@ void KeccakCore::keccakp()
         "st X+,r14\n"
         "st X+,r15\n"
 
-        // state.B[2][4] = leftRotate18_64(state.A[4][0])
+        // B[2][4] = leftRotate18_64(A[4][0])
         "adiw r26,32\n"
         "ld r8,Z\n"
         "ldd r9,Z+1\n"
@@ -1500,7 +1567,7 @@ void KeccakCore::keccakp()
         "st X+,r12\n"
         "st X+,r13\n"
 
-        // state.B[3][4] = leftRotate56_64(state.A[4][3])
+        // B[3][4] = leftRotate56_64(A[4][3])
         "adiw r26,32\n"
         "ldd r8,Z+24\n"
         "ldd r9,Z+25\n"
@@ -1519,7 +1586,7 @@ void KeccakCore::keccakp()
         "st X+,r15\n"
         "st X+,r8\n"
 
-        // state.B[4][4] = leftRotate2_64(state.A[4][1])
+        // B[4][4] = leftRotate2_64(A[4][1])
         "adiw r26,32\n"
         "ldd r8,Z+8\n"
         "ldd r9,Z+9\n"
