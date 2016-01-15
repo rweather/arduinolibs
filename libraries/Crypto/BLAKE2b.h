@@ -48,7 +48,6 @@ private:
     struct {
         uint64_t h[8];
         uint64_t m[16];
-        uint64_t v[16];
         uint64_t lengthLow;
         uint64_t lengthHigh;
         uint8_t chunkSize;

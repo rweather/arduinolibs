@@ -99,13 +99,13 @@ Ardunino Mega 2560 running at 16 MHz are similar:
 <tr><td>SHA512</td><td align="right">122.82us</td><td align="right">15953.42us</td><td align="right"> </td><td align="right">211</td></tr>
 <tr><td>SHA3_256</td><td align="right">60.69us</td><td align="right">8180.24us</td><td align="right"> </td><td align="right">205</td></tr>
 <tr><td>SHA3_512</td><td align="right">113.88us</td><td align="right">8196.34us</td><td align="right"> </td><td align="right">205</td></tr>
-<tr><td>BLAKE2s</td><td align="right">18.54us</td><td align="right">1200.06us</td><td align="right"> </td><td align="right">171</td></tr>
-<tr><td>BLAKE2b</td><td align="right">50.70us</td><td align="right">6515.87us</td><td align="right"> </td><td align="right">339</td></tr>
+<tr><td>BLAKE2s</td><td align="right">20.65us</td><td align="right">1335.25us</td><td align="right"> </td><td align="right">107</td></tr>
+<tr><td>BLAKE2b</td><td align="right">65.22us</td><td align="right">8375.36us</td><td align="right"> </td><td align="right">211</td></tr>
 <tr><td colspan="5"> </td></tr>
 <tr><td>Authentication Algorithm</td><td align="right">Hashing (per byte)</td><td align="right">Finalization</td><td>Key Setup</td><td>State Size (bytes)</td></tr>
 <tr><td>SHA1 (HMAC mode)</td><td align="right">21.90us</td><td align="right">4296.33us</td><td align="right">1420.24us</td><td align="right">95</td></tr>
 <tr><td>SHA256 (HMAC mode)</td><td align="right">43.85us</td><td align="right">8552.61us</td><td align="right">2836.49us</td><td align="right">107</td></tr>
-<tr><td>BLAKE2s (HMAC mode)</td><td align="right">18.54us</td><td align="right">3649.98us</td><td align="right">1214.81us</td><td align="right">171</td></tr>
+<tr><td>BLAKE2s (HMAC mode)</td><td align="right">20.65us</td><td align="right">4055.56us</td><td align="right">1350.00us</td><td align="right">107</td></tr>
 <tr><td>Poly1305</td><td align="right">26.29us</td><td align="right">486.15us</td><td align="right">17.26us</td><td align="right">87</td></tr>
 <tr><td>GHASH</td><td align="right">148.14us</td><td align="right">17.09us</td><td align="right">21.87us</td><td align="right">33</td></tr>
 <tr><td colspan="5"> </td></tr>
@@ -156,13 +156,13 @@ All figures are for the Arduino Due running at 84 MHz:
 <tr><td>SHA512</td><td align="right">2.87us</td><td align="right">370.37us</td><td align="right"> </td><td align="right">224</td></tr>
 <tr><td>SHA3_256</td><td align="right">5.64us</td><td align="right">735.29us</td><td align="right"> </td><td align="right">224</td></tr>
 <tr><td>SHA3_512</td><td align="right">10.42us</td><td align="right">735.49us</td><td align="right"> </td><td align="right">224</td></tr>
-<tr><td>BLAKE2s</td><td align="right">0.76us</td><td align="right">50.88us</td><td align="right"> </td><td align="right">184</td></tr>
-<tr><td>BLAKE2b</td><td align="right">1.33us</td><td align="right">170.93us</td><td align="right"> </td><td align="right">352</td></tr>
+<tr><td>BLAKE2s</td><td align="right">0.72us</td><td align="right">48.24us</td><td align="right"> </td><td align="right">120</td></tr>
+<tr><td>BLAKE2b</td><td align="right">1.29us</td><td align="right">165.28us</td><td align="right"> </td><td align="right">224</td></tr>
 <tr><td colspan="5"> </td></tr>
 <tr><td>Authentication Algorithm</td><td align="right">Hashing (per byte)</td><td align="right">Finalization</td><td>Key Setup</td><td>State Size (bytes)</td></tr>
 <tr><td>SHA1 (HMAC mode)</td><td align="right">0.94us</td><td align="right">193.92us</td><td align="right">65.09us</td><td align="right">112</td></tr>
 <tr><td>SHA256 (HMAC mode)</td><td align="right">1.15us</td><td align="right">238.98us</td><td align="right">80.44us</td><td align="right">120</td></tr>
-<tr><td>BLAKE2s (HMAC mode)</td><td align="right">0.76us</td><td align="right">165.64us</td><td align="right">59.92us</td><td align="right">184</td></tr>
+<tr><td>BLAKE2s (HMAC mode)</td><td align="right">0.72us</td><td align="right">157.75us</td><td align="right">57.18us</td><td align="right">120</td></tr>
 <tr><td>Poly1305</td><td align="right">0.85us</td><td align="right">19.25us</td><td align="right">2.35us</td><td align="right">96</td></tr>
 <tr><td>GHASH</td><td align="right">4.37us</td><td align="right">1.50us</td><td align="right">4.37us</td><td align="right">36</td></tr>
 <tr><td colspan="5"> </td></tr>

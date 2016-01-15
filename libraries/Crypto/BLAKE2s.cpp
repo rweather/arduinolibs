@@ -209,6 +209,7 @@ static const uint8_t sigma[10][16] PROGMEM = {
 void BLAKE2s::processChunk(uint32_t f0)
 {
     uint8_t index;
+    uint32_t v[16];
 
     // Byte-swap the message buffer into little-endian if necessary.
 #if !defined(CRYPTO_LITTLE_ENDIAN)
@@ -217,32 +218,32 @@ void BLAKE2s::processChunk(uint32_t f0)
 #endif
 
     // Format the block to be hashed.
-    memcpy(state.v, state.h, sizeof(state.h));
-    state.v[8]  = BLAKE2s_IV0;
-    state.v[9]  = BLAKE2s_IV1;
-    state.v[10] = BLAKE2s_IV2;
-    state.v[11] = BLAKE2s_IV3;
-    state.v[12] = BLAKE2s_IV4 ^ (uint32_t)(state.length);
-    state.v[13] = BLAKE2s_IV5 ^ (uint32_t)(state.length >> 32);
-    state.v[14] = BLAKE2s_IV6 ^ f0;
-    state.v[15] = BLAKE2s_IV7;
+    memcpy(v, state.h, sizeof(state.h));
+    v[8]  = BLAKE2s_IV0;
+    v[9]  = BLAKE2s_IV1;
+    v[10] = BLAKE2s_IV2;
+    v[11] = BLAKE2s_IV3;
+    v[12] = BLAKE2s_IV4 ^ (uint32_t)(state.length);
+    v[13] = BLAKE2s_IV5 ^ (uint32_t)(state.length >> 32);
+    v[14] = BLAKE2s_IV6 ^ f0;
+    v[15] = BLAKE2s_IV7;
 
     // Perform the 10 BLAKE2s rounds.
     for (index = 0; index < 10; ++index) {
         // Column round.
-        quarterRound(state.v[0], state.v[4], state.v[8],  state.v[12], 0);
-        quarterRound(state.v[1], state.v[5], state.v[9],  state.v[13], 1);
-        quarterRound(state.v[2], state.v[6], state.v[10], state.v[14], 2);
-        quarterRound(state.v[3], state.v[7], state.v[11], state.v[15], 3);
+        quarterRound(v[0], v[4], v[8],  v[12], 0);
+        quarterRound(v[1], v[5], v[9],  v[13], 1);
+        quarterRound(v[2], v[6], v[10], v[14], 2);
+        quarterRound(v[3], v[7], v[11], v[15], 3);
 
         // Diagonal round.
-        quarterRound(state.v[0], state.v[5], state.v[10], state.v[15], 4);
-        quarterRound(state.v[1], state.v[6], state.v[11], state.v[12], 5);
-        quarterRound(state.v[2], state.v[7], state.v[8],  state.v[13], 6);
-        quarterRound(state.v[3], state.v[4], state.v[9],  state.v[14], 7);
+        quarterRound(v[0], v[5], v[10], v[15], 4);
+        quarterRound(v[1], v[6], v[11], v[12], 5);
+        quarterRound(v[2], v[7], v[8],  v[13], 6);
+        quarterRound(v[3], v[4], v[9],  v[14], 7);
     }
 
     // Combine the new and old hash values.
     for (index = 0; index < 8; ++index)
-        state.h[index] ^= (state.v[index] ^ state.v[index + 8]);
+        state.h[index] ^= (v[index] ^ v[index + 8]);
 }
