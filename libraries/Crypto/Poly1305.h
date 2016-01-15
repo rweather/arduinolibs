@@ -45,7 +45,6 @@ private:
         limb_t h[(16 / sizeof(limb_t)) + 1];
         limb_t c[(16 / sizeof(limb_t)) + 1];
         limb_t r[(16 / sizeof(limb_t))];
-        limb_t t[(32 / sizeof(limb_t)) + 1];
         uint8_t chunkSize;
     } state;
 

@@ -180,6 +180,7 @@ void Poly1305::finalize(const void *nonce, void *token, size_t len)
 {
     dlimb_t carry;
     uint8_t i;
+    limb_t t[NUM_LIMBS_256BIT + 1];
 
     // Pad and flush the final chunk.
     if (state.chunkSize > 0) {
@@ -211,7 +212,7 @@ void Poly1305::finalize(const void *nonce, void *token, size_t len)
     carry = 5;
     for (i = 0; i < NUM_LIMBS_130BIT; ++i) {
         carry += state.h[i];
-        state.t[i] = (limb_t)carry;
+        t[i] = (limb_t)carry;
         carry >>= LIMB_BITS;
     }
 
@@ -221,10 +222,10 @@ void Poly1305::finalize(const void *nonce, void *token, size_t len)
     // of the result because we are about to drop it in the next step.
     // We have to do it this way to avoid giving away any information
     // about the value of h in the instruction timing.
-    limb_t mask = (~((state.t[NUM_LIMBS_128BIT] >> 2) & 1)) + 1;
+    limb_t mask = (~((t[NUM_LIMBS_128BIT] >> 2) & 1)) + 1;
     limb_t nmask = ~mask;
     for (i = 0; i < NUM_LIMBS_128BIT; ++i) {
-        state.h[i] = (state.h[i] & nmask) | (state.t[i] & mask);
+        state.h[i] = (state.h[i] & nmask) | (t[i] & mask);
     }
 
     // Add the encrypted nonce and format the final hash.
@@ -271,6 +272,8 @@ void Poly1305::clear()
  */
 void Poly1305::processChunk()
 {
+    limb_t t[NUM_LIMBS_256BIT + 1];
+
     // Compute h = ((h + c) * r) mod (2^130 - 5).
 
     // Start with h += c.  We assume that h is less than (2^130 - 5) * 6
@@ -292,28 +295,28 @@ void Poly1305::processChunk()
     limb_t word = state.r[0];
     for (i = 0; i < NUM_LIMBS_130BIT; ++i) {
         carry += ((dlimb_t)(state.h[i])) * word;
-        state.t[i] = (limb_t)carry;
+        t[i] = (limb_t)carry;
         carry >>= LIMB_BITS;
     }
-    state.t[NUM_LIMBS_130BIT] = (limb_t)carry;
+    t[NUM_LIMBS_130BIT] = (limb_t)carry;
     for (i = 1; i < NUM_LIMBS_128BIT; ++i) {
         word = state.r[i];
         carry = 0;
         for (j = 0; j < NUM_LIMBS_130BIT; ++j) {
             carry += ((dlimb_t)(state.h[j])) * word;
-            carry += state.t[i + j];
-            state.t[i + j] = (limb_t)carry;
+            carry += t[i + j];
+            t[i + j] = (limb_t)carry;
             carry >>= LIMB_BITS;
         }
-        state.t[i + NUM_LIMBS_130BIT] = (limb_t)carry;
+        t[i + NUM_LIMBS_130BIT] = (limb_t)carry;
     }
 
     // Reduce h * r modulo (2^130 - 5) by multiplying the high 130 bits by 5
     // and adding them to the low 130 bits.  See the explaination in the
     // comments for Curve25519::reduce() for a description of how this works.
-    carry = ((dlimb_t)(state.t[NUM_LIMBS_128BIT] >> 2)) +
-                      (state.t[NUM_LIMBS_128BIT] & ~((limb_t)3));
-    state.t[NUM_LIMBS_128BIT] &= 0x0003;
+    carry = ((dlimb_t)(t[NUM_LIMBS_128BIT] >> 2)) +
+                      (t[NUM_LIMBS_128BIT] & ~((limb_t)3));
+    t[NUM_LIMBS_128BIT] &= 0x0003;
     for (i = 0; i < NUM_LIMBS_128BIT; ++i) {
         // Shift the next word of t up by (LIMB_BITS - 2) bits and then
         // multiply it by 5.  Breaking it down, we can add the results
@@ -323,14 +326,14 @@ void Poly1305::processChunk()
         // fit within a dlimb_t variable.  However, we can defer adding
         // (word << LIMB_BITS) until after the "carry >>= LIMB_BITS" step
         // because it won't affect the low bits of the carry.
-        word = state.t[i + NUM_LIMBS_130BIT];
+        word = t[i + NUM_LIMBS_130BIT];
         carry += ((dlimb_t)word) << (LIMB_BITS - 2);
-        carry += state.t[i];
+        carry += t[i];
         state.h[i] = (limb_t)carry;
         carry >>= LIMB_BITS;
         carry += word;
     }
-    state.h[i] = (limb_t)(carry + state.t[NUM_LIMBS_128BIT]);
+    state.h[i] = (limb_t)(carry + t[NUM_LIMBS_128BIT]);
 
     // At this point, h is either the answer of reducing modulo (2^130 - 5)
     // or it is at most 5 subtractions away from the answer we want.

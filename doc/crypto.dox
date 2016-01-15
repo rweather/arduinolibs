@@ -85,7 +85,7 @@ Ardunino Mega 2560 running at 16 MHz are similar:
 <tr><td>SpeckLowMemory (256-bit key, ECB mode)</td><td align="right">37.87us</td><td align="right"> </td><td align="right">16.89us</td><td align="right">35</td></tr>
 <tr><td colspan="5"> </td></tr>
 <tr><td>AEAD Algorithm</td><td align="right">Encryption (per byte)</td><td align="right">Decryption (per byte)</td><td>Key Setup</td><td>State Size (bytes)</td></tr>
-<tr><td>ChaChaPoly</td><td align="right">41.23us</td><td align="right">41.23us</td><td align="right">902.55us</td><td align="right">255</td></tr>
+<tr><td>ChaChaPoly</td><td align="right">41.20us</td><td align="right">41.19us</td><td align="right">902.36us</td><td align="right">221</td></tr>
 <tr><td>GCM&lt;AES128&gt;</td><td align="right">183.25us</td><td align="right">182.80us</td><td align="right">1272.73us</td><td align="right">284</td></tr>
 <tr><td>GCM&lt;AES192&gt;</td><td align="right">189.92us</td><td align="right">189.47us</td><td align="right">1492.60us</td><td align="right">316</td></tr>
 <tr><td>GCM&lt;AES256&gt;</td><td align="right">196.59us</td><td align="right">196.13us</td><td align="right">1767.33us</td><td align="right">348</td></tr>
@@ -106,7 +106,7 @@ Ardunino Mega 2560 running at 16 MHz are similar:
 <tr><td>SHA1 (HMAC mode)</td><td align="right">21.90us</td><td align="right">4296.33us</td><td align="right">1420.24us</td><td align="right">95</td></tr>
 <tr><td>SHA256 (HMAC mode)</td><td align="right">43.85us</td><td align="right">8552.61us</td><td align="right">2836.49us</td><td align="right">107</td></tr>
 <tr><td>BLAKE2s (HMAC mode)</td><td align="right">20.65us</td><td align="right">4055.56us</td><td align="right">1350.00us</td><td align="right">107</td></tr>
-<tr><td>Poly1305</td><td align="right">26.29us</td><td align="right">486.15us</td><td align="right">17.26us</td><td align="right">87</td></tr>
+<tr><td>Poly1305</td><td align="right">26.26us</td><td align="right">489.11us</td><td align="right">17.06us</td><td align="right">53</td></tr>
 <tr><td>GHASH</td><td align="right">148.14us</td><td align="right">17.09us</td><td align="right">21.87us</td><td align="right">33</td></tr>
 <tr><td colspan="5"> </td></tr>
 <tr><td>Public Key Operation</td><td align="right">Time (per operation)</td><td colspan="3">Comment</td></tr>
@@ -142,7 +142,7 @@ All figures are for the Arduino Due running at 84 MHz:
 <tr><td>SpeckLowMemory (256-bit key, ECB mode)</td><td align="right">2.90us</td><td align="right"> </td><td align="right">1.83us</td><td align="right">48</td></tr>
 <tr><td colspan="5"> </td></tr>
 <tr><td>AEAD Algorithm</td><td align="right">Encryption (per byte)</td><td align="right">Decryption (per byte)</td><td>Key Setup</td><td>State Size (bytes)</td></tr>
-<tr><td>ChaChaPoly</td><td align="right">1.66us</td><td align="right">1.66us</td><td align="right">45.02us</td><td align="right">280</td></tr>
+<tr><td>ChaChaPoly</td><td align="right">1.71us</td><td align="right">1.71us</td><td align="right">45.08us</td><td align="right">240</td></tr>
 <tr><td>GCM&lt;AES128&gt;</td><td align="right">10.29us</td><td align="right">10.29us</td><td align="right">223.82us</td><td align="right">312</td></tr>
 <tr><td>GCM&lt;AES192&gt;</td><td align="right">11.50us</td><td align="right">11.51us</td><td align="right">265.62us</td><td align="right">344</td></tr>
 <tr><td>GCM&lt;AES256&gt;</td><td align="right">12.67us</td><td align="right">12.67us</td><td align="right">313.06us</td><td align="right">376</td></tr>
@@ -163,7 +163,7 @@ All figures are for the Arduino Due running at 84 MHz:
 <tr><td>SHA1 (HMAC mode)</td><td align="right">0.94us</td><td align="right">193.92us</td><td align="right">65.09us</td><td align="right">112</td></tr>
 <tr><td>SHA256 (HMAC mode)</td><td align="right">1.15us</td><td align="right">238.98us</td><td align="right">80.44us</td><td align="right">120</td></tr>
 <tr><td>BLAKE2s (HMAC mode)</td><td align="right">0.72us</td><td align="right">157.75us</td><td align="right">57.18us</td><td align="right">120</td></tr>
-<tr><td>Poly1305</td><td align="right">0.85us</td><td align="right">19.25us</td><td align="right">2.35us</td><td align="right">96</td></tr>
+<tr><td>Poly1305</td><td align="right">0.81us</td><td align="right">19.01us</td><td align="right">2.57us</td><td align="right">60</td></tr>
 <tr><td>GHASH</td><td align="right">4.37us</td><td align="right">1.50us</td><td align="right">4.37us</td><td align="right">36</td></tr>
 <tr><td colspan="5"> </td></tr>
 <tr><td>Public Key Operation</td><td align="right">Time (per operation)</td><td colspan="3">Comment</td></tr>
