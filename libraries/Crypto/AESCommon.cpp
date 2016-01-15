@@ -133,8 +133,6 @@ AESCommon::AESCommon()
  */
 AESCommon::~AESCommon()
 {
-    clean(state1);
-    clean(state2);
 }
 
 /**
@@ -268,6 +266,8 @@ void AESCommon::encryptBlock(uint8_t *output, const uint8_t *input)
     const uint8_t *roundKey = schedule;
     uint8_t posn;
     uint8_t round;
+    uint8_t state1[16];
+    uint8_t state2[16];
 
     // Copy the input into the state and XOR with the first round key.
     for (posn = 0; posn < 16; ++posn)
@@ -297,6 +297,8 @@ void AESCommon::decryptBlock(uint8_t *output, const uint8_t *input)
     const uint8_t *roundKey = schedule + rounds * 16;
     uint8_t round;
     uint8_t posn;
+    uint8_t state1[16];
+    uint8_t state2[16];
 
     // Copy the input into the state and reverse the final round.
     for (posn = 0; posn < 16; ++posn)
@@ -324,8 +326,6 @@ void AESCommon::decryptBlock(uint8_t *output, const uint8_t *input)
 void AESCommon::clear()
 {
     clean(schedule, (rounds + 1) * 16);
-    clean(state1);
-    clean(state2);
 }
 
 /** @cond */

@@ -47,10 +47,6 @@ protected:
     void keyScheduleCore(uint8_t *output, const uint8_t *input, uint8_t iteration);
     void applySbox(uint8_t *output, const uint8_t *input);
     /** @endcond */
-
-private:
-    uint8_t state1[16];
-    uint8_t state2[16];
 };
 
 class AES128 : public AESCommon

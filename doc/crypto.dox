@@ -71,9 +71,9 @@ Ardunino Mega 2560 running at 16 MHz are similar:
 
 <table>
 <tr><td>Encryption Algorithm</td><td align="right">Encryption (per byte)</td><td align="right">Decryption (per byte)</td><td>Key Setup</td><td>State Size (bytes)</td></tr>
-<tr><td>AES128 (ECB mode)</td><td align="right">36.90us</td><td align="right">66.48us</td><td align="right">160.00us</td><td align="right">213</td></tr>
-<tr><td>AES192 (ECB mode)</td><td align="right">44.20us</td><td align="right">80.35us</td><td align="right">166.54us</td><td align="right">245</td></tr>
-<tr><td>AES256 (ECB mode)</td><td align="right">51.50us</td><td align="right">94.22us</td><td align="right">227.97us</td><td align="right">277</td></tr>
+<tr><td>AES128 (ECB mode)</td><td align="right">33.28us</td><td align="right">63.18us</td><td align="right">160.00us</td><td align="right">181</td></tr>
+<tr><td>AES192 (ECB mode)</td><td align="right">39.94us</td><td align="right">76.48us</td><td align="right">166.54us</td><td align="right">213</td></tr>
+<tr><td>AES256 (ECB mode)</td><td align="right">46.61us</td><td align="right">89.78us</td><td align="right">227.97us</td><td align="right">245</td></tr>
 <tr><td>ChaCha (20 rounds)</td><td align="right">14.87us</td><td align="right">14.88us</td><td align="right">43.74us</td><td align="right">132</td></tr>
 <tr><td>ChaCha (12 rounds)</td><td align="right">10.38us</td><td align="right">10.38us</td><td align="right">43.74us</td><td align="right">132</td></tr>
 <tr><td>ChaCha (8 rounds)</td><td align="right">8.13us</td><td align="right">8.14us</td><td align="right">43.74us</td><td align="right">132</td></tr>
@@ -86,10 +86,10 @@ Ardunino Mega 2560 running at 16 MHz are similar:
 <tr><td colspan="5"> </td></tr>
 <tr><td>AEAD Algorithm</td><td align="right">Encryption (per byte)</td><td align="right">Decryption (per byte)</td><td>Key Setup</td><td>State Size (bytes)</td></tr>
 <tr><td>ChaChaPoly</td><td align="right">41.23us</td><td align="right">41.23us</td><td align="right">902.55us</td><td align="right">255</td></tr>
-<tr><td>GCM&lt;AES128&gt;</td><td align="right">186.47us</td><td align="right">186.42us</td><td align="right">1388.43us</td><td align="right">316</td></tr>
-<tr><td>GCM&lt;AES192&gt;</td><td align="right">194.17us</td><td align="right">193.72us</td><td align="right">1628.67us</td><td align="right">348</td></tr>
-<tr><td>GCM&lt;AES256&gt;</td><td align="right">201.47us</td><td align="right">201.02us</td><td align="right">1923.78us</td><td align="right">380</td></tr>
-<tr><td>EAX&lt;AES128&gt;</td><td align="right">78.37us</td><td align="right">78.37us</td><td align="right">1445.15us</td><td align="right">300</td></tr>
+<tr><td>GCM&lt;AES128&gt;</td><td align="right">183.25us</td><td align="right">182.80us</td><td align="right">1272.73us</td><td align="right">284</td></tr>
+<tr><td>GCM&lt;AES192&gt;</td><td align="right">189.92us</td><td align="right">189.47us</td><td align="right">1492.60us</td><td align="right">316</td></tr>
+<tr><td>GCM&lt;AES256&gt;</td><td align="right">196.59us</td><td align="right">196.13us</td><td align="right">1767.33us</td><td align="right">348</td></tr>
+<tr><td>EAX&lt;AES128&gt;</td><td align="right">71.14us</td><td align="right">71.14us</td><td align="right">1329.44us</td><td align="right">268</td></tr>
 <tr><td>EAX&lt;Speck&gt; (128-bit key)</td><td align="right">26.01us</td><td align="right">26.01us</td><td align="right">735.46us</td><td align="right">362</td></tr>
 <tr><td>EAX&lt;SpeckLowMemory&gt; (128-bit key)</td><td align="right">75.08us</td><td align="right">75.07us</td><td align="right">1243.66us</td><td align="right">122</td></tr>
 <tr><td colspan="5"> </td></tr>
@@ -128,9 +128,9 @@ All figures are for the Arduino Due running at 84 MHz:
 
 <table>
 <tr><td>Encryption Algorithm</td><td align="right">Encryption (per byte)</td><td align="right">Decryption (per byte)</td><td>Key Setup</td><td>State Size (bytes)</td></tr>
-<tr><td>AES128 (ECB mode)</td><td align="right">6.65us</td><td align="right">11.00us</td><td align="right">35.15us</td><td align="right">220</td></tr>
-<tr><td>AES192 (ECB mode)</td><td align="right">8.02us</td><td align="right">13.31us</td><td align="right">36.59us</td><td align="right">252</td></tr>
-<tr><td>AES256 (ECB mode)</td><td align="right">9.39us</td><td align="right">15.63</td><td align="right">50.19us</td><td align="right">284</td></tr>
+<tr><td>AES128 (ECB mode)</td><td align="right">5.71us</td><td align="right">10.41us</td><td align="right">34.73us</td><td align="right">188</td></tr>
+<tr><td>AES192 (ECB mode)</td><td align="right">6.87us</td><td align="right">12.57us</td><td align="right">36.51us</td><td align="right">220</td></tr>
+<tr><td>AES256 (ECB mode)</td><td align="right">8.04us</td><td align="right">14.72</td><td align="right">49.96us</td><td align="right">252</td></tr>
 <tr><td>ChaCha (20 rounds)</td><td align="right">0.87us</td><td align="right">0.88us</td><td align="right">4.96us</td><td align="right">136</td></tr>
 <tr><td>ChaCha (12 rounds)</td><td align="right">0.70us</td><td align="right">0.71us</td><td align="right">4.96us</td><td align="right">136</td></tr>
 <tr><td>ChaCha (8 rounds)</td><td align="right">0.62us</td><td align="right">0.62us</td><td align="right">4.96us</td><td align="right">136</td></tr>
@@ -143,12 +143,12 @@ All figures are for the Arduino Due running at 84 MHz:
 <tr><td colspan="5"> </td></tr>
 <tr><td>AEAD Algorithm</td><td align="right">Encryption (per byte)</td><td align="right">Decryption (per byte)</td><td>Key Setup</td><td>State Size (bytes)</td></tr>
 <tr><td>ChaChaPoly</td><td align="right">1.66us</td><td align="right">1.66us</td><td align="right">45.02us</td><td align="right">280</td></tr>
-<tr><td>GCM&lt;AES128&gt;</td><td align="right">11.01us</td><td align="right">10.92us</td><td align="right">247.90us</td><td align="right">344</td></tr>
-<tr><td>GCM&lt;AES192&gt;</td><td align="right">12.40us</td><td align="right">12.31us</td><td align="right">294.07us</td><td align="right">376</td></tr>
-<tr><td>GCM&lt;AES256&gt;</td><td align="right">13.73us</td><td align="right">13.64us</td><td align="right">347.40us</td><td align="right">408</td></tr>
-<tr><td>EAX&lt;AES128&gt;</td><td align="right">14.17us</td><td align="right">14.17us</td><td align="right">266.56us</td><td align="right">312</td></tr>
-<tr><td>EAX&lt;Speck&gt; (128-bit key)</td><td align="right">2.65us</td><td align="right">2.65us</td><td align="right">79.38us</td><td align="right">384</td></tr>
-<tr><td>EAX&lt;SpeckLowMemory&gt; (128-bit key)</td><td align="right">6.40us</td><td align="right">6.39us</td><td align="right">108.25us</td><td align="right">122</td></tr>
+<tr><td>GCM&lt;AES128&gt;</td><td align="right">10.29us</td><td align="right">10.29us</td><td align="right">223.82us</td><td align="right">312</td></tr>
+<tr><td>GCM&lt;AES192&gt;</td><td align="right">11.50us</td><td align="right">11.51us</td><td align="right">265.62us</td><td align="right">344</td></tr>
+<tr><td>GCM&lt;AES256&gt;</td><td align="right">12.67us</td><td align="right">12.67us</td><td align="right">313.06us</td><td align="right">376</td></tr>
+<tr><td>EAX&lt;AES128&gt;</td><td align="right">12.29us</td><td align="right">12.29us</td><td align="right">236.47us</td><td align="right">280</td></tr>
+<tr><td>EAX&lt;Speck&gt; (128-bit key)</td><td align="right">2.65us</td><td align="right">2.65us</td><td align="right">79.46us</td><td align="right">384</td></tr>
+<tr><td>EAX&lt;SpeckLowMemory&gt; (128-bit key)</td><td align="right">6.29us</td><td align="right">6.29us</td><td align="right">106.60us</td><td align="right">144</td></tr>
 <tr><td colspan="5"> </td></tr>
 <tr><td>Hash Algorithm</td><td align="right">Hashing (per byte)</td><td align="right">Finalization</td><td> </td><td>State Size (bytes)</td></tr>
 <tr><td>SHA1</td><td align="right">0.94us</td><td align="right">62.55us</td><td align="right"> </td><td align="right">112</td></tr>
