@@ -104,11 +104,10 @@ Inheritance diagram for Hash:</div>
   <map id="Hash_map" name="Hash_map">
 <area href="classBLAKE2b.html" title="BLAKE2b hash algorithm. " alt="BLAKE2b" shape="rect" coords="0,56,73,80"/>
 <area href="classBLAKE2s.html" title="BLAKE2s hash algorithm. " alt="BLAKE2s" shape="rect" coords="83,56,156,80"/>
-<area href="classSHA1.html" title="SHA-1 hash algorithm. " alt="SHA1" shape="rect" coords="166,56,239,80"/>
-<area href="classSHA256.html" title="SHA-256 hash algorithm. " alt="SHA256" shape="rect" coords="249,56,322,80"/>
-<area href="classSHA3__256.html" title="SHA3-256 hash algorithm. " alt="SHA3_256" shape="rect" coords="332,56,405,80"/>
-<area href="classSHA3__512.html" title="SHA3-512 hash algorithm. " alt="SHA3_512" shape="rect" coords="415,56,488,80"/>
-<area href="classSHA512.html" title="SHA-512 hash algorithm. " alt="SHA512" shape="rect" coords="498,56,571,80"/>
+<area href="classSHA256.html" title="SHA-256 hash algorithm. " alt="SHA256" shape="rect" coords="166,56,239,80"/>
+<area href="classSHA3__256.html" title="SHA3-256 hash algorithm. " alt="SHA3_256" shape="rect" coords="249,56,322,80"/>
+<area href="classSHA3__512.html" title="SHA3-512 hash algorithm. " alt="SHA3_512" shape="rect" coords="332,56,405,80"/>
+<area href="classSHA512.html" title="SHA-512 hash algorithm. " alt="SHA512" shape="rect" coords="415,56,488,80"/>
 </map>
  </div></div>
 <table class="memberdecls">
@@ -154,7 +153,7 @@ Protected Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Abstract base class for cryptographic hash algorithms. </p>
-<dl class="section see"><dt>See Also</dt><dd><a class="el" href="classSHA1.html" title="SHA-1 hash algorithm. ">SHA1</a>, <a class="el" href="classSHA256.html" title="SHA-256 hash algorithm. ">SHA256</a> </dd></dl>
+<dl class="section see"><dt>See Also</dt><dd><a class="el" href="classSHA256.html" title="SHA-256 hash algorithm. ">SHA256</a>, <a class="el" href="classSHA3__256.html" title="SHA3-256 hash algorithm. ">SHA3_256</a>, <a class="el" href="classBLAKE2s.html" title="BLAKE2s hash algorithm. ">BLAKE2s</a> </dd></dl>
 
 <p>Definition at line <a class="el" href="Hash_8h_source.html#l00029">29</a> of file <a class="el" href="Hash_8h_source.html">Hash.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
@@ -212,7 +211,7 @@ Protected Member Functions</h2></td></tr>
 <p>Size of the internal block used by the hash algorithm. </p>
 <dl class="section see"><dt>See Also</dt><dd><a class="el" href="classHash.html#aec9761ee427d122e7450de8df200265c" title="Updates the hash with more data. ">update()</a>, <a class="el" href="classHash.html#adcdd30de3e5ecaa2f798c0c5644d9ef8" title="Size of the hash result from finalize(). ">hashSize()</a> </dd></dl>
 
-<p>Implemented in <a class="el" href="classSHA3__512.html#a4493a717bad8fa5cd35fe3aa36f25ab3">SHA3_512</a>, <a class="el" href="classSHA512.html#acf8b9bcb6be91ee70acc3700a2ffa1a1">SHA512</a>, <a class="el" href="classSHA3__256.html#a88a50ab6c2d4ad105cda2dd504d96e7c">SHA3_256</a>, <a class="el" href="classBLAKE2b.html#abec1b2320c3afaed12a29cf081b95fe2">BLAKE2b</a>, <a class="el" href="classBLAKE2s.html#a9b5403734c20a0591d72a98912e4a305">BLAKE2s</a>, <a class="el" href="classSHA1.html#a816e3fd1a02cf1ecc67866cd8c7c309a">SHA1</a>, and <a class="el" href="classSHA256.html#a71bbd9064f9d6191d0647f867953a858">SHA256</a>.</p>
+<p>Implemented in <a class="el" href="classSHA3__512.html#a4493a717bad8fa5cd35fe3aa36f25ab3">SHA3_512</a>, <a class="el" href="classSHA512.html#acf8b9bcb6be91ee70acc3700a2ffa1a1">SHA512</a>, <a class="el" href="classSHA3__256.html#a88a50ab6c2d4ad105cda2dd504d96e7c">SHA3_256</a>, <a class="el" href="classBLAKE2b.html#abec1b2320c3afaed12a29cf081b95fe2">BLAKE2b</a>, <a class="el" href="classBLAKE2s.html#a9b5403734c20a0591d72a98912e4a305">BLAKE2s</a>, and <a class="el" href="classSHA256.html#a71bbd9064f9d6191d0647f867953a858">SHA256</a>.</p>
 
 </div>
 </div>
@@ -240,7 +239,7 @@ Protected Member Functions</h2></td></tr>
 <p>Clears the hash state, removing all sensitive data, and then resets the hash ready for a new hashing process. </p>
 <dl class="section see"><dt>See Also</dt><dd><a class="el" href="classHash.html#a7b94309acaa5f52386785fb780e5be61" title="Resets the hash ready for a new hashing process. ">reset()</a> </dd></dl>
 
-<p>Implemented in <a class="el" href="classSHA3__512.html#acfbc5e9b4d394f011d5132a2b156d260">SHA3_512</a>, <a class="el" href="classSHA512.html#a0a9104dce5f099aeba216e5fbcb1ee1a">SHA512</a>, <a class="el" href="classBLAKE2b.html#a21623759bd381285ebf7e75a00c9c8a9">BLAKE2b</a>, <a class="el" href="classBLAKE2s.html#a0848885f52df51dc53949d32a206e72d">BLAKE2s</a>, <a class="el" href="classSHA3__256.html#a531467f995ef6fc901ad8c2b5776a8d1">SHA3_256</a>, <a class="el" href="classSHA1.html#a41a159d6565b04d3f620dcd720faaf3f">SHA1</a>, and <a class="el" href="classSHA256.html#add0d1649d533b27005ccd8508398c689">SHA256</a>.</p>
+<p>Implemented in <a class="el" href="classSHA3__512.html#acfbc5e9b4d394f011d5132a2b156d260">SHA3_512</a>, <a class="el" href="classSHA512.html#a0a9104dce5f099aeba216e5fbcb1ee1a">SHA512</a>, <a class="el" href="classBLAKE2b.html#a21623759bd381285ebf7e75a00c9c8a9">BLAKE2b</a>, <a class="el" href="classBLAKE2s.html#a0848885f52df51dc53949d32a206e72d">BLAKE2s</a>, <a class="el" href="classSHA3__256.html#a531467f995ef6fc901ad8c2b5776a8d1">SHA3_256</a>, and <a class="el" href="classSHA256.html#add0d1649d533b27005ccd8508398c689">SHA256</a>.</p>
 
 </div>
 </div>
@@ -288,7 +287,7 @@ Protected Member Functions</h2></td></tr>
 <p>If <a class="el" href="classHash.html#a09b3ccec22763fc86b1415695862977c" title="Finalizes the hashing process and returns the hash. ">finalize()</a> is called again, then the returned <em>hash</em> value is undefined. Call <a class="el" href="classHash.html#a7b94309acaa5f52386785fb780e5be61" title="Resets the hash ready for a new hashing process. ">reset()</a> first to start a new hashing process.</p>
 <dl class="section see"><dt>See Also</dt><dd><a class="el" href="classHash.html#a7b94309acaa5f52386785fb780e5be61" title="Resets the hash ready for a new hashing process. ">reset()</a>, <a class="el" href="classHash.html#aec9761ee427d122e7450de8df200265c" title="Updates the hash with more data. ">update()</a>, <a class="el" href="classHash.html#aab42fa5420cc0bda4321a3d3866cfd06" title="Finalizes the HMAC hashing process and returns the hash. ">finalizeHMAC()</a> </dd></dl>
 
-<p>Implemented in <a class="el" href="classSHA3__512.html#ac0227aafb5f047bb50f0bd84df0b4b5b">SHA3_512</a>, <a class="el" href="classSHA512.html#afc136ad0e77de527b031db3fb8b32464">SHA512</a>, <a class="el" href="classBLAKE2b.html#a0cd8146b7868bd0f4c24a3856f106d17">BLAKE2b</a>, <a class="el" href="classBLAKE2s.html#a751a3d772cbe1cd1dad83dbd09853b1b">BLAKE2s</a>, <a class="el" href="classSHA3__256.html#a8fe7cad1f83bd1bae1a0d521324247a1">SHA3_256</a>, <a class="el" href="classSHA1.html#a5a6a8a6169aa48e0bccadb22a149ab7c">SHA1</a>, and <a class="el" href="classSHA256.html#a695157bcdf5495ba892ebac309f3abd6">SHA256</a>.</p>
+<p>Implemented in <a class="el" href="classSHA3__512.html#ac0227aafb5f047bb50f0bd84df0b4b5b">SHA3_512</a>, <a class="el" href="classSHA512.html#afc136ad0e77de527b031db3fb8b32464">SHA512</a>, <a class="el" href="classBLAKE2b.html#a0cd8146b7868bd0f4c24a3856f106d17">BLAKE2b</a>, <a class="el" href="classBLAKE2s.html#a751a3d772cbe1cd1dad83dbd09853b1b">BLAKE2s</a>, <a class="el" href="classSHA3__256.html#a8fe7cad1f83bd1bae1a0d521324247a1">SHA3_256</a>, and <a class="el" href="classSHA256.html#a695157bcdf5495ba892ebac309f3abd6">SHA256</a>.</p>
 
 </div>
 </div>
@@ -348,7 +347,7 @@ Protected Member Functions</h2></td></tr>
 </dl>
 <dl class="section see"><dt>See Also</dt><dd><a class="el" href="classHash.html#adf50359c1f525af884721cc9034e7945" title="Resets the hash ready for a new HMAC hashing process. ">resetHMAC()</a>, <a class="el" href="classHash.html#a09b3ccec22763fc86b1415695862977c" title="Finalizes the hashing process and returns the hash. ">finalize()</a> </dd></dl>
 
-<p>Implemented in <a class="el" href="classSHA3__512.html#a25c9d2da26d01d46ba6b72c8a7905ea0">SHA3_512</a>, <a class="el" href="classSHA512.html#a1fe9533f0d3dfdb426eb3dc4bdc31904">SHA512</a>, <a class="el" href="classBLAKE2b.html#a29fafbba26e3c1d896b4d4c428f7d52a">BLAKE2b</a>, <a class="el" href="classBLAKE2s.html#a3f910f3bd48cc4a9c5330c31bcda31fc">BLAKE2s</a>, <a class="el" href="classSHA3__256.html#a001215fa1b7d2c30717b4b5b1618d68c">SHA3_256</a>, <a class="el" href="classSHA1.html#a791db53fe9d6cc0e383b25f1da0a97b8">SHA1</a>, and <a class="el" href="classSHA256.html#a28bc2510c5bdaf210a012f9f21a753cd">SHA256</a>.</p>
+<p>Implemented in <a class="el" href="classSHA3__512.html#a25c9d2da26d01d46ba6b72c8a7905ea0">SHA3_512</a>, <a class="el" href="classSHA512.html#a1fe9533f0d3dfdb426eb3dc4bdc31904">SHA512</a>, <a class="el" href="classBLAKE2b.html#a29fafbba26e3c1d896b4d4c428f7d52a">BLAKE2b</a>, <a class="el" href="classBLAKE2s.html#a3f910f3bd48cc4a9c5330c31bcda31fc">BLAKE2s</a>, <a class="el" href="classSHA3__256.html#a001215fa1b7d2c30717b4b5b1618d68c">SHA3_256</a>, and <a class="el" href="classSHA256.html#a28bc2510c5bdaf210a012f9f21a753cd">SHA256</a>.</p>
 
 </div>
 </div>
@@ -436,7 +435,7 @@ Protected Member Functions</h2></td></tr>
 <p>Size of the hash result from <a class="el" href="classHash.html#a09b3ccec22763fc86b1415695862977c" title="Finalizes the hashing process and returns the hash. ">finalize()</a>. </p>
 <dl class="section see"><dt>See Also</dt><dd><a class="el" href="classHash.html#a09b3ccec22763fc86b1415695862977c" title="Finalizes the hashing process and returns the hash. ">finalize()</a>, <a class="el" href="classHash.html#a4e4297812e3483410556830fe5d47bdf" title="Size of the internal block used by the hash algorithm. ">blockSize()</a> </dd></dl>
 
-<p>Implemented in <a class="el" href="classSHA3__512.html#a9f13e4d2b99dd204e96b11142e9c1803">SHA3_512</a>, <a class="el" href="classSHA512.html#a6ab3cc1e172eecf4796e4cac629e0a44">SHA512</a>, <a class="el" href="classSHA3__256.html#a2c5c08119d5ad853021f929a763784f3">SHA3_256</a>, <a class="el" href="classBLAKE2b.html#a7555de16f6918ab820170a7ed3098c89">BLAKE2b</a>, <a class="el" href="classBLAKE2s.html#af9f50aac096f92ba27b1b2dd48df4c52">BLAKE2s</a>, <a class="el" href="classSHA1.html#ab8cdb7233a8b81be07877049960ddfdd">SHA1</a>, and <a class="el" href="classSHA256.html#a103d5bc5ced792464a82cb1d7986de94">SHA256</a>.</p>
+<p>Implemented in <a class="el" href="classSHA3__512.html#a9f13e4d2b99dd204e96b11142e9c1803">SHA3_512</a>, <a class="el" href="classSHA512.html#a6ab3cc1e172eecf4796e4cac629e0a44">SHA512</a>, <a class="el" href="classSHA3__256.html#a2c5c08119d5ad853021f929a763784f3">SHA3_256</a>, <a class="el" href="classBLAKE2b.html#a7555de16f6918ab820170a7ed3098c89">BLAKE2b</a>, <a class="el" href="classBLAKE2s.html#af9f50aac096f92ba27b1b2dd48df4c52">BLAKE2s</a>, and <a class="el" href="classSHA256.html#a103d5bc5ced792464a82cb1d7986de94">SHA256</a>.</p>
 
 </div>
 </div>
@@ -464,7 +463,7 @@ Protected Member Functions</h2></td></tr>
 <p>Resets the hash ready for a new hashing process. </p>
 <dl class="section see"><dt>See Also</dt><dd><a class="el" href="classHash.html#aec9761ee427d122e7450de8df200265c" title="Updates the hash with more data. ">update()</a>, <a class="el" href="classHash.html#a09b3ccec22763fc86b1415695862977c" title="Finalizes the hashing process and returns the hash. ">finalize()</a>, <a class="el" href="classHash.html#adf50359c1f525af884721cc9034e7945" title="Resets the hash ready for a new HMAC hashing process. ">resetHMAC()</a> </dd></dl>
 
-<p>Implemented in <a class="el" href="classSHA3__512.html#a435746d5a8b012f7c65050337cc4a23f">SHA3_512</a>, <a class="el" href="classSHA512.html#a0d009e8d9157c3f14323e68631c33e97">SHA512</a>, <a class="el" href="classSHA3__256.html#a57b5f29347a733e04fe47d60621f3202">SHA3_256</a>, <a class="el" href="classBLAKE2b.html#a917beae2ca6e9831a35717a526089e8a">BLAKE2b</a>, <a class="el" href="classBLAKE2s.html#a778776d15316c182fdb2df5a89b3ca02">BLAKE2s</a>, <a class="el" href="classSHA1.html#ab71aaf39ed956320054861a2fbfa454f">SHA1</a>, and <a class="el" href="classSHA256.html#ad9d80d8fdccffb15497bd36285afce65">SHA256</a>.</p>
+<p>Implemented in <a class="el" href="classSHA3__512.html#a435746d5a8b012f7c65050337cc4a23f">SHA3_512</a>, <a class="el" href="classSHA512.html#a0d009e8d9157c3f14323e68631c33e97">SHA512</a>, <a class="el" href="classSHA3__256.html#a57b5f29347a733e04fe47d60621f3202">SHA3_256</a>, <a class="el" href="classBLAKE2b.html#a917beae2ca6e9831a35717a526089e8a">BLAKE2b</a>, <a class="el" href="classBLAKE2s.html#a778776d15316c182fdb2df5a89b3ca02">BLAKE2s</a>, and <a class="el" href="classSHA256.html#ad9d80d8fdccffb15497bd36285afce65">SHA256</a>.</p>
 
 </div>
 </div>
@@ -518,7 +517,7 @@ Protected Member Functions</h2></td></tr>
 </div><!-- fragment --><p>The same key must be passed to both <a class="el" href="classHash.html#adf50359c1f525af884721cc9034e7945" title="Resets the hash ready for a new HMAC hashing process. ">resetHMAC()</a> and <a class="el" href="classHash.html#aab42fa5420cc0bda4321a3d3866cfd06" title="Finalizes the HMAC hashing process and returns the hash. ">finalizeHMAC()</a>.</p>
 <dl class="section see"><dt>See Also</dt><dd><a class="el" href="classHash.html#aab42fa5420cc0bda4321a3d3866cfd06" title="Finalizes the HMAC hashing process and returns the hash. ">finalizeHMAC()</a>, <a class="el" href="classHash.html#a7b94309acaa5f52386785fb780e5be61" title="Resets the hash ready for a new hashing process. ">reset()</a> </dd></dl>
 
-<p>Implemented in <a class="el" href="classSHA3__512.html#aac7133f420f2be0288965c2e863f389b">SHA3_512</a>, <a class="el" href="classSHA512.html#a2427ad8bf8b6958df91bd5806986167c">SHA512</a>, <a class="el" href="classBLAKE2b.html#acb1ca4081c509d1c34b3aee465cd4494">BLAKE2b</a>, <a class="el" href="classBLAKE2s.html#a7f9745854704b34a508497105ca5e2fd">BLAKE2s</a>, <a class="el" href="classSHA3__256.html#a324fe4d268bbf23d7b492033fe3bc632">SHA3_256</a>, <a class="el" href="classSHA1.html#ad0a09a5100d59ff90c04ed5d4071b606">SHA1</a>, and <a class="el" href="classSHA256.html#a2271683d6f1c7c103272f1dec55a6871">SHA256</a>.</p>
+<p>Implemented in <a class="el" href="classSHA3__512.html#aac7133f420f2be0288965c2e863f389b">SHA3_512</a>, <a class="el" href="classSHA512.html#a2427ad8bf8b6958df91bd5806986167c">SHA512</a>, <a class="el" href="classBLAKE2b.html#acb1ca4081c509d1c34b3aee465cd4494">BLAKE2b</a>, <a class="el" href="classBLAKE2s.html#a7f9745854704b34a508497105ca5e2fd">BLAKE2s</a>, <a class="el" href="classSHA3__256.html#a324fe4d268bbf23d7b492033fe3bc632">SHA3_256</a>, and <a class="el" href="classSHA256.html#a2271683d6f1c7c103272f1dec55a6871">SHA256</a>.</p>
 
 </div>
 </div>
@@ -565,7 +564,7 @@ Protected Member Functions</h2></td></tr>
 <p>If <a class="el" href="classHash.html#a09b3ccec22763fc86b1415695862977c" title="Finalizes the hashing process and returns the hash. ">finalize()</a> has already been called, then the behavior of <a class="el" href="classHash.html#aec9761ee427d122e7450de8df200265c" title="Updates the hash with more data. ">update()</a> will be undefined. Call <a class="el" href="classHash.html#a7b94309acaa5f52386785fb780e5be61" title="Resets the hash ready for a new hashing process. ">reset()</a> first to start a new hashing process.</p>
 <dl class="section see"><dt>See Also</dt><dd><a class="el" href="classHash.html#a7b94309acaa5f52386785fb780e5be61" title="Resets the hash ready for a new hashing process. ">reset()</a>, <a class="el" href="classHash.html#a09b3ccec22763fc86b1415695862977c" title="Finalizes the hashing process and returns the hash. ">finalize()</a> </dd></dl>
 
-<p>Implemented in <a class="el" href="classSHA3__512.html#a0563e4c87150e6019671b4fe92fd63a4">SHA3_512</a>, <a class="el" href="classSHA512.html#a7d37a20d7ab431ab15d094f768b6a695">SHA512</a>, <a class="el" href="classBLAKE2b.html#a468e48c66ce1738e11c922d133135069">BLAKE2b</a>, <a class="el" href="classBLAKE2s.html#aa192da2fa044b03cccaf11e87fdf9911">BLAKE2s</a>, <a class="el" href="classSHA3__256.html#a8356957ea403c5da326fc6899b91ea71">SHA3_256</a>, <a class="el" href="classSHA1.html#aec77fbc5015f82bbf7055e535085656a">SHA1</a>, and <a class="el" href="classSHA256.html#a555bf8efb17afd4842d2e55a1f39f27b">SHA256</a>.</p>
+<p>Implemented in <a class="el" href="classSHA3__512.html#a0563e4c87150e6019671b4fe92fd63a4">SHA3_512</a>, <a class="el" href="classSHA512.html#a7d37a20d7ab431ab15d094f768b6a695">SHA512</a>, <a class="el" href="classBLAKE2b.html#a468e48c66ce1738e11c922d133135069">BLAKE2b</a>, <a class="el" href="classBLAKE2s.html#aa192da2fa044b03cccaf11e87fdf9911">BLAKE2s</a>, <a class="el" href="classSHA3__256.html#a8356957ea403c5da326fc6899b91ea71">SHA3_256</a>, and <a class="el" href="classSHA256.html#a555bf8efb17afd4842d2e55a1f39f27b">SHA256</a>.</p>
 
 </div>
 </div>
@@ -576,7 +575,7 @@ Protected Member Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Dec 18 2015 05:39:07 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Jan 16 2016 09:47:01 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

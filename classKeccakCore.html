@@ -158,7 +158,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Constructs a new Keccak sponge function. </p>
 <p>The <a class="el" href="classKeccakCore.html#a804b895121a4e04bc491f41a5821a13e" title="Returns the capacity of the sponge function in bits. ">capacity()</a> will initially be set to 1536, which normally won't be of much use to the caller. The constructor should be followed by a call to <a class="el" href="classKeccakCore.html#ab3c1905f2002e49aca085d6f0b5546f7" title="Sets the capacity of the Keccak sponge function in bits. ">setCapacity()</a> to select the capacity of interest. </p>
 
-<p>Definition at line <a class="el" href="KeccakCore_8cpp_source.html#l00049">49</a> of file <a class="el" href="KeccakCore_8cpp_source.html">KeccakCore.cpp</a>.</p>
+<p>Definition at line <a class="el" href="KeccakCore_8cpp_source.html#l00054">54</a> of file <a class="el" href="KeccakCore_8cpp_source.html">KeccakCore.cpp</a>.</p>
 
 </div>
 </div>
@@ -208,7 +208,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Returns the capacity of the sponge function in bits. </p>
 <dl class="section see"><dt>See Also</dt><dd><a class="el" href="classKeccakCore.html#ab3c1905f2002e49aca085d6f0b5546f7" title="Sets the capacity of the Keccak sponge function in bits. ">setCapacity()</a>, <a class="el" href="classKeccakCore.html#a3742ed39151811b5d1c263c75ee5b20a" title="Returns the input block size for the sponge function in bytes. ">blockSize()</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="KeccakCore_8cpp_source.html#l00071">71</a> of file <a class="el" href="KeccakCore_8cpp_source.html">KeccakCore.cpp</a>.</p>
+<p>Definition at line <a class="el" href="KeccakCore_8cpp_source.html#l00076">76</a> of file <a class="el" href="KeccakCore_8cpp_source.html">KeccakCore.cpp</a>.</p>
 
 </div>
 </div>
@@ -247,7 +247,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>If more than <a class="el" href="classKeccakCore.html#a3742ed39151811b5d1c263c75ee5b20a" title="Returns the input block size for the sponge function in bytes. ">blockSize()</a> bytes are required, the sponge function will be invoked to generate additional data.</p>
 <dl class="section see"><dt>See Also</dt><dd><a class="el" href="classKeccakCore.html#aaaa0355ccec0f469ac8eb577bdf853ed" title="Updates the Keccak sponge function with more input data. ">update()</a>, <a class="el" href="classKeccakCore.html#a5a322eb7e3b5c1eaad127c9c6e6a529b" title="Resets the Keccak sponge function ready for a new session. ">reset()</a>, extractHash() </dd></dl>
 
-<p>Definition at line <a class="el" href="KeccakCore_8cpp_source.html#l00201">201</a> of file <a class="el" href="KeccakCore_8cpp_source.html">KeccakCore.cpp</a>.</p>
+<p>Definition at line <a class="el" href="KeccakCore_8cpp_source.html#l00194">194</a> of file <a class="el" href="KeccakCore_8cpp_source.html">KeccakCore.cpp</a>.</p>
 
 </div>
 </div>
@@ -275,7 +275,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>The sponge function will be invoked to process the completed padding block.</p>
 <dl class="section see"><dt>See Also</dt><dd><a class="el" href="classKeccakCore.html#aaaa0355ccec0f469ac8eb577bdf853ed" title="Updates the Keccak sponge function with more input data. ">update()</a>, <a class="el" href="classKeccakCore.html#aad83ece853c0cc15fcab947fdcba924f" title="Extracts data from the Keccak sponge function. ">extract()</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="KeccakCore_8cpp_source.html#l00174">174</a> of file <a class="el" href="KeccakCore_8cpp_source.html">KeccakCore.cpp</a>.</p>
+<p>Definition at line <a class="el" href="KeccakCore_8cpp_source.html#l00167">167</a> of file <a class="el" href="KeccakCore_8cpp_source.html">KeccakCore.cpp</a>.</p>
 
 </div>
 </div>
@@ -295,7 +295,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Resets the Keccak sponge function ready for a new session. </p>
 <dl class="section see"><dt>See Also</dt><dd><a class="el" href="classKeccakCore.html#aaaa0355ccec0f469ac8eb577bdf853ed" title="Updates the Keccak sponge function with more input data. ">update()</a>, <a class="el" href="classKeccakCore.html#aad83ece853c0cc15fcab947fdcba924f" title="Extracts data from the Keccak sponge function. ">extract()</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="KeccakCore_8cpp_source.html#l00109">109</a> of file <a class="el" href="KeccakCore_8cpp_source.html">KeccakCore.cpp</a>.</p>
+<p>Definition at line <a class="el" href="KeccakCore_8cpp_source.html#l00114">114</a> of file <a class="el" href="KeccakCore_8cpp_source.html">KeccakCore.cpp</a>.</p>
 
 </div>
 </div>
@@ -323,7 +323,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <dl class="section note"><dt>Note</dt><dd>It is possible to create a sponge function with this constructor that doesn't strictly conform with the capacity and hash size constraints defined in the relevant standards. It is the responsibility of callers to only use standard parameter combinations.</dd></dl>
 <dl class="section see"><dt>See Also</dt><dd><a class="el" href="classKeccakCore.html#a804b895121a4e04bc491f41a5821a13e" title="Returns the capacity of the sponge function in bits. ">capacity()</a>, <a class="el" href="classKeccakCore.html#a3742ed39151811b5d1c263c75ee5b20a" title="Returns the input block size for the sponge function in bytes. ">blockSize()</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="KeccakCore_8cpp_source.html#l00089">89</a> of file <a class="el" href="KeccakCore_8cpp_source.html">KeccakCore.cpp</a>.</p>
+<p>Definition at line <a class="el" href="KeccakCore_8cpp_source.html#l00094">94</a> of file <a class="el" href="KeccakCore_8cpp_source.html">KeccakCore.cpp</a>.</p>
 
 </div>
 </div>
@@ -375,7 +375,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </dl>
 <p>This function is intended to help classes implement <a class="el" href="classHash.html#adf50359c1f525af884721cc9034e7945" title="Resets the hash ready for a new HMAC hashing process. ">Hash::resetHMAC()</a> and <a class="el" href="classHash.html#aab42fa5420cc0bda4321a3d3866cfd06" title="Finalizes the HMAC hashing process and returns the hash. ">Hash::finalizeHMAC()</a> by directly formatting the HMAC key into the internal block buffer and resetting the hash. </p>
 
-<p>Definition at line <a class="el" href="KeccakCore_8cpp_source.html#l00263">263</a> of file <a class="el" href="KeccakCore_8cpp_source.html">KeccakCore.cpp</a>.</p>
+<p>Definition at line <a class="el" href="KeccakCore_8cpp_source.html#l00243">243</a> of file <a class="el" href="KeccakCore_8cpp_source.html">KeccakCore.cpp</a>.</p>
 
 </div>
 </div>
@@ -414,7 +414,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>This function will invoke the sponge function whenever a full <a class="el" href="classKeccakCore.html#a3742ed39151811b5d1c263c75ee5b20a" title="Returns the input block size for the sponge function in bytes. ">blockSize()</a> bytes of input data have been accumulated. Call <a class="el" href="classKeccakCore.html#a97852ee4381ced17ee6d21704cf0b4d7" title="Pads the last block of input data to blockSize(). ">pad()</a> after the last block to finalize the input before calling <a class="el" href="classKeccakCore.html#aad83ece853c0cc15fcab947fdcba924f" title="Extracts data from the Keccak sponge function. ">extract()</a>.</p>
 <dl class="section see"><dt>See Also</dt><dd><a class="el" href="classKeccakCore.html#a97852ee4381ced17ee6d21704cf0b4d7" title="Pads the last block of input data to blockSize(). ">pad()</a>, <a class="el" href="classKeccakCore.html#aad83ece853c0cc15fcab947fdcba924f" title="Extracts data from the Keccak sponge function. ">extract()</a>, <a class="el" href="classKeccakCore.html#a5a322eb7e3b5c1eaad127c9c6e6a529b" title="Resets the Keccak sponge function ready for a new session. ">reset()</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="KeccakCore_8cpp_source.html#l00128">128</a> of file <a class="el" href="KeccakCore_8cpp_source.html">KeccakCore.cpp</a>.</p>
+<p>Definition at line <a class="el" href="KeccakCore_8cpp_source.html#l00133">133</a> of file <a class="el" href="KeccakCore_8cpp_source.html">KeccakCore.cpp</a>.</p>
 
 </div>
 </div>
@@ -425,7 +425,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Dec 18 2015 05:39:07 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Jan 16 2016 09:47:01 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

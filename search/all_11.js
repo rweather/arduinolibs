@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['tagsize',['tagSize',['../classAuthenticatedCipher.html#a50c9de15b1ac1f3079dcfef626238759',1,'AuthenticatedCipher::tagSize()'],['../classChaChaPoly.html#a086c2aea395ab31136ebe7805591fd0a',1,'ChaChaPoly::tagSize()'],['../classGCMCommon.html#a935f343858e98ee331706daf43e34805',1,'GCMCommon::tagSize()']]],
+  ['tagsize',['tagSize',['../classAuthenticatedCipher.html#a50c9de15b1ac1f3079dcfef626238759',1,'AuthenticatedCipher::tagSize()'],['../classChaChaPoly.html#a086c2aea395ab31136ebe7805591fd0a',1,'ChaChaPoly::tagSize()'],['../classEAXCommon.html#a8804341b21f752a5b8178a3bdb123fd9',1,'EAXCommon::tagSize()'],['../classGCMCommon.html#a935f343858e98ee331706daf43e34805',1,'GCMCommon::tagSize()']]],
   ['textcolor',['textColor',['../classBitmap.html#ab6e5f5744fd2f18478aac428b751d848',1,'Bitmap']]],
   ['textfield',['TextField',['../classTextField.html',1,'TextField'],['../classTextField.html#a5108741ab147b2cd5a399fefbe0a2382',1,'TextField::TextField(const String &amp;label)'],['../classTextField.html#a24096a344d9161b2c99ce724ec2ee93c',1,'TextField::TextField(Form &amp;form, const String &amp;label, const String &amp;value)']]],
   ['textheight',['textHeight',['../classBitmap.html#a628bb694fcfe6eab619a4f1e152d41c4',1,'Bitmap']]],

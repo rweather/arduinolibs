@@ -2,7 +2,7 @@ var searchData=
 [
   ['add',['add',['../classBigNumberUtil.html#aa6904b2727af6b767fe041b1b7f27414',1,'BigNumberUtil']]],
   ['add_5fp',['add_P',['../classBigNumberUtil.html#ab9a9f532fcfc182433adac44d8e4ee20',1,'BigNumberUtil']]],
-  ['addauthdata',['addAuthData',['../classAuthenticatedCipher.html#abdb081bdf0d59c138cbcffd23c044b10',1,'AuthenticatedCipher::addAuthData()'],['../classChaChaPoly.html#a4aa3514d1fb6272da977a7467ae6734b',1,'ChaChaPoly::addAuthData()'],['../classGCMCommon.html#ad926e980ae2d61c10c9bf82813154a25',1,'GCMCommon::addAuthData()']]],
+  ['addauthdata',['addAuthData',['../classAuthenticatedCipher.html#abdb081bdf0d59c138cbcffd23c044b10',1,'AuthenticatedCipher::addAuthData()'],['../classChaChaPoly.html#a4aa3514d1fb6272da977a7467ae6734b',1,'ChaChaPoly::addAuthData()'],['../classEAXCommon.html#acdf2c51fb11c068202311b5c95767db8',1,'EAXCommon::addAuthData()'],['../classGCMCommon.html#ad926e980ae2d61c10c9bf82813154a25',1,'GCMCommon::addAuthData()']]],
   ['added',['added',['../classNoiseSource.html#a48d0efabd71ff6e557a0898be79c49ba',1,'NoiseSource']]],
   ['addfield',['addField',['../classForm.html#a5cb056ace428e75e321610555bfecac7',1,'Form']]],
   ['addnoisesource',['addNoiseSource',['../classRNGClass.html#aacf23b192b0e4cc8726d9abe05f5a9db',1,'RNGClass']]],

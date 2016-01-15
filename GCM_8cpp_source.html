@@ -136,13 +136,13 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;</div>
 <div class="line"><a name="l00066"></a><span class="lineno"><a class="line" href="classGCMCommon.html#a01cff072505e861fd20f6cfee1e10fb2">   66</a></span>&#160;<span class="keywordtype">size_t</span> <a class="code" href="classGCMCommon.html#a01cff072505e861fd20f6cfee1e10fb2">GCMCommon::ivSize</a>()<span class="keyword"> const</span></div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <span class="keywordflow">return</span> 16;</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;}</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
-<div class="line"><a name="l00071"></a><span class="lineno"><a class="line" href="classGCMCommon.html#a935f343858e98ee331706daf43e34805">   71</a></span>&#160;<span class="keywordtype">size_t</span> <a class="code" href="classGCMCommon.html#a935f343858e98ee331706daf43e34805">GCMCommon::tagSize</a>()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <span class="comment">// The GCM specification recommends an IV size of 96 bits.</span></div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <span class="keywordflow">return</span> 12;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <span class="comment">// The GCM specification recommends an IV size of 96 bits.</span></div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <span class="keywordflow">return</span> 12;</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;}</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;</div>
+<div class="line"><a name="l00072"></a><span class="lineno"><a class="line" href="classGCMCommon.html#a935f343858e98ee331706daf43e34805">   72</a></span>&#160;<span class="keywordtype">size_t</span> <a class="code" href="classGCMCommon.html#a935f343858e98ee331706daf43e34805">GCMCommon::tagSize</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <span class="keywordflow">return</span> 16;</div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;}</div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;</div>
 <div class="line"><a name="l00077"></a><span class="lineno"><a class="line" href="classGCMCommon.html#a397c5dddde828c59eb63367385aec562">   77</a></span>&#160;<span class="keywordtype">bool</span> <a class="code" href="classGCMCommon.html#a397c5dddde828c59eb63367385aec562">GCMCommon::setKey</a>(<span class="keyword">const</span> uint8_t *key, <span class="keywordtype">size_t</span> len)</div>
@@ -329,7 +329,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;</div>
 <div class="ttc" id="classGCMCommon_html_a444634bd4469bb5d404ac882d1d8fdf4"><div class="ttname"><a href="classGCMCommon.html#a444634bd4469bb5d404ac882d1d8fdf4">GCMCommon::computeTag</a></div><div class="ttdeci">void computeTag(void *tag, size_t len)</div><div class="ttdoc">Finalizes the encryption process and computes the authentication tag. </div><div class="ttdef"><b>Definition:</b> <a href="GCM_8cpp_source.html#l00225">GCM.cpp:225</a></div></div>
 <div class="ttc" id="classGCMCommon_html_a397c5dddde828c59eb63367385aec562"><div class="ttname"><a href="classGCMCommon.html#a397c5dddde828c59eb63367385aec562">GCMCommon::setKey</a></div><div class="ttdeci">bool setKey(const uint8_t *key, size_t len)</div><div class="ttdoc">Sets the key to use for future encryption and decryption operations. </div><div class="ttdef"><b>Definition:</b> <a href="GCM_8cpp_source.html#l00077">GCM.cpp:77</a></div></div>
-<div class="ttc" id="classGCMCommon_html_a935f343858e98ee331706daf43e34805"><div class="ttname"><a href="classGCMCommon.html#a935f343858e98ee331706daf43e34805">GCMCommon::tagSize</a></div><div class="ttdeci">size_t tagSize() const </div><div class="ttdoc">Returns the size of the authentication tag. </div><div class="ttdef"><b>Definition:</b> <a href="GCM_8cpp_source.html#l00071">GCM.cpp:71</a></div></div>
+<div class="ttc" id="classGCMCommon_html_a935f343858e98ee331706daf43e34805"><div class="ttname"><a href="classGCMCommon.html#a935f343858e98ee331706daf43e34805">GCMCommon::tagSize</a></div><div class="ttdeci">size_t tagSize() const </div><div class="ttdoc">Returns the size of the authentication tag. </div><div class="ttdef"><b>Definition:</b> <a href="GCM_8cpp_source.html#l00072">GCM.cpp:72</a></div></div>
 <div class="ttc" id="classGCMCommon_html_a01ac69afe3d9fc4d72b2ea5dc242e55c"><div class="ttname"><a href="classGCMCommon.html#a01ac69afe3d9fc4d72b2ea5dc242e55c">GCMCommon::encrypt</a></div><div class="ttdeci">void encrypt(uint8_t *output, const uint8_t *input, size_t len)</div><div class="ttdoc">Encrypts an input buffer and writes the ciphertext to an output buffer. </div><div class="ttdef"><b>Definition:</b> <a href="GCM_8cpp_source.html#l00145">GCM.cpp:145</a></div></div>
 <div class="ttc" id="classGCMCommon_html_a06868ebd67a571aa68d88d5d072cece9"><div class="ttname"><a href="classGCMCommon.html#a06868ebd67a571aa68d88d5d072cece9">GCMCommon::clear</a></div><div class="ttdeci">void clear()</div><div class="ttdoc">Clears all security-sensitive state from this cipher. </div><div class="ttdef"><b>Definition:</b> <a href="GCM_8cpp_source.html#l00256">GCM.cpp:256</a></div></div>
 <div class="ttc" id="classGCMCommon_html_a70229be2fe2274c4109fe7511481075a"><div class="ttname"><a href="classGCMCommon.html#a70229be2fe2274c4109fe7511481075a">GCMCommon::checkTag</a></div><div class="ttdeci">bool checkTag(const void *tag, size_t len)</div><div class="ttdoc">Finalizes the decryption process and checks the authentication tag. </div><div class="ttdef"><b>Definition:</b> <a href="GCM_8cpp_source.html#l00245">GCM.cpp:245</a></div></div>
@@ -352,7 +352,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Dec 18 2015 05:39:07 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Jan 16 2016 09:47:01 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

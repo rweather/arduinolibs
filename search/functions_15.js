@@ -22,7 +22,6 @@ var searchData=
   ['_7eofbcommon',['~OFBCommon',['../classOFBCommon.html#aae7435157e51bf977d3481e94e17ae01',1,'OFBCommon']]],
   ['_7epoly1305',['~Poly1305',['../classPoly1305.html#ac021b5ebbc123fa4c0ee36330472c25d',1,'Poly1305']]],
   ['_7erngclass',['~RNGClass',['../classRNGClass.html#aef3ee2fb14a39caf650dc90a0226dd31',1,'RNGClass']]],
-  ['_7esha1',['~SHA1',['../classSHA1.html#a8485d7c14fa29286cd3c7acfe438606d',1,'SHA1']]],
   ['_7esha256',['~SHA256',['../classSHA256.html#ad82f2925b612de315b289017e023a73b',1,'SHA256']]],
   ['_7esha3_5f256',['~SHA3_256',['../classSHA3__256.html#a835d09eb88d477cd162330c493cbdf64',1,'SHA3_256']]],
   ['_7esha3_5f512',['~SHA3_512',['../classSHA3__512.html#a327005ebc8c0768118ec7d334c583f85',1,'SHA3_512']]],

@@ -135,26 +135,25 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        limb_t h[(16 / <span class="keyword">sizeof</span>(limb_t)) + 1];</div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        limb_t c[(16 / <span class="keyword">sizeof</span>(limb_t)) + 1];</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        limb_t r[(16 / <span class="keyword">sizeof</span>(limb_t))];</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        limb_t t[(32 / <span class="keyword">sizeof</span>(limb_t)) + 1];</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        uint8_t chunkSize;</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    } state;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <span class="keywordtype">void</span> processChunk();</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;};</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        uint8_t chunkSize;</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    } state;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <span class="keywordtype">void</span> processChunk();</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;};</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="ttc" id="classPoly1305_html"><div class="ttname"><a href="classPoly1305.html">Poly1305</a></div><div class="ttdoc">Poly1305 message authenticator. </div><div class="ttdef"><b>Definition:</b> <a href="Poly1305_8h_source.html#l00029">Poly1305.h:29</a></div></div>
 <div class="ttc" id="classPoly1305_html_aab3fa6c5f6fa7d9ca6c82bead38f499c"><div class="ttname"><a href="classPoly1305.html#aab3fa6c5f6fa7d9ca6c82bead38f499c">Poly1305::finalize</a></div><div class="ttdeci">void finalize(const void *nonce, void *token, size_t len)</div><div class="ttdoc">Finalizes the authentication process and returns the token. </div><div class="ttdef"><b>Definition:</b> <a href="Poly1305_8cpp_source.html#l00179">Poly1305.cpp:179</a></div></div>
 <div class="ttc" id="classPoly1305_html_a544839403d0a19300c239708bc1e6ed8"><div class="ttname"><a href="classPoly1305.html#a544839403d0a19300c239708bc1e6ed8">Poly1305::reset</a></div><div class="ttdeci">void reset(const void *key)</div><div class="ttdoc">Resets the Poly1305 message authenticator for a new session. </div><div class="ttdef"><b>Definition:</b> <a href="Poly1305_8cpp_source.html#l00110">Poly1305.cpp:110</a></div></div>
 <div class="ttc" id="classPoly1305_html_ae4e0b647ff93f501bd01459b1616557c"><div class="ttname"><a href="classPoly1305.html#ae4e0b647ff93f501bd01459b1616557c">Poly1305::update</a></div><div class="ttdeci">void update(const void *data, size_t len)</div><div class="ttdoc">Updates the message authenticator with more data. </div><div class="ttdef"><b>Definition:</b> <a href="Poly1305_8cpp_source.html#l00142">Poly1305.cpp:142</a></div></div>
-<div class="ttc" id="classPoly1305_html_aaea2f40c1f22dcc2f8f690c793fb4388"><div class="ttname"><a href="classPoly1305.html#aaea2f40c1f22dcc2f8f690c793fb4388">Poly1305::pad</a></div><div class="ttdeci">void pad()</div><div class="ttdoc">Pads the input stream with zero bytes to a multiple of 16. </div><div class="ttdef"><b>Definition:</b> <a href="Poly1305_8cpp_source.html#l00250">Poly1305.cpp:250</a></div></div>
+<div class="ttc" id="classPoly1305_html_aaea2f40c1f22dcc2f8f690c793fb4388"><div class="ttname"><a href="classPoly1305.html#aaea2f40c1f22dcc2f8f690c793fb4388">Poly1305::pad</a></div><div class="ttdeci">void pad()</div><div class="ttdoc">Pads the input stream with zero bytes to a multiple of 16. </div><div class="ttdef"><b>Definition:</b> <a href="Poly1305_8cpp_source.html#l00251">Poly1305.cpp:251</a></div></div>
 <div class="ttc" id="classPoly1305_html_ac021b5ebbc123fa4c0ee36330472c25d"><div class="ttname"><a href="classPoly1305.html#ac021b5ebbc123fa4c0ee36330472c25d">Poly1305::~Poly1305</a></div><div class="ttdeci">~Poly1305()</div><div class="ttdoc">Destroys this Poly1305 message authenticator after clearing all sensitive information. </div><div class="ttdef"><b>Definition:</b> <a href="Poly1305_8cpp_source.html#l00098">Poly1305.cpp:98</a></div></div>
 <div class="ttc" id="classPoly1305_html_a7d62e7cd2d67f1c72142580036066fa2"><div class="ttname"><a href="classPoly1305.html#a7d62e7cd2d67f1c72142580036066fa2">Poly1305::Poly1305</a></div><div class="ttdeci">Poly1305()</div><div class="ttdoc">Constructs a new Poly1305 message authenticator. </div><div class="ttdef"><b>Definition:</b> <a href="Poly1305_8cpp_source.html#l00089">Poly1305.cpp:89</a></div></div>
-<div class="ttc" id="classPoly1305_html_ae3f3392b9a2bd0f3472e7e50dd7e21dd"><div class="ttname"><a href="classPoly1305.html#ae3f3392b9a2bd0f3472e7e50dd7e21dd">Poly1305::clear</a></div><div class="ttdeci">void clear()</div><div class="ttdoc">Clears the authenticator&#39;s state, removing all sensitive data. </div><div class="ttdef"><b>Definition:</b> <a href="Poly1305_8cpp_source.html#l00264">Poly1305.cpp:264</a></div></div>
+<div class="ttc" id="classPoly1305_html_ae3f3392b9a2bd0f3472e7e50dd7e21dd"><div class="ttname"><a href="classPoly1305.html#ae3f3392b9a2bd0f3472e7e50dd7e21dd">Poly1305::clear</a></div><div class="ttdeci">void clear()</div><div class="ttdoc">Clears the authenticator&#39;s state, removing all sensitive data. </div><div class="ttdef"><b>Definition:</b> <a href="Poly1305_8cpp_source.html#l00265">Poly1305.cpp:265</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Dec 18 2015 05:39:07 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Jan 16 2016 09:47:01 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

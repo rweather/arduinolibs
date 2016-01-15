@@ -278,43 +278,44 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;<span class="keywordtype">void</span> BLAKE2b::processChunk(uint64_t f0)</div>
 <div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;{</div>
 <div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;    uint8_t index;</div>
-<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;</div>
-<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;    <span class="comment">// Byte-swap the message buffer into little-endian if necessary.</span></div>
-<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;<span class="preprocessor">#if !defined(CRYPTO_LITTLE_ENDIAN)</span></div>
-<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;<span class="preprocessor"></span>    <span class="keywordflow">for</span> (index = 0; index &lt; 16; ++index)</div>
-<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;        state.m[index] = le64toh(state.m[index]);</div>
-<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;    <span class="comment">// Format the block to be hashed.</span></div>
-<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;    memcpy(state.v, state.h, <span class="keyword">sizeof</span>(state.h));</div>
-<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;    state.v[8]  = BLAKE2b_IV0;</div>
-<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;    state.v[9]  = BLAKE2b_IV1;</div>
-<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;    state.v[10] = BLAKE2b_IV2;</div>
-<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;    state.v[11] = BLAKE2b_IV3;</div>
-<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;    state.v[12] = BLAKE2b_IV4 ^ state.lengthLow;</div>
-<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;    state.v[13] = BLAKE2b_IV5 ^ state.lengthHigh;</div>
-<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;    state.v[14] = BLAKE2b_IV6 ^ f0;</div>
-<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;    state.v[15] = BLAKE2b_IV7;</div>
-<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;</div>
-<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;    <span class="comment">// Perform the 12 BLAKE2b rounds.</span></div>
-<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;    <span class="keywordflow">for</span> (index = 0; index &lt; 12; ++index) {</div>
-<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;        <span class="comment">// Column round.</span></div>
-<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;        quarterRound(state.v[0], state.v[4], state.v[8],  state.v[12], 0);</div>
-<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;        quarterRound(state.v[1], state.v[5], state.v[9],  state.v[13], 1);</div>
-<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;        quarterRound(state.v[2], state.v[6], state.v[10], state.v[14], 2);</div>
-<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;        quarterRound(state.v[3], state.v[7], state.v[11], state.v[15], 3);</div>
-<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;</div>
-<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;        <span class="comment">// Diagonal round.</span></div>
-<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;        quarterRound(state.v[0], state.v[5], state.v[10], state.v[15], 4);</div>
-<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;        quarterRound(state.v[1], state.v[6], state.v[11], state.v[12], 5);</div>
-<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;        quarterRound(state.v[2], state.v[7], state.v[8],  state.v[13], 6);</div>
-<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;        quarterRound(state.v[3], state.v[4], state.v[9],  state.v[14], 7);</div>
-<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;    }</div>
-<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;</div>
-<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;    <span class="comment">// Combine the new and old hash values.</span></div>
-<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;    <span class="keywordflow">for</span> (index = 0; index &lt; 8; ++index)</div>
-<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;        state.h[index] ^= (state.v[index] ^ state.v[index + 8]);</div>
-<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;}</div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;    uint64_t v[16];</div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;</div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;    <span class="comment">// Byte-swap the message buffer into little-endian if necessary.</span></div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;<span class="preprocessor">#if !defined(CRYPTO_LITTLE_ENDIAN)</span></div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;<span class="preprocessor"></span>    <span class="keywordflow">for</span> (index = 0; index &lt; 16; ++index)</div>
+<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;        state.m[index] = le64toh(state.m[index]);</div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;    <span class="comment">// Format the block to be hashed.</span></div>
+<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;    memcpy(v, state.h, <span class="keyword">sizeof</span>(state.h));</div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;    v[8]  = BLAKE2b_IV0;</div>
+<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;    v[9]  = BLAKE2b_IV1;</div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;    v[10] = BLAKE2b_IV2;</div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;    v[11] = BLAKE2b_IV3;</div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;    v[12] = BLAKE2b_IV4 ^ state.lengthLow;</div>
+<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;    v[13] = BLAKE2b_IV5 ^ state.lengthHigh;</div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;    v[14] = BLAKE2b_IV6 ^ f0;</div>
+<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;    v[15] = BLAKE2b_IV7;</div>
+<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;</div>
+<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;    <span class="comment">// Perform the 12 BLAKE2b rounds.</span></div>
+<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;    <span class="keywordflow">for</span> (index = 0; index &lt; 12; ++index) {</div>
+<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;        <span class="comment">// Column round.</span></div>
+<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;        quarterRound(v[0], v[4], v[8],  v[12], 0);</div>
+<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;        quarterRound(v[1], v[5], v[9],  v[13], 1);</div>
+<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;        quarterRound(v[2], v[6], v[10], v[14], 2);</div>
+<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;        quarterRound(v[3], v[7], v[11], v[15], 3);</div>
+<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;</div>
+<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;        <span class="comment">// Diagonal round.</span></div>
+<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;        quarterRound(v[0], v[5], v[10], v[15], 4);</div>
+<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;        quarterRound(v[1], v[6], v[11], v[12], 5);</div>
+<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;        quarterRound(v[2], v[7], v[8],  v[13], 6);</div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;        quarterRound(v[3], v[4], v[9],  v[14], 7);</div>
+<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;    }</div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;</div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;    <span class="comment">// Combine the new and old hash values.</span></div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;    <span class="keywordflow">for</span> (index = 0; index &lt; 8; ++index)</div>
+<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;        state.h[index] ^= (v[index] ^ v[index + 8]);</div>
+<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;}</div>
 <div class="ttc" id="classBLAKE2b_html_a0cd8146b7868bd0f4c24a3856f106d17"><div class="ttname"><a href="classBLAKE2b.html#a0cd8146b7868bd0f4c24a3856f106d17">BLAKE2b::finalize</a></div><div class="ttdeci">void finalize(void *hash, size_t len)</div><div class="ttdoc">Finalizes the hashing process and returns the hash. </div><div class="ttdef"><b>Definition:</b> <a href="BLAKE2b_8cpp_source.html#l00143">BLAKE2b.cpp:143</a></div></div>
 <div class="ttc" id="classBLAKE2b_html_a917beae2ca6e9831a35717a526089e8a"><div class="ttname"><a href="classBLAKE2b.html#a917beae2ca6e9831a35717a526089e8a">BLAKE2b::reset</a></div><div class="ttdeci">void reset()</div><div class="ttdoc">Resets the hash ready for a new hashing process. </div><div class="ttdef"><b>Definition:</b> <a href="BLAKE2b_8cpp_source.html#l00081">BLAKE2b.cpp:81</a></div></div>
 <div class="ttc" id="classBLAKE2b_html_a21623759bd381285ebf7e75a00c9c8a9"><div class="ttname"><a href="classBLAKE2b.html#a21623759bd381285ebf7e75a00c9c8a9">BLAKE2b::clear</a></div><div class="ttdeci">void clear()</div><div class="ttdoc">Clears the hash state, removing all sensitive data, and then resets the hash ready for a new hashing ...</div><div class="ttdef"><b>Definition:</b> <a href="BLAKE2b_8cpp_source.html#l00159">BLAKE2b.cpp:159</a></div></div>
@@ -330,7 +331,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Dec 18 2015 05:39:07 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Jan 16 2016 09:47:01 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>
