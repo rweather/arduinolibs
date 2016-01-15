@@ -38,7 +38,7 @@
  *
  * Reference: https://blake2.net/
  *
- * \sa BLAKE2s, SHA512
+ * \sa BLAKE2s, SHA512, SHA3_512
  */
 
 /**

@@ -30,14 +30,14 @@
 \li Block cipher modes: CTR, CFB, CBC, OFB, GCM
 \li Stream ciphers: ChaCha
 \li Authenticated encryption with associated data (AEAD): ChaChaPoly, EAX, GCM
-\li Hash algorithms: SHA1, SHA256, SHA512, SHA3_256, SHA3_512, BLAKE2s, BLAKE2b (regular and HMAC modes)
+\li Hash algorithms: SHA256, SHA512, SHA3_256, SHA3_512, BLAKE2s, BLAKE2b (regular and HMAC modes)
 \li Message authenticators: Poly1305, GHASH
 \li Public key algorithms: Curve25519, Ed25519
 \li Random number generation: \link RNGClass RNG\endlink, TransistorNoiseSource, RingOscillatorNoiseSource
 
 All cryptographic algorithms have been optimized for 8-bit Arduino platforms
-like the Uno.  Memory usage is also reduced, particularly for SHA1, SHA256,
-and SHA512 which save 256, 192, and 512 bytes respectively over traditional
+like the Uno.  Memory usage is also reduced, particularly for SHA256
+and SHA512 which save 192 and 512 bytes respectively over traditional
 implementations.  For all algorithms, static sbox tables and the like are
 placed into program memory to further reduce data memory usage.
 
@@ -94,7 +94,6 @@ Ardunino Mega 2560 running at 16 MHz are similar:
 <tr><td>EAX&lt;SpeckLowMemory&gt; (128-bit key)</td><td align="right">75.08us</td><td align="right">75.07us</td><td align="right">1243.66us</td><td align="right">122</td></tr>
 <tr><td colspan="5"> </td></tr>
 <tr><td>Hash Algorithm</td><td align="right">Hashing (per byte)</td><td align="right">Finalization</td><td> </td><td>State Size (bytes)</td></tr>
-<tr><td>SHA1</td><td align="right">21.90us</td><td align="right">1423.28us</td><td align="right"> </td><td align="right">95</td></tr>
 <tr><td>SHA256</td><td align="right">43.85us</td><td align="right">2841.04us</td><td align="right"> </td><td align="right">107</td></tr>
 <tr><td>SHA512</td><td align="right">122.82us</td><td align="right">15953.42us</td><td align="right"> </td><td align="right">211</td></tr>
 <tr><td>SHA3_256</td><td align="right">60.69us</td><td align="right">8180.24us</td><td align="right"> </td><td align="right">205</td></tr>
@@ -103,7 +102,6 @@ Ardunino Mega 2560 running at 16 MHz are similar:
 <tr><td>BLAKE2b</td><td align="right">65.22us</td><td align="right">8375.36us</td><td align="right"> </td><td align="right">211</td></tr>
 <tr><td colspan="5"> </td></tr>
 <tr><td>Authentication Algorithm</td><td align="right">Hashing (per byte)</td><td align="right">Finalization</td><td>Key Setup</td><td>State Size (bytes)</td></tr>
-<tr><td>SHA1 (HMAC mode)</td><td align="right">21.90us</td><td align="right">4296.33us</td><td align="right">1420.24us</td><td align="right">95</td></tr>
 <tr><td>SHA256 (HMAC mode)</td><td align="right">43.85us</td><td align="right">8552.61us</td><td align="right">2836.49us</td><td align="right">107</td></tr>
 <tr><td>BLAKE2s (HMAC mode)</td><td align="right">20.65us</td><td align="right">4055.56us</td><td align="right">1350.00us</td><td align="right">107</td></tr>
 <tr><td>Poly1305</td><td align="right">26.26us</td><td align="right">489.11us</td><td align="right">17.06us</td><td align="right">53</td></tr>
@@ -151,7 +149,6 @@ All figures are for the Arduino Due running at 84 MHz:
 <tr><td>EAX&lt;SpeckLowMemory&gt; (128-bit key)</td><td align="right">6.29us</td><td align="right">6.29us</td><td align="right">106.60us</td><td align="right">144</td></tr>
 <tr><td colspan="5"> </td></tr>
 <tr><td>Hash Algorithm</td><td align="right">Hashing (per byte)</td><td align="right">Finalization</td><td> </td><td>State Size (bytes)</td></tr>
-<tr><td>SHA1</td><td align="right">0.94us</td><td align="right">62.55us</td><td align="right"> </td><td align="right">112</td></tr>
 <tr><td>SHA256</td><td align="right">1.15us</td><td align="right">76.60us</td><td align="right"> </td><td align="right">120</td></tr>
 <tr><td>SHA512</td><td align="right">2.87us</td><td align="right">370.37us</td><td align="right"> </td><td align="right">224</td></tr>
 <tr><td>SHA3_256</td><td align="right">5.64us</td><td align="right">735.29us</td><td align="right"> </td><td align="right">224</td></tr>
@@ -160,7 +157,6 @@ All figures are for the Arduino Due running at 84 MHz:
 <tr><td>BLAKE2b</td><td align="right">1.29us</td><td align="right">165.28us</td><td align="right"> </td><td align="right">224</td></tr>
 <tr><td colspan="5"> </td></tr>
 <tr><td>Authentication Algorithm</td><td align="right">Hashing (per byte)</td><td align="right">Finalization</td><td>Key Setup</td><td>State Size (bytes)</td></tr>
-<tr><td>SHA1 (HMAC mode)</td><td align="right">0.94us</td><td align="right">193.92us</td><td align="right">65.09us</td><td align="right">112</td></tr>
 <tr><td>SHA256 (HMAC mode)</td><td align="right">1.15us</td><td align="right">238.98us</td><td align="right">80.44us</td><td align="right">120</td></tr>
 <tr><td>BLAKE2s (HMAC mode)</td><td align="right">0.72us</td><td align="right">157.75us</td><td align="right">57.18us</td><td align="right">120</td></tr>
 <tr><td>Poly1305</td><td align="right">0.81us</td><td align="right">19.01us</td><td align="right">2.57us</td><td align="right">60</td></tr>
