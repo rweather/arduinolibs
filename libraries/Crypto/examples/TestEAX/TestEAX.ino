@@ -233,6 +233,7 @@ static TestVector const testVectorEAX10 PROGMEM = {
 TestVector testVector;
 
 EAX<AES128> *eax;
+EAX<AES256> *eax256;
 EAX<Speck> *eaxSpeck;
 EAX<SpeckLowMemory> *eaxSpeckLowMemory;
 
@@ -353,7 +354,7 @@ void perfCipherSetKey(AuthenticatedCipher *cipher, const struct TestVector *test
 
     start = micros();
     for (count = 0; count < 1000; ++count) {
-        cipher->setKey(test->key, 16);
+        cipher->setKey(test->key, cipher->keySize());
         cipher->setIV(test->iv, test->ivsize);
     }
     elapsed = micros() - start;
@@ -378,7 +379,7 @@ void perfCipherEncrypt(AuthenticatedCipher *cipher, const struct TestVector *tes
     Serial.print(test->name);
     Serial.print(" Encrypt ... ");
 
-    cipher->setKey(test->key, 16);
+    cipher->setKey(test->key, cipher->keySize());
     cipher->setIV(test->iv, test->ivsize);
     start = micros();
     for (count = 0; count < 500; ++count) {
@@ -406,7 +407,7 @@ void perfCipherDecrypt(AuthenticatedCipher *cipher, const struct TestVector *tes
     Serial.print(test->name);
     Serial.print(" Decrypt ... ");
 
-    cipher->setKey(test->key, 16);
+    cipher->setKey(test->key, cipher->keySize());
     cipher->setIV(test->iv, test->ivsize);
     start = micros();
     for (count = 0; count < 500; ++count) {
@@ -434,7 +435,7 @@ void perfCipherAddAuthData(AuthenticatedCipher *cipher, const struct TestVector 
     Serial.print(test->name);
     Serial.print(" AddAuthData ... ");
 
-    cipher->setKey(test->key, 16);
+    cipher->setKey(test->key, cipher->keySize());
     cipher->setIV(test->iv, test->ivsize);
     start = micros();
     memset(buffer, 0xBA, 128);
@@ -463,7 +464,7 @@ void perfCipherComputeTag(AuthenticatedCipher *cipher, const struct TestVector *
     Serial.print(test->name);
     Serial.print(" ComputeTag ... ");
 
-    cipher->setKey(test->key, 16);
+    cipher->setKey(test->key, cipher->keySize());
     cipher->setIV(test->iv, test->ivsize);
     start = micros();
     for (count = 0; count < 1000; ++count) {
@@ -495,6 +496,8 @@ void setup()
     Serial.println("State Sizes:");
     Serial.print("EAX<AES128> ... ");
     Serial.println(sizeof(*eax));
+    Serial.print("EAX<AES256> ... ");
+    Serial.println(sizeof(*eax256));
     Serial.print("EAX<Speck> ... ");
     Serial.println(sizeof(*eaxSpeck));
     Serial.print("EAX<SpeckLowMemory> ... ");
@@ -520,6 +523,10 @@ void setup()
     perfCipher(eax, &testVectorEAX1, "AES-128");
     Serial.println();
     delete eax;
+    eax256 = new EAX<AES256>();
+    perfCipher(eax, &testVectorEAX1, "AES-256");
+    Serial.println();
+    delete eax256;
     eaxSpeck = new EAX<Speck>();
     perfCipher(eaxSpeck, &testVectorEAX1, "Speck");
     Serial.println();

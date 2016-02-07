@@ -59,7 +59,7 @@ private:
         uint8_t stream[16];
         uint8_t tag[16];
         uint8_t hash[16];
-        uint8_t b[16];
+        uint32_t b[4];
         uint8_t encPosn;
         uint8_t authPosn;
         uint8_t authMode;

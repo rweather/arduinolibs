@@ -21,8 +21,8 @@
  */
 
 #include "GHASH.h"
+#include "GF128.h"
 #include "Crypto.h"
-#include "utility/EndianUtil.h"
 #include <string.h>
 
 /**
@@ -66,16 +66,7 @@ GHASH::~GHASH()
  */
 void GHASH::reset(const void *key)
 {
-    // Copy the key into H and convert from big endian to host order.
-    memcpy(state.H, key, 16);
-#if defined(CRYPTO_LITTLE_ENDIAN)
-    state.H[0] = be32toh(state.H[0]);
-    state.H[1] = be32toh(state.H[1]);
-    state.H[2] = be32toh(state.H[2]);
-    state.H[3] = be32toh(state.H[3]);
-#endif
-
-    // Reset the hash.
+    GF128::mulInit(state.H, key);
     memset(state.Y, 0, sizeof(state.Y));
     state.posn = 0;
 }
@@ -106,7 +97,7 @@ void GHASH::update(const void *data, size_t len)
         len -= size;
         d += size;
         if (state.posn == 16) {
-            processChunk();
+            GF128::mul(state.Y, state.H);
             state.posn = 0;
         }
     }
@@ -148,7 +139,7 @@ void GHASH::pad()
     if (state.posn != 0) {
         // Padding involves XOR'ing the rest of state.Y with zeroes,
         // which does nothing.  Immediately process the next chunk.
-        processChunk();
+        GF128::mul(state.Y, state.H);
         state.posn = 0;
     }
 }
@@ -159,46 +150,4 @@ void GHASH::pad()
 void GHASH::clear()
 {
     clean(state);
-}
-
-void GHASH::processChunk()
-{
-    uint32_t Z0 = 0;            // Z = 0
-    uint32_t Z1 = 0;
-    uint32_t Z2 = 0;
-    uint32_t Z3 = 0;
-    uint32_t V0 = state.H[0];   // V = H
-    uint32_t V1 = state.H[1];
-    uint32_t V2 = state.H[2];
-    uint32_t V3 = state.H[3];
-
-    // Multiply Z by V for the set bits in Y, starting at the top.
-    // This is a very simple bit by bit version that may not be very
-    // fast but it should be resistant to cache timing attacks.
-    for (uint8_t posn = 0; posn < 16; ++posn) {
-        uint8_t value = ((const uint8_t *)state.Y)[posn];
-        for (uint8_t bit = 0; bit < 8; ++bit, value <<= 1) {
-            // Extract the high bit of "value" and turn it into a mask.
-            uint32_t mask = (~((uint32_t)(value >> 7))) + 1;
-
-            // XOR V with Z if the bit is 1.
-            Z0 ^= (V0 & mask);
-            Z1 ^= (V1 & mask);
-            Z2 ^= (V2 & mask);
-            Z3 ^= (V3 & mask);
-
-            // Rotate V right by 1 bit.
-            mask = ((~(V3 & 0x01)) + 1) & 0xE1000000;
-            V3 = (V3 >> 1) | (V2 << 31);
-            V2 = (V2 >> 1) | (V1 << 31);
-            V1 = (V1 >> 1) | (V0 << 31);
-            V0 = (V0 >> 1) ^ mask;
-        }
-    }
-
-    // We have finished the block so copy Z into Y and byte-swap.
-    state.Y[0] = htobe32(Z0);
-    state.Y[1] = htobe32(Z1);
-    state.Y[2] = htobe32(Z2);
-    state.Y[3] = htobe32(Z3);
 }

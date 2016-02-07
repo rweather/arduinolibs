@@ -21,6 +21,7 @@
  */
 
 #include "EAX.h"
+#include "GF128.h"
 #include "Crypto.h"
 #include <string.h>
 
@@ -145,19 +146,6 @@ void EAXCommon::clear()
     clean(state);
 }
 
-// Doubles a 128-bit value in the GF(2^128) field.
-static void gfDouble(uint8_t value[16])
-{
-    uint16_t temp = 0;
-    for (uint8_t index = 16; index > 0; ) {
-        --index;
-        temp |= (((uint16_t)(value[index])) << 1);
-        value[index] = (uint8_t)temp;
-        temp >>= 8;
-    }
-    value[15] ^= (uint8_t)((-temp) & 0x87);
-}
-
 /**
  * \brief Initialises the first OMAC hashing context and creates the B value.
  *
@@ -175,7 +163,7 @@ void EAXCommon::omacInitFirst(uint8_t omac[16])
     // Generate the B value from the encrypted block of zeroes.
     // We will need this later when finalising the OMAC hashes.
     memcpy(state.b, omac, 16);
-    gfDouble(state.b);
+    GF128::dblEAX(state.b);
 }
 
 /**
@@ -230,17 +218,17 @@ void EAXCommon::omacFinal(uint8_t omac[16])
     // Apply padding if necessary.
     if (state.authPosn != 16) {
         // Need padding: XOR with P = 2 * B.
-        uint8_t p[16];
+        uint32_t p[4];
         memcpy(p, state.b, 16);
-        gfDouble(p);
+        GF128::dblEAX(p);
         omac[state.authPosn] ^= 0x80;
         for (uint8_t index = 0; index < 16; ++index)
-            omac[index] ^= p[index];
+            omac[index] ^= ((const uint8_t *)p)[index];
         clean(p);
     } else {
         // No padding necessary: XOR with B.
         for (uint8_t index = 0; index < 16; ++index)
-            omac[index] ^= state.b[index];
+            omac[index] ^= ((const uint8_t *)(state.b))[index];
     }
 
     // Encrypt the hash to get the final OMAC value.

@@ -26,9 +26,18 @@ This example runs tests on the GCM implementation to verify correct behaviour.
 
 #include <Crypto.h>
 #include <AES.h>
+#include <Speck.h>
+#include <SpeckLowMemory.h>
 #include <GCM.h>
 #include <string.h>
 #include <avr/pgmspace.h>
+
+// There isn't enough memory to test both AES and Speck on the Uno,
+// so disable Speck testing on AVR platforms unless explicitly enabled.
+// When enabled, some of the AES tests are disabled to reclaim memory.
+#if defined(__AVR__)
+//#define TEST_SPECK 1
+#endif
 
 #define MAX_PLAINTEXT_LEN 64
 
@@ -65,6 +74,7 @@ static TestVector const testVectorGCM1 PROGMEM = {
     .tagsize     = 16,
     .ivsize      = 12
 };
+#ifndef TEST_SPECK
 static TestVector const testVectorGCM2 PROGMEM = {
     .name        = "AES-128 GCM #2",
     .key         = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
@@ -176,6 +186,7 @@ static TestVector const testVectorGCM5 PROGMEM = {
     .tagsize     = 16,
     .ivsize      = 8
 };
+#endif // !TEST_SPECK
 static TestVector const testVectorGCM10 PROGMEM = {
     .name        = "AES-192 GCM #10",
     .key         = {0xfe, 0xff, 0xe9, 0x92, 0x86, 0x65, 0x73, 0x1c,
@@ -249,6 +260,8 @@ TestVector testVector;
 GCM<AES128> *gcmaes128 = 0;
 GCM<AES192> *gcmaes192 = 0;
 GCM<AES256> *gcmaes256 = 0;
+GCM<Speck> *gcmspeck = 0;
+GCM<SpeckLowMemory> *gcmspecklm = 0;
 
 byte buffer[128];
 
@@ -348,7 +361,7 @@ void testCipher(AuthenticatedCipher *cipher, const struct TestVector *test)
         Serial.println("Failed");
 }
 
-void perfCipherSetKey(AuthenticatedCipher *cipher, const struct TestVector *test)
+void perfCipherSetKey(AuthenticatedCipher *cipher, const struct TestVector *test, const char *name)
 {
     unsigned long start;
     unsigned long elapsed;
@@ -357,7 +370,7 @@ void perfCipherSetKey(AuthenticatedCipher *cipher, const struct TestVector *test
     memcpy_P(&testVector, test, sizeof(TestVector));
     test = &testVector;
 
-    Serial.print(test->name);
+    Serial.print(name);
     Serial.print(" SetKey ... ");
 
     start = micros();
@@ -373,7 +386,7 @@ void perfCipherSetKey(AuthenticatedCipher *cipher, const struct TestVector *test
     Serial.println(" per second");
 }
 
-void perfCipherEncrypt(AuthenticatedCipher *cipher, const struct TestVector *test)
+void perfCipherEncrypt(AuthenticatedCipher *cipher, const struct TestVector *test, const char *name)
 {
     unsigned long start;
     unsigned long elapsed;
@@ -382,7 +395,7 @@ void perfCipherEncrypt(AuthenticatedCipher *cipher, const struct TestVector *tes
     memcpy_P(&testVector, test, sizeof(TestVector));
     test = &testVector;
 
-    Serial.print(test->name);
+    Serial.print(name);
     Serial.print(" Encrypt ... ");
 
     cipher->setKey(test->key, cipher->keySize());
@@ -399,7 +412,7 @@ void perfCipherEncrypt(AuthenticatedCipher *cipher, const struct TestVector *tes
     Serial.println(" bytes per second");
 }
 
-void perfCipherDecrypt(AuthenticatedCipher *cipher, const struct TestVector *test)
+void perfCipherDecrypt(AuthenticatedCipher *cipher, const struct TestVector *test, const char *name)
 {
     unsigned long start;
     unsigned long elapsed;
@@ -408,7 +421,7 @@ void perfCipherDecrypt(AuthenticatedCipher *cipher, const struct TestVector *tes
     memcpy_P(&testVector, test, sizeof(TestVector));
     test = &testVector;
 
-    Serial.print(test->name);
+    Serial.print(name);
     Serial.print(" Decrypt ... ");
 
     cipher->setKey(test->key, cipher->keySize());
@@ -425,7 +438,7 @@ void perfCipherDecrypt(AuthenticatedCipher *cipher, const struct TestVector *tes
     Serial.println(" bytes per second");
 }
 
-void perfCipherAddAuthData(AuthenticatedCipher *cipher, const struct TestVector *test)
+void perfCipherAddAuthData(AuthenticatedCipher *cipher, const struct TestVector *test, const char *name)
 {
     unsigned long start;
     unsigned long elapsed;
@@ -434,7 +447,7 @@ void perfCipherAddAuthData(AuthenticatedCipher *cipher, const struct TestVector 
     memcpy_P(&testVector, test, sizeof(TestVector));
     test = &testVector;
 
-    Serial.print(test->name);
+    Serial.print(name);
     Serial.print(" AddAuthData ... ");
 
     cipher->setKey(test->key, cipher->keySize());
@@ -452,7 +465,7 @@ void perfCipherAddAuthData(AuthenticatedCipher *cipher, const struct TestVector 
     Serial.println(" bytes per second");
 }
 
-void perfCipherComputeTag(AuthenticatedCipher *cipher, const struct TestVector *test)
+void perfCipherComputeTag(AuthenticatedCipher *cipher, const struct TestVector *test, const char *name)
 {
     unsigned long start;
     unsigned long elapsed;
@@ -461,7 +474,7 @@ void perfCipherComputeTag(AuthenticatedCipher *cipher, const struct TestVector *
     memcpy_P(&testVector, test, sizeof(TestVector));
     test = &testVector;
 
-    Serial.print(test->name);
+    Serial.print(name);
     Serial.print(" ComputeTag ... ");
 
     cipher->setKey(test->key, cipher->keySize());
@@ -478,13 +491,13 @@ void perfCipherComputeTag(AuthenticatedCipher *cipher, const struct TestVector *
     Serial.println(" per second");
 }
 
-void perfCipher(AuthenticatedCipher *cipher, const struct TestVector *test)
+void perfCipher(AuthenticatedCipher *cipher, const struct TestVector *test, const char *name)
 {
-    perfCipherSetKey(cipher, test);
-    perfCipherEncrypt(cipher, test);
-    perfCipherDecrypt(cipher, test);
-    perfCipherAddAuthData(cipher, test);
-    perfCipherComputeTag(cipher, test);
+    perfCipherSetKey(cipher, test, name);
+    perfCipherEncrypt(cipher, test, name);
+    perfCipherDecrypt(cipher, test, name);
+    perfCipherAddAuthData(cipher, test, name);
+    perfCipherComputeTag(cipher, test, name);
 }
 
 void setup()
@@ -493,6 +506,7 @@ void setup()
 
     Serial.println();
 
+#ifndef TEST_SPECK
     Serial.println("State Sizes:");
     Serial.print("GCM<AES128> ... ");
     Serial.println(sizeof(*gcmaes128));
@@ -500,15 +514,22 @@ void setup()
     Serial.println(sizeof(*gcmaes192));
     Serial.print("GCM<AES256> ... ");
     Serial.println(sizeof(*gcmaes256));
+    Serial.print("GCM<Speck> ... ");
+    Serial.println(sizeof(*gcmspeck));
+    Serial.print("GCM<SpeckLowMemory> ... ");
+    Serial.println(sizeof(*gcmspecklm));
     Serial.println();
+#endif
 
     Serial.println("Test Vectors:");
     gcmaes128 = new GCM<AES128>();
     testCipher(gcmaes128, &testVectorGCM1);
+#ifndef TEST_SPECK
     testCipher(gcmaes128, &testVectorGCM2);
     testCipher(gcmaes128, &testVectorGCM3);
     testCipher(gcmaes128, &testVectorGCM4);
     testCipher(gcmaes128, &testVectorGCM5);
+#endif
     delete gcmaes128;
     gcmaes192 = new GCM<AES192>();
     testCipher(gcmaes192, &testVectorGCM10);
@@ -520,15 +541,25 @@ void setup()
     Serial.println();
 
     Serial.println("Performance Tests:");
+#ifndef TEST_SPECK
     gcmaes128 = new GCM<AES128>();
-    perfCipher(gcmaes128, &testVectorGCM1);
+    perfCipher(gcmaes128, &testVectorGCM1, testVectorGCM1.name);
     delete gcmaes128;
     gcmaes192 = new GCM<AES192>();
-    perfCipher(gcmaes192, &testVectorGCM10);
+    perfCipher(gcmaes192, &testVectorGCM10, testVectorGCM10.name);
     delete gcmaes192;
     gcmaes256 = new GCM<AES256>();
-    perfCipher(gcmaes256, &testVectorGCM16);
+    perfCipher(gcmaes256, &testVectorGCM16, testVectorGCM16.name);
     delete gcmaes256;
+#endif
+#if defined(TEST_SPECK) || !defined(__AVR__)
+    gcmspeck = new GCM<Speck>();
+    perfCipher(gcmspeck, &testVectorGCM16, "GCM-Speck-256");
+    delete gcmspeck;
+    gcmspecklm = new GCM<SpeckLowMemory>();
+    perfCipher(gcmspecklm, &testVectorGCM16, "GCM-SpeckLowMemory-256");
+    delete gcmspecklm;
+#endif
 }
 
 void loop()

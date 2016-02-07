@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 Southern Storm Software, Pty Ltd.
+ * Copyright (C) 2016 Southern Storm Software, Pty Ltd.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -20,32 +20,22 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-#ifndef CRYPTO_GHASH_h
-#define CRYPTO_GHASH_h
+#ifndef CRYPTO_GF128_h
+#define CRYPTO_GF128_h
 
 #include <inttypes.h>
-#include <stddef.h>
 
-class GHASH
+class GF128
 {
-public:
-    GHASH();
-    ~GHASH();
-
-    void reset(const void *key);
-    void update(const void *data, size_t len);
-    void finalize(void *token, size_t len);
-
-    void pad();
-
-    void clear();
-
 private:
-    struct {
-        uint32_t H[4];
-        uint32_t Y[4];
-        uint8_t posn;
-    } state;
+    GF128() {}
+    ~GF128() {}
+
+public:
+    static void mulInit(uint32_t H[4], const void *key);
+    static void mul(uint32_t Y[4], const uint32_t H[4]);
+    static void dbl(uint32_t V[4]);
+    static void dblEAX(uint32_t V[4]);
 };
 
 #endif

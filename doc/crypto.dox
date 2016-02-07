@@ -86,12 +86,15 @@ Ardunino Mega 2560 running at 16 MHz are similar:
 <tr><td colspan="5"> </td></tr>
 <tr><td>AEAD Algorithm</td><td align="right">Encryption (per byte)</td><td align="right">Decryption (per byte)</td><td>Key Setup</td><td>State Size (bytes)</td></tr>
 <tr><td>ChaChaPoly</td><td align="right">41.20us</td><td align="right">41.19us</td><td align="right">902.36us</td><td align="right">221</td></tr>
-<tr><td>GCM&lt;AES128&gt;</td><td align="right">183.25us</td><td align="right">182.80us</td><td align="right">1272.73us</td><td align="right">284</td></tr>
-<tr><td>GCM&lt;AES192&gt;</td><td align="right">189.92us</td><td align="right">189.47us</td><td align="right">1492.60us</td><td align="right">316</td></tr>
-<tr><td>GCM&lt;AES256&gt;</td><td align="right">196.59us</td><td align="right">196.13us</td><td align="right">1767.33us</td><td align="right">348</td></tr>
-<tr><td>EAX&lt;AES128&gt;</td><td align="right">71.14us</td><td align="right">71.14us</td><td align="right">1329.44us</td><td align="right">268</td></tr>
-<tr><td>EAX&lt;Speck&gt; (128-bit key)</td><td align="right">26.01us</td><td align="right">26.01us</td><td align="right">735.46us</td><td align="right">362</td></tr>
-<tr><td>EAX&lt;SpeckLowMemory&gt; (128-bit key)</td><td align="right">75.08us</td><td align="right">75.07us</td><td align="right">1243.66us</td><td align="right">122</td></tr>
+<tr><td>GCM&lt;AES128&gt;</td><td align="right">109.71us</td><td align="right">109.26us</td><td align="right">1265.69us</td><td align="right">284</td></tr>
+<tr><td>GCM&lt;AES192&gt;</td><td align="right">116.38us</td><td align="right">115.92us</td><td align="right">1485.56us</td><td align="right">316</td></tr>
+<tr><td>GCM&lt;AES256&gt;</td><td align="right">123.04us</td><td align="right">122.59us</td><td align="right">1760.28us</td><td align="right">348</td></tr>
+<tr><td>GCM&lt;Speck&gt; (256-bit key)</td><td align="right">87.78us</td><td align="right">87.32us</td><td align="right">714.41us</td><td align="right">378</td></tr>
+<tr><td>GCM&lt;SpeckLowMemory&gt; (256-bit key)</td><td align="right">114.30us</td><td align="right">113.84us</td><td align="right">1270.32us</td><td align="right">138</td></tr>
+<tr><td>EAX&lt;AES128&gt;</td><td align="right">71.14us</td><td align="right">71.14us</td><td align="right">1311.97us</td><td align="right">268</td></tr>
+<tr><td>EAX&lt;AES256&gt;</td><td align="right">97.80us</td><td align="right">97.80us</td><td align="right">1806.57us</td><td align="right">332</td></tr>
+<tr><td>EAX&lt;Speck&gt; (256-bit key)</td><td align="right">27.27us</td><td align="right">27.26us</td><td align="right">760.74us</td><td align="right">362</td></tr>
+<tr><td>EAX&lt;SpeckLowMemory&gt; (256-bit key)</td><td align="right">80.31us</td><td align="right">80.31us</td><td align="right">1316.60us</td><td align="right">122</td></tr>
 <tr><td colspan="5"> </td></tr>
 <tr><td>Hash Algorithm</td><td align="right">Hashing (per byte)</td><td align="right">Finalization</td><td> </td><td>State Size (bytes)</td></tr>
 <tr><td>SHA256</td><td align="right">43.85us</td><td align="right">2841.04us</td><td align="right"> </td><td align="right">107</td></tr>
@@ -105,7 +108,7 @@ Ardunino Mega 2560 running at 16 MHz are similar:
 <tr><td>SHA256 (HMAC mode)</td><td align="right">43.85us</td><td align="right">8552.61us</td><td align="right">2836.49us</td><td align="right">107</td></tr>
 <tr><td>BLAKE2s (HMAC mode)</td><td align="right">20.65us</td><td align="right">4055.56us</td><td align="right">1350.00us</td><td align="right">107</td></tr>
 <tr><td>Poly1305</td><td align="right">26.26us</td><td align="right">489.11us</td><td align="right">17.06us</td><td align="right">53</td></tr>
-<tr><td>GHASH</td><td align="right">148.14us</td><td align="right">17.09us</td><td align="right">21.87us</td><td align="right">33</td></tr>
+<tr><td>GHASH</td><td align="right">74.59us</td><td align="right">15.91us</td><td align="right">14.79us</td><td align="right">33</td></tr>
 <tr><td colspan="5"> </td></tr>
 <tr><td>Public Key Operation</td><td align="right">Time (per operation)</td><td colspan="3">Comment</td></tr>
 <tr><td>Curve25519::eval()</td><td align="right">3119ms</td><td colspan="3">Raw curve evaluation</td></tr>
@@ -141,12 +144,15 @@ All figures are for the Arduino Due running at 84 MHz:
 <tr><td colspan="5"> </td></tr>
 <tr><td>AEAD Algorithm</td><td align="right">Encryption (per byte)</td><td align="right">Decryption (per byte)</td><td>Key Setup</td><td>State Size (bytes)</td></tr>
 <tr><td>ChaChaPoly</td><td align="right">1.71us</td><td align="right">1.71us</td><td align="right">45.08us</td><td align="right">240</td></tr>
-<tr><td>GCM&lt;AES128&gt;</td><td align="right">10.29us</td><td align="right">10.29us</td><td align="right">223.82us</td><td align="right">312</td></tr>
-<tr><td>GCM&lt;AES192&gt;</td><td align="right">11.50us</td><td align="right">11.51us</td><td align="right">265.62us</td><td align="right">344</td></tr>
-<tr><td>GCM&lt;AES256&gt;</td><td align="right">12.67us</td><td align="right">12.67us</td><td align="right">313.06us</td><td align="right">376</td></tr>
-<tr><td>EAX&lt;AES128&gt;</td><td align="right">12.29us</td><td align="right">12.29us</td><td align="right">236.47us</td><td align="right">280</td></tr>
-<tr><td>EAX&lt;Speck&gt; (128-bit key)</td><td align="right">2.65us</td><td align="right">2.65us</td><td align="right">79.46us</td><td align="right">384</td></tr>
-<tr><td>EAX&lt;SpeckLowMemory&gt; (128-bit key)</td><td align="right">6.29us</td><td align="right">6.29us</td><td align="right">106.60us</td><td align="right">144</td></tr>
+<tr><td>GCM&lt;AES128&gt;</td><td align="right">10.90us</td><td align="right">10.90us</td><td align="right">248.83us</td><td align="right">312</td></tr>
+<tr><td>GCM&lt;AES192&gt;</td><td align="right">12.30us</td><td align="right">12.31us</td><td align="right">296.83us</td><td align="right">344</td></tr>
+<tr><td>GCM&lt;AES256&gt;</td><td align="right">13.66us</td><td align="right">13.67us</td><td align="right">350.25us</td><td align="right">376</td></tr>
+<tr><td>GCM&lt;Speck&gt; (256-bit key)</td><td align="right">5.27us</td><td align="right">5.28us</td><td align="right">75.31us</td><td align="right">408</td></tr>
+<tr><td>GCM&lt;SpeckLowMemory&gt; (256-bit key)</td><td align="right">7.06us</td><td align="right">7.07us</td><td align="right">94.20us</td><td align="right">168</td></tr>
+<tr><td>EAX&lt;AES128&gt;</td><td align="right">12.33us</td><td align="right">12.33us</td><td align="right">234.91us</td><td align="right">280</td></tr>
+<tr><td>EAX&lt;AES256&gt;</td><td align="right">16.99us</td><td align="right">16.99us</td><td align="right">322.92us</td><td align="right">344</td></tr>
+<tr><td>EAX&lt;Speck&gt; (256-bit key)</td><td align="right">2.80us</td><td align="right">2.80us</td><td align="right">81.63us</td><td align="right">384</td></tr>
+<tr><td>EAX&lt;SpeckLowMemory&gt; (256-bit key)</td><td align="right">6.69us</td><td align="right">6.69us</td><td align="right">110.91us</td><td align="right">144</td></tr>
 <tr><td colspan="5"> </td></tr>
 <tr><td>Hash Algorithm</td><td align="right">Hashing (per byte)</td><td align="right">Finalization</td><td> </td><td>State Size (bytes)</td></tr>
 <tr><td>SHA256</td><td align="right">1.15us</td><td align="right">76.60us</td><td align="right"> </td><td align="right">120</td></tr>
@@ -160,7 +166,7 @@ All figures are for the Arduino Due running at 84 MHz:
 <tr><td>SHA256 (HMAC mode)</td><td align="right">1.15us</td><td align="right">238.98us</td><td align="right">80.44us</td><td align="right">120</td></tr>
 <tr><td>BLAKE2s (HMAC mode)</td><td align="right">0.72us</td><td align="right">157.75us</td><td align="right">57.18us</td><td align="right">120</td></tr>
 <tr><td>Poly1305</td><td align="right">0.81us</td><td align="right">19.01us</td><td align="right">2.57us</td><td align="right">60</td></tr>
-<tr><td>GHASH</td><td align="right">4.37us</td><td align="right">1.50us</td><td align="right">4.37us</td><td align="right">36</td></tr>
+<tr><td>GHASH</td><td align="right">4.47us</td><td align="right">1.52us</td><td align="right">2.60us</td><td align="right">36</td></tr>
 <tr><td colspan="5"> </td></tr>
 <tr><td>Public Key Operation</td><td align="right">Time (per operation)</td><td colspan="3">Comment</td></tr>
 <tr><td>Curve25519::eval()</td><td align="right">103ms</td><td colspan="3">Raw curve evaluation</td></tr>
