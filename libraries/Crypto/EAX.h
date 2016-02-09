@@ -25,6 +25,7 @@
 
 #include "AuthenticatedCipher.h"
 #include "BlockCipher.h"
+#include "OMAC.h"
 
 class EAXCommon : public AuthenticatedCipher
 {
@@ -50,25 +51,21 @@ public:
 
 protected:
     EAXCommon();
-    void setBlockCipher(BlockCipher *cipher) { blockCipher = cipher; }
+    void setBlockCipher(BlockCipher *cipher)
+    {
+        omac.setBlockCipher(cipher);
+    }
 
 private:
-    BlockCipher *blockCipher;
     struct {
         uint8_t counter[16];
         uint8_t stream[16];
         uint8_t tag[16];
         uint8_t hash[16];
-        uint32_t b[4];
         uint8_t encPosn;
-        uint8_t authPosn;
         uint8_t authMode;
     } state;
-
-    void omacInitFirst(uint8_t omac[16]);
-    void omacInit(uint8_t omac[16], uint8_t t);
-    void omacUpdate(uint8_t omac[16], const uint8_t *data, size_t len);
-    void omacFinal(uint8_t omac[16]);
+    OMAC omac;
 
     void closeAuthData();
     void encryptCTR(uint8_t *output, const uint8_t *input, size_t len);

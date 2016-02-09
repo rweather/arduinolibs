@@ -21,7 +21,6 @@
  */
 
 #include "EAX.h"
-#include "GF128.h"
 #include "Crypto.h"
 #include <string.h>
 
@@ -42,10 +41,8 @@
  * This constructor must be followed by a call to setBlockCipher().
  */
 EAXCommon::EAXCommon()
-    : blockCipher(0)
 {
     state.encPosn = 0;
-    state.authPosn = 0;
     state.authMode = 0;
 }
 
@@ -56,7 +53,7 @@ EAXCommon::~EAXCommon()
 
 size_t EAXCommon::keySize() const
 {
-    return blockCipher->keySize();
+    return omac.blockCipher()->keySize();
 }
 
 size_t EAXCommon::ivSize() const
@@ -73,7 +70,7 @@ size_t EAXCommon::tagSize() const
 
 bool EAXCommon::setKey(const uint8_t *key, size_t len)
 {
-    return blockCipher->setKey(key, len);
+    return omac.blockCipher()->setKey(key, len);
 }
 
 bool EAXCommon::setIV(const uint8_t *iv, size_t len)
@@ -83,16 +80,16 @@ bool EAXCommon::setIV(const uint8_t *iv, size_t len)
         return false;
 
     // Hash the IV to create the initial nonce for CTR mode.  Also creates B.
-    omacInitFirst(state.counter);
-    omacUpdate(state.counter, iv, len);
-    omacFinal(state.counter);
+    omac.initFirst(state.counter);
+    omac.update(state.counter, iv, len);
+    omac.finalize(state.counter);
 
     // The tag is initially the nonce value.  Will be XOR'ed with
     // the hash of the authenticated and encrypted data later.
     memcpy(state.tag, state.counter, 16);
 
     // Start the hashing context for the authenticated data.
-    omacInit(state.hash, 1);
+    omac.initNext(state.hash, 1);
     state.encPosn = 16;
     state.authMode = 1;
 
@@ -105,21 +102,21 @@ void EAXCommon::encrypt(uint8_t *output, const uint8_t *input, size_t len)
     if (state.authMode)
         closeAuthData();
     encryptCTR(output, input, len);
-    omacUpdate(state.hash, output, len);
+    omac.update(state.hash, output, len);
 }
 
 void EAXCommon::decrypt(uint8_t *output, const uint8_t *input, size_t len)
 {
     if (state.authMode)
         closeAuthData();
-    omacUpdate(state.hash, input, len);
+    omac.update(state.hash, input, len);
     encryptCTR(output, input, len);
 }
 
 void EAXCommon::addAuthData(const void *data, size_t len)
 {
     if (state.authMode)
-        omacUpdate(state.hash, (const uint8_t *)data, len);
+        omac.update(state.hash, (const uint8_t *)data, len);
 }
 
 void EAXCommon::computeTag(void *tag, size_t len)
@@ -147,108 +144,19 @@ void EAXCommon::clear()
 }
 
 /**
- * \brief Initialises the first OMAC hashing context and creates the B value.
- *
- * \param omac The OMAC hashing context.
- */
-void EAXCommon::omacInitFirst(uint8_t omac[16])
-{
-    // Start the OMAC context for the nonce.  We assume that the
-    // data that follows will be at least 1 byte in length so that
-    // we can encrypt the zeroes now to derive the B value.
-    memset(omac, 0, 16);
-    blockCipher->encryptBlock(omac, omac);
-    state.authPosn = 0;
-
-    // Generate the B value from the encrypted block of zeroes.
-    // We will need this later when finalising the OMAC hashes.
-    memcpy(state.b, omac, 16);
-    GF128::dblEAX(state.b);
-}
-
-/**
- * \brief Initialises an OMAC hashing context.
- *
- * \param omac The OMAC hashing context.
- * \param t The tag value indicating which OMAC calculation we are doing.
- */
-void EAXCommon::omacInit(uint8_t omac[16], uint8_t t)
-{
-    memset(omac, 0, 15);
-    omac[15] = t;
-    state.authPosn = 16;
-}
-
-/**
- * \brief Updates an OMAC hashing context with more data.
- *
- * \param omac The OMAC hashing context.
- * \param data Points to the data to be hashed.
- * \parm len The number of bytes to be hashed.
- */
-void EAXCommon::omacUpdate(uint8_t omac[16], const uint8_t *data, size_t len)
-{
-    while (len > 0) {
-        // Encrypt the current block if it is already full.
-        if (state.authPosn == 16) {
-            blockCipher->encryptBlock(omac, omac);
-            state.authPosn = 0;
-        }
-
-        // XOR the incoming data with the current block.
-        uint8_t size = 16 - state.authPosn;
-        if (size > len)
-            size = (uint8_t)len;
-        for (uint8_t index = 0; index < size; ++index)
-            omac[(state.authPosn)++] ^= data[index];
-
-        // Move onto the next block.
-        len -= size;
-        data += size;
-    }
-}
-
-/**
- * \brief Finalises an OMAC hashing context.
- *
- * \param omac The OMAC hashing context on entry, the final OMAC value on exit.
- */
-void EAXCommon::omacFinal(uint8_t omac[16])
-{
-    // Apply padding if necessary.
-    if (state.authPosn != 16) {
-        // Need padding: XOR with P = 2 * B.
-        uint32_t p[4];
-        memcpy(p, state.b, 16);
-        GF128::dblEAX(p);
-        omac[state.authPosn] ^= 0x80;
-        for (uint8_t index = 0; index < 16; ++index)
-            omac[index] ^= ((const uint8_t *)p)[index];
-        clean(p);
-    } else {
-        // No padding necessary: XOR with B.
-        for (uint8_t index = 0; index < 16; ++index)
-            omac[index] ^= ((const uint8_t *)(state.b))[index];
-    }
-
-    // Encrypt the hash to get the final OMAC value.
-    blockCipher->encryptBlock(omac, omac);
-}
-
-/**
  * \brief Closes the authenticated data portion of the session and
  * starts encryption or decryption.
  */
 void EAXCommon::closeAuthData()
 {
     // Finalise the OMAC hash and XOR it with the final tag.
-    omacFinal(state.hash);
+    omac.finalize(state.hash);
     for (uint8_t index = 0; index < 16; ++index)
         state.tag[index] ^= state.hash[index];
     state.authMode = 0;
 
     // Initialise the hashing context for the ciphertext data.
-    omacInit(state.hash, 2);
+    omac.initNext(state.hash, 2);
 }
 
 /**
@@ -266,7 +174,7 @@ void EAXCommon::encryptCTR(uint8_t *output, const uint8_t *input, size_t len)
         // Do we need to start a new block?
         if (state.encPosn == 16) {
             // Encrypt the counter to create the next keystream block.
-            blockCipher->encryptBlock(state.stream, state.counter);
+            omac.blockCipher()->encryptBlock(state.stream, state.counter);
             state.encPosn = 0;
 
             // Increment the counter, taking care not to reveal
@@ -304,7 +212,7 @@ void EAXCommon::closeTag()
         closeAuthData();
 
     // Finalise the hash over the ciphertext and XOR with the final tag.
-    omacFinal(state.hash);
+    omac.finalize(state.hash);
     for (uint8_t index = 0; index < 16; ++index)
         state.tag[index] ^= state.hash[index];
 }
