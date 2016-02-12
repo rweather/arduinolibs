@@ -50,8 +50,8 @@ is desirable.
 If code size is an issue for your application (for example on very low end
 Arduino variants), then Speck on AVR is less than half the code size of
 ChaCha, at the cost of more data memory for the state and longer key
-setup times.  The SpeckLowMemory class is even smaller at the cost of
-some performance when encrypting.
+setup times.  The SpeckTiny and SpeckSmall classes are even smaller at
+the cost of some performance when encrypting.
 
 BLAKE2s and BLAKE2b are variations on the ChaCha stream cipher, designed for
 hashing, with 256-bit and 512-bit hash outputs respectively.  They are
@@ -80,9 +80,12 @@ Ardunino Mega 2560 running at 16 MHz are similar:
 <tr><td>Speck (128-bit key, ECB mode)</td><td align="right">10.72us</td><td align="right">11.09us</td><td align="right">287.02us</td><td align="right">275</td></tr>
 <tr><td>Speck (192-bit key, ECB mode)</td><td align="right">11.03us</td><td align="right">11.42us</td><td align="right">298.21us</td><td align="right">275</td></tr>
 <tr><td>Speck (256-bit key, ECB mode)</td><td align="right">11.35us</td><td align="right">11.74us</td><td align="right">309.66us</td><td align="right">275</td></tr>
-<tr><td>SpeckLowMemory (128-bit key, ECB mode)</td><td align="right">35.25us</td><td align="right"> </td><td align="right">10.22us</td><td align="right">35</td></tr>
-<tr><td>SpeckLowMemory (192-bit key, ECB mode)</td><td align="right">36.56us</td><td align="right"> </td><td align="right">13.62us</td><td align="right">35</td></tr>
-<tr><td>SpeckLowMemory (256-bit key, ECB mode)</td><td align="right">37.87us</td><td align="right"> </td><td align="right">16.89us</td><td align="right">35</td></tr>
+<tr><td>SpeckSmall (128-bit key, ECB mode)</td><td align="right">35.25us</td><td align="right">36.46us</td><td align="right">207.66us</td><td align="right">67</td></tr>
+<tr><td>SpeckSmall (192-bit key, ECB mode)</td><td align="right">36.56us</td><td align="right">37.56us</td><td align="right">220.55us</td><td align="right">67</td></tr>
+<tr><td>SpeckSmall (256-bit key, ECB mode)</td><td align="right">37.87us</td><td align="right">38.67us</td><td align="right">233.32us</td><td align="right">67</td></tr>
+<tr><td>SpeckTiny (128-bit key, ECB mode)</td><td align="right">35.25us</td><td align="right"> </td><td align="right">10.22us</td><td align="right">35</td></tr>
+<tr><td>SpeckTiny (192-bit key, ECB mode)</td><td align="right">36.56us</td><td align="right"> </td><td align="right">13.62us</td><td align="right">35</td></tr>
+<tr><td>SpeckTiny (256-bit key, ECB mode)</td><td align="right">37.87us</td><td align="right"> </td><td align="right">16.89us</td><td align="right">35</td></tr>
 <tr><td colspan="5"> </td></tr>
 <tr><td>AEAD Algorithm</td><td align="right">Encryption (per byte)</td><td align="right">Decryption (per byte)</td><td>Key Setup</td><td>State Size (bytes)</td></tr>
 <tr><td>ChaChaPoly</td><td align="right">41.20us</td><td align="right">41.19us</td><td align="right">902.36us</td><td align="right">221</td></tr>
@@ -90,11 +93,11 @@ Ardunino Mega 2560 running at 16 MHz are similar:
 <tr><td>GCM&lt;AES192&gt;</td><td align="right">116.38us</td><td align="right">115.92us</td><td align="right">1485.56us</td><td align="right">316</td></tr>
 <tr><td>GCM&lt;AES256&gt;</td><td align="right">123.04us</td><td align="right">122.59us</td><td align="right">1760.28us</td><td align="right">348</td></tr>
 <tr><td>GCM&lt;Speck&gt; (256-bit key)</td><td align="right">87.78us</td><td align="right">87.32us</td><td align="right">714.41us</td><td align="right">378</td></tr>
-<tr><td>GCM&lt;SpeckLowMemory&gt; (256-bit key)</td><td align="right">114.30us</td><td align="right">113.84us</td><td align="right">1270.32us</td><td align="right">138</td></tr>
+<tr><td>GCM&lt;SpeckTiny&gt; (256-bit key)</td><td align="right">114.30us</td><td align="right">113.84us</td><td align="right">1270.32us</td><td align="right">138</td></tr>
 <tr><td>EAX&lt;AES128&gt;</td><td align="right">71.14us</td><td align="right">71.14us</td><td align="right">1311.97us</td><td align="right">268</td></tr>
 <tr><td>EAX&lt;AES256&gt;</td><td align="right">97.80us</td><td align="right">97.80us</td><td align="right">1806.57us</td><td align="right">332</td></tr>
 <tr><td>EAX&lt;Speck&gt; (256-bit key)</td><td align="right">27.27us</td><td align="right">27.26us</td><td align="right">760.74us</td><td align="right">362</td></tr>
-<tr><td>EAX&lt;SpeckLowMemory&gt; (256-bit key)</td><td align="right">80.31us</td><td align="right">80.31us</td><td align="right">1316.60us</td><td align="right">122</td></tr>
+<tr><td>EAX&lt;SpeckTiny&gt; (256-bit key)</td><td align="right">80.31us</td><td align="right">80.31us</td><td align="right">1316.60us</td><td align="right">122</td></tr>
 <tr><td colspan="5"> </td></tr>
 <tr><td>Hash Algorithm</td><td align="right">Hashing (per byte)</td><td align="right">Finalization</td><td> </td><td>State Size (bytes)</td></tr>
 <tr><td>SHA256</td><td align="right">43.85us</td><td align="right">2841.04us</td><td align="right"> </td><td align="right">107</td></tr>
@@ -138,9 +141,12 @@ All figures are for the Arduino Due running at 84 MHz:
 <tr><td>Speck (128-bit key, ECB mode)</td><td align="right">0.97us</td><td align="right">0.96us</td><td align="right">36.80us</td><td align="right">288</td></tr>
 <tr><td>Speck (192-bit key, ECB mode)</td><td align="right">1.00us</td><td align="right">0.98us</td><td align="right">38.14us</td><td align="right">288</td></tr>
 <tr><td>Speck (256-bit key, ECB mode)</td><td align="right">1.03us</td><td align="right">1.01us</td><td align="right">39.31us</td><td align="right">288</td></tr>
-<tr><td>SpeckLowMemory (128-bit key, ECB mode)</td><td align="right">2.72us</td><td align="right"> </td><td align="right">1.47us</td><td align="right">48</td></tr>
-<tr><td>SpeckLowMemory (192-bit key, ECB mode)</td><td align="right">2.81us</td><td align="right"> </td><td align="right">1.54us</td><td align="right">48</td></tr>
-<tr><td>SpeckLowMemory (256-bit key, ECB mode)</td><td align="right">2.90us</td><td align="right"> </td><td align="right">1.83us</td><td align="right">48</td></tr>
+<tr><td>SpeckSmall (128-bit key, ECB mode)</td><td align="right">2.72us</td><td align="right">2.30us</td><td align="right">26.89us</td><td align="right">80</td></tr>
+<tr><td>SpeckSmall (192-bit key, ECB mode)</td><td align="right">2.80us</td><td align="right">2.39us</td><td align="right">27.80us</td><td align="right">80</td></tr>
+<tr><td>SpeckSmall (256-bit key, ECB mode)</td><td align="right">2.90us</td><td align="right">2.48us</td><td align="right">29.08us</td><td align="right">80</td></tr>
+<tr><td>SpeckTiny (128-bit key, ECB mode)</td><td align="right">2.72us</td><td align="right"> </td><td align="right">1.47us</td><td align="right">48</td></tr>
+<tr><td>SpeckTiny (192-bit key, ECB mode)</td><td align="right">2.81us</td><td align="right"> </td><td align="right">1.54us</td><td align="right">48</td></tr>
+<tr><td>SpeckTiny (256-bit key, ECB mode)</td><td align="right">2.90us</td><td align="right"> </td><td align="right">1.83us</td><td align="right">48</td></tr>
 <tr><td colspan="5"> </td></tr>
 <tr><td>AEAD Algorithm</td><td align="right">Encryption (per byte)</td><td align="right">Decryption (per byte)</td><td>Key Setup</td><td>State Size (bytes)</td></tr>
 <tr><td>ChaChaPoly</td><td align="right">1.71us</td><td align="right">1.71us</td><td align="right">45.08us</td><td align="right">240</td></tr>
@@ -148,11 +154,11 @@ All figures are for the Arduino Due running at 84 MHz:
 <tr><td>GCM&lt;AES192&gt;</td><td align="right">12.30us</td><td align="right">12.31us</td><td align="right">296.83us</td><td align="right">344</td></tr>
 <tr><td>GCM&lt;AES256&gt;</td><td align="right">13.66us</td><td align="right">13.67us</td><td align="right">350.25us</td><td align="right">376</td></tr>
 <tr><td>GCM&lt;Speck&gt; (256-bit key)</td><td align="right">5.27us</td><td align="right">5.28us</td><td align="right">75.31us</td><td align="right">408</td></tr>
-<tr><td>GCM&lt;SpeckLowMemory&gt; (256-bit key)</td><td align="right">7.06us</td><td align="right">7.07us</td><td align="right">94.20us</td><td align="right">168</td></tr>
+<tr><td>GCM&lt;SpeckTiny&gt; (256-bit key)</td><td align="right">7.06us</td><td align="right">7.07us</td><td align="right">94.20us</td><td align="right">168</td></tr>
 <tr><td>EAX&lt;AES128&gt;</td><td align="right">12.33us</td><td align="right">12.33us</td><td align="right">234.91us</td><td align="right">280</td></tr>
 <tr><td>EAX&lt;AES256&gt;</td><td align="right">16.99us</td><td align="right">16.99us</td><td align="right">322.92us</td><td align="right">344</td></tr>
 <tr><td>EAX&lt;Speck&gt; (256-bit key)</td><td align="right">2.80us</td><td align="right">2.80us</td><td align="right">81.63us</td><td align="right">384</td></tr>
-<tr><td>EAX&lt;SpeckLowMemory&gt; (256-bit key)</td><td align="right">6.69us</td><td align="right">6.69us</td><td align="right">110.91us</td><td align="right">144</td></tr>
+<tr><td>EAX&lt;SpeckTiny&gt; (256-bit key)</td><td align="right">6.69us</td><td align="right">6.69us</td><td align="right">110.91us</td><td align="right">144</td></tr>
 <tr><td colspan="5"> </td></tr>
 <tr><td>Hash Algorithm</td><td align="right">Hashing (per byte)</td><td align="right">Finalization</td><td> </td><td>State Size (bytes)</td></tr>
 <tr><td>SHA256</td><td align="right">1.15us</td><td align="right">76.60us</td><td align="right"> </td><td align="right">120</td></tr>

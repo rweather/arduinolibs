@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 Southern Storm Software, Pty Ltd.
+ * Copyright (C) 2016 Southern Storm Software, Pty Ltd.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -20,15 +20,15 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-#include "SpeckLowMemory.h"
+#include "SpeckTiny.h"
 #include "Crypto.h"
 #include "utility/RotateUtil.h"
 #include "utility/EndianUtil.h"
 #include <string.h>
 
 /**
- * \class SpeckLowMemory SpeckLowMemory.h <SpeckLowMemory.h>
- * \brief Speck block cipher with a 128-bit block size (low-memory version).
+ * \class SpeckTiny SpeckTiny.h <SpeckTiny.h>
+ * \brief Speck block cipher with a 128-bit block size (tiny-memory version).
  *
  * This class differs from the Speck class in the following ways:
  *
@@ -38,12 +38,15 @@
  * \li Performance of encryptBlock() is slower than for Speck due to
  * expanding the key on the fly rather than ahead of time.
  * \li The decryptBlock() function is not supported, which means that CBC
- * mode cannot be used but the CTR, CFB, OFB, and GCM modes can be used.
+ * mode cannot be used but the CTR, CFB, OFB, EAX, and GCM modes can be used.
  *
  * This class is useful when RAM is at a premium, CBC mode is not required,
  * and reduced encryption performance is not a hindrance to the application.
  * Even though the performance of encryptBlock() is reduced, this class is
  * still faster than AES with equivalent key sizes.
+ *
+ * The companion SpeckSmall class supports decryptBlock() at the cost of
+ * some additional memory and slower setKey() times.
  *
  * See the documentation for the Speck class for more information on the
  * Speck family of block ciphers.
@@ -51,7 +54,7 @@
  * References: https://en.wikipedia.org/wiki/Speck_%28cipher%29,
  * http://eprint.iacr.org/2013/404
  *
- * \sa Speck
+ * \sa Speck, SpeckSmall
  */
 
 // The "avr-gcc" compiler doesn't do a very good job of compiling
@@ -65,27 +68,27 @@
 #endif
 
 /**
- * \brief Constructs a low-memory Speck block cipher with no initial key.
+ * \brief Constructs a tiny-memory Speck block cipher with no initial key.
  *
  * This constructor must be followed by a call to setKey() before the
  * block cipher can be used for encryption.
  */
-SpeckLowMemory::SpeckLowMemory()
+SpeckTiny::SpeckTiny()
     : rounds(32)
 {
 }
 
-SpeckLowMemory::~SpeckLowMemory()
+SpeckTiny::~SpeckTiny()
 {
     clean(k);
 }
 
-size_t SpeckLowMemory::blockSize() const
+size_t SpeckTiny::blockSize() const
 {
     return 16;
 }
 
-size_t SpeckLowMemory::keySize() const
+size_t SpeckTiny::keySize() const
 {
     // Also supports 128-bit and 192-bit, but we only report 256-bit.
     return 32;
@@ -103,7 +106,7 @@ size_t SpeckLowMemory::keySize() const
         (value) = be64toh((value)); \
     } while (0)
 
-bool SpeckLowMemory::setKey(const uint8_t *key, size_t len)
+bool SpeckTiny::setKey(const uint8_t *key, size_t len)
 {
 #if USE_AVR_INLINE_ASM
     // Determine the number of rounds to use and validate the key length.
@@ -150,7 +153,7 @@ bool SpeckLowMemory::setKey(const uint8_t *key, size_t len)
     return true;
 }
 
-void SpeckLowMemory::encryptBlock(uint8_t *output, const uint8_t *input)
+void SpeckTiny::encryptBlock(uint8_t *output, const uint8_t *input)
 {
 #if USE_AVR_INLINE_ASM
     uint64_t l[4];
@@ -521,25 +524,12 @@ void SpeckLowMemory::encryptBlock(uint8_t *output, const uint8_t *input)
 #endif
 }
 
-/**
- * \brief Decrypts a single block using this cipher.
- *
- * \param output The output buffer to put the plaintext into.
- * Must be at least blockSize() bytes in length.
- * \param input The input buffer to read the ciphertext from which is
- * allowed to overlap with \a output.  Must be at least blockSize()
- * bytes in length.
- *
- * \note This function is not supported for SpeckLowMemory, which means
- * that CBC mode cannot be used but that the CTR, CFB, OFB, and GCM modes
- * can be used.
- */
-void SpeckLowMemory::decryptBlock(uint8_t *output, const uint8_t *input)
+void SpeckTiny::decryptBlock(uint8_t *output, const uint8_t *input)
 {
-    // Decryption is not supported.
+    // Decryption is not supported by SpeckTiny.  Use SpeckSmall instead.
 }
 
-void SpeckLowMemory::clear()
+void SpeckTiny::clear()
 {
     clean(k);
 }

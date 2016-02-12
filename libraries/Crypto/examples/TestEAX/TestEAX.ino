@@ -28,7 +28,7 @@ This example runs tests on the EAX implementation to verify correct behaviour.
 #include <EAX.h>
 #include <AES.h>
 #include <Speck.h>
-#include <SpeckLowMemory.h>
+#include <SpeckTiny.h>
 #include <string.h>
 #include <avr/pgmspace.h>
 
@@ -235,7 +235,7 @@ TestVector testVector;
 EAX<AES128> *eax;
 EAX<AES256> *eax256;
 EAX<Speck> *eaxSpeck;
-EAX<SpeckLowMemory> *eaxSpeckLowMemory;
+EAX<SpeckTiny> *eaxSpeckTiny;
 
 byte buffer[128];
 
@@ -500,8 +500,8 @@ void setup()
     Serial.println(sizeof(*eax256));
     Serial.print("EAX<Speck> ... ");
     Serial.println(sizeof(*eaxSpeck));
-    Serial.print("EAX<SpeckLowMemory> ... ");
-    Serial.println(sizeof(*eaxSpeckLowMemory));
+    Serial.print("EAX<SpeckTiny> ... ");
+    Serial.println(sizeof(*eaxSpeckTiny));
     Serial.println();
 
     Serial.println("Test Vectors:");
@@ -531,9 +531,9 @@ void setup()
     perfCipher(eaxSpeck, &testVectorEAX1, "Speck");
     Serial.println();
     delete eaxSpeck;
-    eaxSpeckLowMemory = new EAX<SpeckLowMemory>();
-    perfCipher(eaxSpeckLowMemory, &testVectorEAX1, "SpeckLowMemory");
-    delete eaxSpeckLowMemory;
+    eaxSpeckTiny = new EAX<SpeckTiny>();
+    perfCipher(eaxSpeckTiny, &testVectorEAX1, "SpeckTiny");
+    delete eaxSpeckTiny;
 }
 
 void loop()

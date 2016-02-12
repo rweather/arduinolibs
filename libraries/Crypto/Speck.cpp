@@ -43,14 +43,14 @@
  * weaknesses in the full-round version of Speck.  But if you are wary of
  * ciphers designed by the NSA, then use ChaCha or AES instead.
  *
- * The SpeckLowMemory class provides an alternative implementation that
- * has reduced RAM and flash size requirements at the cost of some encryption
- * performance.
+ * The SpeckTiny and SpeckSmall classes provide alternative implementations
+ * that have reduced RAM and flash size requirements at the cost of some
+ * features and performance.
  *
  * References: https://en.wikipedia.org/wiki/Speck_%28cipher%29,
  * http://eprint.iacr.org/2013/404
  *
- * \sa SpeckLowMemory
+ * \sa SpeckTiny, SpeckSmall
  */
 
 // The "avr-gcc" compiler doesn't do a very good job of compiling
@@ -390,8 +390,8 @@ void Speck::encryptBlock(uint8_t *output, const uint8_t *input)
         "rol %B3\n"
         "rol %C3\n"
         "rol %D3\n"
-
         "adc %A2,__zero_reg__\n"
+
         "lsl %A2\n"                 // y = leftRotate1_64(y)
         "rol %B2\n"
         "rol %C2\n"

@@ -27,7 +27,7 @@ This example runs tests on the GCM implementation to verify correct behaviour.
 #include <Crypto.h>
 #include <AES.h>
 #include <Speck.h>
-#include <SpeckLowMemory.h>
+#include <SpeckTiny.h>
 #include <GCM.h>
 #include <string.h>
 #include <avr/pgmspace.h>
@@ -261,7 +261,7 @@ GCM<AES128> *gcmaes128 = 0;
 GCM<AES192> *gcmaes192 = 0;
 GCM<AES256> *gcmaes256 = 0;
 GCM<Speck> *gcmspeck = 0;
-GCM<SpeckLowMemory> *gcmspecklm = 0;
+GCM<SpeckTiny> *gcmspecklm = 0;
 
 byte buffer[128];
 
@@ -516,7 +516,7 @@ void setup()
     Serial.println(sizeof(*gcmaes256));
     Serial.print("GCM<Speck> ... ");
     Serial.println(sizeof(*gcmspeck));
-    Serial.print("GCM<SpeckLowMemory> ... ");
+    Serial.print("GCM<SpeckTiny> ... ");
     Serial.println(sizeof(*gcmspecklm));
     Serial.println();
 #endif
@@ -556,8 +556,8 @@ void setup()
     gcmspeck = new GCM<Speck>();
     perfCipher(gcmspeck, &testVectorGCM16, "GCM-Speck-256");
     delete gcmspeck;
-    gcmspecklm = new GCM<SpeckLowMemory>();
-    perfCipher(gcmspecklm, &testVectorGCM16, "GCM-SpeckLowMemory-256");
+    gcmspecklm = new GCM<SpeckTiny>();
+    perfCipher(gcmspecklm, &testVectorGCM16, "GCM-SpeckTiny-256");
     delete gcmspecklm;
 #endif
 }

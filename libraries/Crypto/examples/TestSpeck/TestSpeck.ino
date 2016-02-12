@@ -26,7 +26,8 @@ This example runs tests on the Speck implementation to verify correct behaviour.
 
 #include <Crypto.h>
 #include <Speck.h>
-#include <SpeckLowMemory.h>
+#include <SpeckSmall.h>
+#include <SpeckTiny.h>
 #include <string.h>
 
 struct TestVector
@@ -70,7 +71,8 @@ static TestVector const testVectorSpeck256 = {
 };
 
 Speck speck;
-SpeckLowMemory speckLowMemory;
+SpeckSmall speckSmall;
+SpeckTiny speckTiny;
 
 byte buffer[16];
 
@@ -156,8 +158,10 @@ void setup()
     Serial.println("State Sizes:");
     Serial.print("Speck ... ");
     Serial.println(sizeof(Speck));
-    Serial.print("SpeckLowMemory ... ");
-    Serial.println(sizeof(SpeckLowMemory));
+    Serial.print("SpeckSmall ... ");
+    Serial.println(sizeof(SpeckSmall));
+    Serial.print("SpeckTiny ... ");
+    Serial.println(sizeof(SpeckTiny));
     Serial.println();
 
     Serial.println("Speck Test Vectors:");
@@ -167,10 +171,17 @@ void setup()
 
     Serial.println();
 
-    Serial.println("SpeckLowMemory Test Vectors:");
-    testCipher(&speckLowMemory, &testVectorSpeck128, 16, false);
-    testCipher(&speckLowMemory, &testVectorSpeck192, 24, false);
-    testCipher(&speckLowMemory, &testVectorSpeck256, 32, false);
+    Serial.println("SpeckSmall Test Vectors:");
+    testCipher(&speckSmall, &testVectorSpeck128, 16);
+    testCipher(&speckSmall, &testVectorSpeck192, 24);
+    testCipher(&speckSmall, &testVectorSpeck256, 32);
+
+    Serial.println();
+
+    Serial.println("SpeckTiny Test Vectors:");
+    testCipher(&speckTiny, &testVectorSpeck128, 16, false);
+    testCipher(&speckTiny, &testVectorSpeck192, 24, false);
+    testCipher(&speckTiny, &testVectorSpeck256, 32, false);
 
     Serial.println();
 
@@ -179,10 +190,15 @@ void setup()
     perfCipher(&speck, &testVectorSpeck192, 24);
     perfCipher(&speck, &testVectorSpeck256, 32);
 
-    Serial.println("SpeckLowMemory Performance Tests:");
-    perfCipher(&speckLowMemory, &testVectorSpeck128, 16, false);
-    perfCipher(&speckLowMemory, &testVectorSpeck192, 24, false);
-    perfCipher(&speckLowMemory, &testVectorSpeck256, 32, false);
+    Serial.println("SpeckSmall Performance Tests:");
+    perfCipher(&speckSmall, &testVectorSpeck128, 16);
+    perfCipher(&speckSmall, &testVectorSpeck192, 24);
+    perfCipher(&speckSmall, &testVectorSpeck256, 32);
+
+    Serial.println("SpeckTiny Performance Tests:");
+    perfCipher(&speckTiny, &testVectorSpeck128, 16, false);
+    perfCipher(&speckTiny, &testVectorSpeck192, 24, false);
+    perfCipher(&speckTiny, &testVectorSpeck256, 32, false);
 }
 
 void loop()

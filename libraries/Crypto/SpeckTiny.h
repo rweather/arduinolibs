@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 Southern Storm Software, Pty Ltd.
+ * Copyright (C) 2016 Southern Storm Software, Pty Ltd.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -20,16 +20,18 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-#ifndef CRYPTO_SPECK_LOW_MEMORY_H
-#define CRYPTO_SPECK_LOW_MEMORY_H
+#ifndef CRYPTO_SPECK_TINY_H
+#define CRYPTO_SPECK_TINY_H
 
 #include "BlockCipher.h"
 
-class SpeckLowMemory : public BlockCipher
+class SpeckSmall;
+
+class SpeckTiny : public BlockCipher
 {
 public:
-    SpeckLowMemory();
-    virtual ~SpeckLowMemory();
+    SpeckTiny();
+    virtual ~SpeckTiny();
 
     size_t blockSize() const;
     size_t keySize() const;
@@ -44,6 +46,8 @@ public:
 private:
     uint64_t k[4];
     uint8_t rounds;
+
+    friend class SpeckSmall;
 };
 
 #endif
