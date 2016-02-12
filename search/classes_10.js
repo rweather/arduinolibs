@@ -6,5 +6,6 @@ var searchData=
   ['sha512',['SHA512',['../classSHA512.html',1,'']]],
   ['softi2c',['SoftI2C',['../classSoftI2C.html',1,'']]],
   ['speck',['Speck',['../classSpeck.html',1,'']]],
-  ['specklowmemory',['SpeckLowMemory',['../classSpeckLowMemory.html',1,'']]]
+  ['specksmall',['SpeckSmall',['../classSpeckSmall.html',1,'']]],
+  ['specktiny',['SpeckTiny',['../classSpeckTiny.html',1,'']]]
 ];

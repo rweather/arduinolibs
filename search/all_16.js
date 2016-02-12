@@ -20,6 +20,7 @@ var searchData=
   ['_7ekeccakcore',['~KeccakCore',['../classKeccakCore.html#a4579e3a9b24f1d615fa8d660c23e77a4',1,'KeccakCore']]],
   ['_7enoisesource',['~NoiseSource',['../classNoiseSource.html#a4eca1e894a5d719fb9bf4df34a791cdb',1,'NoiseSource']]],
   ['_7eofbcommon',['~OFBCommon',['../classOFBCommon.html#aae7435157e51bf977d3481e94e17ae01',1,'OFBCommon']]],
+  ['_7eomac',['~OMAC',['../classOMAC.html#a6bb2222c997608ec68b25831da965e8f',1,'OMAC']]],
   ['_7epoly1305',['~Poly1305',['../classPoly1305.html#ac021b5ebbc123fa4c0ee36330472c25d',1,'Poly1305']]],
   ['_7erngclass',['~RNGClass',['../classRNGClass.html#aef3ee2fb14a39caf650dc90a0226dd31',1,'RNGClass']]],
   ['_7esha256',['~SHA256',['../classSHA256.html#ad82f2925b612de315b289017e023a73b',1,'SHA256']]],

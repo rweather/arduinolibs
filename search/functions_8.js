@@ -1,5 +1,7 @@
 var searchData=
 [
+  ['initfirst',['initFirst',['../classOMAC.html#a0274138725ddf6240c030574bae3975c',1,'OMAC']]],
+  ['initnext',['initNext',['../classOMAC.html#ad496c7d2de4f22fd4192345003e75ee5',1,'OMAC']]],
   ['intfield',['IntField',['../classIntField.html#a9df274c4100ed37d2d78738f09fc53b6',1,'IntField::IntField(const String &amp;label)'],['../classIntField.html#a10c9c958bcde276698f1f1f9bff949dd',1,'IntField::IntField(Form &amp;form, const String &amp;label, int minValue, int maxValue, int stepValue, int value)'],['../classIntField.html#a2b99fa19be6a0ed01ddc4939352b372e',1,'IntField::IntField(Form &amp;form, const String &amp;label, int minValue, int maxValue, int stepValue, int value, const String &amp;suffix)']]],
   ['invert',['invert',['../classBitmap.html#a6d85556bcc9fac91d33f0f6f7a6430dd',1,'Bitmap']]],
   ['irreceiver',['IRreceiver',['../classIRreceiver.html#a06eccb8b8311eac395e4b20c4e0163e3',1,'IRreceiver']]],

@@ -142,9 +142,9 @@ Public Member Functions</h2></td></tr>
 <p><a class="el" href="classSpeck.html" title="Speck block cipher with a 128-bit block size. ">Speck</a> is a family of lightweight block ciphers designed by the National Security Agency (NSA). The ciphers are highly optimized for software implementation on microcontrollers.</p>
 <p>This class implements the <a class="el" href="classSpeck.html" title="Speck block cipher with a 128-bit block size. ">Speck</a> family that uses 128-bit block sizes with 128-bit, 192-bit, or 256-bit key sizes. Other <a class="el" href="classSpeck.html" title="Speck block cipher with a 128-bit block size. ">Speck</a> families support smaller block sizes of 32, 48, 64, or 96 bits but such block sizes are too small for use in modern cryptosystems.</p>
 <dl class="section note"><dt>Note</dt><dd>Current crytoanalysis (up until 2015) has not revealed any obvious weaknesses in the full-round version of <a class="el" href="classSpeck.html" title="Speck block cipher with a 128-bit block size. ">Speck</a>. But if you are wary of ciphers designed by the NSA, then use <a class="el" href="classChaCha.html" title="ChaCha stream cipher. ">ChaCha</a> or AES instead.</dd></dl>
-<p>The <a class="el" href="classSpeckLowMemory.html" title="Speck block cipher with a 128-bit block size (low-memory version). ">SpeckLowMemory</a> class provides an alternative implementation that has reduced RAM and flash size requirements at the cost of some encryption performance.</p>
+<p>The <a class="el" href="classSpeckTiny.html" title="Speck block cipher with a 128-bit block size (tiny-memory version). ">SpeckTiny</a> and <a class="el" href="classSpeckSmall.html" title="Speck block cipher with a 128-bit block size (small-memory version). ">SpeckSmall</a> classes provide alternative implementations that have reduced RAM and flash size requirements at the cost of some features and performance.</p>
 <p>References: <a href="https://en.wikipedia.org/wiki/Speck_%28cipher%29,">https://en.wikipedia.org/wiki/Speck_%28cipher%29,</a> <a href="http://eprint.iacr.org/2013/404">http://eprint.iacr.org/2013/404</a></p>
-<dl class="section see"><dt>See Also</dt><dd><a class="el" href="classSpeckLowMemory.html" title="Speck block cipher with a 128-bit block size (low-memory version). ">SpeckLowMemory</a> </dd></dl>
+<dl class="section see"><dt>See Also</dt><dd><a class="el" href="classSpeckTiny.html" title="Speck block cipher with a 128-bit block size (tiny-memory version). ">SpeckTiny</a>, <a class="el" href="classSpeckSmall.html" title="Speck block cipher with a 128-bit block size (small-memory version). ">SpeckSmall</a> </dd></dl>
 
 <p>Definition at line <a class="el" href="Speck_8h_source.html#l00028">28</a> of file <a class="el" href="Speck_8h_source.html">Speck.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
@@ -415,7 +415,7 @@ Public Member Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Jan 16 2016 09:47:01 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Feb 13 2016 07:01:07 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>
