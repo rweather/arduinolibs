@@ -114,12 +114,12 @@ Ardunino Mega 2560 running at 16 MHz are similar:
 <tr><td>GHASH</td><td align="right">74.59us</td><td align="right">15.91us</td><td align="right">14.79us</td><td align="right">33</td></tr>
 <tr><td colspan="5"> </td></tr>
 <tr><td>Public Key Operation</td><td align="right">Time (per operation)</td><td colspan="3">Comment</td></tr>
-<tr><td>Curve25519::eval()</td><td align="right">3119ms</td><td colspan="3">Raw curve evaluation</td></tr>
-<tr><td>Curve25519::dh1()</td><td align="right">3121ms</td><td colspan="3">First half of Diffie-Hellman key agreement</td></tr>
-<tr><td>Curve25519::dh2()</td><td align="right">3120ms</td><td colspan="3">Second half of Diffie-Hellman key agreement</td></tr>
-<tr><td>Ed25519::sign()</td><td align="right">5688ms</td><td colspan="3">Digital signature generation</td></tr>
-<tr><td>Ed25519::verify()</td><td align="right">9030ms</td><td colspan="3">Digital signature verification</td></tr>
-<tr><td>Ed25519::derivePublicKey()</td><td align="right">5642ms</td><td colspan="3">Derive a public key from a private key</td></tr>
+<tr><td>Curve25519::eval()</td><td align="right">2716ms</td><td colspan="3">Raw curve evaluation</td></tr>
+<tr><td>Curve25519::dh1()</td><td align="right">2718ms</td><td colspan="3">First half of Diffie-Hellman key agreement</td></tr>
+<tr><td>Curve25519::dh2()</td><td align="right">2717ms</td><td colspan="3">Second half of Diffie-Hellman key agreement</td></tr>
+<tr><td>Ed25519::sign()</td><td align="right">5148ms</td><td colspan="3">Digital signature generation</td></tr>
+<tr><td>Ed25519::verify()</td><td align="right">8196ms</td><td colspan="3">Digital signature verification</td></tr>
+<tr><td>Ed25519::derivePublicKey()</td><td align="right">5102ms</td><td colspan="3">Derive a public key from a private key</td></tr>
 </table>
 
 Where a cipher supports more than one key size (such as ChaCha), the values
