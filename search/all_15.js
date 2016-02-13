@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['year',['year',['../structRTCDate.html#a7d31822daff3c3fc947386abd897732f',1,'RTCDate']]]
+  ['xof',['XOF',['../classXOF.html',1,'XOF'],['../classXOF.html#a855d1bb01d46b329c57b59783cd1e075',1,'XOF::XOF()']]]
 ];

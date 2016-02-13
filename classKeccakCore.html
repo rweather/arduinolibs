@@ -126,6 +126,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aad83ece853c0cc15fcab947fdcba924f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classKeccakCore.html#aad83ece853c0cc15fcab947fdcba924f">extract</a> (void *data, size_t size)</td></tr>
 <tr class="memdesc:aad83ece853c0cc15fcab947fdcba924f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Extracts data from the Keccak sponge function.  <a href="#aad83ece853c0cc15fcab947fdcba924f">More...</a><br/></td></tr>
 <tr class="separator:aad83ece853c0cc15fcab947fdcba924f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acaf5c13452003e6e2e7793939f62a123"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classKeccakCore.html#acaf5c13452003e6e2e7793939f62a123">encrypt</a> (void *output, const void *input, size_t size)</td></tr>
+<tr class="memdesc:acaf5c13452003e6e2e7793939f62a123"><td class="mdescLeft">&#160;</td><td class="mdescRight">Extracts data from the Keccak sponge function and uses it to encrypt a buffer.  <a href="#acaf5c13452003e6e2e7793939f62a123">More...</a><br/></td></tr>
+<tr class="separator:acaf5c13452003e6e2e7793939f62a123"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeff1df56e4a3103c99c1fe4307e60c66"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aeff1df56e4a3103c99c1fe4307e60c66"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classKeccakCore.html#aeff1df56e4a3103c99c1fe4307e60c66">clear</a> ()</td></tr>
 <tr class="memdesc:aeff1df56e4a3103c99c1fe4307e60c66"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears all sensitive data from this object. <br/></td></tr>
@@ -136,9 +139,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Keccak core sponge function. </p>
-<p><a class="el" href="classKeccakCore.html" title="Keccak core sponge function. ">KeccakCore</a> provides the core sponge function for different capacities. It is used to implement <a class="el" href="classHash.html" title="Abstract base class for cryptographic hash algorithms. ">Hash</a> algorithms such as SHA3.</p>
+<p><a class="el" href="classKeccakCore.html" title="Keccak core sponge function. ">KeccakCore</a> provides the core sponge function for different capacities. It is used to implement algorithms such as SHA3 and <a class="el" href="classSHAKE.html" title="Abstract base class for the SHAKE Extendable-Output Functions (XOFs). ">SHAKE</a>.</p>
 <p>References: <a href="http://en.wikipedia.org/wiki/SHA-3">http://en.wikipedia.org/wiki/SHA-3</a></p>
-<dl class="section see"><dt>See Also</dt><dd>SHA3 </dd></dl>
+<dl class="section see"><dt>See Also</dt><dd><a class="el" href="classSHA3__256.html" title="SHA3-256 hash algorithm. ">SHA3_256</a>, <a class="el" href="classSHAKE256.html" title="SHAKE Extendable-Output Function (XOF) with 256-bit security. ">SHAKE256</a> </dd></dl>
 
 <p>Definition at line <a class="el" href="KeccakCore_8h_source.html#l00029">29</a> of file <a class="el" href="KeccakCore_8h_source.html">KeccakCore.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
@@ -212,6 +215,53 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
+<a class="anchor" id="acaf5c13452003e6e2e7793939f62a123"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void KeccakCore::encrypt </td>
+          <td>(</td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>output</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const void *&#160;</td>
+          <td class="paramname"><em>input</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Extracts data from the Keccak sponge function and uses it to encrypt a buffer. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">output</td><td>The output buffer to write to, which may be the same buffer as <em>input</em>. The <em>output</em> buffer must have at least as many bytes as the <em>input</em> buffer. </td></tr>
+    <tr><td class="paramname">input</td><td>The input buffer to read from. </td></tr>
+    <tr><td class="paramname">size</td><td>The number of bytes to encrypt.</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>This function extracts data from the sponge function and then XOR's it with <em>input</em> to generate the <em>output</em>.</p>
+<p>If more than <a class="el" href="classKeccakCore.html#a3742ed39151811b5d1c263c75ee5b20a" title="Returns the input block size for the sponge function in bytes. ">blockSize()</a> bytes are required, the sponge function will be invoked to generate additional data.</p>
+<dl class="section see"><dt>See Also</dt><dd><a class="el" href="classKeccakCore.html#aaaa0355ccec0f469ac8eb577bdf853ed" title="Updates the Keccak sponge function with more input data. ">update()</a>, <a class="el" href="classKeccakCore.html#a5a322eb7e3b5c1eaad127c9c6e6a529b" title="Resets the Keccak sponge function ready for a new session. ">reset()</a>, <a class="el" href="classKeccakCore.html#aad83ece853c0cc15fcab947fdcba924f" title="Extracts data from the Keccak sponge function. ">extract()</a> </dd></dl>
+
+<p>Definition at line <a class="el" href="KeccakCore_8cpp_source.html#l00240">240</a> of file <a class="el" href="KeccakCore_8cpp_source.html">KeccakCore.cpp</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="aad83ece853c0cc15fcab947fdcba924f"></a>
 <div class="memitem">
 <div class="memproto">
@@ -245,7 +295,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
   </dd>
 </dl>
 <p>If more than <a class="el" href="classKeccakCore.html#a3742ed39151811b5d1c263c75ee5b20a" title="Returns the input block size for the sponge function in bytes. ">blockSize()</a> bytes are required, the sponge function will be invoked to generate additional data.</p>
-<dl class="section see"><dt>See Also</dt><dd><a class="el" href="classKeccakCore.html#aaaa0355ccec0f469ac8eb577bdf853ed" title="Updates the Keccak sponge function with more input data. ">update()</a>, <a class="el" href="classKeccakCore.html#a5a322eb7e3b5c1eaad127c9c6e6a529b" title="Resets the Keccak sponge function ready for a new session. ">reset()</a>, extractHash() </dd></dl>
+<dl class="section see"><dt>See Also</dt><dd><a class="el" href="classKeccakCore.html#aaaa0355ccec0f469ac8eb577bdf853ed" title="Updates the Keccak sponge function with more input data. ">update()</a>, <a class="el" href="classKeccakCore.html#a5a322eb7e3b5c1eaad127c9c6e6a529b" title="Resets the Keccak sponge function ready for a new session. ">reset()</a>, <a class="el" href="classKeccakCore.html#acaf5c13452003e6e2e7793939f62a123" title="Extracts data from the Keccak sponge function and uses it to encrypt a buffer. ">encrypt()</a> </dd></dl>
 
 <p>Definition at line <a class="el" href="KeccakCore_8cpp_source.html#l00194">194</a> of file <a class="el" href="KeccakCore_8cpp_source.html">KeccakCore.cpp</a>.</p>
 
@@ -268,7 +318,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Pads the last block of input data to <a class="el" href="classKeccakCore.html#a3742ed39151811b5d1c263c75ee5b20a" title="Returns the input block size for the sponge function in bytes. ">blockSize()</a>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">tag</td><td>The tag byte to add to the padding to identify SHA3 (0x06), SHAKE (0x1F), or the plain pre-standardized version of Keccak (0x01).</td></tr>
+    <tr><td class="paramname">tag</td><td>The tag byte to add to the padding to identify SHA3 (0x06), <a class="el" href="classSHAKE.html" title="Abstract base class for the SHAKE Extendable-Output Functions (XOFs). ">SHAKE</a> (0x1F), or the plain pre-standardized version of Keccak (0x01).</td></tr>
   </table>
   </dd>
 </dl>
@@ -375,7 +425,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </dl>
 <p>This function is intended to help classes implement <a class="el" href="classHash.html#adf50359c1f525af884721cc9034e7945" title="Resets the hash ready for a new HMAC hashing process. ">Hash::resetHMAC()</a> and <a class="el" href="classHash.html#aab42fa5420cc0bda4321a3d3866cfd06" title="Finalizes the HMAC hashing process and returns the hash. ">Hash::finalizeHMAC()</a> by directly formatting the HMAC key into the internal block buffer and resetting the hash. </p>
 
-<p>Definition at line <a class="el" href="KeccakCore_8cpp_source.html#l00243">243</a> of file <a class="el" href="KeccakCore_8cpp_source.html">KeccakCore.cpp</a>.</p>
+<p>Definition at line <a class="el" href="KeccakCore_8cpp_source.html#l00293">293</a> of file <a class="el" href="KeccakCore_8cpp_source.html">KeccakCore.cpp</a>.</p>
 
 </div>
 </div>
@@ -425,7 +475,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Feb 14 2016 07:48:07 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Feb 14 2016 08:32:00 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>
