@@ -32,11 +32,11 @@
  * \brief Keccak core sponge function.
  *
  * KeccakCore provides the core sponge function for different capacities.
- * It is used to implement Hash algorithms such as SHA3.
+ * It is used to implement algorithms such as SHA3 and SHAKE.
  *
  * References: http://en.wikipedia.org/wiki/SHA-3
  *
- * \sa SHA3
+ * \sa SHA3_256, SHAKE256
  */
 
 #if !defined(CRYPTO_LITTLE_ENDIAN)
@@ -189,7 +189,7 @@ void KeccakCore::pad(uint8_t tag)
  * If more than blockSize() bytes are required, the sponge function will
  * be invoked to generate additional data.
  *
- * \sa update(), reset(), extractHash()
+ * \sa update(), reset(), encrypt()
  */
 void KeccakCore::extract(void *data, size_t size)
 {
@@ -216,6 +216,56 @@ void KeccakCore::extract(void *data, size_t size)
         state.outputSize += tempSize;
         size -= tempSize;
         d += tempSize;
+    }
+}
+
+/**
+ * \brief Extracts data from the Keccak sponge function and uses it to
+ * encrypt a buffer.
+ *
+ * \param output The output buffer to write to, which may be the same
+ * buffer as \a input.  The \a output buffer must have at least as many
+ * bytes as the \a input buffer.
+ * \param input The input buffer to read from.
+ * \param size The number of bytes to encrypt.
+ *
+ * This function extracts data from the sponge function and then XOR's
+ * it with \a input to generate the \a output.
+ *
+ * If more than blockSize() bytes are required, the sponge function will
+ * be invoked to generate additional data.
+ *
+ * \sa update(), reset(), extract()
+ */
+void KeccakCore::encrypt(void *output, const void *input, size_t size)
+{
+    // Stop accepting input while we are generating output.
+    state.inputSize = 0;
+
+    // Copy the output data into the caller's return buffer.
+    uint8_t *out = (uint8_t *)output;
+    const uint8_t *in = (const uint8_t *)input;
+    uint8_t tempSize;
+    while (size > 0) {
+        // Generate another output block if the current one has been exhausted.
+        if (state.outputSize >= _blockSize) {
+            keccakp();
+            state.outputSize = 0;
+        }
+
+        // How many bytes can we extract this time around?
+        tempSize = _blockSize - state.outputSize;
+        if (tempSize > size)
+            tempSize = size;
+
+        // XOR the partial output data into the caller's return buffer.
+        const uint8_t *d = ((const uint8_t *)(state.A)) + state.outputSize;
+        for (uint8_t index = 0; index < tempSize; ++index)
+            out[index] = in[index] ^ d[index];
+        state.outputSize += tempSize;
+        size -= tempSize;
+        out += tempSize;
+        in += tempSize;
     }
 }
 

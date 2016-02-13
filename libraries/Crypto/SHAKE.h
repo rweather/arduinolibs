@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 Southern Storm Software, Pty Ltd.
+ * Copyright (C) 2016 Southern Storm Software, Pty Ltd.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -20,44 +20,47 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-#ifndef CRYPTO_KECCAKCORE_H
-#define CRYPTO_KECCAKCORE_H
+#ifndef CRYPTO_SHAKE_h
+#define CRYPTO_SHAKE_h
 
-#include <inttypes.h>
-#include <stddef.h>
+#include "XOF.h"
+#include "KeccakCore.h"
 
-class KeccakCore
+class SHAKE : public XOF
 {
 public:
-    KeccakCore();
-    ~KeccakCore();
+    virtual ~SHAKE();
 
-    size_t capacity() const;
-    void setCapacity(size_t capacity);
-
-    size_t blockSize() const { return _blockSize; }
+    size_t blockSize() const;
 
     void reset();
+    void update(const void *data, size_t len);
 
-    void update(const void *data, size_t size);
-    void pad(uint8_t tag);
-
-    void extract(void *data, size_t size);
-    void encrypt(void *output, const void *input, size_t size);
+    void extend(uint8_t *data, size_t len);
+    void encrypt(uint8_t *output, const uint8_t *input, size_t len);
 
     void clear();
 
-    void setHMACKey(const void *key, size_t len, uint8_t pad, size_t hashSize);
+protected:
+    SHAKE(size_t capacity);
 
 private:
-    struct {
-        uint64_t A[5][5];
-        uint8_t inputSize;
-        uint8_t outputSize;
-    } state;
-    uint8_t _blockSize;
+    KeccakCore core;
+    bool finalized;
+};
 
-    void keccakp();
+class SHAKE128 : public SHAKE
+{
+public:
+    SHAKE128() : SHAKE(256) {}
+    virtual ~SHAKE128();
+};
+
+class SHAKE256 : public SHAKE
+{
+public:
+    SHAKE256() : SHAKE(512) {}
+    virtual ~SHAKE256();
 };
 
 #endif

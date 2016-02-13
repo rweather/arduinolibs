@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 Southern Storm Software, Pty Ltd.
+ * Copyright (C) 2016 Southern Storm Software, Pty Ltd.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -20,44 +20,32 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-#ifndef CRYPTO_KECCAKCORE_H
-#define CRYPTO_KECCAKCORE_H
+#ifndef CRYPTO_XOF_h
+#define CRYPTO_XOF_h
 
 #include <inttypes.h>
 #include <stddef.h>
 
-class KeccakCore
+class XOF
 {
 public:
-    KeccakCore();
-    ~KeccakCore();
+    XOF();
+    virtual ~XOF();
 
-    size_t capacity() const;
-    void setCapacity(size_t capacity);
+    virtual size_t blockSize() const = 0;
 
-    size_t blockSize() const { return _blockSize; }
+    virtual void reset() = 0;
+    virtual void update(const void *data, size_t len) = 0;
 
-    void reset();
+    virtual void extend(uint8_t *data, size_t len) = 0;
+    virtual void encrypt(uint8_t *output, const uint8_t *input, size_t len) = 0;
 
-    void update(const void *data, size_t size);
-    void pad(uint8_t tag);
+    inline void decrypt(uint8_t *output, const uint8_t *input, size_t len)
+    {
+        encrypt(output, input, len);
+    }
 
-    void extract(void *data, size_t size);
-    void encrypt(void *output, const void *input, size_t size);
-
-    void clear();
-
-    void setHMACKey(const void *key, size_t len, uint8_t pad, size_t hashSize);
-
-private:
-    struct {
-        uint64_t A[5][5];
-        uint8_t inputSize;
-        uint8_t outputSize;
-    } state;
-    uint8_t _blockSize;
-
-    void keccakp();
+    virtual void clear() = 0;
 };
 
 #endif
