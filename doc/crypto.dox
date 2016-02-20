@@ -27,7 +27,7 @@
 \section crypto_algorithms Supported Algorithms
 
 \li Block ciphers: AES128, AES192, AES256, Speck
-\li Block cipher modes: CTR, CFB, CBC, OFB, EAX, GCM
+\li Block cipher modes: CTR, CFB, CBC, OFB, EAX, GCM, XTS
 \li Stream ciphers: ChaCha
 \li Authenticated encryption with associated data (AEAD): ChaChaPoly, EAX, GCM
 \li Hash algorithms: SHA256, SHA512, SHA3_256, SHA3_512, BLAKE2s, BLAKE2b (regular and HMAC modes)

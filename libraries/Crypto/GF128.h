@@ -36,6 +36,7 @@ public:
     static void mul(uint32_t Y[4], const uint32_t H[4]);
     static void dbl(uint32_t V[4]);
     static void dblEAX(uint32_t V[4]);
+    static void dblXTS(uint32_t V[4]);
 };
 
 #endif

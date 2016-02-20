@@ -309,7 +309,7 @@ void GF128::mul(uint32_t Y[4], const uint32_t H[4])
  * block, the modes multiply the nonce by 2 in the GF(2^128) field every
  * block.  This function is provided to help with implementing such modes.
  *
- * \sa dblEAX(), mul()
+ * \sa dblEAX(), dblXTS(), mul()
  */
 void GF128::dbl(uint32_t V[4])
 {
@@ -401,7 +401,7 @@ void GF128::dbl(uint32_t V[4])
  * References: https://en.wikipedia.org/wiki/EAX_mode,
  * http://web.cs.ucdavis.edu/~rogaway/papers/eax.html
  *
- * \sa dbl(), mul()
+ * \sa dbl(), dblXTS(), mul()
  */
 void GF128::dblEAX(uint32_t V[4])
 {
@@ -476,5 +476,96 @@ void GF128::dblEAX(uint32_t V[4])
     V[1] = htobe32(V1);
     V[2] = htobe32(V2);
     V[3] = htobe32(V3);
+#endif
+}
+
+/**
+ * \brief Doubles a value in the GF(2^128) field using XTS conventions.
+ *
+ * \param V The value to double, and the result.  This array is
+ * assumed to be in littlen-endian order on entry and exit.
+ *
+ * This function differs from dbl() that it uses the conventions of XTS mode
+ * instead of those of NIST SP 800-38D (GCM).  The two operations have
+ * equivalent security but the bits are ordered differently with the
+ * value shifted left instead of right.
+ *
+ * References: <a href="http://libeccio.di.unisa.it/Crypto14/Lab/p1619.pdf">IEEE Std. 1619-2007, XTS-AES</a>
+ *
+ * \sa dbl(), dblEAX(), mul()
+ */
+void GF128::dblXTS(uint32_t V[4])
+{
+#if defined(__AVR__)
+    __asm__ __volatile__ (
+        "ld r16,Z\n"
+        "ldd r17,Z+1\n"
+        "ldd r18,Z+2\n"
+        "ldd r19,Z+3\n"
+        "lsl r16\n"
+        "rol r17\n"
+        "rol r18\n"
+        "rol r19\n"
+        "std Z+1,r17\n"
+        "std Z+2,r18\n"
+        "std Z+3,r19\n"
+        "ldd r17,Z+4\n"
+        "ldd r18,Z+5\n"
+        "ldd r19,Z+6\n"
+        "ldd r20,Z+7\n"
+        "rol r17\n"
+        "rol r18\n"
+        "rol r19\n"
+        "rol r20\n"
+        "std Z+4,r17\n"
+        "std Z+5,r18\n"
+        "std Z+6,r19\n"
+        "std Z+7,r20\n"
+        "ldd r17,Z+8\n"
+        "ldd r18,Z+9\n"
+        "ldd r19,Z+10\n"
+        "ldd r20,Z+11\n"
+        "rol r17\n"
+        "rol r18\n"
+        "rol r19\n"
+        "rol r20\n"
+        "std Z+8,r17\n"
+        "std Z+9,r18\n"
+        "std Z+10,r19\n"
+        "std Z+11,r20\n"
+        "ldd r17,Z+12\n"
+        "ldd r18,Z+13\n"
+        "ldd r19,Z+14\n"
+        "ldd r20,Z+15\n"
+        "rol r17\n"
+        "rol r18\n"
+        "rol r19\n"
+        "rol r20\n"
+        "std Z+12,r17\n"
+        "std Z+13,r18\n"
+        "std Z+14,r19\n"
+        "std Z+15,r20\n"
+        "mov r17,__zero_reg__\n"
+        "sbc r17,__zero_reg__\n"
+        "andi r17,0x87\n"
+        "eor r16,r17\n"
+        "st Z,r16\n"
+        : : "z"(V)
+        : "r16", "r17", "r18", "r19", "r20"
+    );
+#else
+    uint32_t V0 = le32toh(V[0]);
+    uint32_t V1 = le32toh(V[1]);
+    uint32_t V2 = le32toh(V[2]);
+    uint32_t V3 = le32toh(V[3]);
+    uint32_t mask = ((~(V3 >> 31)) + 1) & 0x00000087;
+    V3 = (V3 << 1) | (V2 >> 31);
+    V2 = (V2 << 1) | (V1 >> 31);
+    V1 = (V1 << 1) | (V0 >> 31);
+    V0 = (V0 << 1) ^ mask;
+    V[0] = htole32(V0);
+    V[1] = htole32(V1);
+    V[2] = htole32(V2);
+    V[3] = htole32(V3);
 #endif
 }
