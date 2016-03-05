@@ -666,6 +666,7 @@ INPUT                  = ../libraries/LCD \
                          ../libraries/Crypto \
                          ../libraries/RingOscillatorNoiseSource \
                          ../libraries/TransistorNoiseSource \
+                         ../libraries/Terminal \
                          .
 
 # This tag can be used to specify the character encoding of the source files
