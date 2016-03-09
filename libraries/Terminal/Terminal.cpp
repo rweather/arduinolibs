@@ -21,6 +21,7 @@
  */
 
 #include "Terminal.h"
+#include "TelnetDefs.h"
 
 /**
  * \class Terminal Terminal.h <Terminal.h>
@@ -102,6 +103,13 @@
 #define STATE_ESC       2       // Last character was ESC.
 #define STATE_MATCH     3       // Matching an escape sequence.
 #define STATE_UTF8      4       // Recognizing a UTF-8 sequence.
+#define STATE_IAC       5       // Recognizing telnet command after IAC (0xFF).
+#define STATE_WILL      6       // Waiting for option code for WILL command.
+#define STATE_WONT      7       // Waiting for option code for WONT command.
+#define STATE_DO        8       // Waiting for option code for DO command.
+#define STATE_DONT      9       // Waiting for option code for DONT command.
+#define STATE_SB        10      // Option sub-negotiation.
+#define STATE_SB_IAC    11      // Option sub-negotiation, byte after IAC.
 
 // Number of milliseconds to wait after an ESC character before
 // concluding that it is KEY_ESC rather than an escape sequence.
@@ -131,6 +139,8 @@ Terminal::Terminal()
     , offset(0)
     , state(STATE_INIT)
     , utf8len(0)
+    , mod(Terminal::Serial)
+    , flags(0)
 {
 }
 
@@ -142,18 +152,41 @@ Terminal::~Terminal()
 }
 
 /**
+ * \enum Terminal::Mode
+ * \brief Mode to operate in, Serial or Telnet.
+ */
+
+/**
+ * \var Terminal::Serial
+ * \brief Operates the terminal in serial mode.
+ */
+
+/**
+ * \var Terminal::Telnet
+ * \brief Operates the terminal in telnet mode.
+ */
+
+/**
  * \brief Begins terminal operations on an underlying stream.
  *
  * \param stream The underlying stream, whether a serial port, TCP connection,
  * or some other stream.
+ * \param mode The mode to operate in, either Serial or Telnet.
  *
- * \sa end()
+ * If Telnet mode is selected, then embedded commands and options from the
+ * telnet protocol (<a href="https://tools.ietf.org/html/rfc854">RFC 854</a>)
+ * will be interpreted.  This is useful if the underlying \a stream is a TCP
+ * connection on port 23.  The mode operates as a telnet server.
+ *
+ * \sa end(), mode()
  */
-void Terminal::begin(Stream &stream)
+void Terminal::begin(Stream &stream, Mode mode)
 {
     _stream = &stream;
     ucode = -1;
     state = STATE_INIT;
+    flags = 0;
+    mod = mode;
 }
 
 /**
@@ -166,6 +199,13 @@ void Terminal::end()
 {
     _stream = 0;
 }
+
+/**
+ * \fn Terminal::Mode Terminal::mode() const
+ * \brief Returns the mode this terminal is operating in, Serial or Telnet.
+ *
+ * \sa begin()
+ */
 
 /**
  * \brief Returns the number of bytes that are available for reading.
@@ -321,6 +361,10 @@ static bool escapeSequenceStart(int ch)
  * with unicodeKey() set to 0x0D.  This ensures that all line ending
  * types are mapped to a single KEY_RETURN report.
  *
+ * If the window size has changed due to a remote event, then KEY_WINSIZE
+ * will be returned.  This can allow the caller to clear and redraw the
+ * window in the new size.
+ *
  * \sa unicodeKey(), read()
  */
 int Terminal::readKey()
@@ -378,6 +422,12 @@ int Terminal::readKey()
         if (ch == 0x0A) {
             ucode = -1;
             return -1;
+        } else if (ch == 0x00 && mod == Telnet) {
+            // In telnet mode, CR NUL is a literal carriage return,
+            // separate from the newline sequence CRLF.  Eat the NUL.
+            // We already reported KEY_RETURN for the CR character.
+            ucode = -1;
+            return -1;
         }
         // Fall through to the next case.
 
@@ -430,6 +480,9 @@ int Terminal::readKey()
             offset = ch & 0x07;
             utf8len = 4;
             state = STATE_UTF8;
+        } else if (ch == 0xFF && mod == Telnet) {
+            // Start of a telnet command (IAC byte).
+            state = STATE_IAC;
         }
         break;
 
@@ -488,6 +541,170 @@ int Terminal::readKey()
             // This character is invalid as part of a UTF-8 sequence.
             state = STATE_INIT;
         }
+        break;
+
+    case STATE_IAC:
+        // Telnet command byte just after an IAC (0xFF) character.
+        switch (ch) {
+        case TelnetDefs::EndOfFile:
+            // Convert EOF into CTRL-D.
+            state = STATE_INIT;
+            ucode = 0x04;
+            return 0x04;
+
+        case TelnetDefs::EndOfRecord:
+            // Convert end of record markers into CR.
+            state = STATE_INIT;
+            ucode = 0x0D;
+            return KEY_RETURN;
+
+        case TelnetDefs::Interrupt:
+            // Convert interrupt into CTRL-C.
+            state = STATE_INIT;
+            ucode = 0x03;
+            return 0x03;
+
+        case TelnetDefs::EraseChar:
+            // Convert erase character into DEL.
+            state = STATE_INIT;
+            ucode = 0x7F;
+            return KEY_BACKSPACE;
+
+        case TelnetDefs::EraseLine:
+            // Convert erase line into CTRL-U.
+            state = STATE_INIT;
+            ucode = 0x15;
+            return 0x15;
+
+        case TelnetDefs::SubStart:
+            // Option sub-negotiation.
+            utf8len = 0;
+            state = STATE_SB;
+            break;
+
+        case TelnetDefs::WILL:
+            // Option negotiation, WILL command.
+            state = STATE_WILL;
+            break;
+
+        case TelnetDefs::WONT:
+            // Option negotiation, WONT command.
+            state = STATE_WONT;
+            break;
+
+        case TelnetDefs::DO:
+            // Option negotiation, DO command.
+            state = STATE_DO;
+            break;
+
+        case TelnetDefs::DONT:
+            // Option negotiation, DONT command.
+            state = STATE_DONT;
+            break;
+
+        case TelnetDefs::IAC:
+            // IAC followed by IAC is the literal byte 0xFF,
+            // but that isn't valid UTF-8 so we just drop it.
+            state = STATE_INIT;
+            break;
+
+        default:
+            // Everything else is treated as a NOP.
+            state = STATE_INIT;
+            break;
+        }
+        break;
+
+    case STATE_WILL:
+        // Telnet option negotiation, WILL command.  Note: We don't do any
+        // loop detection.  We assume that the client will eventually break
+        // the loop as it probably has more memory than us to store state.
+        if (ch == TelnetDefs::WindowSize ||
+                ch == TelnetDefs::RemoteFlowControl) {
+            // Send a DO command in response - we accept this option.
+            telnetCommand(TelnetDefs::DO, ch);
+        } else {
+            // Send a DONT command in response - we don't accept this option.
+            telnetCommand(TelnetDefs::DONT, ch);
+        }
+        if (!(flags & 0x01)) {
+            // The first time we see a WILL command from the client we
+            // send a request back saying that we will handle echoing.
+            flags |= 0x01;
+            telnetCommand(TelnetDefs::WILL, TelnetDefs::Echo);
+        }
+        state = STATE_INIT;
+        break;
+
+    case STATE_WONT:
+    case STATE_DONT:
+        // Telnet option negotiation, WONT/DONT command.  The other side
+        // is telling us that it does not understand this option or wants
+        // us to stop using it.  For now there is nothing to do.
+        state = STATE_INIT;
+        break;
+
+    case STATE_DO:
+        // Telnet option negotiation, DO command.  Note: Other than Echo
+        // we don't do any loop detection.  We assume that the client will
+        // break the loop as it probably has more memory than us to store state.
+        if (ch == TelnetDefs::Echo) {
+            // Special handling needed for Echo - don't say WILL again
+            // when the client acknowledges us with a DO command.
+        } else if (ch == TelnetDefs::SuppressGoAhead) {
+            // Send a WILL command in response - we accept this option.
+            telnetCommand(TelnetDefs::WILL, ch);
+        } else {
+            // Send a WONT command in response - we don't accept this option.
+            telnetCommand(TelnetDefs::WONT, ch);
+        }
+        state = STATE_INIT;
+        break;
+
+    case STATE_SB:
+        // Telnet option sub-negotiation.  Collect up all bytes and
+        // then execute the option once "IAC SubEnd" is seen.
+        if (ch == TelnetDefs::IAC) {
+            // IAC byte, which will be followed by either IAC or SubEnd.
+            state = STATE_SB_IAC;
+            break;
+        }
+        if (utf8len < sizeof(sb))
+            sb[utf8len++] = 0xFF;
+        break;
+
+    case STATE_SB_IAC:
+        // Telnet option sub-negotiation, byte after IAC.
+        if (ch == TelnetDefs::IAC) {
+            // Two IAC bytes in a row is a single escaped 0xFF byte.
+            if (utf8len < sizeof(sb))
+                sb[utf8len++] = 0xFF;
+            state = STATE_SB;
+            break;
+        } else if (ch == TelnetDefs::SubEnd) {
+            // End of the sub-negotiation field.  Handle window size changes.
+            if (utf8len >= 5 && sb[0] == TelnetDefs::WindowSize) {
+                int width  = (((int)(sb[1])) << 8) | sb[2];
+                int height = (((int)(sb[3])) << 8) | sb[4];
+                if (!width)         // Zero width or height means "unspecified".
+                    width = ncols;
+                if (!height)
+                    height = nrows;
+
+                // Filter out obviously bogus values.
+                if (width >= 1 && height >= 1 && width <= 10000 && height <= 10000) {
+                    if (width != ncols || height != nrows) {
+                        // The window size has changed; notify the caller.
+                        ncols = width;
+                        nrows = height;
+                        ucode = -1;
+                        state = STATE_INIT;
+                        return KEY_WINSIZE;
+                    }
+                }
+            }
+        }
+        state = STATE_INIT;
         break;
     }
 
@@ -558,12 +775,15 @@ size_t Terminal::writeUnicode(long code)
  * This function should be used if the application has some information
  * about the actual window size.  For serial ports, this usually isn't
  * available but telnet and ssh sessions can get the window size from
- * the remote host and set it using this function.
+ * the remote host.
  *
  * The window size defaults to 80x24 which is the standard default for
  * terminal programs like PuTTY that emulate a VT100.
  *
- * \sa columns(), rows()
+ * If the window size changes due to a remote event, readKey() will
+ * return KEY_WINSIZE to inform the application.
+ *
+ * \sa columns(), rows(), readKey()
  */
 void Terminal::setWindowSize(int columns, int rows)
 {
@@ -1176,4 +1396,19 @@ int Terminal::matchEscape(int ch)
         }
     }
     return -2;
+}
+
+/**
+ * \brief Sends a telnet command to the client.
+ *
+ * \param type The type of command: WILL, WONT, DO, or DONT.
+ * \param option The telnet option the command applies to.
+ */
+void Terminal::telnetCommand(uint8_t type, uint8_t option)
+{
+    uint8_t buf[3];
+    buf[0] = (uint8_t)TelnetDefs::IAC;
+    buf[1] = type;
+    buf[2] = option;
+    _stream->write(buf, 3);
 }

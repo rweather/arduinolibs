@@ -63,7 +63,7 @@ public:
     Shell();
     virtual ~Shell();
 
-    bool begin(Stream &stream, size_t maxHistory = 0);
+    bool begin(Stream &stream, size_t maxHistory = 0, Terminal::Mode mode = Serial);
     void end();
 
     void loop();

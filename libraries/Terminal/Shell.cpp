@@ -99,6 +99,8 @@ Shell::~Shell()
  * serial port or TCP network connection.
  * \param maxHistory The number of commands to allocate in the history
  * stack for scrolling back through using Up/Down arrow keys.
+ * \param mode The terminal mode to operate in, Terminal::Serial or
+ * Terminal::Telnet.
  * \return Returns true if the shell was initialized, or false if there
  * is insufficient memory for the history stack.
  *
@@ -114,10 +116,10 @@ Shell::~Shell()
  *
  * \sa end(), setPrompt()
  */
-bool Shell::begin(Stream &stream, size_t maxHistory)
+bool Shell::begin(Stream &stream, size_t maxHistory, Terminal::Mode mode)
 {
     // Initialize the Terminal base class with the underlying stream.
-    Terminal::begin(stream);
+    Terminal::begin(stream, mode);
 
     // Create the history buffer.
     this->maxHistory = maxHistory;

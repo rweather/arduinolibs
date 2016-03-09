@@ -30,14 +30,25 @@
 // Special key code that indicates that unicodeKey() contains the actual code.
 #define KEY_UNICODE 0x1000
 
+// Special key code that indicates that the window size has changed.
+#define KEY_WINSIZE 0x1001
+
 class Terminal : public Stream
 {
 public:
     Terminal();
     virtual ~Terminal();
 
-    void begin(Stream &stream);
+    enum Mode
+    {
+        Serial,
+        Telnet
+    };
+
+    void begin(Stream &stream, Mode mode = Serial);
     void end();
+
+    Terminal::Mode mode() const { return (Terminal::Mode)mod; }
 
     virtual int available();
     virtual int peek();
@@ -123,8 +134,12 @@ private:
     uint16_t offset;
     uint8_t state;
     uint8_t utf8len;
+    uint8_t mod;
+    uint8_t sb[16];
+    uint8_t flags;
 
     int matchEscape(int ch);
+    void telnetCommand(uint8_t type, uint8_t option);
 };
 
 #endif
