@@ -305,13 +305,22 @@ size_t Terminal::write(const uint8_t *buffer, size_t size)
  */
 void Terminal::writeProgMem(const char *str)
 {
+    uint8_t buffer[16];
+    uint8_t posn;
     uint8_t ch;
-    if (!_stream)
+    if (!_stream || !str)
         return;
+    posn = 0;
     while ((ch = pgm_read_byte((const uint8_t *)str)) != 0) {
-        _stream->write(ch);
+        buffer[posn++] = ch;
+        if (posn == sizeof(buffer)) {
+            _stream->write(buffer, posn);
+            posn = 0;
+        }
         ++str;
     }
+    if (posn != 0)
+        _stream->write(buffer, posn);
 }
 
 /**
@@ -818,6 +827,25 @@ void Terminal::clearToEOL()
     writeProgMem(escape);
 }
 
+// Writes a decimal number to a buffer.
+static void writeNumber(uint8_t *buf, uint8_t &posn, int value)
+{
+    int divisor = 10000;
+    bool haveDigits = false;
+    while (divisor >= 1) {
+        int digit = value / divisor;
+        if (digit || haveDigits) {
+            buf[posn++] = '0' + digit;
+            haveDigits = true;
+        }
+        value %= divisor;
+        divisor /= 10;
+    }
+    if (!haveDigits) {
+        buf[posn++] = '0';
+    }
+}
+
 /**
  * \brief Moves the cursor to a specific location in the window.
  *
@@ -830,6 +858,8 @@ void Terminal::cursorMove(int x, int y)
 {
     if (!_stream)
         return;
+
+    // Range check the arguments.
     if (x < 0)
         x = 0;
     else if (x >= ncols)
@@ -838,12 +868,17 @@ void Terminal::cursorMove(int x, int y)
         y = 0;
     else if (y >= nrows)
         y = nrows - 1;
-    _stream->write((uint8_t)0x1B);
-    _stream->write((uint8_t)'[');
-    _stream->print(y + 1);
-    _stream->write((uint8_t)';');
-    _stream->print(x + 1);
-    _stream->write((uint8_t)'H');
+
+    // Format the command "ESC[row;colH" and send it.
+    uint8_t buffer[16];
+    uint8_t posn = 0;
+    buffer[posn++] = 0x1B;
+    buffer[posn++] = '[';
+    writeNumber(buffer, posn, y + 1);
+    buffer[posn++] = ';';
+    writeNumber(buffer, posn, x + 1);
+    buffer[posn++] = 'H';
+    _stream->write(buffer, posn);
 }
 
 /**
@@ -1133,17 +1168,20 @@ void Terminal::color(Color fg)
     uint8_t bold = (fg & 0x08) ? 1 : 0;
     if (!_stream)
         return;
-    _stream->write((uint8_t)0x1B);
-    _stream->write((uint8_t)'[');
-    _stream->write((uint8_t)'0'); // reset all attributes first
-    _stream->write((uint8_t)';');
-    _stream->write((uint8_t)'3');
-    _stream->write((uint8_t)('0' + code));
+    uint8_t buffer[16];
+    uint8_t posn = 0;
+    buffer[posn++] = 0x1B;
+    buffer[posn++] = '[';
+    buffer[posn++] = '0';   // reset all attributes first
+    buffer[posn++] = ';';
+    buffer[posn++] = '3';
+    buffer[posn++] = '0' + code;
     if (bold) {
-        _stream->write((uint8_t)';');
-        _stream->write((uint8_t)'1');
+        buffer[posn++] = ';';
+        buffer[posn++] = '1';
     }
-    _stream->write((uint8_t)'m');
+    buffer[posn++] = 'm';
+    _stream->write(buffer, posn);
 }
 
 /**
@@ -1163,20 +1201,23 @@ void Terminal::color(Color fg, Color bg)
     uint8_t codebg = (bg & 0x07);
     if (!_stream)
         return;
-    _stream->write((uint8_t)0x1B);
-    _stream->write((uint8_t)'[');
-    _stream->write((uint8_t)'0'); // reset all attributes first
-    _stream->write((uint8_t)';');
-    _stream->write((uint8_t)'3');
-    _stream->write((uint8_t)('0' + codefg));
+    uint8_t buffer[16];
+    uint8_t posn = 0;
+    buffer[posn++] = 0x1B;
+    buffer[posn++] = '[';
+    buffer[posn++] = '0';   // reset all attributes first
+    buffer[posn++] = ';';
+    buffer[posn++] = '3';
+    buffer[posn++] = '0' + codefg;
     if (boldfg) {
-        _stream->write((uint8_t)';');
-        _stream->write((uint8_t)'1');
+        buffer[posn++] = ';';
+        buffer[posn++] = '1';
     }
-    _stream->write((uint8_t)';');
-    _stream->write((uint8_t)'4');
-    _stream->write((uint8_t)('0' + codebg));
-    _stream->write((uint8_t)'m');
+    buffer[posn++] = ';';
+    buffer[posn++] = '4';
+    buffer[posn++] = '0' + codebg;
+    buffer[posn++] = 'm';
+    _stream->write(buffer, posn);
 }
 
 /**
