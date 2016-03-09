@@ -209,8 +209,8 @@ void Shell::loop()
         clearCharacters(curLen);
         break;
 
-    case 0x04: case 0x1A:
-        // CTRL-D or CTRL-Z - equivalent to the "exit" command.
+    case 0x04:
+        // CTRL-D - equivalent to the "exit" command.
         executeBuiltin(builtin_cmd_exit);
         break;
 
