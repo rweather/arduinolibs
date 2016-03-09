@@ -169,9 +169,10 @@ void Shell::end()
 
 /** @cond */
 
-// Standard command names for use with executeBuiltin().
+// Standard builtin command names.
 static char const builtin_cmd_exit[] PROGMEM = "exit";
 static char const builtin_cmd_help[] PROGMEM = "help";
+static char const builtin_cmd_help_alt[] PROGMEM = "?";
 
 /** @endcond */
 
@@ -518,7 +519,8 @@ void Shell::execute()
     if (argc > 0) {
         if (!execute(argc, argv)) {
             // Could not find a matching command, try the builtin "help".
-            if (!strcmp_P(argv[0], builtin_cmd_help)) {
+            if (!strcmp_P(argv[0], builtin_cmd_help) ||
+                    !strcmp_P(argv[0], builtin_cmd_help_alt)) {
                 help();
             } else {
                 static char const unknown_cmd[] PROGMEM = "Unknown command: ";
