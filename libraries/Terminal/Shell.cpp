@@ -216,7 +216,7 @@ void Shell::loop()
 
     case KEY_UP_ARROW:
         // Go back one item in the command history.
-        if (history && historyPosn < maxHistory) {
+        if (!hideChars && history && historyPosn < maxHistory) {
             ++historyPosn;
             changeHistory();
         }
@@ -224,7 +224,7 @@ void Shell::loop()
 
     case KEY_DOWN_ARROW:
         // Go forward one item in the command history.
-        if (history && historyPosn > 0) {
+        if (!hideChars && history && historyPosn > 0) {
             --historyPosn;
             changeHistory();
         }
