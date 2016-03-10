@@ -71,7 +71,7 @@ public:
     int columns() const { return ncols; }
     int rows() const { return nrows; }
 
-    void setWindowSize(int columns, int rows);
+    bool setWindowSize(int columns, int rows);
 
     void clear();
     void clearToEOL();
@@ -135,7 +135,7 @@ private:
     uint8_t state;
     uint8_t utf8len;
     uint8_t mod;
-    uint8_t sb[16];
+    uint8_t sb[8];
     uint8_t flags;
 
     int matchEscape(int ch);

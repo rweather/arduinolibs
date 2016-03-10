@@ -679,7 +679,7 @@ int Terminal::readKey()
             break;
         }
         if (utf8len < sizeof(sb))
-            sb[utf8len++] = 0xFF;
+            sb[utf8len++] = ch;
         break;
 
     case STATE_SB_IAC:
@@ -699,17 +699,11 @@ int Terminal::readKey()
                     width = ncols;
                 if (!height)
                     height = nrows;
-
-                // Filter out obviously bogus values.
-                if (width >= 1 && height >= 1 && width <= 10000 && height <= 10000) {
-                    if (width != ncols || height != nrows) {
-                        // The window size has changed; notify the caller.
-                        ncols = width;
-                        nrows = height;
-                        ucode = -1;
-                        state = STATE_INIT;
-                        return KEY_WINSIZE;
-                    }
+                if (setWindowSize(width, height)) {
+                    // The window size has changed; notify the caller.
+                    ucode = -1;
+                    state = STATE_INIT;
+                    return KEY_WINSIZE;
                 }
             }
         }
@@ -781,6 +775,8 @@ size_t Terminal::writeUnicode(long code)
  * \param columns The number of columns between 1 and 10000.
  * \param rows The number of rows between 1 and 10000.
  *
+ * \return Returns true if the window size has changed.
+ *
  * This function should be used if the application has some information
  * about the actual window size.  For serial ports, this usually isn't
  * available but telnet and ssh sessions can get the window size from
@@ -794,7 +790,7 @@ size_t Terminal::writeUnicode(long code)
  *
  * \sa columns(), rows(), readKey()
  */
-void Terminal::setWindowSize(int columns, int rows)
+bool Terminal::setWindowSize(int columns, int rows)
 {
     // Sanity-check the range first.
     if (columns < 1)
@@ -805,8 +801,13 @@ void Terminal::setWindowSize(int columns, int rows)
         rows = 1;
     else if (rows > 10000)
         rows = 10000;
-    ncols = columns;
-    nrows = rows;
+    if (ncols != columns || nrows != rows) {
+        ncols = columns;
+        nrows = rows;
+        return true;
+    } else {
+        return false;
+    }
 }
 
 /**
