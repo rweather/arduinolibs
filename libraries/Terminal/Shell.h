@@ -26,6 +26,7 @@
 #include "Terminal.h"
 
 class Shell;
+class ShellArguments;
 
 #if defined(__arm__)
 #define SHELL_MAX_CMD_LEN   256
@@ -33,7 +34,7 @@ class Shell;
 #define SHELL_MAX_CMD_LEN   64
 #endif
 
-typedef void (*ShellCommandFunc)(Shell &shell, int argc, char *argv[]);
+typedef void (*ShellCommandFunc)(Shell &shell, int argc, const ShellArguments &argv);
 typedef bool (*ShellPasswordCheckFunc)(const char *userid, const char *password);
 
 /** @cond */
@@ -80,7 +81,6 @@ public:
 
 private:
     char buffer[SHELL_MAX_CMD_LEN];
-    char *argv[SHELL_MAX_CMD_LEN / 2];
     size_t maxHistory;
     size_t curLen;
     char *history;
@@ -94,10 +94,33 @@ private:
     Shell &operator=(const Shell &) { return *this; }
 
     void execute();
-    bool execute(int argc, char **argv);
+    bool execute(const ShellArguments &argv);
     void executeBuiltin(const char *cmd);
     void clearCharacters(size_t len);
     void changeHistory();
+};
+
+class ShellArguments
+{
+    friend class Shell;
+private:
+    ShellArguments(char *buffer, size_t len);
+    ~ShellArguments() {}
+public:
+
+    int count() const { return argc; }
+    const char *operator[](int index) const;
+
+private:
+    const char *line;
+    size_t size;
+    int argc;
+    mutable int currentIndex;
+    mutable size_t currentPosn;
+
+    // Disable copy constructor and operator=().
+    ShellArguments(const ShellArguments &other) {}
+    ShellArguments &operator=(const ShellArguments &) { return *this; }
 };
 
 /** @cond */

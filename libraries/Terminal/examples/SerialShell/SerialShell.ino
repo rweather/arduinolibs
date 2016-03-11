@@ -10,7 +10,7 @@ int ledPin = 13;
 
 Shell shell;
 
-void cmdLed(Shell &shell, int argc, char *argv[])
+void cmdLed(Shell &shell, int argc, const ShellArguments &argv)
 {
     if (argc > 1 && !strcmp(argv[1], "on"))
         digitalWrite(ledPin, HIGH);

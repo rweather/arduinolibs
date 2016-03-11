@@ -452,8 +452,6 @@ void Shell::help()
  */
 void Shell::execute()
 {
-    size_t posn = 0;
-
     // Terminate the current line.
     println();
 
@@ -474,58 +472,24 @@ void Shell::execute()
     // Reset the history read position to the top of the stack.
     historyPosn = 0;
 
-    // Skip white space at the start of the line.
-    while (posn < curLen && buffer[posn] == ' ')
-        ++posn;
-
-    // Break the command up into arguments and populate the argv array.
-    int argc = 0;
-    size_t outposn = 0;
-    char quote = 0;
-    while (posn < curLen) {
-        char ch = buffer[posn];
-        if (ch == ' ') {
-            ++posn;
-            continue;
-        }
-        argv[argc++] = buffer + outposn;
-        do {
-            ch = buffer[posn];
-            if (ch == '"' || ch == '\'') {
-                if (quote == ch) {
-                    quote = 0;
-                    ++posn;
-                    continue;
-                } else if (!quote) {
-                    quote = ch;
-                    ++posn;
-                    continue;
-                }
-            } else if (!quote && ch == ' ') {
-                break;
-            }
-            buffer[outposn++] = ch;
-            ++posn;
-        } while (posn < curLen);
-        buffer[outposn++] = '\0';
-        if (posn < curLen)
-            ++posn;
-    }
+    // Break the command up into arguments and populate the argument array.
+    ShellArguments argv(buffer, curLen);
 
     // Clear the line buffer.
     curLen = 0;
 
     // Execute the command.
-    if (argc > 0) {
-        if (!execute(argc, argv)) {
+    if (argv.count() > 0) {
+        if (!execute(argv)) {
             // Could not find a matching command, try the builtin "help".
-            if (!strcmp_P(argv[0], builtin_cmd_help) ||
-                    !strcmp_P(argv[0], builtin_cmd_help_alt)) {
+            const char *argv0 = argv[0];
+            if (!strcmp_P(argv0, builtin_cmd_help) ||
+                    !strcmp_P(argv0, builtin_cmd_help_alt)) {
                 help();
             } else {
                 static char const unknown_cmd[] PROGMEM = "Unknown command: ";
                 writeProgMem(unknown_cmd);
-                print(argv[0]);
+                print(argv0);
                 println();
             }
         }
@@ -539,18 +503,18 @@ void Shell::execute()
 /**
  * \brief Executes a command that has been parsed into arguments.
  *
- * \param argc The number of elements in \a argv.
  * \param argv The arguments.
  *
  * \return Returns true if the command was found; false if not found.
  */
-bool Shell::execute(int argc, char **argv)
+bool Shell::execute(const ShellArguments &argv)
 {
+    const char *argv0 = argv[0];
     ShellCommandRegister *current = firstCmd;
     while (current != 0) {
-        if (!strcmp_P(argv[0], readInfoName(current->info))) {
+        if (!strcmp_P(argv0, readInfoName(current->info))) {
             ShellCommandFunc func = readInfoFunc(current->info);
-            (*func)(*this, argc, argv);
+            (*func)(*this, argv.count(), argv);
             return true;
         }
         current = current->next;
@@ -664,7 +628,7 @@ void Shell::changeHistory()
  * be placed into program memory.
  *
  * \code
- * void cmdMotor(Shell &shell, int argc, char *argv[])
+ * void cmdMotor(Shell &shell, int argc, const ShellArguments &argv)
  * {
  *     ...
  * }
@@ -677,3 +641,115 @@ void Shell::changeHistory()
  *
  * \relates Shell
  */
+
+/**
+ * \brief Constructs a new argument array.
+ *
+ * \param buffer Points to the command buffer to parse into arguments.
+ * \param len The length of the command buffer in bytes, excluding the
+ * terminating NUL.
+ */
+ShellArguments::ShellArguments(char *buffer, size_t len)
+    : line(buffer)
+    , size(0)
+    , argc(0)
+    , currentIndex(0)
+    , currentPosn(0)
+{
+    // Break the command up into arguments and add NUL terminators.
+    size_t posn = 0;
+    size_t outposn = 0;
+    char quote = 0;
+    while (posn < len) {
+        char ch = buffer[posn];
+        if (ch == ' ') {
+            ++posn;
+            continue;
+        }
+        ++argc;
+        do {
+            ch = buffer[posn];
+            if (ch == '"' || ch == '\'') {
+                if (quote == ch) {
+                    quote = 0;
+                    ++posn;
+                    continue;
+                } else if (!quote) {
+                    quote = ch;
+                    ++posn;
+                    continue;
+                }
+            } else if (!quote && ch == ' ') {
+                break;
+            }
+            buffer[outposn++] = ch;
+            ++posn;
+        } while (posn < len);
+        buffer[outposn++] = '\0';
+        if (posn < len)
+            ++posn;
+    }
+    size = outposn;
+}
+
+/**
+ * \class ShellArguments Shell.h <Shell.h>
+ * \brief Convenience class that encapsulates an array of shell
+ * command arguments.
+ *
+ * \sa Shell
+ */
+
+/**
+ * \fn ShellArguments::~ShellArguments()
+ * \brief Destroys this argument array.
+ */
+
+/**
+ * \fn int ShellArguments::count() const
+ * \brief Returns the number of arguments, including the name of the command.
+ *
+ * \sa operator[]
+ */
+
+/**
+ * \brief Gets a specific argument for the command.
+ *
+ * \param index The argument index between 0 and count() - 1.
+ * \return The argument, or NULL if \a index is out of range.
+ *
+ * The name of the command is argument 0.  The command's remaining
+ * arguments are numbered 1 to count() - 1.
+ *
+ * \sa count()
+ */
+const char *ShellArguments::operator[](int index) const
+{
+    if (index < 0 || index >= argc) {
+        // Argument index is out of range.
+        return 0;
+    } else if (index == currentIndex) {
+        // We already found this argument last time.
+        return line + currentPosn;
+    } else {
+        // Search forwards or backwards for the next argument.
+        const char *temp;
+        while (index > currentIndex) {
+            temp = (const char *)memchr
+                (line + currentPosn, '\0', size - currentPosn);
+            if (!temp)
+                return 0;
+            currentPosn = ((size_t)(temp - line)) + 1;
+            ++currentIndex;
+        }
+        while (index < currentIndex) {
+            temp = (const char *)memrchr(line, '\0', currentPosn - 1);
+            if (temp)
+                currentPosn = ((size_t)(temp - line)) + 1;
+            else
+                currentPosn = 0;
+            --currentIndex;
+        }
+        return line + currentPosn;
+    }
+}

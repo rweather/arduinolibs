@@ -21,7 +21,7 @@ bool haveClient = false;
 
 Shell shell;
 
-void cmdLed(Shell &shell, int argc, char *argv[])
+void cmdLed(Shell &shell, int argc, const ShellArguments &argv)
 {
     if (argc > 1 && !strcmp(argv[1], "on"))
         digitalWrite(ledPin, HIGH);
@@ -29,7 +29,7 @@ void cmdLed(Shell &shell, int argc, char *argv[])
         digitalWrite(ledPin, LOW);
 }
 
-void cmdExit(Shell &shell, int argc, char *argv[])
+void cmdExit(Shell &shell, int argc, const ShellArguments &argv)
 {
     client.stop();
 }
