@@ -29,13 +29,7 @@ void cmdLed(Shell &shell, int argc, const ShellArguments &argv)
         digitalWrite(ledPin, LOW);
 }
 
-void cmdExit(Shell &shell, int argc, const ShellArguments &argv)
-{
-    client.stop();
-}
-
 ShellCommand(led, "Turns the status LED on or off", cmdLed);
-ShellCommand(exit, "Exit and log out", cmdExit);
 
 void setup()
 {
@@ -72,7 +66,7 @@ void loop()
         client = server.available();
         if (client) {
             haveClient = true;
-            shell.begin(client, 5, Terminal::Telnet);
+            shell.begin(client, 5);
         }
     } else if (!client.connected()) {
         // The current client has been disconnected.  Shut down the shell.

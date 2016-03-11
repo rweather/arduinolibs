@@ -133,6 +133,7 @@ Shell::Shell()
     , historyPosn(0)
     , prom("> ")
     , hideChars(false)
+    , isClient(false)
 {
 }
 
@@ -152,7 +153,7 @@ Shell::~Shell()
  * \param maxHistory The number of commands to allocate in the history
  * stack for scrolling back through using Up/Down arrow keys.
  * \param mode The terminal mode to operate in, Terminal::Serial or
- * Terminal::Telnet.
+ * Terminal::Telnet.  Default is Terminal::Serial.
  * \return Returns true if the shell was initialized, or false if there
  * is insufficient memory for the history stack.
  *
@@ -169,6 +170,44 @@ Shell::~Shell()
  * \sa end(), setPrompt()
  */
 bool Shell::begin(Stream &stream, size_t maxHistory, Terminal::Mode mode)
+{
+    if (!beginShell(stream, maxHistory, mode))
+        return false;
+    isClient = false;
+    return true;
+}
+
+/**
+ * \brief Begin shell handling on a connected TCP client.
+ *
+ * \param client The client to apply the shell to.  This must be a
+ * connected TCP client.
+ * \param maxHistory The number of commands to allocate in the history
+ * stack for scrolling back through using Up/Down arrow keys.
+ * \param mode The terminal mode to operate in, Terminal::Serial or
+ * Terminal::Telnet.  Default is Terminal::Telnet.
+ * \return Returns true if the shell was initialized, or false if there
+ * is insufficient memory for the history stack.
+ *
+ * This override is provided as a convenience for starting a shell on a
+ * TCP connection.  This function also modifies the behaviour of the
+ * builtin "exit" command to forcibly stop the TCP connection rather
+ * than returning to the login prompt.
+ *
+ * \sa end(), setPrompt()
+ */
+bool Shell::begin(Client &client, size_t maxHistory, Terminal::Mode mode)
+{
+    if (!beginShell(client, maxHistory, mode))
+        return false;
+    isClient = true;
+    return true;
+}
+
+/**
+ * \brief Internal implementation of begin().
+ */
+bool Shell::beginShell(Stream &stream, size_t maxHistory, Terminal::Mode mode)
 {
     // Initialize the Terminal base class with the underlying stream.
     Terminal::begin(stream, mode);
@@ -217,6 +256,7 @@ void Shell::end()
     historyWrite = 0;
     historyPosn = 0;
     hideChars = false;
+    isClient = false;
 }
 
 /** @cond */
@@ -236,6 +276,12 @@ static char const builtin_cmd_help_alt[] PROGMEM = "?";
  */
 void Shell::loop()
 {
+    // If the stream is a TCP client, then check for disconnection.
+    if (isClient && !((Client *)stream())->connected()) {
+        end();
+        return;
+    }
+
     // Read the next key and bail out if none.  We only process a single
     // key each time we enter this function to prevent other tasks in the
     // system from becoming starved of time resources if the bytes are
@@ -500,6 +546,21 @@ void Shell::help()
 }
 
 /**
+ * \brief Exit from the shell back to the login prompt.
+ *
+ * If the underlying stream is a TCP client, then this function will
+ * stop the client, causing disconnection.
+ */
+void Shell::exit()
+{
+    Stream *stream = this->stream();
+    if (isClient) {
+        end();
+        ((Client *)stream)->stop();
+    }
+}
+
+/**
  * \brief Executes the command in the buffer.
  */
 void Shell::execute()
@@ -538,6 +599,8 @@ void Shell::execute()
             if (!strcmp_P(argv0, builtin_cmd_help) ||
                     !strcmp_P(argv0, builtin_cmd_help_alt)) {
                 help();
+            } else if (!strcmp_P(argv0, builtin_cmd_exit)) {
+                exit();
             } else {
                 static char const unknown_cmd[] PROGMEM = "Unknown command: ";
                 writeProgMem(unknown_cmd);

@@ -48,6 +48,7 @@ public:
     void begin(Stream &stream, Mode mode = Serial);
     void end();
 
+    Stream *stream() const { return _stream; }
     Terminal::Mode mode() const { return (Terminal::Mode)mod; }
 
     virtual int available();

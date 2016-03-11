@@ -178,7 +178,7 @@ Terminal::~Terminal()
  * will be interpreted.  This is useful if the underlying \a stream is a TCP
  * connection on port 23.  The mode operates as a telnet server.
  *
- * \sa end(), mode()
+ * \sa end(), stream(), mode()
  */
 void Terminal::begin(Stream &stream, Mode mode)
 {
@@ -199,6 +199,14 @@ void Terminal::end()
 {
     _stream = 0;
 }
+
+/**
+ * \fn Stream *Terminal::stream() const
+ * \brief Returns a pointer to the underlying Stream, or NULL if the
+ * stream has not been set with begin() yet.
+ *
+ * \sa begin()
+ */
 
 /**
  * \fn Terminal::Mode Terminal::mode() const

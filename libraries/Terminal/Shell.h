@@ -24,6 +24,7 @@
 #define SHELL_h
 
 #include "Terminal.h"
+#include <Client.h>
 
 class Shell;
 class ShellArguments;
@@ -65,6 +66,7 @@ public:
     virtual ~Shell();
 
     bool begin(Stream &stream, size_t maxHistory = 0, Terminal::Mode mode = Serial);
+    bool begin(Client &client, size_t maxHistory = 0, Terminal::Mode mode = Telnet);
     void end();
 
     void loop();
@@ -78,6 +80,7 @@ public:
     void setHideCharacters(bool hide);
 
     void help();
+    void exit();
 
 private:
     char buffer[SHELL_MAX_CMD_LEN];
@@ -88,11 +91,13 @@ private:
     size_t historyPosn;
     const char *prom;
     bool hideChars;
+    bool isClient;
 
     // Disable copy constructor and operator=().
     Shell(const Shell &other) {}
     Shell &operator=(const Shell &) { return *this; }
 
+    bool beginShell(Stream &stream, size_t maxHistory, Terminal::Mode mode);
     void execute();
     bool execute(const ShellArguments &argv);
     void executeBuiltin(const char *cmd);
