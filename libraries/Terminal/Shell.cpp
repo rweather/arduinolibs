@@ -28,6 +28,58 @@
  * \class Shell Shell.h <Shell.h>
  * \brief Command-line shell access.
  *
+ * This class provides a command-line shell via serial ports, TCP connections,
+ * or any other type of Stream.
+ *
+ * The following example is the minimal setup for a command-line shell
+ * on a serial port.  The application calls begin() to set the underlying
+ * Stream, and periodically calls loop() to manage shell-related events.
+ *
+ * \code
+ * Shell shell;
+ *
+ * void setup() {
+ *     Serial.begin(9600);
+ *     shell.setPrompt("$ ");
+ *     shell.begin(Serial);
+ * }
+ *
+ * void loop() {
+ *     shell.loop();
+ * }
+ * \endcode
+ *
+ * Commands can be registered with the shell by the application to be
+ * invoked when the user types in the corresponding command.  Each
+ * command is associated with a handler function:
+ *
+ * \code
+ * void cmdMotor(Shell &shell, int argc, const ShellArguments &argv)
+ * {
+ *     ...
+ * }
+ *
+ * ShellCommand(motor, "Turn the motor on or off", cmdMotor);
+ * \endcode
+ *
+ * There are two standard commands built into Shell: "help" and "exit".
+ * The "help" command provides a list of all registered commands with
+ * the short help string from the ShellCommand() registration.
+ * The "exit" command logs the user out and returns to the login prompt,
+ * or stops the underlying connection in the case of TCP streams.
+ *
+ * The F1 key can be used as a synonym for "help" and CTRL-D can be used
+ * as a synonym for "exit".
+ *
+ * Shell provides some limited history editing for scrolling back through
+ * previous commands.  The size of the history stack is provided in the
+ * second argument to begin():
+ *
+ * \code
+ * shell.begin(Serial, 5);
+ * \endcode
+ *
+ * \sa Terminal
  */
 
 /**
