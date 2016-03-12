@@ -21,6 +21,7 @@
  */
 
 #include "Shell.h"
+#include "LoginShell.h"
 #include <string.h>
 #include <stddef.h>
 
@@ -79,7 +80,7 @@
  * shell.begin(Serial, 5);
  * \endcode
  *
- * \sa Terminal
+ * \sa LoginShell, Terminal
  */
 
 /**
@@ -101,23 +102,16 @@
  * \relates Shell
  */
 
-/**
- * \typedef ShellPasswordCheckFunc
- * \brief Password checking function for login shells.
- *
- * \param userid Points to the user identifier that was supplied at login.
- * \param password Points to the password that was supplied at login.
- *
- * \return Returns true if the user identifier and password combination
- * is correct, false if incorrect.
- *
- * Timing can be very important: the check should take the same amount of
- * time for valid and invalid user identifiers or passwords so that an
- * attacker cannot gain knowledge about the valid users on the system
- * based on failed login attempts.
- *
- * \relates Shell
- */
+// Modes for line editing (flags).
+#define LINEMODE_NORMAL     0x01
+#define LINEMODE_ECHO       0x02
+#define LINEMODE_USERNAME   0x04
+#define LINEMODE_PASSWORD   0x08
+#define LINEMODE_PROMPT     0x10
+#define LINEMODE_DELAY      0x20
+
+// Delay to insert after a failed login to slow down brute force attacks (ms).
+#define LOGIN_SHELL_DELAY   3000
 
 /**
  * \brief Constructs a new Shell instance.
@@ -127,13 +121,16 @@
  */
 Shell::Shell()
     : maxHistory(0)
+    , curStart(0)
     , curLen(0)
+    , curMax(sizeof(buffer))
     , history(0)
     , historyWrite(0)
     , historyPosn(0)
-    , prom("> ")
-    , hideChars(false)
+    , prom("$ ")
     , isClient(false)
+    , lineMode(LINEMODE_NORMAL | LINEMODE_ECHO)
+    , timer(0)
 {
 }
 
@@ -142,6 +139,7 @@ Shell::Shell()
  */
 Shell::~Shell()
 {
+    clearHistory();
     delete [] history;
 }
 
@@ -154,11 +152,11 @@ Shell::~Shell()
  * stack for scrolling back through using Up/Down arrow keys.
  * \param mode The terminal mode to operate in, Terminal::Serial or
  * Terminal::Telnet.  Default is Terminal::Serial.
- * \return Returns true if the shell was initialized, or false if there
- * is insufficient memory for the history stack.
+ * \return Returns false if there is insufficient memory for the history
+ * stack.  The session will continue but without command history.
  *
  * This function will print the prompt() in preparation for entry of
- * the first command.  The default prompt is "> "; call setPrompt()
+ * the first command.  The default prompt is "$ "; call setPrompt()
  * before begin() to change this:
  *
  * \code
@@ -213,29 +211,31 @@ bool Shell::beginShell(Stream &stream, size_t maxHistory, Terminal::Mode mode)
     Terminal::begin(stream, mode);
 
     // Create the history buffer.
+    bool ok = true;
     this->maxHistory = maxHistory;
     delete [] history;
     if (maxHistory) {
         history = new char [sizeof(buffer) * maxHistory];
-        if (!history) {
-            Terminal::end();
-            return false;
+        if (history) {
+            memset(history, 0, sizeof(buffer) * maxHistory);
+        } else {
+            this->maxHistory = 0;
+            ok = false;
         }
-        memset(history, 0, sizeof(buffer) * maxHistory);
     } else {
         history = 0;
     }
 
     // Clear other variables.
+    curStart = 0;
     curLen = 0;
+    curMax = sizeof(buffer);
     historyWrite = 0;
     historyPosn = 0;
-    hideChars = false;
 
-    // Print the initial prompt.
-    if (prom)
-        print(prom);
-    return true;
+    // Begins the login session.
+    beginSession();
+    return ok;
 }
 
 /**
@@ -249,14 +249,17 @@ bool Shell::beginShell(Stream &stream, size_t maxHistory, Terminal::Mode mode)
 void Shell::end()
 {
     Terminal::end();
+    clearHistory();
     delete [] history;
     maxHistory = 0;
+    curStart = 0;
     curLen = 0;
+    curMax = sizeof(buffer);
     history = 0;
     historyWrite = 0;
     historyPosn = 0;
-    hideChars = false;
     isClient = false;
+    lineMode = LINEMODE_NORMAL | LINEMODE_ECHO;
 }
 
 /** @cond */
@@ -281,6 +284,21 @@ void Shell::loop()
         end();
         return;
     }
+
+    // If the login delay is active, then suppress all input.
+    if (lineMode & LINEMODE_DELAY) {
+        if ((millis() - timer) >= LOGIN_SHELL_DELAY) {
+            lineMode &= ~LINEMODE_DELAY;
+            timer = 0;
+        } else {
+            readKey();
+            return;
+        }
+    }
+
+    // Print the prompt if necessary.
+    if (lineMode & LINEMODE_PROMPT)
+        printPrompt();
 
     // Read the next key and bail out if none.  We only process a single
     // key each time we enter this function to prevent other tasks in the
@@ -309,12 +327,14 @@ void Shell::loop()
 
     case 0x04:
         // CTRL-D - equivalent to the "exit" command.
-        executeBuiltin(builtin_cmd_exit);
+        if (lineMode & LINEMODE_NORMAL)
+            executeBuiltin(builtin_cmd_exit);
         break;
 
     case KEY_UP_ARROW:
         // Go back one item in the command history.
-        if (!hideChars && history && historyPosn < maxHistory) {
+        if ((lineMode & LINEMODE_NORMAL) != 0 &&
+                history && historyPosn < maxHistory) {
             ++historyPosn;
             changeHistory();
         }
@@ -322,7 +342,8 @@ void Shell::loop()
 
     case KEY_DOWN_ARROW:
         // Go forward one item in the command history.
-        if (!hideChars && history && historyPosn > 0) {
+        if ((lineMode & LINEMODE_NORMAL) != 0 &&
+                history && historyPosn > 0) {
             --historyPosn;
             changeHistory();
         }
@@ -330,16 +351,17 @@ void Shell::loop()
 
     case KEY_F1:
         // F1 is equivalent to the "help" command.
-        executeBuiltin(builtin_cmd_help);
+        if (lineMode & LINEMODE_NORMAL)
+            executeBuiltin(builtin_cmd_help);
         break;
 
     case KEY_UNICODE: {
         // Add the Unicode code point to the buffer if it will fit.
         long code = unicodeKey();
         size_t size = Terminal::utf8Length(code);
-        if (size && (curLen + size) < (sizeof(buffer) - 1)) {
+        if (size && (curLen + size) < (curMax - 1)) {
             Terminal::utf8Format((uint8_t *)(buffer + curLen), code);
-            if (!hideChars)
+            if (lineMode & LINEMODE_ECHO)
                 write((uint8_t *)(buffer + curLen), size);
             curLen += size;
         }
@@ -348,8 +370,8 @@ void Shell::loop()
     default:
         if (key >= 0x20 && key <= 0x7E) {
             // Printable ASCII character - echo and add it to the buffer.
-            if (curLen < (sizeof(buffer) - 1)) {
-                if (!hideChars)
+            if (curLen < (curMax - 1)) {
+                if (lineMode & LINEMODE_ECHO)
                     write((uint8_t)key);
                 buffer[curLen++] = (char)key;
             }
@@ -458,7 +480,7 @@ void Shell::registerCommand(ShellCommandRegister *cmd)
  * \fn const char *Shell::prompt() const
  * \brief Gets the prompt string to display in the shell.
  *
- * \return The current prompt.  The default is "> ".
+ * \return The current prompt.  The default is "$ ".
  *
  * \sa setPrompt()
  */
@@ -471,47 +493,10 @@ void Shell::registerCommand(ShellCommandRegister *cmd)
  * that the string persists after this call returns.  The Shell class does
  * not make a copy of the string.
  *
- * This function must be called before begin() or the first line will be
- * prompted with the default of "> ".  Afterwards, calling this function
- * will change the prompt for the following line of input.
+ * Calling this function will change the prompt for the next line of input.
  *
  * \sa prompt()
  */
-
-/**
- * \fn bool Shell::hideCharacters() const
- * \brief Determine if character echo is hidden.
- *
- * \sa setHideCharacters()
- */
-
-/**
- * \brief Enables or disables character hiding.
- *
- * \param hide Set to true to enable character hiding, or false to disable.
- *
- * When character hiding is enabled, all characters on a command-line are
- * hidden and suppressed from being echoed.  This is useful for the entry
- * of passwords and other sensitive information.
- *
- * \sa hideCharacters()
- */
-void Shell::setHideCharacters(bool hide)
-{
-    if (hideChars == hide)
-        return;
-    hideChars = hide;
-    if (hide) {
-        // Hide the current command if something has already been echoed.
-        size_t len = curLen;
-        clearCharacters(len);
-        curLen = len;
-    } else {
-        // Print the current in-progress command to un-hide it.
-        if (curLen)
-            write((const uint8_t *)buffer, curLen);
-    }
-}
 
 /**
  * \brief Displays help for all supported commands.
@@ -557,7 +542,30 @@ void Shell::exit()
     if (isClient) {
         end();
         ((Client *)stream)->stop();
+    } else {
+        clearHistory();
+        println();
+        beginSession();
     }
+}
+
+/**
+ * \brief Begins a login session.
+ */
+void Shell::beginSession()
+{
+    // No login support in the base class, so enter normal mode immediately.
+    lineMode = LINEMODE_NORMAL | LINEMODE_ECHO | LINEMODE_PROMPT;
+}
+
+/**
+ * \brief Prints the current prompt string.
+ */
+void Shell::printPrompt()
+{
+    if (prom)
+        print(prom);
+    lineMode &= ~LINEMODE_PROMPT;
 }
 
 /**
@@ -573,12 +581,12 @@ void Shell::execute()
 
     // If we have a history stack and the new command is different from
     // the previous command, then copy the command into the stack.
-    if (history && curLen > 0) {
+    if (history && curLen > curStart) {
         char *hist = history + sizeof(buffer) * historyWrite;
         if (strcmp(hist, buffer) != 0) {
             historyWrite = (historyWrite + 1) % maxHistory;
             hist = history + sizeof(buffer) * historyWrite;
-            strcpy(hist, buffer);
+            strcpy(hist, buffer + curStart);
         }
     }
 
@@ -586,7 +594,7 @@ void Shell::execute()
     historyPosn = 0;
 
     // Break the command up into arguments and populate the argument array.
-    ShellArguments argv(buffer, curLen);
+    ShellArguments argv(buffer + curStart, curLen - curStart);
 
     // Clear the line buffer.
     curLen = 0;
@@ -610,9 +618,8 @@ void Shell::execute()
         }
     }
 
-    // Prepare for the next command.
-    if (prom)
-        print(prom);
+    // Prepare to print the prompt for the next command.
+    lineMode |= LINEMODE_PROMPT;
 }
 
 /**
@@ -646,8 +653,9 @@ void Shell::executeBuiltin(const char *cmd)
 {
     clearCharacters(curLen);
     curLen = strlen_P(cmd);
-    strncpy_P(buffer, cmd, curLen);
-    write((const uint8_t *)buffer, curLen);
+    strncpy_P(buffer + curStart, cmd, curLen);
+    write((const uint8_t *)(buffer + curStart), curLen);
+    curLen += curStart;
     execute();
 }
 
@@ -659,11 +667,11 @@ void Shell::executeBuiltin(const char *cmd)
 void Shell::clearCharacters(size_t len)
 {
     // If the characters are hidden, then there's nothing to backspace over.
-    if (hideChars)
+    if (!(lineMode & LINEMODE_ECHO))
         return;
 
     // Backspace over all characters in the buffer.
-    while (len > 0 && curLen > 0) {
+    while (len > 0 && curLen > curStart) {
         uint8_t ch = (uint8_t)(buffer[curLen - 1]);
         if (ch < 0x80) {
             backspace();
@@ -716,9 +724,12 @@ void Shell::changeHistory()
             // Copy the line from the history into the command buffer.
             clearCharacters(curLen);
             curLen = strlen(hist);
-            memcpy(buffer, hist, curLen);
-            if (!hideChars)
+            if (curLen > (curMax - curStart))
+                curLen = curMax - curStart;
+            memcpy(buffer + curStart, hist, curLen);
+            if (lineMode & LINEMODE_ECHO)
                 write((uint8_t *)hist, curLen);
+            curLen += curStart;
         } else {
             // We've gone too far - the history is still smaller
             // than maxHistory in size.  So reset the position and
@@ -729,6 +740,22 @@ void Shell::changeHistory()
         // We've navigated off the history stack.
         clearCharacters(curLen);
     }
+}
+
+/**
+ * \brief Clears the command buffer and history.
+ *
+ * This clears the history so that commands from one login session do
+ * not leak into the next login session.
+ */
+void Shell::clearHistory()
+{
+    if (history)
+        memset(history, 0, sizeof(buffer) * maxHistory);
+    historyPosn = 0;
+    historyWrite = 0;
+    clearCharacters(curLen);
+    memset(buffer, 0, sizeof(buffer));
 }
 
 /**
@@ -866,5 +893,142 @@ const char *ShellArguments::operator[](int index) const
             --currentIndex;
         }
         return line + currentPosn;
+    }
+}
+
+void LoginShell::beginSession()
+{
+    lineMode = LINEMODE_USERNAME | LINEMODE_ECHO | LINEMODE_PROMPT;
+    curStart = 0;
+    curLen = 0;
+    curMax = sizeof(buffer) / 2;
+    uid = -1;
+}
+
+/**
+ * \fn const char *LoginShell::machineName() const
+ * \brief Gets the name of the machine to display in the login prompt.
+ *
+ * The default value is NULL, indicating that no machine name should be shown.
+ *
+ * \sa setMachineName()
+ */
+
+/**
+ * \fn void LoginShell::setMachineName(const char *machineName)
+ * \brief Sets the name of the machine to display in the login prompt.
+ *
+ * \param machineName The machine name, or NULL for no machine name.
+ *
+ * \sa machineName()
+ */
+
+/**
+ * \fn ShellPasswordCheckFunc LoginShell::passwordCheckFunction() const
+ * \brief Gets the current password checking function, or NULL if the
+ * function has not been set yet.
+ *
+ * \sa setPasswordCheckFunction()
+ */
+
+/**
+ * \fn void LoginShell::setPasswordCheckFunction(ShellPasswordCheckFunc function)
+ * \brief Sets the password checking function.
+ *
+ * \param function The password checking function to set, or NULL to return
+ * to the default rules.
+ *
+ * If no function is set, then LoginShell will check for a username of
+ * "root" and a password of "arduino" (both values are case-sensitive).
+ * This is of course not very secure.  Realistic applications should set a
+ * proper password checking function.
+ *
+ * \sa passwordCheckFunction()
+ */
+
+void LoginShell::printPrompt()
+{
+    static char const loginString[] PROGMEM = "login: ";
+    static char const passwordString[] PROGMEM = "Password: ";
+    if (lineMode & LINEMODE_NORMAL) {
+        // Print the prompt for normal command entry.
+        if (prom)
+            print(prom);
+
+        // Normal commands occupy the full command buffer.
+        curStart = 0;
+        curLen = 0;
+        curMax = sizeof(buffer);
+    } else if (lineMode & LINEMODE_USERNAME) {
+        // Print the machine name and the login prompt.
+        if (machName) {
+            print(machName);
+            write((uint8_t)' ');
+        }
+        writeProgMem(loginString);
+
+        // Login name is placed into the first half of the line buffer.
+        curStart = 0;
+        curLen = 0;
+        curMax = sizeof(buffer) / 2;
+    } else if (lineMode & LINEMODE_PASSWORD) {
+        // Print the password prompt.
+        writeProgMem(passwordString);
+
+        // Password is placed into the second half of the line buffer.
+        curStart = sizeof(buffer) / 2;
+        curLen = curStart;
+        curMax = sizeof(buffer);
+    }
+    lineMode &= ~LINEMODE_PROMPT;
+}
+
+// Default password checking function.  This is not a very good security check!
+static int defaultPasswordCheckFunc(const char *username, const char *password)
+{
+    static char const defaultUsername[] PROGMEM = "root";
+    static char const defaultPassword[] PROGMEM = "arduino";
+    if (!strcmp_P(username, defaultUsername) &&
+            !strcmp_P(password, defaultPassword)) {
+        return 0;
+    } else {
+        return -1;
+    }
+}
+
+void LoginShell::execute()
+{
+    if (lineMode & LINEMODE_NORMAL) {
+        // Normal command execution.
+        Shell::execute();
+    } else if (lineMode & LINEMODE_USERNAME) {
+        // Prompting for the login username.
+        buffer[curLen] = '\0';
+        lineMode = LINEMODE_PASSWORD | LINEMODE_PROMPT;
+        println();
+    } else if (lineMode & LINEMODE_PASSWORD) {
+        // Prompting for the login password.
+        buffer[curLen] = '\0';
+        println();
+
+        // Check the user name and password.
+        int userid;
+        if (checkFunc)
+            userid = checkFunc(buffer, buffer + sizeof(buffer) / 2);
+        else
+            userid = defaultPasswordCheckFunc(buffer, buffer + sizeof(buffer) / 2);
+
+        // Clear the user name and password from memory after they are checked.
+        memset(buffer, 0, sizeof(buffer));
+
+        // Go to either normal mode or back to username mode.
+        if (userid >= 0) {
+            uid = userid;
+            lineMode = LINEMODE_NORMAL | LINEMODE_ECHO | LINEMODE_PROMPT;
+        } else {
+            lineMode = LINEMODE_USERNAME | LINEMODE_ECHO |
+                       LINEMODE_PROMPT | LINEMODE_DELAY;
+            timer = millis();
+        }
     }
 }

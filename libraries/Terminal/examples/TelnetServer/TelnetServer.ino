@@ -8,6 +8,7 @@ This example is placed into the public domain.
 #include <SPI.h>
 #include <Ethernet.h>
 #include <Shell.h>
+#include <LoginShell.h>
 
 byte macAddress[6] = {
     0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED
@@ -19,7 +20,7 @@ EthernetServer server(23);
 EthernetClient client;
 bool haveClient = false;
 
-Shell shell;
+LoginShell shell;
 
 void cmdLed(Shell &shell, int argc, const ShellArguments &argv)
 {
@@ -50,9 +51,7 @@ void setup()
 
     // Listen on port 23 for incoming telnet connections.
     server.begin();
-
-    // Configure the shell.  We call Shell::begin() once we have a connection.
-    shell.setPrompt("$ ");
+    shell.setMachineName("Arduino");
 }
 
 void loop()

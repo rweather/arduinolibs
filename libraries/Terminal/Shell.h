@@ -28,6 +28,7 @@
 
 class Shell;
 class ShellArguments;
+class LoginShell;
 
 #if defined(__arm__)
 #define SHELL_MAX_CMD_LEN   256
@@ -36,7 +37,6 @@ class ShellArguments;
 #endif
 
 typedef void (*ShellCommandFunc)(Shell &shell, int argc, const ShellArguments &argv);
-typedef bool (*ShellPasswordCheckFunc)(const char *userid, const char *password);
 
 /** @cond */
 
@@ -76,33 +76,40 @@ public:
     const char *prompt() const { return prom; }
     void setPrompt(const char *prompt) { prom = prompt; }
 
-    bool hideCharacters() const { return hideChars; }
-    void setHideCharacters(bool hide);
-
     void help();
     void exit();
+
+protected:
+    virtual void beginSession();
+    virtual void printPrompt();
+    virtual void execute();
 
 private:
     char buffer[SHELL_MAX_CMD_LEN];
     size_t maxHistory;
+    size_t curStart;
     size_t curLen;
+    size_t curMax;
     char *history;
     size_t historyWrite;
     size_t historyPosn;
     const char *prom;
-    bool hideChars;
     bool isClient;
+    uint8_t lineMode;
+    unsigned long timer;
 
     // Disable copy constructor and operator=().
     Shell(const Shell &other) {}
     Shell &operator=(const Shell &) { return *this; }
 
     bool beginShell(Stream &stream, size_t maxHistory, Terminal::Mode mode);
-    void execute();
     bool execute(const ShellArguments &argv);
     void executeBuiltin(const char *cmd);
     void clearCharacters(size_t len);
     void changeHistory();
+    void clearHistory();
+
+    friend class LoginShell;
 };
 
 class ShellArguments
