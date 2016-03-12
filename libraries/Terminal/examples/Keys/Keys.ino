@@ -90,6 +90,12 @@ void loop()
         term.print("Unicode: U+");
         term.print(term.unicodeKey(), 16);
         term.println();
+    } else if (key == KEY_WINSIZE) {
+        // Change in window size.
+        term.print("New window size: ");
+        term.print(term.columns());
+        term.print("x");
+        term.println(term.rows());
     } else if (key >= 0 && key <= 0xFF) {
         // Special arrow or function key.
         const uint8_t *table = (const uint8_t *)keys;
