@@ -6,9 +6,9 @@ This example is placed into the public domain.
 
 #include <Shell.h>
 
-int ledPin = 13;
-
 Shell shell;
+
+int ledPin = 13;
 
 void cmdLed(Shell &shell, int argc, const ShellArguments &argv)
 {

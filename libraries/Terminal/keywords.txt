@@ -1,0 +1,4 @@
+Shell	KEYWORD1
+LoginShell	KEYWORD1
+Terminal	KEYWORD1
+loop	KEYWORD2

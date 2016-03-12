@@ -103,6 +103,20 @@ realtime clock and the LCD library to implement an alarm clock.
 
 More information can be found on the \ref crypto "Cryptographic Library" page.
 
+\section main_Terminal Terminal Library
+
+\li Terminal class that extends Stream with functions suitable for
+interfacing to a VT100-compatible terminal program like PuTTY.
+\li Shell class that manages a Unix-like command-line shell for executing
+commands via a serial port or telnet session.  Shell is built on top of
+the functionality of Terminal.
+\li LoginShell class that extends Shell to provide a simple username and
+password login mechanism.
+\li \ref shell_serial "SerialShell" example that shows how to use Shell to
+provide command-line access via a serial port.
+\li \ref shell_telnet "TelnetServer" example that shows how to use
+LoginShell to provide command-line access via the telnet protocol.
+
 \section main_IR Infrared Control Library
 
 \li IRreceiver class that receives incoming RC-5 commands from an
