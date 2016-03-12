@@ -32,14 +32,14 @@ the status LED on D13 on and off.
 We start by including the shell library definitions and declaring a
 variable of type Shell:
 
-\dontinclude Terminal/examples/SerialShell/SerialShell.ino
+\dontinclude Shell/examples/SerialShell/SerialShell.ino
 \skip #include
 \until Shell shell;
 
 Next we need to initialize the serial port and tell the shell object
 to use it for communications:
 
-\dontinclude Terminal/examples/SerialShell/SerialShell.ino
+\dontinclude Shell/examples/SerialShell/SerialShell.ino
 \skip void setup()
 \until }
 
@@ -59,7 +59,7 @@ handle commands.  We accomplish this by calling
 \link Shell::loop() shell.loop()\endlink from the application's main
 loop() function:
 
-\dontinclude Terminal/examples/SerialShell/SerialShell.ino
+\dontinclude Shell/examples/SerialShell/SerialShell.ino
 \skip void loop()
 \until }
 
@@ -67,7 +67,7 @@ At this point the application will have two builtin commands, "help" and
 "exit".  But we also want a command of our own.  We do this by declaring a
 command handler:
 
-\dontinclude Terminal/examples/SerialShell/SerialShell.ino
+\dontinclude Shell/examples/SerialShell/SerialShell.ino
 \skip int ledPin
 \until ShellCommand
 
@@ -76,5 +76,5 @@ help string, and the name of the handler function.
 
 The full source code for the example follows:
 
-\include Terminal/examples/SerialShell/SerialShell.ino
+\include Shell/examples/SerialShell/SerialShell.ino
 */

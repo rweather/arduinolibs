@@ -103,7 +103,7 @@ realtime clock and the LCD library to implement an alarm clock.
 
 More information can be found on the \ref crypto "Cryptographic Library" page.
 
-\section main_Terminal Terminal Library
+\section main_Shell Shell Library
 
 \li Terminal class that extends Stream with functions suitable for
 interfacing to a VT100-compatible terminal program like PuTTY.

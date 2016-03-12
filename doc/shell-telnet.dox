@@ -35,5 +35,5 @@ over the Internet via the telnet protocol.  The example has one command
 
 The full source code for the example follows:
 
-\include Terminal/examples/TelnetServer/TelnetServer.ino
+\include Shell/examples/TelnetServer/TelnetServer.ino
 */
