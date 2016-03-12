@@ -130,6 +130,7 @@ Shell::Shell()
     , prom("$ ")
     , isClient(false)
     , lineMode(LINEMODE_NORMAL | LINEMODE_ECHO)
+    , uid(-1)
     , timer(0)
 {
 }
@@ -243,6 +244,7 @@ bool Shell::beginShell(Stream &stream, size_t maxHistory, Terminal::Mode mode)
     curMax = sizeof(buffer);
     historyWrite = 0;
     historyRead = 0;
+    uid = -1;
 
     // Begins the login session.
     beginSession();
@@ -271,6 +273,7 @@ void Shell::end()
     historySize = 0;
     isClient = false;
     lineMode = LINEMODE_NORMAL | LINEMODE_ECHO;
+    uid = -1;
 }
 
 /** @cond */
@@ -508,6 +511,32 @@ void Shell::registerCommand(ShellCommandRegister *cmd)
  */
 
 /**
+ * \fn int Shell::userid() const
+ * \brief Gets the user identifier for the currently logged in user,
+ * or -1 if there is no user logged in currently.
+ *
+ * The user identifier can be used by applications to restrict the set of
+ * commands that are available to the user, or to restrict the behaviour
+ * of those commands when acting on critical resources.
+ *
+ * \sa setUserid(), ShellPasswordCheckFunc
+ */
+
+/**
+ * \fn void Shell::setUserid(int userid)
+ * \brief Sets the user identifier for the currently logged in user.
+ *
+ * \param userid The new user identifier to set, or -1 if there is no
+ * user logged in currently.
+ *
+ * Normally the user identifier is set when LoginShell detects a
+ * successful login.  This function can be used to alter the access
+ * rights of the logged-in user after login.
+ *
+ * \sa userid(), ShellPasswordCheckFunc
+ */
+
+/**
  * \brief Displays help for all supported commands.
  */
 void Shell::help()
@@ -548,6 +577,7 @@ void Shell::help()
 void Shell::exit()
 {
     Stream *stream = this->stream();
+    uid = -1;
     if (isClient) {
         end();
         ((Client *)stream)->stop();
@@ -931,7 +961,6 @@ void LoginShell::beginSession()
     curStart = 0;
     curLen = 0;
     curMax = sizeof(buffer) / 2;
-    uid = -1;
 }
 
 /**

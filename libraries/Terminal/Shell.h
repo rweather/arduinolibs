@@ -76,6 +76,9 @@ public:
     const char *prompt() const { return prom; }
     void setPrompt(const char *prompt) { prom = prompt; }
 
+    int userid() const { return uid; }
+    void setUserid(int userid) { uid = userid; }
+
     void help();
     void exit();
 
@@ -96,6 +99,7 @@ private:
     const char *prom;
     bool isClient;
     uint8_t lineMode;
+    int uid;
     unsigned long timer;
 
     // Disable copy constructor and operator=().

@@ -44,7 +44,7 @@
  * \return Returns zero or greater if the username and password combination
  * is correct, negative if incorrect.
  *
- * The return value is reported to the application as LoginShell::userid(),
+ * The return value is reported to the application as Shell::userid(),
  * which can be used by the application to restrict the set of commands
  * that are available to the user, or to restrict the behaviour of
  * those commands when acting on critical resources.
@@ -55,7 +55,7 @@
  * based on failed login attempts.
  *
  * \relates LoginShell
- * \sa LoginShell::userid()
+ * \sa Shell::userid()
  */
 
 /**
@@ -67,7 +67,6 @@
 LoginShell::LoginShell()
     : machName(0)
     , checkFunc(0)
-    , uid(-1)
 {
 }
 
@@ -77,15 +76,3 @@ LoginShell::LoginShell()
 LoginShell::~LoginShell()
 {
 }
-
-/**
- * \fn int LoginShell::userid() const
- * \brief Gets the user identifier for the currently logged in user,
- * or -1 if there is no user logged in currently.
- *
- * The user identifier can be used by applications to restrict the set of
- * commands that are available to the user, or to restrict the behaviour
- * of those commands when acting on critical resources.
- *
- * \sa ShellPasswordCheckFunc
- */

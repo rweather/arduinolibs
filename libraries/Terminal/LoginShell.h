@@ -39,8 +39,6 @@ public:
     ShellPasswordCheckFunc passwordCheckFunction() const { return checkFunc; }
     void setPasswordCheckFunction(ShellPasswordCheckFunc function) { checkFunc = function; }
 
-    int userid() const { return uid; }
-
 protected:
     virtual void beginSession();
     virtual void printPrompt();
@@ -49,7 +47,6 @@ protected:
 private:
     const char *machName;
     ShellPasswordCheckFunc checkFunc;
-    int uid;
 };
 
 #endif
