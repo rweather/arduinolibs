@@ -120,13 +120,13 @@
  * the underlying I/O stream.
  */
 Shell::Shell()
-    : maxHistory(0)
-    , curStart(0)
+    : curStart(0)
     , curLen(0)
     , curMax(sizeof(buffer))
     , history(0)
     , historyWrite(0)
-    , historyPosn(0)
+    , historyRead(0)
+    , historySize(0)
     , prom("$ ")
     , isClient(false)
     , lineMode(LINEMODE_NORMAL | LINEMODE_ECHO)
@@ -165,6 +165,11 @@ Shell::~Shell()
  * shell.begin(Serial);
  * \endcode
  *
+ * The \a maxHistory parameter indicates the number of commands of
+ * maximum length that can be stored in the history.  If the actual
+ * entered commands are shorter, then more commands can be stored in
+ * the history.
+ *
  * \sa end(), setPrompt()
  */
 bool Shell::begin(Stream &stream, size_t maxHistory, Terminal::Mode mode)
@@ -192,6 +197,11 @@ bool Shell::begin(Stream &stream, size_t maxHistory, Terminal::Mode mode)
  * builtin "exit" command to forcibly stop the TCP connection rather
  * than returning to the login prompt.
  *
+ * The \a maxHistory parameter indicates the number of commands of
+ * maximum length that can be stored in the history.  If the actual
+ * entered commands are shorter, then more commands can be stored in
+ * the history.
+ *
  * \sa end(), setPrompt()
  */
 bool Shell::begin(Client &client, size_t maxHistory, Terminal::Mode mode)
@@ -212,14 +222,15 @@ bool Shell::beginShell(Stream &stream, size_t maxHistory, Terminal::Mode mode)
 
     // Create the history buffer.
     bool ok = true;
-    this->maxHistory = maxHistory;
     delete [] history;
+    historySize = sizeof(buffer) * maxHistory;
     if (maxHistory) {
-        history = new char [sizeof(buffer) * maxHistory];
+        history = new char [historySize];
         if (history) {
-            memset(history, 0, sizeof(buffer) * maxHistory);
+            memset(history, 0, historySize);
         } else {
-            this->maxHistory = 0;
+            maxHistory = 0;
+            historySize = 0;
             ok = false;
         }
     } else {
@@ -231,7 +242,7 @@ bool Shell::beginShell(Stream &stream, size_t maxHistory, Terminal::Mode mode)
     curLen = 0;
     curMax = sizeof(buffer);
     historyWrite = 0;
-    historyPosn = 0;
+    historyRead = 0;
 
     // Begins the login session.
     beginSession();
@@ -251,13 +262,13 @@ void Shell::end()
     Terminal::end();
     clearHistory();
     delete [] history;
-    maxHistory = 0;
     curStart = 0;
     curLen = 0;
     curMax = sizeof(buffer);
     history = 0;
     historyWrite = 0;
-    historyPosn = 0;
+    historyRead = 0;
+    historySize = 0;
     isClient = false;
     lineMode = LINEMODE_NORMAL | LINEMODE_ECHO;
 }
@@ -334,18 +345,16 @@ void Shell::loop()
     case KEY_UP_ARROW:
         // Go back one item in the command history.
         if ((lineMode & LINEMODE_NORMAL) != 0 &&
-                history && historyPosn < maxHistory) {
-            ++historyPosn;
-            changeHistory();
+                history && historyRead > 0) {
+            changeHistory(true);
         }
         break;
 
     case KEY_DOWN_ARROW:
         // Go forward one item in the command history.
         if ((lineMode & LINEMODE_NORMAL) != 0 &&
-                history && historyPosn > 0) {
-            --historyPosn;
-            changeHistory();
+                history && historyRead < historyWrite) {
+            changeHistory(false);
         }
         break;
 
@@ -582,22 +591,45 @@ void Shell::execute()
     // If we have a history stack and the new command is different from
     // the previous command, then copy the command into the stack.
     if (history && curLen > curStart) {
-        char *hist = history + sizeof(buffer) * historyWrite;
-        if (strcmp(hist, buffer) != 0) {
-            historyWrite = (historyWrite + 1) % maxHistory;
-            hist = history + sizeof(buffer) * historyWrite;
-            strcpy(hist, buffer + curStart);
+        char *prevCmd;
+        bool newCmd = true;
+        if (historyWrite > 0) {
+            prevCmd = (char *)memrchr(history, '\0', historyWrite - 1);
+            if (prevCmd)
+                ++prevCmd;
+            else
+                prevCmd = history;
+            if (strcmp(prevCmd, buffer + curStart) == 0)
+                newCmd = false;
+        }
+        if (newCmd) {
+            size_t len = curLen - curStart;
+            while ((len + 1) > (historySize - historyWrite)) {
+                // History stack is full.  Pop older entries to get some room.
+                prevCmd = (char *)memchr(history, '\0', historyWrite);
+                if (prevCmd) {
+                    size_t histLen = historyWrite - ((prevCmd + 1) - history);
+                    memmove(history, prevCmd + 1, histLen);
+                    historyWrite = histLen;
+                } else {
+                    historyWrite = 0;
+                    break;
+                }
+            }
+            memcpy(history + historyWrite, buffer + curStart, len);
+            historyWrite += len;
+            history[historyWrite++] = '\0';
         }
     }
 
     // Reset the history read position to the top of the stack.
-    historyPosn = 0;
+    historyRead = historyWrite;
 
     // Break the command up into arguments and populate the argument array.
     ShellArguments argv(buffer + curStart, curLen - curStart);
 
     // Clear the line buffer.
-    curLen = 0;
+    curLen = curStart;
 
     // Execute the command.
     if (argv.count() > 0) {
@@ -709,36 +741,34 @@ void Shell::clearCharacters(size_t len)
 /**
  * \brief Changes the current command to reflect a different position
  * in the history stack.
+ *
+ * \param up Set to true to go up in the history, false to go down.
  */
-void Shell::changeHistory()
+void Shell::changeHistory(bool up)
 {
-    // Replace the command with the historyPosn item from the stack.
-    // A historyPosn of 1 is the top of the history stack and a
-    // historyPosn of maxHistory is the bottom of the history stack.
-    // A historyPosn of 0 means that the down arrow has navigated
-    // off the history stack, so clear the command only.
-    if (historyPosn) {
-        size_t posn = (historyWrite + maxHistory - (historyPosn - 1)) % maxHistory;
-        char *hist = history + sizeof(buffer) * posn;
-        if (*hist != '\0') {
-            // Copy the line from the history into the command buffer.
-            clearCharacters(curLen);
-            curLen = strlen(hist);
-            if (curLen > (curMax - curStart))
-                curLen = curMax - curStart;
-            memcpy(buffer + curStart, hist, curLen);
-            if (lineMode & LINEMODE_ECHO)
-                write((uint8_t *)hist, curLen);
-            curLen += curStart;
-        } else {
-            // We've gone too far - the history is still smaller
-            // than maxHistory in size.  So reset the position and
-            // don't go any further.
-            --historyPosn;
-        }
+    char *cmd;
+    if (up) {
+        cmd = (char *)memrchr(history, '\0', historyRead - 1);
+        if (cmd)
+            historyRead = (size_t)(cmd - history + 1);
+        else
+            historyRead = 0;
     } else {
-        // We've navigated off the history stack.
-        clearCharacters(curLen);
+        cmd = (char *)memchr(history + historyRead, '\0', historyWrite - historyRead);
+        if (cmd)
+            historyRead = (size_t)(cmd - history + 1);
+        else
+            historyRead = historyWrite;
+    }
+    clearCharacters(curLen);
+    if (historyRead < historyWrite) {
+        cmd = history + historyRead;
+        curLen = strlen(cmd);
+        if (curLen > (curMax - curStart))
+            curLen = curMax - curStart;
+        memcpy(buffer + curStart, cmd, curLen);
+        write((uint8_t *)cmd, curLen);
+        curLen += curStart;
     }
 }
 
@@ -751,10 +781,9 @@ void Shell::changeHistory()
 void Shell::clearHistory()
 {
     if (history)
-        memset(history, 0, sizeof(buffer) * maxHistory);
-    historyPosn = 0;
+        memset(history, 0, historySize);
+    historyRead = 0;
     historyWrite = 0;
-    clearCharacters(curLen);
     memset(buffer, 0, sizeof(buffer));
 }
 

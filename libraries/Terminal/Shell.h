@@ -86,13 +86,13 @@ protected:
 
 private:
     char buffer[SHELL_MAX_CMD_LEN];
-    size_t maxHistory;
     size_t curStart;
     size_t curLen;
     size_t curMax;
     char *history;
     size_t historyWrite;
-    size_t historyPosn;
+    size_t historyRead;
+    size_t historySize;
     const char *prom;
     bool isClient;
     uint8_t lineMode;
@@ -106,7 +106,7 @@ private:
     bool execute(const ShellArguments &argv);
     void executeBuiltin(const char *cmd);
     void clearCharacters(size_t len);
-    void changeHistory();
+    void changeHistory(bool up);
     void clearHistory();
 
     friend class LoginShell;
