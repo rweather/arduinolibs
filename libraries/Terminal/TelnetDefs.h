@@ -98,6 +98,16 @@ enum Option
     Authentication      = 37,   /**< Authentication */
     Encryption          = 38,   /**< Encryption */
     Environment         = 39,   /**< Environment variables (new version) */
+    TN3270E             = 40,   /**< TN3270E */
+    XAUTH               = 41,   /**< XAUTH */
+    Charset             = 42,   /**< Character set */
+    RemoteSerialPort    = 43,   /**< Remote serial port */
+    ComPortControl      = 44,   /**< COM port control */
+    SuppressLocalEcho   = 45,   /**< Suppress local echo */
+    StartTLS            = 46,   /**< Start TLS session */
+    Kermit              = 47,   /**< KERMIT protocol */
+    SendURL             = 48,   /**< Send URL */
+    ForwardX            = 49,   /**< Forward X protocol */
     Extended            = 255   /**< Extended options list */
 };
 
