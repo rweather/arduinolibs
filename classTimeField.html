@@ -72,7 +72,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(10)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -181,12 +181,12 @@ LiquidCrystal *&#160;</td><td class="memItemRight" valign="bottom"><a class="el"
 <p><a class="el" href="classTimeField.html" title="Field that manages the display and editing of a time value. ">TimeField</a> is suitable for displaying wall clock time in 24-hour format, or for displaying timeouts and durations in seconds. Times are specified in seconds as an <code>unsigned long</code> value. They are displayed as <code>HH:MM:SS</code>, for hours, minutes, and seconds.</p>
 <p>The time field can be either read-only or read-write. When read-write, the Up, Down, Left, and Right buttons can be used to modify the hour, minute, and second components of the time value.</p>
 <p>The following example displays the number of hours, minutes, and seconds since the device was reset, wrapping around after 24 hours:</p>
-<div class="fragment"><div class="line"><a class="code" href="classForm.html">Form</a> mainForm(lcd);</div>
+<div class="fragment"><div class="line"><a class="code" href="classForm.html">Form</a> mainForm(<a class="code" href="classField.html#a5cf21bf958a71e51feac9e1bf9f599d1">lcd</a>);</div>
 <div class="line"><a class="code" href="classTimeField.html">TimeField</a> timeField(mainForm, <span class="stringliteral">&quot;Time since reset&quot;</span>, 24, TIMEFIELD_READ_ONLY);</div>
 <div class="line"></div>
 <div class="line"><span class="keywordtype">void</span> loop() {</div>
 <div class="line">    timeField.setValue(millis() / 1000);</div>
-<div class="line">    mainForm.dispatch(lcd.<a class="code" href="classLCD.html#ac1e80e2603bd1cf0276c36092c416292">getButton</a>());</div>
+<div class="line">    mainForm.dispatch(<a class="code" href="classField.html#a5cf21bf958a71e51feac9e1bf9f599d1">lcd</a>.getButton());</div>
 <div class="line">}</div>
 </div><!-- fragment --><div class="image">
 <img src="FormTimeRO.png" alt="FormTimeRO.png"/>
@@ -541,7 +541,7 @@ LiquidCrystal *&#160;</td><td class="memItemRight" valign="bottom"><a class="el"
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Feb 14 2016 08:32:00 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Mar 13 2016 08:28:01 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

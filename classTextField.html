@@ -72,7 +72,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(10)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -167,7 +167,7 @@ LiquidCrystal *&#160;</td><td class="memItemRight" valign="bottom"><a class="el"
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p><a class="el" href="classField.html" title="Manages a single data input/output field within a Form. ">Field</a> that displays a read-only text value. </p>
 <p>This following example displays a text field with the label "Form example" and a <a class="el" href="classTextField.html#a124764b6fc7c19aaf683f72cd42636b1" title="Returns the text value that is currently displayed by this field. ">value()</a> of "v1.0".</p>
-<div class="fragment"><div class="line"><a class="code" href="classForm.html">Form</a> mainForm(lcd);</div>
+<div class="fragment"><div class="line"><a class="code" href="classForm.html">Form</a> mainForm(<a class="code" href="classField.html#a5cf21bf958a71e51feac9e1bf9f599d1">lcd</a>);</div>
 <div class="line"><a class="code" href="classTextField.html">TextField</a> welcomeField(mainForm, <span class="stringliteral">&quot;Form example&quot;</span>, <span class="stringliteral">&quot;v1.0&quot;</span>);</div>
 </div><!-- fragment --><div class="image">
 <img src="FormText.png" alt="FormText.png"/>
@@ -177,7 +177,7 @@ LiquidCrystal *&#160;</td><td class="memItemRight" valign="bottom"><a class="el"
 <div class="line"></div>
 <div class="line"><span class="keywordtype">void</span> loop() {</div>
 <div class="line">    timeField.setValue(millis() / 1000);</div>
-<div class="line">    mainForm.dispatch(lcd.<a class="code" href="classLCD.html#ac1e80e2603bd1cf0276c36092c416292">getButton</a>());</div>
+<div class="line">    mainForm.dispatch(<a class="code" href="classField.html#a5cf21bf958a71e51feac9e1bf9f599d1">lcd</a>.getButton());</div>
 <div class="line">}</div>
 </div><!-- fragment --><p>For writable fields, use <a class="el" href="classBoolField.html" title="Field that manages the input of a boolean value. ">BoolField</a>, <a class="el" href="classIntField.html" title="Field that manages the input of an integer value. ">IntField</a>, or <a class="el" href="classTimeField.html" title="Field that manages the display and editing of a time value. ">TimeField</a>.</p>
 <dl class="section see"><dt>See Also</dt><dd><a class="el" href="classField.html" title="Manages a single data input/output field within a Form. ">Field</a> </dd></dl>
@@ -343,7 +343,7 @@ LiquidCrystal *&#160;</td><td class="memItemRight" valign="bottom"><a class="el"
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Feb 14 2016 08:32:00 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Mar 13 2016 08:28:01 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

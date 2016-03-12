@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['displayoff',['DisplayOff',['../classLCD.html#a264bf94308c95d8598426e13dc8cdb28a3f1e62d5fcd314d6ff067d3e74c4bf5f',1,'LCD']]]
+  ['cyan',['Cyan',['../classTerminal.html#a7a03a2e94316da7b2144dad5ba95ac20a12656e5c242667b489e639d399964077',1,'Terminal']]]
 ];

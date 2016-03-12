@@ -75,6 +75,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="functions_type.html"><span>Typedefs</span></a></li>
       <li><a href="functions_enum.html"><span>Enumerations</span></a></li>
       <li><a href="functions_eval.html"><span>Enumerator</span></a></li>
+      <li><a href="functions_rela.html"><span>Related&#160;Functions</span></a></li>
     </ul>
   </div>
   <div id="navrow4" class="tabs3">
@@ -111,7 +112,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(10)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -131,6 +132,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 : <a class="el" href="classEEPROM24.html#a960971377d4decb122ff38d12603e586">EEPROM24</a>
 , <a class="el" href="classI2CMaster.html#a49eeebb57f6bc06de39973fe836369cd">I2CMaster</a>
 , <a class="el" href="classSoftI2C.html#a330dbba5b726fa161a6b01a9ca49e1bc">SoftI2C</a>
+, <a class="el" href="classTerminal.html#a14dfd6dc5c4a30acfb47ab24c22d1cd5">Terminal</a>
 </li>
 <li>readAlarm()
 : <a class="el" href="classDS1307RTC.html#aab608eb1630520ee122306b721fdc47a">DS1307RTC</a>
@@ -149,6 +151,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 , <a class="el" href="classDS3232RTC.html#ab03358e3b5996e38d766e2f9f6ab62ca">DS3232RTC</a>
 , <a class="el" href="classRTC.html#aa1e21bf42ebd4456919744ae0f4f631e">RTC</a>
 </li>
+<li>readKey()
+: <a class="el" href="classTerminal.html#aa82621ea174422601cc7384c8185eb96">Terminal</a>
+</li>
 <li>readOnly()
 : <a class="el" href="classTimeField.html#aa0795c873ba9941c8a1a3bf8c06668f1">TimeField</a>
 </li>
@@ -163,6 +168,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 , <a class="el" href="classDS3232RTC.html#af89e68c68f1c4b7e94286f800b5b2747">DS3232RTC</a>
 , <a class="el" href="classRTC.html#aaf0a5c1f32f210a49718d148620b5bec">RTC</a>
 </li>
+<li>Red
+: <a class="el" href="classTerminal.html#a7a03a2e94316da7b2144dad5ba95ac20af2687d41cae4cb8276778be71c1e1efb">Terminal</a>
+</li>
 <li>reduceQuick()
 : <a class="el" href="classBigNumberUtil.html#a5af5f50c91594183da4e079d76702d34">BigNumberUtil</a>
 </li>
@@ -173,11 +181,14 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 : <a class="el" href="classCharlieplex.html#a3c961bfff866e400dad371f0376f096b">Charlieplex</a>
 , <a class="el" href="classDMD.html#a9e4bf2a9d247312d35c1401ff61261c8">DMD</a>
 </li>
+<li>registerCommand()
+: <a class="el" href="classShell.html#a03dfba66a0125a8c02dd71b3f3b37870">Shell</a>
+</li>
 <li>removeField()
 : <a class="el" href="classForm.html#a7abd717029f9b19ee7318470072cd697">Form</a>
 </li>
 <li>reset()
-: <a class="el" href="classBLAKE2b.html#a9afd8ec05ccfa08a922de74461e45387">BLAKE2b</a>
+: <a class="el" href="classBLAKE2b.html#a917beae2ca6e9831a35717a526089e8a">BLAKE2b</a>
 , <a class="el" href="classBLAKE2s.html#a778776d15316c182fdb2df5a89b3ca02">BLAKE2s</a>
 , <a class="el" href="classGHASH.html#a479a3e8c37e320bf99f54b95bf5f4c55">GHASH</a>
 , <a class="el" href="classHash.html#a7b94309acaa5f52386785fb780e5be61">Hash</a>
@@ -202,8 +213,14 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <li>resume()
 : <a class="el" href="classBlinkLED.html#a380241e4dfd20e8a558487227f2f4252">BlinkLED</a>
 </li>
+<li>reverse()
+: <a class="el" href="classTerminal.html#a4d770065054af95c2b8f98b561619ede">Terminal</a>
+</li>
 <li>RNGClass()
 : <a class="el" href="classRNGClass.html#acbcf327242f51ae2d9209aeaa45e30e9">RNGClass</a>
+</li>
+<li>rows()
+: <a class="el" href="classTerminal.html#ac01cf545938eff14f8e249e072b82357">Terminal</a>
 </li>
 <li>RTC()
 : <a class="el" href="classRTC.html#ada31c5120d18d2dd2863b3d440308da2">RTC</a>
@@ -215,7 +232,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Feb 14 2016 08:32:00 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Mar 13 2016 08:28:01 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

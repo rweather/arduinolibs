@@ -18,6 +18,7 @@ var searchData=
   ['_7eghash',['~GHASH',['../classGHASH.html#ae7f63a587adf1aa1ffcdc0a6e20584fd',1,'GHASH']]],
   ['_7ehash',['~Hash',['../classHash.html#a4e4b4797dda8678aaed058bae155813e',1,'Hash']]],
   ['_7ekeccakcore',['~KeccakCore',['../classKeccakCore.html#a4579e3a9b24f1d615fa8d660c23e77a4',1,'KeccakCore']]],
+  ['_7eloginshell',['~LoginShell',['../classLoginShell.html#aaae466b141c9ea50870b66509402a2f9',1,'LoginShell']]],
   ['_7enoisesource',['~NoiseSource',['../classNoiseSource.html#a4eca1e894a5d719fb9bf4df34a791cdb',1,'NoiseSource']]],
   ['_7eofbcommon',['~OFBCommon',['../classOFBCommon.html#aae7435157e51bf977d3481e94e17ae01',1,'OFBCommon']]],
   ['_7eomac',['~OMAC',['../classOMAC.html#a6bb2222c997608ec68b25831da965e8f',1,'OMAC']]],
@@ -30,5 +31,11 @@ var searchData=
   ['_7eshake',['~SHAKE',['../classSHAKE.html#a1729b9a96b71185166d68a2d98fb84e9',1,'SHAKE']]],
   ['_7eshake128',['~SHAKE128',['../classSHAKE128.html#a1d08d5987802636fa24c6245ebbe4288',1,'SHAKE128']]],
   ['_7eshake256',['~SHAKE256',['../classSHAKE256.html#a629a9817a524c1a7d273c7fca6d911c4',1,'SHAKE256']]],
-  ['_7exof',['~XOF',['../classXOF.html#a5164ebb6aef3e5492f81ce5d685a00af',1,'XOF']]]
+  ['_7eshell',['~Shell',['../classShell.html#a95f78f499b3dfd9c83f4099cf90ef3df',1,'Shell']]],
+  ['_7eterminal',['~Terminal',['../classTerminal.html#add5a7d4dd45b68af9a0afb1cc845af2f',1,'Terminal']]],
+  ['_7exof',['~XOF',['../classXOF.html#a5164ebb6aef3e5492f81ce5d685a00af',1,'XOF']]],
+  ['_7exts',['~XTS',['../classXTS.html#a97410cd5abc63921870c9610b03421b8',1,'XTS']]],
+  ['_7extscommon',['~XTSCommon',['../classXTSCommon.html#ac5398f0bd2201e7d3fa335899fb3c6f3',1,'XTSCommon']]],
+  ['_7extssinglekey',['~XTSSingleKey',['../classXTSSingleKey.html#ae19d16e738574582deecc48d73aad086',1,'XTSSingleKey']]],
+  ['_7extssinglekeycommon',['~XTSSingleKeyCommon',['../classXTSSingleKeyCommon.html#a0ab819b391d6e783d2dde4006440444c',1,'XTSSingleKeyCommon']]]
 ];

@@ -9,14 +9,15 @@ var indexSectionsWithContent =
 {
   0: "abcdefghiklmnoprstuvwxy~",
   1: "abcdefghiklmnoprstx",
-  2: "abcdilm",
+  2: "abcdilms",
   3: "abcdefghiklmnoprstuvwx~",
   4: "abdfhimnswy",
   5: "cfp",
-  6: "ds",
-  7: "bds",
-  8: "p",
-  9: "abcdfghrs"
+  6: "cdms",
+  7: "bcdglmrstwy",
+  8: "s",
+  9: "p",
+  10: "abcdfghrst"
 };
 
 var indexSectionNames =
@@ -29,8 +30,9 @@ var indexSectionNames =
   5: "typedefs",
   6: "enums",
   7: "enumvalues",
-  8: "groups",
-  9: "pages"
+  8: "related",
+  9: "groups",
+  10: "pages"
 };
 
 function convertToId(search)

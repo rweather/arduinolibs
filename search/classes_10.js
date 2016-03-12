@@ -7,6 +7,8 @@ var searchData=
   ['shake',['SHAKE',['../classSHAKE.html',1,'']]],
   ['shake128',['SHAKE128',['../classSHAKE128.html',1,'']]],
   ['shake256',['SHAKE256',['../classSHAKE256.html',1,'']]],
+  ['shell',['Shell',['../classShell.html',1,'']]],
+  ['shellarguments',['ShellArguments',['../classShellArguments.html',1,'']]],
   ['softi2c',['SoftI2C',['../classSoftI2C.html',1,'']]],
   ['speck',['Speck',['../classSpeck.html',1,'']]],
   ['specksmall',['SpeckSmall',['../classSpeckSmall.html',1,'']]],
