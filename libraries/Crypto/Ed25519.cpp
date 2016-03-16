@@ -256,7 +256,6 @@ void Ed25519::generatePrivateKey(uint8_t privateKey[32])
 void Ed25519::derivePublicKey(uint8_t publicKey[32], const uint8_t privateKey[32])
 {
     SHA512 hash;
-    uint8_t *buf = (uint8_t *)(hash.state.w);
     limb_t a[NUM_LIMBS_256BIT];
     Point ptA;
 

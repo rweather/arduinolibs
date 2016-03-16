@@ -171,8 +171,8 @@ void Hash::formatHMACKey(void *block, const void *key, size_t len, uint8_t pad)
         finalize(block, len);
         reset();
     }
-    memset(block + len, pad, size - len);
     uint8_t *b = (uint8_t *)block;
+    memset(b + len, pad, size - len);
     while (len > 0) {
         *b++ ^= pad;
         --len;

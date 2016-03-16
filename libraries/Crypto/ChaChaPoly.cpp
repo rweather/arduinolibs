@@ -99,6 +99,7 @@ bool ChaChaPoly::setIV(const uint8_t *iv, size_t len)
     state.dataSize = 0;
     state.dataStarted = false;
     state.ivSize = len;
+    return true;
 }
 
 void ChaChaPoly::encrypt(uint8_t *output, const uint8_t *input, size_t len)

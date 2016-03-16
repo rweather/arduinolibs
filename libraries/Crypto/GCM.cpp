@@ -122,6 +122,7 @@ bool GCMCommon::setIV(const uint8_t *iv, size_t len)
     // This value will be XOR'ed with the final authentication hash
     // value in computeTag().
     blockCipher->encryptBlock(state.nonce, state.counter);
+    return true;
 }
 
 /**
