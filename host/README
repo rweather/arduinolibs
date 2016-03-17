@@ -1,0 +1,4 @@
+
+This directory contains Makefiles and other logic to build some of the
+Arduino libraries and programs on a Linux host system.  This is intended
+to help with testing.  It is not a complete Arduino emulation.

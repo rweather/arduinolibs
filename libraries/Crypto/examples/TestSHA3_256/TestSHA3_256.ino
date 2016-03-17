@@ -147,8 +147,6 @@ bool testHash_N(Hash *hash, const struct TestHashVector *test, size_t inc)
 void testHash(Hash *hash, const struct TestHashVector *test)
 {
     bool ok;
-    const char *str;
-    uint8_t ch;
 
     Serial.print(test->name);
     Serial.print(" ... ");
@@ -239,8 +237,8 @@ void testHMAC(Hash *hash, size_t keyLen)
     // Construct the expected result with a simple HMAC implementation.
     memset(buffer, (uint8_t)keyLen, keyLen);
     hashKey(hash, buffer, keyLen, 0x36);
-    memset(buffer, 0xBA, sizeof(buffer));
-    hash->update(buffer, sizeof(buffer));
+    memset(buffer, 0xBA, sizeof(testVectorSHA3_256_5));
+    hash->update(buffer, sizeof(testVectorSHA3_256_5));
     hash->finalize(result, HASH_SIZE);
     memset(buffer, (uint8_t)keyLen, keyLen);
     hashKey(hash, buffer, keyLen, 0x5C);
@@ -249,8 +247,8 @@ void testHMAC(Hash *hash, size_t keyLen)
 
     // Now use the library to compute the HMAC.
     hash->resetHMAC(buffer, keyLen);
-    memset(buffer, 0xBA, sizeof(buffer));
-    hash->update(buffer, sizeof(buffer));
+    memset(buffer, 0xBA, sizeof(testVectorSHA3_256_5));
+    hash->update(buffer, sizeof(testVectorSHA3_256_5));
     memset(buffer, (uint8_t)keyLen, keyLen);
     hash->finalizeHMAC(buffer, keyLen, buffer, HASH_SIZE);
 

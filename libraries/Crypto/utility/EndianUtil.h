@@ -25,6 +25,8 @@
 
 #include <inttypes.h>
 
+#if !defined(HOST_BUILD)
+
 // CPU is assumed to be little endian.   Edit this file if you
 // need to port this library to a big endian CPU.
 
@@ -62,5 +64,14 @@
         (((uint64_t)__low) << 32) | __high; \
     }))
 #define be64toh(x)  (htobe64((x)))
+
+#else // HOST_BUILD
+
+#include <endian.h>
+#if __BYTE_ORDER == __LITTLE_ENDIAN
+#define CRYPTO_LITTLE_ENDIAN 1
+#endif
+
+#endif // HOST_BUILD
 
 #endif

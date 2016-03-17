@@ -31,6 +31,7 @@ This example runs tests on the XTS implementation to verify correct behaviour.
 #include <SpeckTiny.h>
 #include <XTS.h>
 #include <string.h>
+#include <avr/pgmspace.h>
 
 #define MAX_SECTOR_SIZE 64
 

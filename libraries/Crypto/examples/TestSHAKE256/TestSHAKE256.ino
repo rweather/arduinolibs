@@ -239,8 +239,6 @@ bool testSHAKE_N(SHAKE *shake, const struct TestHashVectorSHAKE *test, size_t in
 void testSHAKE(SHAKE *shake, const struct TestHashVectorSHAKE *test)
 {
     bool ok;
-    const char *str;
-    uint8_t ch;
     size_t dataLen;
 
     memcpy_P(&dataLen, &(test->dataLen), sizeof(size_t));

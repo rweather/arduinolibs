@@ -57,7 +57,7 @@ void bytesFromString(uint8_t *x, size_t xsize, const char *str)
 {
     uint8_t ch;
     size_t posn;
-    memset(x, 0, sizeof(limb_t) * xsize);
+    memset(x, 0, xsize);
     while ((ch = pgm_read_byte((uint8_t *)str)) != '\0') {
         if (ch >= '0' && ch <= '9') {
             // Quick and simple method to multiply by 10 and add the new digit.

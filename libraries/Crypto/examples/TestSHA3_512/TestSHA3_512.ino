@@ -153,8 +153,6 @@ bool testHash_N(Hash *hash, const struct TestHashVector *test, size_t inc)
 void testHash(Hash *hash, const struct TestHashVector *test)
 {
     bool ok;
-    const char *str;
-    uint8_t ch;
 
     Serial.print(test->name);
     Serial.print(" ... ");
