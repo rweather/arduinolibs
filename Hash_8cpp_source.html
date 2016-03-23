@@ -133,8 +133,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;        <a class="code" href="classHash.html#a09b3ccec22763fc86b1415695862977c">finalize</a>(block, len);</div>
 <div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;        <a class="code" href="classHash.html#a7b94309acaa5f52386785fb780e5be61">reset</a>();</div>
 <div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;    }</div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;    memset(block + len, pad, size - len);</div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;    uint8_t *b = (uint8_t *)block;</div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;    uint8_t *b = (uint8_t *)block;</div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;    memset(b + len, pad, size - len);</div>
 <div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;    <span class="keywordflow">while</span> (len &gt; 0) {</div>
 <div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;        *b++ ^= pad;</div>
 <div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;        --len;</div>
@@ -151,7 +151,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Mar 13 2016 08:28:00 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Mar 23 2016 19:08:46 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

@@ -95,7 +95,7 @@ Supported Algorithms</h1>
 <p>All cryptographic algorithms have been optimized for 8-bit Arduino platforms like the Uno. Memory usage is also reduced, particularly for <a class="el" href="classSHA256.html" title="SHA-256 hash algorithm. ">SHA256</a> and <a class="el" href="classSHA512.html" title="SHA-512 hash algorithm. ">SHA512</a> which save 192 and 512 bytes respectively over traditional implementations. For all algorithms, static sbox tables and the like are placed into program memory to further reduce data memory usage.</p>
 <p><a class="el" href="classChaCha.html" title="ChaCha stream cipher. ">ChaCha</a> with 20 rounds and 256-bit keys is the recommended symmetric encryption algorithm because it is twice as fast as <a class="el" href="classAES128.html" title="AES block cipher with 128-bit keys. ">AES128</a>, constant-time, and much more secure. <a class="el" href="classAES128.html" title="AES block cipher with 128-bit keys. ">AES128</a>, <a class="el" href="classAES192.html" title="AES block cipher with 192-bit keys. ">AES192</a>, and <a class="el" href="classAES256.html" title="AES block cipher with 256-bit keys. ">AES256</a> are provided for use in applications where compatibility with other systems is desirable.</p>
 <p>If code size is an issue for your application (for example on very low end Arduino variants), then <a class="el" href="classSpeck.html" title="Speck block cipher with a 128-bit block size. ">Speck</a> on AVR is less than half the code size of <a class="el" href="classChaCha.html" title="ChaCha stream cipher. ">ChaCha</a>, at the cost of more data memory for the state and longer key setup times. The <a class="el" href="classSpeckTiny.html" title="Speck block cipher with a 128-bit block size (tiny-memory version). ">SpeckTiny</a> and <a class="el" href="classSpeckSmall.html" title="Speck block cipher with a 128-bit block size (small-memory version). ">SpeckSmall</a> classes are even smaller at the cost of some performance when encrypting.</p>
-<p><a class="el" href="classBLAKE2s.html" title="BLAKE2s hash algorithm. ">BLAKE2s</a> and <a class="el" href="classBLAKE2b.html" title="BLAKE2b hash algorithm. ">BLAKE2b</a> are variations on the <a class="el" href="classChaCha.html" title="ChaCha stream cipher. ">ChaCha</a> stream cipher, designed for hashing, with 256-bit and 512-bit hash outputs respectively. They are intended as high performance replacements for <a class="el" href="classSHA256.html" title="SHA-256 hash algorithm. ">SHA256</a> and <a class="el" href="classSHA512.html" title="SHA-512 hash algorithm. ">SHA512</a> for when speed is critical but exact bit-compatibility of hash values is not.</p>
+<p><a class="el" href="classBLAKE2s.html" title="BLAKE2s hash algorithm. ">BLAKE2s</a> and <a class="el" href="classBLAKE2b.html" title="BLAKE2b hash algorithm. ">BLAKE2b</a> are variations on the <a class="el" href="classChaCha.html" title="ChaCha stream cipher. ">ChaCha</a> stream cipher, designed for hashing, with 256-bit and 512-bit hash outputs respectively. They are intended as high performance replacements for <a class="el" href="classSHA256.html" title="SHA-256 hash algorithm. ">SHA256</a> and <a class="el" href="classSHA512.html" title="SHA-512 hash algorithm. ">SHA512</a> for when speed is critical but exact bit-compatibility of hash values is not. <a class="el" href="classBLAKE2s.html" title="BLAKE2s hash algorithm. ">BLAKE2s</a> and <a class="el" href="classBLAKE2b.html" title="BLAKE2b hash algorithm. ">BLAKE2b</a> support regular hashing, BLAKE2 keyed hashing, and HMAC modes.</p>
 <h1><a class="anchor" id="crypto_other"></a>
 Examples and other topics</h1>
 <ul>
@@ -108,7 +108,7 @@ Performance on AVR</h2>
 <p>All figures are for the Arduino Uno running at 16 MHz. Figures for the Ardunino Mega 2560 running at 16 MHz are similar:</p>
 <table class="doxtable">
 <tr>
-<td>Encryption Algorithm</td><td align="right">Encryption (per byte)</td><td align="right">Decryption (per byte)</td><td>Key Setup</td><td>State Size (bytes) </td></tr>
+<td>Encryption Algorithm</td><td align="right">Encryption (per byte)</td><td align="right">Decryption (per byte)</td><td align="right">Key Setup</td><td>State Size (bytes) </td></tr>
 <tr>
 <td><a class="el" href="classAES128.html" title="AES block cipher with 128-bit keys. ">AES128</a> (ECB mode)</td><td align="right">33.28us</td><td align="right">63.18us</td><td align="right">160.00us</td><td align="right">181 </td></tr>
 <tr>
@@ -142,7 +142,7 @@ Performance on AVR</h2>
 <tr>
 <td colspan="5"></td></tr>
 <tr>
-<td>AEAD Algorithm</td><td align="right">Encryption (per byte)</td><td align="right">Decryption (per byte)</td><td>Key Setup</td><td>State Size (bytes) </td></tr>
+<td>AEAD Algorithm</td><td align="right">Encryption (per byte)</td><td align="right">Decryption (per byte)</td><td align="right">Key Setup</td><td>State Size (bytes) </td></tr>
 <tr>
 <td><a class="el" href="classChaChaPoly.html" title="Authenticated cipher based on ChaCha and Poly1305. ">ChaChaPoly</a></td><td align="right">41.20us</td><td align="right">41.19us</td><td align="right">902.36us</td><td align="right">221 </td></tr>
 <tr>
@@ -178,15 +178,19 @@ Performance on AVR</h2>
 <tr>
 <td><a class="el" href="classBLAKE2s.html" title="BLAKE2s hash algorithm. ">BLAKE2s</a></td><td align="right">20.65us</td><td align="right">1335.25us</td><td align="right"></td><td align="right">107 </td></tr>
 <tr>
-<td><a class="el" href="classBLAKE2b.html" title="BLAKE2b hash algorithm. ">BLAKE2b</a></td><td align="right">65.22us</td><td align="right">8375.36us</td><td align="right"></td><td align="right">211 </td></tr>
+<td><a class="el" href="classBLAKE2b.html" title="BLAKE2b hash algorithm. ">BLAKE2b</a></td><td align="right">65.22us</td><td align="right">8375.34us</td><td align="right"></td><td align="right">211 </td></tr>
 <tr>
 <td colspan="5"></td></tr>
 <tr>
-<td>Authentication Algorithm</td><td align="right">Hashing (per byte)</td><td align="right">Finalization</td><td>Key Setup</td><td>State Size (bytes) </td></tr>
+<td>Authentication Algorithm</td><td align="right">Hashing (per byte)</td><td align="right">Finalization</td><td align="right">Key Setup</td><td>State Size (bytes) </td></tr>
 <tr>
 <td><a class="el" href="classSHA256.html" title="SHA-256 hash algorithm. ">SHA256</a> (HMAC mode)</td><td align="right">43.85us</td><td align="right">8552.61us</td><td align="right">2836.49us</td><td align="right">107 </td></tr>
 <tr>
+<td><a class="el" href="classBLAKE2s.html" title="BLAKE2s hash algorithm. ">BLAKE2s</a> (Keyed mode)</td><td align="right">20.65us</td><td align="right">1335.25us</td><td align="right">1339.51us</td><td align="right">107 </td></tr>
+<tr>
 <td><a class="el" href="classBLAKE2s.html" title="BLAKE2s hash algorithm. ">BLAKE2s</a> (HMAC mode)</td><td align="right">20.65us</td><td align="right">4055.56us</td><td align="right">1350.00us</td><td align="right">107 </td></tr>
+<tr>
+<td><a class="el" href="classBLAKE2b.html" title="BLAKE2b hash algorithm. ">BLAKE2b</a> (Keyed mode)</td><td align="right">65.22us</td><td align="right">8375.34us</td><td align="right">8357.25us</td><td align="right">211 </td></tr>
 <tr>
 <td><a class="el" href="classPoly1305.html" title="Poly1305 message authenticator. ">Poly1305</a></td><td align="right">26.26us</td><td align="right">489.11us</td><td align="right">17.06us</td><td align="right">53 </td></tr>
 <tr>
@@ -222,7 +226,7 @@ Performance on ARM</h2>
 <p>All figures are for the Arduino Due running at 84 MHz:</p>
 <table class="doxtable">
 <tr>
-<td>Encryption Algorithm</td><td align="right">Encryption (per byte)</td><td align="right">Decryption (per byte)</td><td>Key Setup</td><td>State Size (bytes) </td></tr>
+<td>Encryption Algorithm</td><td align="right">Encryption (per byte)</td><td align="right">Decryption (per byte)</td><td align="right">Key Setup</td><td>State Size (bytes) </td></tr>
 <tr>
 <td><a class="el" href="classAES128.html" title="AES block cipher with 128-bit keys. ">AES128</a> (ECB mode)</td><td align="right">5.71us</td><td align="right">10.41us</td><td align="right">34.73us</td><td align="right">188 </td></tr>
 <tr>
@@ -256,7 +260,7 @@ Performance on ARM</h2>
 <tr>
 <td colspan="5"></td></tr>
 <tr>
-<td>AEAD Algorithm</td><td align="right">Encryption (per byte)</td><td align="right">Decryption (per byte)</td><td>Key Setup</td><td>State Size (bytes) </td></tr>
+<td>AEAD Algorithm</td><td align="right">Encryption (per byte)</td><td align="right">Decryption (per byte)</td><td align="right">Key Setup</td><td>State Size (bytes) </td></tr>
 <tr>
 <td><a class="el" href="classChaChaPoly.html" title="Authenticated cipher based on ChaCha and Poly1305. ">ChaChaPoly</a></td><td align="right">1.71us</td><td align="right">1.71us</td><td align="right">45.08us</td><td align="right">240 </td></tr>
 <tr>
@@ -290,17 +294,21 @@ Performance on ARM</h2>
 <tr>
 <td><a class="el" href="classSHA3__512.html" title="SHA3-512 hash algorithm. ">SHA3_512</a></td><td align="right">10.42us</td><td align="right">735.49us</td><td align="right"></td><td align="right">224 </td></tr>
 <tr>
-<td><a class="el" href="classBLAKE2s.html" title="BLAKE2s hash algorithm. ">BLAKE2s</a></td><td align="right">0.72us</td><td align="right">48.24us</td><td align="right"></td><td align="right">120 </td></tr>
+<td><a class="el" href="classBLAKE2s.html" title="BLAKE2s hash algorithm. ">BLAKE2s</a></td><td align="right">0.80us</td><td align="right">53.39us</td><td align="right"></td><td align="right">120 </td></tr>
 <tr>
-<td><a class="el" href="classBLAKE2b.html" title="BLAKE2b hash algorithm. ">BLAKE2b</a></td><td align="right">1.29us</td><td align="right">165.28us</td><td align="right"></td><td align="right">224 </td></tr>
+<td><a class="el" href="classBLAKE2b.html" title="BLAKE2b hash algorithm. ">BLAKE2b</a></td><td align="right">1.28us</td><td align="right">164.66us</td><td align="right"></td><td align="right">224 </td></tr>
 <tr>
 <td colspan="5"></td></tr>
 <tr>
-<td>Authentication Algorithm</td><td align="right">Hashing (per byte)</td><td align="right">Finalization</td><td>Key Setup</td><td>State Size (bytes) </td></tr>
+<td>Authentication Algorithm</td><td align="right">Hashing (per byte)</td><td align="right">Finalization</td><td align="right">Key Setup</td><td>State Size (bytes) </td></tr>
 <tr>
 <td><a class="el" href="classSHA256.html" title="SHA-256 hash algorithm. ">SHA256</a> (HMAC mode)</td><td align="right">1.15us</td><td align="right">238.98us</td><td align="right">80.44us</td><td align="right">120 </td></tr>
 <tr>
-<td><a class="el" href="classBLAKE2s.html" title="BLAKE2s hash algorithm. ">BLAKE2s</a> (HMAC mode)</td><td align="right">0.72us</td><td align="right">157.75us</td><td align="right">57.18us</td><td align="right">120 </td></tr>
+<td><a class="el" href="classBLAKE2s.html" title="BLAKE2s hash algorithm. ">BLAKE2s</a> (Keyed mode)</td><td align="right">0.80us</td><td align="right">53.39us</td><td align="right">55.10us</td><td align="right">120 </td></tr>
+<tr>
+<td><a class="el" href="classBLAKE2s.html" title="BLAKE2s hash algorithm. ">BLAKE2s</a> (HMAC mode)</td><td align="right">0.80us</td><td align="right">168.20us</td><td align="right">57.60us</td><td align="right">120 </td></tr>
+<tr>
+<td><a class="el" href="classBLAKE2b.html" title="BLAKE2b hash algorithm. ">BLAKE2b</a> (Keyed mode)</td><td align="right">1.28us</td><td align="right">164.66us</td><td align="right">166.68us</td><td align="right">224 </td></tr>
 <tr>
 <td><a class="el" href="classPoly1305.html" title="Poly1305 message authenticator. ">Poly1305</a></td><td align="right">0.81us</td><td align="right">19.01us</td><td align="right">2.57us</td><td align="right">60 </td></tr>
 <tr>
@@ -333,7 +341,7 @@ Performance on ARM</h2>
 </div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Mar 13 2016 08:28:01 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Mar 23 2016 19:08:46 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>
