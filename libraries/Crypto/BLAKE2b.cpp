@@ -36,7 +36,35 @@
  * replacement for SHA512 for when speed is critical but exact SHA512
  * compatibility is not.
  *
- * Reference: https://blake2.net/
+ * This class supports two types of keyed hash.  The BLAKE2 keyed hash and
+ * traditional HMAC.  The BLAKE2 keyed hash is recommended unless there is
+ * some higher-level application need to be compatible with the HMAC
+ * construction.  The keyed hash is computed as follows:
+ *
+ * \code
+ * BLAKE2b blake;
+ * blake.reset(key, sizeof(key), outputLength);
+ * blake.update(data1, sizeof(data1));
+ * blake.update(data2, sizeof(data2));
+ * ...
+ * blake.update(dataN, sizeof(dataN));
+ * blake.finalize(hash, outputLength);
+ * \endcode
+ *
+ * The HMAC is computed as follows (the output length is always 64):
+ *
+ * \code
+ * BLAKE2b blake;
+ * blake.resetHMAC(key, sizeof(key));
+ * blake.update(data1, sizeof(data1));
+ * blake.update(data2, sizeof(data2));
+ * ...
+ * blake.update(dataN, sizeof(dataN));
+ * blake.finalizeHMAC(key, sizeof(key), hash, 32);
+ * \endcode
+ *
+ * References: https://blake2.net/,
+ * <a href="http://tools.ietf.org/html/rfc7693">RFC 7693</a>
  *
  * \sa BLAKE2s, SHA512, SHA3_512
  */
@@ -102,6 +130,10 @@ void BLAKE2b::reset()
  */
 void BLAKE2b::reset(uint8_t outputLength)
 {
+    if (outputLength < 1)
+        outputLength = 1;
+    else if (outputLength > 64)
+        outputLength = 64;
     state.h[0] = BLAKE2b_IV0 ^ 0x01010000 ^ outputLength;
     state.h[1] = BLAKE2b_IV1;
     state.h[2] = BLAKE2b_IV2;
@@ -112,6 +144,48 @@ void BLAKE2b::reset(uint8_t outputLength)
     state.h[7] = BLAKE2b_IV7;
     state.chunkSize = 0;
     state.lengthLow = 0;
+    state.lengthHigh = 0;
+}
+
+/**
+ * \brief Resets the hash ready for a new hashing process with a specified
+ * key and output length.
+ *
+ * \param key Points to the key.
+ * \param keyLen The length of the key in bytes, between 0 and 64.
+ * \param outputLength The output length to use for the final hash in bytes,
+ * between 1 and 64.
+ *
+ * If \a keyLen is greater than 64, then the \a key will be truncated to
+ * the first 64 bytes.
+ */
+void BLAKE2b::reset(const void *key, size_t keyLen, uint8_t outputLength)
+{
+    if (keyLen > 64)
+        keyLen = 64;
+    if (outputLength < 1)
+        outputLength = 1;
+    else if (outputLength > 64)
+        outputLength = 64;
+    state.h[0] = BLAKE2b_IV0 ^ 0x01010000 ^ (keyLen << 8) ^ outputLength;
+    state.h[1] = BLAKE2b_IV1;
+    state.h[2] = BLAKE2b_IV2;
+    state.h[3] = BLAKE2b_IV3;
+    state.h[4] = BLAKE2b_IV4;
+    state.h[5] = BLAKE2b_IV5;
+    state.h[6] = BLAKE2b_IV6;
+    state.h[7] = BLAKE2b_IV7;
+    if (keyLen > 0) {
+        // Set the first block to the key and pad with zeroes.
+        memcpy(state.m, key, keyLen);
+        memset(((uint8_t *)state.m) + keyLen, 0, 128 - keyLen);
+        state.chunkSize = 128;
+        state.lengthLow = 128;
+    } else {
+        // No key.  The first data block is the first hashed block.
+        state.chunkSize = 0;
+        state.lengthLow = 0;
+    }
     state.lengthHigh = 0;
 }
 

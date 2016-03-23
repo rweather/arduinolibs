@@ -27,6 +27,7 @@ This example runs tests on the BLAKE2s implementation to verify correct behaviou
 #include <Crypto.h>
 #include <BLAKE2s.h>
 #include <string.h>
+#include <avr/pgmspace.h>
 
 #define HASH_SIZE 32
 #define BLOCK_SIZE 64
@@ -208,6 +209,101 @@ void testHMAC(Hash *hash, size_t keyLen)
         Serial.println("Failed");
 }
 
+// Deterministic sequences (Fibonacci generator).  From RFC 7693.
+static void selftest_seq(uint8_t *out, size_t len, uint32_t seed)
+{
+    size_t i;
+    uint32_t t, a , b;
+
+    a = 0xDEAD4BAD * seed;              // prime
+    b = 1;
+
+    for (i = 0; i < len; i++) {         // fill the buf
+        t = a + b;
+        a = b;
+        b = t;
+        out[i] = (t >> 24) & 0xFF;
+    }
+}
+
+// Incremental version of above to save memory.
+static void selftest_seq_incremental(BLAKE2s *blake, size_t len, uint32_t seed)
+{
+    size_t i;
+    uint32_t t, a , b;
+
+    a = 0xDEAD4BAD * seed;              // prime
+    b = 1;
+
+    for (i = 0; i < len; i++) {         // fill the buf
+        t = a + b;
+        a = b;
+        b = t;
+        buffer[i % 128] = (t >> 24) & 0xFF;
+        if ((i % 128) == 127)
+            blake->update(buffer, sizeof(buffer));
+    }
+
+    blake->update(buffer, len % 128);
+}
+
+// Run the self-test from Appendix E of RFC 7693.  Most of this code
+// is from RFC 7693, with modifications to use the Crypto library.
+void testRFC7693()
+{
+    // Grand hash of hash results.
+    static const uint8_t blake2s_res[32] PROGMEM = {
+        0x6A, 0x41, 0x1F, 0x08, 0xCE, 0x25, 0xAD, 0xCD,
+        0xFB, 0x02, 0xAB, 0xA6, 0x41, 0x45, 0x1C, 0xEC,
+        0x53, 0xC5, 0x98, 0xB2, 0x4F, 0x4F, 0xC7, 0x87,
+        0xFB, 0xDC, 0x88, 0x79, 0x7F, 0x4C, 0x1D, 0xFE
+    };
+    // Parameter sets.
+    static const uint8_t b2s_md_len[4] PROGMEM = { 16, 20, 28, 32 };
+    static const uint16_t b2s_in_len[6] PROGMEM = { 0,  3,  64, 65, 255, 1024 };
+
+    size_t i, j, outlen, inlen;
+    uint8_t md[32], key[32];
+    BLAKE2s inner;
+
+    Serial.print("BLAKE2s RFC 7693 ... ");
+
+    // 256-bit hash for testing.
+    blake2s.reset(32);
+
+    for (i = 0; i < 4; i++) {
+        outlen = pgm_read_byte(&(b2s_md_len[i]));
+        for (j = 0; j < 6; j++) {
+            inlen = pgm_read_word(&(b2s_in_len[j]));
+
+            inner.reset(outlen);                // unkeyed hash
+            selftest_seq_incremental(&inner, inlen, inlen);
+            inner.finalize(md, outlen);
+            blake2s.update(md, outlen);         // hash the hash
+
+            selftest_seq(key, outlen, outlen);  // keyed hash
+            inner.reset(key, outlen, outlen);
+            selftest_seq_incremental(&inner, inlen, inlen);
+            inner.finalize(md, outlen);
+            blake2s.update(md, outlen);         // hash the hash
+        }
+    }
+
+    // Compute and compare the hash of hashes.
+    bool ok = true;
+    blake2s.finalize(md, 32);
+    for (i = 0; i < 32; i++) {
+        if (md[i] != pgm_read_byte(&(blake2s_res[i])))
+            ok = false;
+    }
+
+    // Report the results.
+    if (ok)
+        Serial.println("Passed");
+    else
+        Serial.println("Failed");
+}
+
 void perfFinalize(Hash *hash)
 {
     unsigned long start;
@@ -221,6 +317,30 @@ void perfFinalize(Hash *hash)
     start = micros();
     for (count = 0; count < 1000; ++count) {
         hash->finalize(buffer, hash->hashSize());
+    }
+    elapsed = micros() - start;
+
+    Serial.print(elapsed / 1000.0);
+    Serial.print("us per op, ");
+    Serial.print((1000.0 * 1000000.0) / elapsed);
+    Serial.println(" ops per second");
+}
+
+void perfKeyed(BLAKE2s *hash)
+{
+    unsigned long start;
+    unsigned long elapsed;
+    int count;
+
+    Serial.print("Keyed Reset ... ");
+
+    for (size_t posn = 0; posn < sizeof(buffer); ++posn)
+        buffer[posn] = (uint8_t)posn;
+
+    start = micros();
+    for (count = 0; count < 1000; ++count) {
+        hash->reset(buffer, hash->hashSize());
+        hash->update(buffer, 1);    // To flush the key chunk.
     }
     elapsed = micros() - start;
 
@@ -289,12 +409,14 @@ void setup()
     testHMAC(&blake2s, BLOCK_SIZE);
     testHMAC(&blake2s, BLOCK_SIZE + 1);
     testHMAC(&blake2s, sizeof(buffer));
+    testRFC7693();
 
     Serial.println();
 
     Serial.println("Performance Tests:");
     perfHash(&blake2s);
     perfFinalize(&blake2s);
+    perfKeyed(&blake2s);
     perfHMAC(&blake2s);
 }
 

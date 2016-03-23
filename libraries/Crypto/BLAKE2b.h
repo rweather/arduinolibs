@@ -36,6 +36,8 @@ public:
 
     void reset();
     void reset(uint8_t outputLength);
+    void reset(const void *key, size_t keyLen, uint8_t outputLength = 64);
+
     void update(const void *data, size_t len);
     void finalize(void *hash, size_t len);
 

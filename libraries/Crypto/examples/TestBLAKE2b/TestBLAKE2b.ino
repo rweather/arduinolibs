@@ -27,6 +27,7 @@ This example runs tests on the BLAKE2b implementation to verify correct behaviou
 #include <Crypto.h>
 #include <BLAKE2b.h>
 #include <string.h>
+#include <avr/pgmspace.h>
 
 #define HASH_SIZE 64
 #define BLOCK_SIZE 128
@@ -39,7 +40,7 @@ struct TestHashVector
 };
 
 // Test vectors generated with the reference implementation of BLAKE2b.
-static TestHashVector const testVectorBLAKE2b_1 = {
+static TestHashVector const testVectorBLAKE2b_1 PROGMEM = {
     "BLAKE2b #1",
     "",
     {0x78, 0x6a, 0x02, 0xf7, 0x42, 0x01, 0x59, 0x03,
@@ -51,7 +52,7 @@ static TestHashVector const testVectorBLAKE2b_1 = {
      0x90, 0x3a, 0x68, 0x5b, 0x14, 0x48, 0xb7, 0x55,
      0xd5, 0x6f, 0x70, 0x1a, 0xfe, 0x9b, 0xe2, 0xce}
 };
-static TestHashVector const testVectorBLAKE2b_2 = {
+static TestHashVector const testVectorBLAKE2b_2 PROGMEM = {
     "BLAKE2b #2",
     "abc",
     {0xba, 0x80, 0xa5, 0x3f, 0x98, 0x1c, 0x4d, 0x0d,
@@ -63,7 +64,7 @@ static TestHashVector const testVectorBLAKE2b_2 = {
      0x18, 0xd3, 0x8a, 0xa8, 0xdb, 0xf1, 0x92, 0x5a,
      0xb9, 0x23, 0x86, 0xed, 0xd4, 0x00, 0x99, 0x23}
 };
-static TestHashVector const testVectorBLAKE2b_3 = {
+static TestHashVector const testVectorBLAKE2b_3 PROGMEM = {
     "BLAKE2b #3",
     "abcdbcdecdefdefgefghfghighijhijkijkljklmklmnlmnomnopnopq",
     {0x72, 0x85, 0xff, 0x3e, 0x8b, 0xd7, 0x68, 0xd6,
@@ -75,7 +76,7 @@ static TestHashVector const testVectorBLAKE2b_3 = {
      0x47, 0x13, 0x0b, 0x44, 0xf3, 0x3a, 0x02, 0xe8,
      0x73, 0x0e, 0x5a, 0xd8, 0xe1, 0x66, 0xe8, 0x88}
 };
-static TestHashVector const testVectorBLAKE2b_4 = {
+static TestHashVector const testVectorBLAKE2b_4 PROGMEM = {
     "BLAKE2b #4",
     "abcdefghbcdefghicdefghijdefghijkefghijklfghijklmghijklmn"
     "hijklmnoijklmnopjklmnopqklmnopqrlmnopqrsmnopqrstnopqrstu",
@@ -116,6 +117,10 @@ bool testHash_N(Hash *hash, const struct TestHashVector *test, size_t inc)
 void testHash(Hash *hash, const struct TestHashVector *test)
 {
     bool ok;
+    TestHashVector vec;
+
+    memcpy_P(&vec, test, sizeof(vec));
+    test = &vec;
 
     Serial.print(test->name);
     Serial.print(" ... ");
@@ -224,6 +229,125 @@ void testHMAC(Hash *hash, size_t keyLen)
         Serial.println("Failed");
 }
 
+// Deterministic sequences (Fibonacci generator).  From RFC 7693.
+static void selftest_seq(uint8_t *out, size_t len, uint32_t seed)
+{
+    size_t i;
+    uint32_t t, a , b;
+
+    a = 0xDEAD4BAD * seed;              // prime
+    b = 1;
+
+    for (i = 0; i < len; i++) {         // fill the buf
+        t = a + b;
+        a = b;
+        b = t;
+        out[i] = (t >> 24) & 0xFF;
+    }
+}
+
+// Incremental version of above to save memory.
+static void selftest_seq_incremental(BLAKE2b *blake, size_t len, uint32_t seed)
+{
+    size_t i;
+    uint32_t t, a , b;
+
+    a = 0xDEAD4BAD * seed;              // prime
+    b = 1;
+
+    for (i = 0; i < len; i++) {         // fill the buf
+        t = a + b;
+        a = b;
+        b = t;
+        buffer[i % 128] = (t >> 24) & 0xFF;
+        if ((i % 128) == 127)
+            blake->update(buffer, 128);
+    }
+
+    blake->update(buffer, len % 128);
+}
+
+// Run the self-test from Appendix E of RFC 7693.  Most of this code
+// is from RFC 7693, with modifications to use the Crypto library.
+void testRFC7693()
+{
+    // Grand hash of hash results.
+    static const uint8_t blake2b_res[32] PROGMEM = {
+        0xC2, 0x3A, 0x78, 0x00, 0xD9, 0x81, 0x23, 0xBD,
+        0x10, 0xF5, 0x06, 0xC6, 0x1E, 0x29, 0xDA, 0x56,
+        0x03, 0xD7, 0x63, 0xB8, 0xBB, 0xAD, 0x2E, 0x73,
+        0x7F, 0x5E, 0x76, 0x5A, 0x7B, 0xCC, 0xD4, 0x75
+    };
+    // Parameter sets.
+    static const uint8_t b2b_md_len[4] PROGMEM = { 20, 32, 48, 64 };
+    static const uint16_t b2b_in_len[6] PROGMEM = { 0, 3, 128, 129, 255, 1024 };
+
+    size_t i, j, outlen, inlen;
+    uint8_t md[64], key[64];
+    BLAKE2b inner;
+
+    Serial.print("BLAKE2b RFC 7693 ... ");
+
+    // 256-bit hash for testing.
+    blake2b.reset(32);
+
+    for (i = 0; i < 4; i++) {
+        outlen = pgm_read_byte(&(b2b_md_len[i]));
+        for (j = 0; j < 6; j++) {
+            inlen = pgm_read_word(&(b2b_in_len[j]));
+
+            inner.reset(outlen);                // unkeyed hash
+            selftest_seq_incremental(&inner, inlen, inlen);
+            inner.finalize(md, outlen);
+            blake2b.update(md, outlen);         // hash the hash
+
+            selftest_seq(key, outlen, outlen);  // keyed hash
+            inner.reset(key, outlen, outlen);
+            selftest_seq_incremental(&inner, inlen, inlen);
+            inner.finalize(md, outlen);
+            blake2b.update(md, outlen);         // hash the hash
+        }
+    }
+
+    // Compute and compare the hash of hashes.
+    bool ok = true;
+    blake2b.finalize(md, 32);
+    for (i = 0; i < 32; i++) {
+        if (md[i] != pgm_read_byte(&(blake2b_res[i])))
+            ok = false;
+    }
+
+    // Report the results.
+    if (ok)
+        Serial.println("Passed");
+    else
+        Serial.println("Failed");
+}
+
+void perfKeyed(BLAKE2b *hash)
+{
+    unsigned long start;
+    unsigned long elapsed;
+    int count;
+
+    Serial.print("Keyed Reset ... ");
+
+    for (size_t posn = 0; posn < sizeof(buffer); ++posn)
+        buffer[posn] = (uint8_t)posn;
+
+    start = micros();
+    for (count = 0; count < 1000; ++count) {
+        hash->reset(buffer, hash->hashSize());
+        hash->update(buffer, 1);    // To flush the key chunk.
+    }
+    elapsed = micros() - start;
+
+    Serial.print(elapsed / 1000.0);
+    Serial.print("us per op, ");
+    Serial.print((1000.0 * 1000000.0) / elapsed);
+    Serial.println(" ops per second");
+}
+
 void perfFinalize(Hash *hash)
 {
     unsigned long start;
@@ -267,11 +391,13 @@ void setup()
     testHMAC(&blake2b, BLOCK_SIZE);
     testHMAC(&blake2b, BLOCK_SIZE + 1);
     testHMAC(&blake2b, BLOCK_SIZE + 2);
+    testRFC7693();
 
     Serial.println();
 
     Serial.println("Performance Tests:");
     perfHash(&blake2b);
+    perfKeyed(&blake2b);
     perfFinalize(&blake2b);
 }
 
