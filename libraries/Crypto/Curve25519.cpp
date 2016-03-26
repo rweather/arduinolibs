@@ -962,10 +962,10 @@ void Curve25519::mulA24(limb_t *result, const limb_t *x)
     static limb_t const a24[3] PROGMEM = {0x41, 0xDB, 0x01};
 #elif BIGNUMBER_LIMB_16BIT
     static limb_t const a24[2] PROGMEM = {0xDB41, 0x0001};
-#elif BIGNUMBER_LIMB_32BIT
+#elif BIGNUMBER_LIMB_32BIT || BIGNUMBER_LIMB_64BIT
     static limb_t const a24[1] PROGMEM = {0x0001DB41};
 #else
-    #error "limb_t must be 8, 16, or 32 bits in size"
+    #error "limb_t must be 8, 16, 32, or 64 bits in size"
 #endif
     #define NUM_A24_LIMBS   (sizeof(a24) / sizeof(limb_t))
 
@@ -1572,8 +1572,8 @@ bool Curve25519::sqrt(limb_t *result, const limb_t *x)
 {
     // sqrt(-1) mod (2^255 - 19).
     static limb_t const numSqrtM1[NUM_LIMBS_256BIT] PROGMEM = {
-        LIMB(0x4A0EA0B0), LIMB(0xC4EE1B27), LIMB(0xAD2FE478), LIMB(0x2F431806),
-        LIMB(0x3DFBD7A7), LIMB(0x2B4D0099), LIMB(0x4FC1DF0B), LIMB(0x2B832480)
+        LIMB_PAIR(0x4A0EA0B0, 0xC4EE1B27), LIMB_PAIR(0xAD2FE478, 0x2F431806),
+        LIMB_PAIR(0x3DFBD7A7, 0x2B4D0099), LIMB_PAIR(0x4FC1DF0B, 0x2B832480)
     };
     limb_t y[NUM_LIMBS_256BIT];
 

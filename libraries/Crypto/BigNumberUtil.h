@@ -27,16 +27,24 @@
 #include <stddef.h>
 
 // Define exactly one of these to 1 to set the size of the basic limb type.
-// 16-bit limbs seem to give the best performance on 8-bit AVR micros.
 #if defined(__AVR__)
+// 16-bit limbs seem to give the best performance on 8-bit AVR micros.
 #define BIGNUMBER_LIMB_8BIT  0
 #define BIGNUMBER_LIMB_16BIT 1
 #define BIGNUMBER_LIMB_32BIT 0
+#define BIGNUMBER_LIMB_64BIT 0
+#elif defined(__GNUC__) && __WORDSIZE == 64
+// 64-bit system with 128-bit double limbs.
+#define BIGNUMBER_LIMB_8BIT  0
+#define BIGNUMBER_LIMB_16BIT 0
+#define BIGNUMBER_LIMB_32BIT 0
+#define BIGNUMBER_LIMB_64BIT 1
 #else
-// On all other platforms, assume 32-bit is best (e.g. ARM).
+// On all other platforms, assume 32-bit is best.
 #define BIGNUMBER_LIMB_8BIT  0
 #define BIGNUMBER_LIMB_16BIT 0
 #define BIGNUMBER_LIMB_32BIT 1
+#define BIGNUMBER_LIMB_64BIT 0
 #endif
 
 // Define the limb types to use on this platform.
@@ -52,8 +60,12 @@ typedef uint32_t dlimb_t;
 typedef uint32_t limb_t;
 typedef int32_t slimb_t;
 typedef uint64_t dlimb_t;
+#elif BIGNUMBER_LIMB_64BIT
+typedef uint64_t limb_t;
+typedef int64_t slimb_t;
+typedef unsigned __int128 dlimb_t;
 #else
-#error "limb_t must be 8, 16, or 32 bits in size"
+#error "limb_t must be 8, 16, 32, or 64 bits in size"
 #endif
 
 class BigNumberUtil

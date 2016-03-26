@@ -26,7 +26,6 @@
 #include "SHA512.h"
 #include "utility/LimbUtil.h"
 #include <string.h>
-#include <Arduino.h>
 
 /**
  * \class P521 P521.h <P521.h>
@@ -77,37 +76,37 @@
 // The group order "q" value from RFC 4754 and RFC 5903.  This is the
 // same as the "n" value from Appendix D.1.2.5 of NIST FIPS 186-4.
 static limb_t const P521_q[NUM_LIMBS_521BIT] PROGMEM = {
-    LIMB(0x91386409), LIMB(0xbb6fb71e), LIMB(0x899c47ae), LIMB(0x3bb5c9b8),
-    LIMB(0xf709a5d0), LIMB(0x7fcc0148), LIMB(0xbf2f966b), LIMB(0x51868783),
-    LIMB(0xfffffffa), LIMB(0xffffffff), LIMB(0xffffffff), LIMB(0xffffffff),
-    LIMB(0xffffffff), LIMB(0xffffffff), LIMB(0xffffffff), LIMB(0xffffffff),
+    LIMB_PAIR(0x91386409, 0xbb6fb71e), LIMB_PAIR(0x899c47ae, 0x3bb5c9b8),
+    LIMB_PAIR(0xf709a5d0, 0x7fcc0148), LIMB_PAIR(0xbf2f966b, 0x51868783),
+    LIMB_PAIR(0xfffffffa, 0xffffffff), LIMB_PAIR(0xffffffff, 0xffffffff),
+    LIMB_PAIR(0xffffffff, 0xffffffff), LIMB_PAIR(0xffffffff, 0xffffffff),
     LIMB_PARTIAL(0x1ff)
 };
 
 // The "b" value from Appendix D.1.2.5 of NIST FIPS 186-4.
 static limb_t const P521_b[NUM_LIMBS_521BIT] PROGMEM = {
-    LIMB(0x6b503f00), LIMB(0xef451fd4), LIMB(0x3d2c34f1), LIMB(0x3573df88),
-    LIMB(0x3bb1bf07), LIMB(0x1652c0bd), LIMB(0xec7e937b), LIMB(0x56193951),
-    LIMB(0x8ef109e1), LIMB(0xb8b48991), LIMB(0x99b315f3), LIMB(0xa2da725b),
-    LIMB(0xb68540ee), LIMB(0x929a21a0), LIMB(0x8e1c9a1f), LIMB(0x953eb961),
+    LIMB_PAIR(0x6b503f00, 0xef451fd4), LIMB_PAIR(0x3d2c34f1, 0x3573df88),
+    LIMB_PAIR(0x3bb1bf07, 0x1652c0bd), LIMB_PAIR(0xec7e937b, 0x56193951),
+    LIMB_PAIR(0x8ef109e1, 0xb8b48991), LIMB_PAIR(0x99b315f3, 0xa2da725b),
+    LIMB_PAIR(0xb68540ee, 0x929a21a0), LIMB_PAIR(0x8e1c9a1f, 0x953eb961),
     LIMB_PARTIAL(0x051)
 };
 
 // The "Gx" value from Appendix D.1.2.5 of NIST FIPS 186-4.
 static limb_t const P521_Gx[NUM_LIMBS_521BIT] PROGMEM = {
-    LIMB(0xc2e5bd66), LIMB(0xf97e7e31), LIMB(0x856a429b), LIMB(0x3348b3c1),
-    LIMB(0xa2ffa8de), LIMB(0xfe1dc127), LIMB(0xefe75928), LIMB(0xa14b5e77),
-    LIMB(0x6b4d3dba), LIMB(0xf828af60), LIMB(0x053fb521), LIMB(0x9c648139),
-    LIMB(0x2395b442), LIMB(0x9e3ecb66), LIMB(0x0404e9cd), LIMB(0x858e06b7),
+    LIMB_PAIR(0xc2e5bd66, 0xf97e7e31), LIMB_PAIR(0x856a429b, 0x3348b3c1),
+    LIMB_PAIR(0xa2ffa8de, 0xfe1dc127), LIMB_PAIR(0xefe75928, 0xa14b5e77),
+    LIMB_PAIR(0x6b4d3dba, 0xf828af60), LIMB_PAIR(0x053fb521, 0x9c648139),
+    LIMB_PAIR(0x2395b442, 0x9e3ecb66), LIMB_PAIR(0x0404e9cd, 0x858e06b7),
     LIMB_PARTIAL(0x0c6)
 };
 
 // The "Gy" value from Appendix D.1.2.5 of NIST FIPS 186-4.
 static limb_t const P521_Gy[NUM_LIMBS_521BIT] PROGMEM = {
-    LIMB(0x9fd16650), LIMB(0x88be9476), LIMB(0xa272c240), LIMB(0x353c7086),
-    LIMB(0x3fad0761), LIMB(0xc550b901), LIMB(0x5ef42640), LIMB(0x97ee7299),
-    LIMB(0x273e662c), LIMB(0x17afbd17), LIMB(0x579b4468), LIMB(0x98f54449),
-    LIMB(0x2c7d1bd9), LIMB(0x5c8a5fb4), LIMB(0x9a3bc004), LIMB(0x39296a78),
+    LIMB_PAIR(0x9fd16650, 0x88be9476), LIMB_PAIR(0xa272c240, 0x353c7086),
+    LIMB_PAIR(0x3fad0761, 0xc550b901), LIMB_PAIR(0x5ef42640, 0x97ee7299),
+    LIMB_PAIR(0x273e662c, 0x17afbd17), LIMB_PAIR(0x579b4468, 0x98f54449),
+    LIMB_PAIR(0x2c7d1bd9, 0x5c8a5fb4), LIMB_PAIR(0x9a3bc004, 0x39296a78),
     LIMB_PARTIAL(0x118)
 };
 
@@ -783,7 +782,7 @@ bool P521::inRange(const limb_t *x)
  */
 void P521::reduce(limb_t *result, const limb_t *x)
 {
-#if BIGNUMBER_LIMB_16BIT || BIGNUMBER_LIMB_32BIT
+#if BIGNUMBER_LIMB_16BIT || BIGNUMBER_LIMB_32BIT || BIGNUMBER_LIMB_64BIT
     // According to NIST FIPS 186-4, we add the high 521 bits to the
     // low 521 bits and then do a trial subtraction of 2^521 - 1.
     // We do both in a single step.  Subtracting 2^521 - 1 is equivalent
@@ -881,7 +880,7 @@ void P521::reduceQuick(limb_t *x)
     // If the carry out was 0, then we need to add 2^521 - 1 back again.
     // To preserve the timing we perform a conditional subtract of 1 and
     // then mask off the high bits.
-#if BIGNUMBER_LIMB_16BIT || BIGNUMBER_LIMB_32BIT
+#if BIGNUMBER_LIMB_16BIT || BIGNUMBER_LIMB_32BIT || BIGNUMBER_LIMB_64BIT
     carry = ((x[NUM_LIMBS_521BIT - 1] >> 9) ^ 0x01) & 0x01;
     xx = x;
     for (index = 0; index < NUM_LIMBS_521BIT; ++index) {
@@ -1005,7 +1004,7 @@ void P521::mulLiteral(limb_t *result, const limb_t *x, limb_t y)
 
     // Reduce the value modulo 2^521 - 1.  The high half is only a
     // single limb, so we can short-cut some of reduce() here.
-#if BIGNUMBER_LIMB_16BIT || BIGNUMBER_LIMB_32BIT
+#if BIGNUMBER_LIMB_16BIT || BIGNUMBER_LIMB_32BIT || BIGNUMBER_LIMB_64BIT
     limb_t word = result[NUM_LIMBS_521BIT - 1];
     carry = (word >> 9) + 1;
     word &= 0x1FF;
@@ -1392,10 +1391,10 @@ void P521::reduceQ(limb_t *result, const limb_t *r)
     // Note: m is a 522-bit number, which fits in the same number of limbs
     // as a 521-bit number assuming that limbs are 8 bits or more in size.
     static limb_t const numM[NUM_LIMBS_521BIT] PROGMEM = {
-        LIMB(0x6EC79BF7), LIMB(0x449048E1), LIMB(0x7663B851), LIMB(0xC44A3647),
-        LIMB(0x08F65A2F), LIMB(0x8033FEB7), LIMB(0x40D06994), LIMB(0xAE79787C),
-        LIMB(0x00000005), LIMB(0x00000000), LIMB(0x00000000), LIMB(0x00000000),
-        LIMB(0x00000000), LIMB(0x00000000), LIMB(0x00000000), LIMB(0x00000000),
+        LIMB_PAIR(0x6EC79BF7, 0x449048E1), LIMB_PAIR(0x7663B851, 0xC44A3647),
+        LIMB_PAIR(0x08F65A2F, 0x8033FEB7), LIMB_PAIR(0x40D06994, 0xAE79787C),
+        LIMB_PAIR(0x00000005, 0x00000000), LIMB_PAIR(0x00000000, 0x00000000),
+        LIMB_PAIR(0x00000000, 0x00000000), LIMB_PAIR(0x00000000, 0x00000000),
         LIMB_PARTIAL(0x200)
     };
     limb_t temp[NUM_LIMBS_1042BIT + NUM_LIMBS_521BIT];
@@ -1412,10 +1411,10 @@ void P521::reduceQ(limb_t *result, const limb_t *r)
         temp2[index] = (limb_t)carry;
         carry >>= LIMB_BITS;
     }
-#elif BIGNUMBER_LIMB_32BIT
+#elif BIGNUMBER_LIMB_32BIT || BIGNUMBER_LIMB_64BIT
     dlimb_t carry = temp[NUM_LIMBS_BITS(1024)] >> 18;
     for (uint8_t index = 0; index < NUM_LIMBS_521BIT; ++index) {
-        carry += ((dlimb_t)(temp[NUM_LIMBS_BITS(1024) + index + 1])) << 14;
+        carry += ((dlimb_t)(temp[NUM_LIMBS_BITS(1024) + index + 1])) << (LIMB_BITS - 18);
         temp2[index] = (limb_t)carry;
         carry >>= LIMB_BITS;
     }
@@ -1466,8 +1465,8 @@ void P521::recipQ(limb_t *result, const limb_t *x)
 {
     // Bottom 265 bits of q - 2.  The top 256 bits are all-1's.
     static limb_t const P521_q_m2[] PROGMEM = {
-        LIMB(0x91386407), LIMB(0xbb6fb71e), LIMB(0x899c47ae), LIMB(0x3bb5c9b8),
-        LIMB(0xf709a5d0), LIMB(0x7fcc0148), LIMB(0xbf2f966b), LIMB(0x51868783),
+        LIMB_PAIR(0x91386407, 0xbb6fb71e), LIMB_PAIR(0x899c47ae, 0x3bb5c9b8),
+        LIMB_PAIR(0xf709a5d0, 0x7fcc0148), LIMB_PAIR(0xbf2f966b, 0x51868783),
         LIMB_PARTIAL(0x1fa)
     };
 

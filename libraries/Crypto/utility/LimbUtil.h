@@ -42,20 +42,29 @@
 #define pgm_read_limb(x)    (pgm_read_word((x)))
 #elif BIGNUMBER_LIMB_32BIT
 #define pgm_read_limb(x)    (pgm_read_dword((x)))
+#elif BIGNUMBER_LIMB_64BIT
+#define pgm_read_limb(x)    (pgm_read_qword((x)))
 #endif
 
 // Expand a 32-bit value into a set of limbs depending upon the limb size.
 // This is used when initializing constant big number values in the code.
+// For 64-bit system compatibility it is necessary to use LIMB_PAIR(x, y).
 #if BIGNUMBER_LIMB_8BIT
 #define LIMB(value)     ((uint8_t)(value)), \
                         ((uint8_t)((value) >> 8)), \
                         ((uint8_t)((value) >> 16)), \
                         ((uint8_t)((value) >> 24))
+#define LIMB_PAIR(x,y)  LIMB((x)), LIMB((y))
 #elif BIGNUMBER_LIMB_16BIT
 #define LIMB(value)     ((uint16_t)(value)), \
                         ((uint16_t)((value) >> 16))
+#define LIMB_PAIR(x,y)  LIMB((x)), LIMB((y))
 #elif BIGNUMBER_LIMB_32BIT
 #define LIMB(value)     (value)
+#define LIMB_PAIR(x,y)  LIMB((x)), LIMB((y))
+#elif BIGNUMBER_LIMB_64BIT
+#define LIMB(value)     (value)
+#define LIMB_PAIR(x,y)  ((((uint64_t)(y)) << 32) | ((uint64_t)(x)))
 #endif
 
 #endif

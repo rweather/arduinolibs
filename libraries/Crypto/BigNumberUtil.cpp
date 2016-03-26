@@ -96,7 +96,7 @@ void BigNumberUtil::unpackLE(limb_t *limbs, size_t count,
         --count;
         len -= 4;
     }
-    if (count > 0) {
+    if (count > 0 && len > 0) {
         if (len == 3) {
             *limbs++ = ((limb_t)(bytes[0])) |
                       (((limb_t)(bytes[1])) <<  8) |
@@ -104,9 +104,38 @@ void BigNumberUtil::unpackLE(limb_t *limbs, size_t count,
         } else if (len == 2) {
             *limbs++ = ((limb_t)(bytes[0])) |
                       (((limb_t)(bytes[1])) <<  8);
-        } else if (len == 1) {
+        } else {
             *limbs++ = ((limb_t)(bytes[0]));
         }
+        --count;
+    }
+    while (count > 0) {
+        *limbs++ = 0;
+        --count;
+    }
+#elif BIGNUMBER_LIMB_64BIT
+    while (count > 0 && len >= 8) {
+        *limbs++ = ((limb_t)(bytes[0])) |
+                  (((limb_t)(bytes[1])) <<  8) |
+                  (((limb_t)(bytes[2])) << 16) |
+                  (((limb_t)(bytes[3])) << 24) |
+                  (((limb_t)(bytes[4])) << 32) |
+                  (((limb_t)(bytes[5])) << 40) |
+                  (((limb_t)(bytes[6])) << 48) |
+                  (((limb_t)(bytes[7])) << 56);
+        bytes += 8;
+        --count;
+        len -= 8;
+    }
+    if (count > 0 && len > 0) {
+        limb_t word = 0;
+        uint8_t shift = 0;
+        while (len > 0 && shift < 64) {
+            word |= (((limb_t)(*bytes++)) << shift);
+            shift += 8;
+            --len;
+        }
+        *limbs++ = word;
         --count;
     }
     while (count > 0) {
@@ -184,6 +213,33 @@ void BigNumberUtil::unpackBE(limb_t *limbs, size_t count,
             --bytes;
             *limbs++ = (limb_t)(bytes[0]);
         }
+    }
+    memset(limbs, 0, count * sizeof(limb_t));
+#elif BIGNUMBER_LIMB_64BIT
+    bytes += len;
+    while (count > 0 && len >= 8) {
+        --count;
+        bytes -= 8;
+        len -= 8;
+        *limbs++ = ((limb_t)(bytes[7])) |
+                  (((limb_t)(bytes[6])) << 8) |
+                  (((limb_t)(bytes[5])) << 16) |
+                  (((limb_t)(bytes[4])) << 24) |
+                  (((limb_t)(bytes[3])) << 32) |
+                  (((limb_t)(bytes[2])) << 40) |
+                  (((limb_t)(bytes[1])) << 48) |
+                  (((limb_t)(bytes[0])) << 56);
+    }
+    if (count > 0 && len > 0) {
+        limb_t word = 0;
+        uint8_t shift = 0;
+        while (len > 0 && shift < 64) {
+            word |= (((limb_t)(*(--bytes))) << shift);
+            shift += 8;
+            --len;
+        }
+        *limbs++ = word;
+        --count;
     }
     memset(limbs, 0, count * sizeof(limb_t));
 #endif
@@ -272,6 +328,31 @@ void BigNumberUtil::packLE(uint8_t *bytes, size_t len,
         }
     }
     memset(bytes, 0, len);
+#elif BIGNUMBER_LIMB_64BIT
+    limb_t word;
+    while (count > 0 && len >= 8) {
+        word = *limbs++;
+        bytes[0] = (uint8_t)word;
+        bytes[1] = (uint8_t)(word >> 8);
+        bytes[2] = (uint8_t)(word >> 16);
+        bytes[3] = (uint8_t)(word >> 24);
+        bytes[4] = (uint8_t)(word >> 32);
+        bytes[5] = (uint8_t)(word >> 40);
+        bytes[6] = (uint8_t)(word >> 48);
+        bytes[7] = (uint8_t)(word >> 56);
+        --count;
+        len -= 8;
+        bytes += 8;
+    }
+    if (count > 0) {
+        word = *limbs;
+        while (len > 0) {
+            *bytes++ = (uint8_t)word;
+            word >>= 8;
+            --len;
+        }
+    }
+    memset(bytes, 0, len);
 #endif
 }
 
@@ -357,6 +438,39 @@ void BigNumberUtil::packBE(uint8_t *bytes, size_t len,
     while (count > 0) {
         --count;
         word = *(--limbs);
+        *bytes++ = (uint8_t)(word >> 24);
+        *bytes++ = (uint8_t)(word >> 16);
+        *bytes++ = (uint8_t)(word >> 8);
+        *bytes++ = (uint8_t)word;
+    }
+#elif BIGNUMBER_LIMB_64BIT
+    size_t countBytes = count * sizeof(limb_t);
+    limb_t word;
+    if (len >= countBytes) {
+        size_t size = len - countBytes;
+        memset(bytes, 0, size);
+        len -= size;
+        bytes += size;
+        limbs += count;
+    } else {
+        count = len / sizeof(limb_t);
+        limbs += count;
+        uint8_t size = len & 7;
+        uint8_t shift = size * 8;
+        word = *limbs;
+        while (size > 0) {
+            shift -= 8;
+            *bytes++ = (uint8_t)(word >> shift);
+            --size;
+        }
+    }
+    while (count > 0) {
+        --count;
+        word = *(--limbs);
+        *bytes++ = (uint8_t)(word >> 56);
+        *bytes++ = (uint8_t)(word >> 48);
+        *bytes++ = (uint8_t)(word >> 40);
+        *bytes++ = (uint8_t)(word >> 32);
         *bytes++ = (uint8_t)(word >> 24);
         *bytes++ = (uint8_t)(word >> 16);
         *bytes++ = (uint8_t)(word >> 8);

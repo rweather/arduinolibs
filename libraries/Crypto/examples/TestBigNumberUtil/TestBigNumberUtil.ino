@@ -223,8 +223,21 @@ static void truncateNumber(limb_t *limbs, size_t bytes)
             mask = 0x000000FF;
         else if (posn2 == 2)
             mask = 0x0000FFFF;
+#if BIGNUMBER_LIMB_64BIT
+        else if (posn2 == 3)
+            mask = 0x00FFFFFF;
+        else if (posn2 == 4)
+            mask = 0xFFFFFFFF;
+        else if (posn2 == 5)
+            mask = 0xFFFFFFFFFF;
+        else if (posn2 == 6)
+            mask = 0xFFFFFFFFFFFF;
+        else
+            mask = 0xFFFFFFFFFFFFFF;
+#else
         else
             mask = 0x00FFFFFF;
+#endif
         limbs[posn / sizeof(limb_t)] &= mask;
     }
 }
