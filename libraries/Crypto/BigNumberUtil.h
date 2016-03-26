@@ -86,6 +86,8 @@ public:
     static void reduceQuick_P(limb_t *result, const limb_t *x,
                               const limb_t *y, size_t size);
 
+    static limb_t isZero(const limb_t *x, size_t size);
+
 private:
     // Constructor and destructor are private - cannot instantiate this class.
     BigNumberUtil() {}

@@ -26,9 +26,11 @@
 #include "ProgMemUtil.h"
 
 // Number of limbs in a big number value of various sizes.
-#define NUM_LIMBS_128BIT (16 / sizeof(limb_t))
-#define NUM_LIMBS_256BIT (32 / sizeof(limb_t))
-#define NUM_LIMBS_512BIT (64 / sizeof(limb_t))
+#define NUM_LIMBS_BITS(n) \
+    (((n) + sizeof(limb_t) * 8 - 1) / (8 * sizeof(limb_t)))
+#define NUM_LIMBS_128BIT NUM_LIMBS_BITS(128)
+#define NUM_LIMBS_256BIT NUM_LIMBS_BITS(256)
+#define NUM_LIMBS_512BIT NUM_LIMBS_BITS(512)
 
 // The number of bits in a limb.
 #define LIMB_BITS   (8 * sizeof(limb_t))

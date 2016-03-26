@@ -634,3 +634,22 @@ void BigNumberUtil::reduceQuick_P(limb_t *result, const limb_t *x,
         --size;
     }
 }
+
+/**
+ * \brief Determine if a big number is zero.
+ *
+ * \param x Points to the number to test.
+ * \param size The number of limbs in \a x.
+ * \return Returns 1 if \a x is zero or 0 otherwise.
+ *
+ * This function attempts to make the determination in constant time.
+ */
+limb_t BigNumberUtil::isZero(const limb_t *x, size_t size)
+{
+    limb_t word = 0;
+    while (size > 0) {
+        word |= *x++;
+        --size;
+    }
+    return (limb_t)(((((dlimb_t)1) << LIMB_BITS) - word) >> LIMB_BITS);
+}

@@ -47,6 +47,7 @@ SOURCES =   \
 	NoiseSource.cpp \
 	OFB.cpp \
 	OMAC.cpp \
+        P521.cpp \
 	Poly1305.cpp \
         RNG_host.cpp \
 	SHA256.cpp \
@@ -76,6 +77,8 @@ SKETCHES = \
 	TestGCM/TestGCM.ino \
 	TestGHASH/TestGHASH.ino \
 	TestOFB/TestOFB.ino \
+	TestP521/TestP521.ino \
+	TestP521Math/TestP521Math.ino \
 	TestPoly1305/TestPoly1305.ino \
 	TestSHA256/TestSHA256.ino \
 	TestSHA3_256/TestSHA3_256.ino \
