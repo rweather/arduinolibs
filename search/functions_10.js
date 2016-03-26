@@ -63,7 +63,7 @@ var searchData=
   ['shellcommandfunc',['ShellCommandFunc',['../classShell.html#ad5bac6a4033cd81e24c1345650bca744',1,'Shell']]],
   ['shellpasswordcheckfunc',['ShellPasswordCheckFunc',['../classLoginShell.html#adad54b04ec54d3577df4cd11944fff1d',1,'LoginShell']]],
   ['show',['show',['../classForm.html#a9e8d718ab55a8034c22c606ccfa90d65',1,'Form']]],
-  ['sign',['sign',['../classEd25519.html#a36ecf67b4c5d2d39a31888f56af1f8a5',1,'Ed25519']]],
+  ['sign',['sign',['../classEd25519.html#a36ecf67b4c5d2d39a31888f56af1f8a5',1,'Ed25519::sign()'],['../classP521.html#ab050ceff65e49b646b8157fe1474288a',1,'P521::sign()']]],
   ['size',['size',['../classEEPROM24.html#aa544875cef9bd05bf71d6c19be06cf7c',1,'EEPROM24']]],
   ['sleepfor',['sleepFor',['../group__power__save.html#ga95c1666038493a7f95be6768882eebad',1,'sleepFor(SleepDuration duration, uint8_t mode):&#160;PowerSave.cpp'],['../group__power__save.html#ga95c1666038493a7f95be6768882eebad',1,'sleepFor(SleepDuration duration, uint8_t mode=0):&#160;PowerSave.cpp']]],
   ['softi2c',['SoftI2C',['../classSoftI2C.html#adb6e00ee3f930f1d32010a18feb5f6cc',1,'SoftI2C']]],

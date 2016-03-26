@@ -134,6 +134,9 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a00c9cde0b626788a60552a6bc9ce058b"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBigNumberUtil.html#a00c9cde0b626788a60552a6bc9ce058b">reduceQuick_P</a> (limb_t *result, const limb_t *x, const limb_t *y, size_t size)</td></tr>
 <tr class="memdesc:a00c9cde0b626788a60552a6bc9ce058b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reduces <em>x</em> modulo <em>y</em> using subtraction where <em>y</em> is in program memory.  <a href="#a00c9cde0b626788a60552a6bc9ce058b">More...</a><br/></td></tr>
 <tr class="separator:a00c9cde0b626788a60552a6bc9ce058b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad0aafacd8e224bd543341973c62ff1dd"><td class="memItemLeft" align="right" valign="top">static limb_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBigNumberUtil.html#ad0aafacd8e224bd543341973c62ff1dd">isZero</a> (const limb_t *x, size_t size)</td></tr>
+<tr class="memdesc:ad0aafacd8e224bd543341973c62ff1dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determine if a big number is zero.  <a href="#ad0aafacd8e224bd543341973c62ff1dd">More...</a><br/></td></tr>
+<tr class="separator:ad0aafacd8e224bd543341973c62ff1dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Utilities to assist with implementing big number arithmetic. </p>
@@ -261,6 +264,53 @@ Static Public Member Functions</h2></td></tr>
 <dl class="section see"><dt>See Also</dt><dd><a class="el" href="classBigNumberUtil.html#af0fa1527647af42b65eda6b0aab982b3" title="Subtracts one big number from another where one is in program memory. ">sub_P()</a>, <a class="el" href="classBigNumberUtil.html#aacdee1806a239eb9e58753ef1ddb964a" title="Multiplies two big numbers where one is in program memory. ">mul_P()</a> </dd></dl>
 
 <p>Definition at line <a class="el" href="BigNumberUtil_8cpp_source.html#l00514">514</a> of file <a class="el" href="BigNumberUtil_8cpp_source.html">BigNumberUtil.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ad0aafacd8e224bd543341973c62ff1dd"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">limb_t BigNumberUtil::isZero </td>
+          <td>(</td>
+          <td class="paramtype">const limb_t *&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Determine if a big number is zero. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">x</td><td>Points to the number to test. </td></tr>
+    <tr><td class="paramname">size</td><td>The number of limbs in <em>x</em>. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Returns 1 if <em>x</em> is zero or 0 otherwise.</dd></dl>
+<p>This function attempts to make the determination in constant time. </p>
+
+<p>Definition at line <a class="el" href="BigNumberUtil_8cpp_source.html#l00647">647</a> of file <a class="el" href="BigNumberUtil_8cpp_source.html">BigNumberUtil.cpp</a>.</p>
 
 </div>
 </div>
@@ -893,7 +943,7 @@ Static Public Member Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Mar 23 2016 19:08:46 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Mar 26 2016 19:04:41 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

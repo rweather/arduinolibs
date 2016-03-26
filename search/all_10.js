@@ -73,7 +73,7 @@ var searchData=
   ['shellcommandfunc',['ShellCommandFunc',['../classShell.html#ad5bac6a4033cd81e24c1345650bca744',1,'Shell']]],
   ['shellpasswordcheckfunc',['ShellPasswordCheckFunc',['../classLoginShell.html#adad54b04ec54d3577df4cd11944fff1d',1,'LoginShell']]],
   ['show',['show',['../classForm.html#a9e8d718ab55a8034c22c606ccfa90d65',1,'Form']]],
-  ['sign',['sign',['../classEd25519.html#a36ecf67b4c5d2d39a31888f56af1f8a5',1,'Ed25519']]],
+  ['sign',['sign',['../classEd25519.html#a36ecf67b4c5d2d39a31888f56af1f8a5',1,'Ed25519::sign()'],['../classP521.html#ab050ceff65e49b646b8157fe1474288a',1,'P521::sign()']]],
   ['size',['size',['../classEEPROM24.html#aa544875cef9bd05bf71d6c19be06cf7c',1,'EEPROM24']]],
   ['sleep_5f120_5fms',['SLEEP_120_MS',['../group__power__save.html#ggabdc6266a040b28c4d79028ddb0ceae36a96fa577b54aa6f2341ea5ddd839aa8bc',1,'PowerSave.h']]],
   ['sleep_5f15_5fms',['SLEEP_15_MS',['../group__power__save.html#ggabdc6266a040b28c4d79028ddb0ceae36a3d16487a7386c6348f1c1d886564e3c4',1,'PowerSave.h']]],
