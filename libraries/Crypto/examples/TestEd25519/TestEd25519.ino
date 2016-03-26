@@ -41,7 +41,7 @@ struct TestVector
 };
 
 // Test vectors for Ed25519 from:
-// https://tools.ietf.org/id/draft-josefsson-eddsa-ed25519-02.txt
+// https://tools.ietf.org/html/draft-irtf-cfrg-eddsa-05
 static TestVector const testVectorEd25519_1 PROGMEM = {
     .name       = "Ed25519 #1",
     .privateKey = {0x9d, 0x61, 0xb1, 0x9d, 0xef, 0xfd, 0x5a, 0x60,
@@ -162,63 +162,9 @@ void testFixedVectors(const struct TestVector *test)
 
 void testFixedVectors()
 {
-    //Serial.println("Fixed test vectors:");
     testFixedVectors(&testVectorEd25519_1);
     testFixedVectors(&testVectorEd25519_2);
 }
-
-/*
-void testDH()
-{
-    static uint8_t alice_k[32];
-    static uint8_t alice_f[32];
-    static uint8_t bob_k[32];
-    static uint8_t bob_f[32];
-
-    Serial.println("Diffie-Hellman key exchange:");
-    Serial.print("Generate random k/f for Alice ... ");
-    Serial.flush();
-    unsigned long start = micros();
-    Curve25519::dh1(alice_k, alice_f);
-    unsigned long elapsed = micros() - start;
-    Serial.print("elapsed ");
-    Serial.print(elapsed);
-    Serial.println(" us");
-
-    Serial.print("Generate random k/f for Bob ... ");
-    Serial.flush();
-    start = micros();
-    Curve25519::dh1(bob_k, bob_f);
-    elapsed = micros() - start;
-    Serial.print("elapsed ");
-    Serial.print(elapsed);
-    Serial.println(" us");
-
-    Serial.print("Generate shared secret for Alice ... ");
-    Serial.flush();
-    start = micros();
-    Curve25519::dh2(bob_k, alice_f);
-    elapsed = micros() - start;
-    Serial.print("elapsed ");
-    Serial.print(elapsed);
-    Serial.println(" us");
-
-    Serial.print("Generate shared secret for Bob ... ");
-    Serial.flush();
-    start = micros();
-    Curve25519::dh2(alice_k, bob_f);
-    elapsed = micros() - start;
-    Serial.print("elapsed ");
-    Serial.print(elapsed);
-    Serial.println(" us");
-
-    Serial.print("Check that the shared secrets match ... ");
-    if (memcmp(alice_k, bob_k, 32) == 0)
-        Serial.println("ok");
-    else
-        Serial.println("failed");
-}
-*/
 
 void setup()
 {
@@ -232,8 +178,6 @@ void setup()
     // Perform the tests.
     testFixedVectors();
     Serial.println();
-    //testDH();
-    //Serial.println();
 }
 
 void loop()

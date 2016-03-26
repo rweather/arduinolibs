@@ -41,8 +41,8 @@ void printNumber(const char *name, const uint8_t *x)
     Serial.println();
 }
 
-// Check the eval() function using the test vectors from:
-// https://tools.ietf.org/html/draft-turner-thecurve25519function-01
+// Check the eval() function using the test vectors from
+// section 6.1 of RFC 7748.
 void testEval()
 {
     static uint8_t alice_private[32] = {

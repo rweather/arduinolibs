@@ -68,7 +68,7 @@
  * stack space to store intermediate results while the curve function is
  * being evaluated.  About 1.5k of free stack space is recommended for safety.
  *
- * References: https://tools.ietf.org/id/draft-josefsson-eddsa-ed25519-02.txt
+ * References: https://tools.ietf.org/html/draft-irtf-cfrg-eddsa-05
  *
  * \sa Curve25519
  */

@@ -35,8 +35,8 @@
  * stack space to store intermediate results while the curve function is
  * being evaluated.  About 1k of free stack space is recommended for safety.
  *
- * References: http://cr.yp.to/ecdh.html
- * https://tools.ietf.org/html/draft-irtf-cfrg-curves-02
+ * References: http://cr.yp.to/ecdh.html,
+ * <a href="http://tools.ietf.org/html/rfc7748">RFC 7748</a>
  *
  * \sa Ed25519
  */
@@ -72,7 +72,7 @@
  * \return Returns true if the function was evaluated; false if \a x is
  * not a proper member of the field modulo (2^255 - 19).
  *
- * Reference: https://tools.ietf.org/html/draft-irtf-cfrg-curves-02
+ * Reference: <a href="http://tools.ietf.org/html/rfc7748">RFC 7748</a>
  *
  * \sa dh1(), dh2()
  */
@@ -237,7 +237,7 @@ bool Curve25519::eval(uint8_t result[32], const uint8_t s[32], const uint8_t x[3
  * ...
  * \endcode
  *
- * Reference: https://tools.ietf.org/html/draft-irtf-cfrg-curves-02
+ * Reference: <a href="http://tools.ietf.org/html/rfc7748">RFC 7748</a>
  *
  * \sa dh2()
  */
@@ -275,7 +275,7 @@ void Curve25519::dh1(uint8_t k[32], uint8_t f[32])
  * \return Returns true if the key exchange was successful, or false if
  * the \a k value is invalid.
  *
- * Reference: https://tools.ietf.org/html/draft-irtf-cfrg-curves-02
+ * Reference: <a href="http://tools.ietf.org/html/rfc7748">RFC 7748</a>
  *
  * \sa dh1()
  */
@@ -1319,7 +1319,7 @@ void Curve25519::cswap(limb_t select, limb_t *x, limb_t *y)
     --sel;
 
     // Swap the two values based on "select".  Algorithm from:
-    // https://tools.ietf.org/html/draft-irtf-cfrg-curves-02
+    // http://tools.ietf.org/html/rfc7748
     for (posn = 0; posn < NUM_LIMBS_256BIT; ++posn) {
         dummy = sel & (x[posn] ^ y[posn]);
         x[posn] ^= dummy;
@@ -1577,8 +1577,7 @@ bool Curve25519::sqrt(limb_t *result, const limb_t *x)
     };
     limb_t y[NUM_LIMBS_256BIT];
 
-    // Algorithm from:
-    // https://tools.ietf.org/id/draft-josefsson-eddsa-ed25519-02.txt
+    // Algorithm from: http://tools.ietf.org/html/rfc7748
 
     // Compute a candidate root: result = x^((p + 3) / 8) mod p.
     // (p + 3) / 8 = (2^252 - 2) which is 251 one bits followed by a zero:
