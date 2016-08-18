@@ -664,6 +664,7 @@ INPUT                  = ../libraries/LCD \
                          ../libraries/DMD \
                          ../libraries/IR \
                          ../libraries/Crypto \
+                         ../libraries/NewHope \
                          ../libraries/RingOscillatorNoiseSource \
                          ../libraries/TransistorNoiseSource \
                          ../libraries/Shell \

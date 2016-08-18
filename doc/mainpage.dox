@@ -99,6 +99,7 @@ realtime clock and the LCD library to implement an alarm clock.
 \li Extendable output functions (XOF's): SHAKE128, SHAKE256
 \li Message authenticators: Poly1305, GHASH, OMAC
 \li Public key algorithms: Curve25519, Ed25519, P521
+\li Post-quantum algorithms: NewHope
 \li Random number generation: \link RNGClass RNG\endlink, TransistorNoiseSource, RingOscillatorNoiseSource
 
 More information can be found on the \ref crypto "Cryptographic Library" page.

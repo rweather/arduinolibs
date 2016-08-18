@@ -1,0 +1,6 @@
+NewHope	KEYWORD1
+NewHopePoly	KEYWORD1
+
+keygen	KEYWORD2
+sharedb	KEYWORD2
+shareda	KEYWORD2

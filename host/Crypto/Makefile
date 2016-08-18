@@ -3,11 +3,14 @@
 
 TOPDIR = ../..
 SRCDIR = $(TOPDIR)/libraries/Crypto
+SRCDIR2 = $(TOPDIR)/libraries/NewHope
 
 #VPATH = $(SRCDIR)
 vpath %.cpp $(SRCDIR)
+vpath %.cpp $(SRCDIR2)
 vpath %.o .
 vpath %.ino $(SRCDIR)/examples
+vpath %.ino $(SRCDIR2)/examples
 vpath %.sketch .
 
 LIBRARY = libCrypto.a
@@ -15,6 +18,7 @@ LIBRARY = libCrypto.a
 CPPFLAGS = \
 	-I$(TOPDIR)/host/emulation \
 	-I$(TOPDIR)/libraries/Crypto \
+	-I$(TOPDIR)/libraries/NewHope \
 	-DHOST_BUILD
 
 CXXFLAGS = -g -Wall $(CPPFLAGS)
@@ -44,6 +48,7 @@ SOURCES =   \
 	GHASH.cpp \
 	Hash.cpp \
 	KeccakCore.cpp \
+        NewHope.cpp \
 	NoiseSource.cpp \
 	OFB.cpp \
 	OMAC.cpp \
@@ -76,6 +81,7 @@ SKETCHES = \
 	TestEd25519/TestEd25519.ino \
 	TestGCM/TestGCM.ino \
 	TestGHASH/TestGHASH.ino \
+	TestNewHope/TestNewHope.ino \
 	TestOFB/TestOFB.ino \
 	TestP521/TestP521.ino \
 	TestP521Math/TestP521Math.ino \

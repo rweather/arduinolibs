@@ -34,6 +34,7 @@
 \li Extendable output functions (XOF's): SHAKE128, SHAKE256
 \li Message authenticators: Poly1305, GHASH, OMAC
 \li Public key algorithms: Curve25519, Ed25519, P521
+\li Post-quantum algorithms: NewHope
 \li Random number generation: \link RNGClass RNG\endlink, TransistorNoiseSource, RingOscillatorNoiseSource
 
 All cryptographic algorithms have been optimized for 8-bit Arduino platforms
@@ -141,6 +142,9 @@ Where a cipher supports more than one key size (such as ChaCha), the values
 are typically almost identical for 128-bit and 256-bit keys so only the
 maximum is shown above.
 
+Due to the memory requirements, NewHope is not yet possible on AVR-based
+Arduino systems.
+
 \subsection crypto_performance_arm Performance on ARM
 
 All figures are for the Arduino Due running at 84 MHz:
@@ -208,5 +212,11 @@ All figures are for the Arduino Due running at 84 MHz:
 <tr><td>P521::sign()</td><td align="right">1860ms</td><td colspan="3">Digital signature generation</td></tr>
 <tr><td>P521::verify()</td><td align="right">3423ms</td><td colspan="3">Digital signature verification</td></tr>
 <tr><td>P521::derivePublicKey()</td><td align="right">1503ms</td><td colspan="3">Derive a public key from a private key</td></tr>
+<tr><td>NewHope::keygen(), Ref</td><td align="right">29ms</td><td colspan="3">Generate key pair for Alice, Ref version</td></tr>
+<tr><td>NewHope::sharedb(), Ref</td><td align="right">40ms</td><td colspan="3">Generate shared secret and public key for Bob, Ref version</td></tr>
+<tr><td>NewHope::shareda(), Ref</td><td align="right">9ms</td><td colspan="3">Generate shared secret for Alice, Ref version</td></tr>
+<tr><td>NewHope::keygen(), Torref</td><td align="right">40ms</td><td colspan="3">Generate key pair for Alice, Torref version</td></tr>
+<tr><td>NewHope::sharedb(), Torref</td><td align="right">52ms</td><td colspan="3">Generate shared secret and public key for Bob, Torref version</td></tr>
+<tr><td>NewHope::shareda(), Torref</td><td align="right">9ms</td><td colspan="3">Generate shared secret for Alice, Torref version</td></tr>
 </table>
 */
