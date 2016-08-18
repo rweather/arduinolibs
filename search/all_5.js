@@ -8,7 +8,7 @@ var searchData=
   ['firedalarm',['firedAlarm',['../classDS3231RTC.html#a6a5b3717ff65528de566c021eb821b94',1,'DS3231RTC::firedAlarm()'],['../classDS3232RTC.html#a79649f100a4562b9c1ba7c69e85cbca3',1,'DS3232RTC::firedAlarm()']]],
   ['flags',['flags',['../structRTCAlarm.html#a0f2ef7363cb60a26642d5295b77ca19e',1,'RTCAlarm']]],
   ['flush',['flush',['../classTerminal.html#a908cdfa64167279ed565d43b45470c3d',1,'Terminal']]],
-  ['font',['font',['../classBitmap.html#a7bf0a232b4bd12573cc570cc0edef47c',1,'Bitmap::font() const '],['../classBitmap.html#a456f7d6da03189c1e7148563a891b3cf',1,'Bitmap::Font()']]],
+  ['font',['Font',['../classBitmap.html#a456f7d6da03189c1e7148563a891b3cf',1,'Bitmap::Font()'],['../classBitmap.html#a7bf0a232b4bd12573cc570cc0edef47c',1,'Bitmap::font() const ']]],
   ['form',['Form',['../classForm.html',1,'Form'],['../classField.html#a27427319be1cc92db3128637d8884ee5',1,'Field::form()'],['../classForm.html#ad30836b22edde707a52d94090b716996',1,'Form::Form()']]],
   ['formathmackey',['formatHMACKey',['../classHash.html#ab6f40c9af91dc3d738d9fcce59af63cc',1,'Hash']]],
   ['fromrgb',['fromRGB',['../classDMD.html#a557412f734fc4596e1102bf71e110ea0',1,'DMD']]],

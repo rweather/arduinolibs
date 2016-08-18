@@ -59,6 +59,8 @@ var searchData=
   ['shake',['SHAKE',['../classSHAKE.html#a9346e4d53a9d7d686911ab772fc23387',1,'SHAKE']]],
   ['shake128',['SHAKE128',['../classSHAKE128.html#a7d9d435780157e944eea931b3a13df0d',1,'SHAKE128']]],
   ['shake256',['SHAKE256',['../classSHAKE256.html#abbc01bc6798da9479e2da105f6661c22',1,'SHAKE256']]],
+  ['shareda',['shareda',['../classNewHope.html#ae490ebcfcbc18179b03c1a1ae8874458',1,'NewHope']]],
+  ['sharedb',['sharedb',['../classNewHope.html#a2f09529f5f73cf9763c28b58b13bbd14',1,'NewHope']]],
   ['shell',['Shell',['../classShell.html#ad613444a902075e8fd26b1f51c4d3b63',1,'Shell']]],
   ['shellcommandfunc',['ShellCommandFunc',['../classShell.html#ad5bac6a4033cd81e24c1345650bca744',1,'Shell']]],
   ['shellpasswordcheckfunc',['ShellPasswordCheckFunc',['../classLoginShell.html#adad54b04ec54d3577df4cd11944fff1d',1,'LoginShell']]],

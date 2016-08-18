@@ -64,6 +64,8 @@ var searchData=
   ['shake',['SHAKE',['../classSHAKE.html',1,'SHAKE'],['../classSHAKE.html#a9346e4d53a9d7d686911ab772fc23387',1,'SHAKE::SHAKE()']]],
   ['shake128',['SHAKE128',['../classSHAKE128.html',1,'SHAKE128'],['../classSHAKE128.html#a7d9d435780157e944eea931b3a13df0d',1,'SHAKE128::SHAKE128()']]],
   ['shake256',['SHAKE256',['../classSHAKE256.html',1,'SHAKE256'],['../classSHAKE256.html#abbc01bc6798da9479e2da105f6661c22',1,'SHAKE256::SHAKE256()']]],
+  ['shareda',['shareda',['../classNewHope.html#ae490ebcfcbc18179b03c1a1ae8874458',1,'NewHope']]],
+  ['sharedb',['sharedb',['../classNewHope.html#a2f09529f5f73cf9763c28b58b13bbd14',1,'NewHope']]],
   ['shell',['Shell',['../classShell.html',1,'Shell'],['../classShell.html#ad613444a902075e8fd26b1f51c4d3b63',1,'Shell::Shell()']]],
   ['shell_2dserial_2edox',['shell-serial.dox',['../shell-serial_8dox.html',1,'']]],
   ['shell_2dtelnet_2edox',['shell-telnet.dox',['../shell-telnet_8dox.html',1,'']]],

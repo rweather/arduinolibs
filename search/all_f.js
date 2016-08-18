@@ -14,6 +14,7 @@ var searchData=
   ['red',['Red',['../classTerminal.html#a7a03a2e94316da7b2144dad5ba95ac20af2687d41cae4cb8276778be71c1e1efb',1,'Terminal']]],
   ['reducequick',['reduceQuick',['../classBigNumberUtil.html#a5af5f50c91594183da4e079d76702d34',1,'BigNumberUtil']]],
   ['reducequick_5fp',['reduceQuick_P',['../classBigNumberUtil.html#a00c9cde0b626788a60552a6bc9ce058b',1,'BigNumberUtil']]],
+  ['ref',['Ref',['../classNewHope.html#a679601da301134f037c3a5786bd7085fa2326f3fd76345d5900834593a74f6596',1,'NewHope']]],
   ['refresh',['refresh',['../classCharlieplex.html#a3c961bfff866e400dad371f0376f096b',1,'Charlieplex::refresh()'],['../classDMD.html#a9e4bf2a9d247312d35c1401ff61261c8',1,'DMD::refresh()']]],
   ['registercommand',['registerCommand',['../classShell.html#a03dfba66a0125a8c02dd71b3f3b37870',1,'Shell']]],
   ['removefield',['removeField',['../classForm.html#a7abd717029f9b19ee7318470072cd697',1,'Form']]],

@@ -9,6 +9,7 @@ var searchData=
   ['textheight',['textHeight',['../classBitmap.html#a628bb694fcfe6eab619a4f1e152d41c4',1,'Bitmap']]],
   ['textwidth',['textWidth',['../classBitmap.html#a0f7607b1c7867987f4500d490a666e8a',1,'Bitmap::textWidth(const char *str, int len=-1) const '],['../classBitmap.html#a8ca70aa0f8f722a228358bffe794e925',1,'Bitmap::textWidth(const String &amp;str, int start=0, int len=-1) const ']]],
   ['timefield',['TimeField',['../classTimeField.html',1,'TimeField'],['../classTimeField.html#a138e2425379705828a87eb2d8a836431',1,'TimeField::TimeField(const String &amp;label)'],['../classTimeField.html#a87f222bc098367963ed21a7edc4624de',1,'TimeField::TimeField(Form &amp;form, const String &amp;label, int maxHours, bool readOnly)']]],
+  ['torref',['Torref',['../classNewHope.html#a679601da301134f037c3a5786bd7085fae270e706968a8e01e5c1cb40422b22c6',1,'NewHope']]],
   ['transistornoisesource',['TransistorNoiseSource',['../classTransistorNoiseSource.html',1,'TransistorNoiseSource'],['../classTransistorNoiseSource.html#a05bab61c301a5397021048c95ca3107d',1,'TransistorNoiseSource::TransistorNoiseSource()']]],
   ['truelabel',['trueLabel',['../classBoolField.html#a9972030beec6e007b556c6eb652e163d',1,'BoolField']]],
   ['tweaksize',['tweakSize',['../classXTSCommon.html#afb3ebf14c7879bcbc92e3d6cc70b19a9',1,'XTSCommon']]]

@@ -143,7 +143,7 @@ Static Public Member Functions</h2></td></tr>
 <p>Big numbers are represented as arrays of limb_t words, which may be 8 bits, 16 bits, or 32 bits in size depending upon how the library was configured. For AVR, 16 bit limbs usually give the best performance.</p>
 <p>Limb arrays are ordered from the least significant word to the most significant. </p>
 
-<p>Definition at line <a class="el" href="BigNumberUtil_8h_source.html#l00059">59</a> of file <a class="el" href="BigNumberUtil_8h_source.html">BigNumberUtil.h</a>.</p>
+<p>Definition at line <a class="el" href="BigNumberUtil_8h_source.html#l00071">71</a> of file <a class="el" href="BigNumberUtil_8h_source.html">BigNumberUtil.h</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a class="anchor" id="aa6904b2727af6b767fe041b1b7f27414"></a>
 <div class="memitem">
@@ -202,7 +202,7 @@ Static Public Member Functions</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>Returns 1 if there was a carry out or 0 if there was no carry out.</dd></dl>
 <dl class="section see"><dt>See Also</dt><dd><a class="el" href="classBigNumberUtil.html#a6618e03bfcb3086961df508b40cc1e67" title="Subtracts one big number from another. ">sub()</a>, <a class="el" href="classBigNumberUtil.html#a1c2c5484f2bf440ae292fd3dfd2d594f" title="Multiplies two big numbers. ">mul()</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="BigNumberUtil_8cpp_source.html#l00381">381</a> of file <a class="el" href="BigNumberUtil_8cpp_source.html">BigNumberUtil.cpp</a>.</p>
+<p>Definition at line <a class="el" href="BigNumberUtil_8cpp_source.html#l00495">495</a> of file <a class="el" href="BigNumberUtil_8cpp_source.html">BigNumberUtil.cpp</a>.</p>
 
 </div>
 </div>
@@ -263,7 +263,7 @@ Static Public Member Functions</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>Returns 1 if there was a carry out or 0 if there was no carry out.</dd></dl>
 <dl class="section see"><dt>See Also</dt><dd><a class="el" href="classBigNumberUtil.html#af0fa1527647af42b65eda6b0aab982b3" title="Subtracts one big number from another where one is in program memory. ">sub_P()</a>, <a class="el" href="classBigNumberUtil.html#aacdee1806a239eb9e58753ef1ddb964a" title="Multiplies two big numbers where one is in program memory. ">mul_P()</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="BigNumberUtil_8cpp_source.html#l00514">514</a> of file <a class="el" href="BigNumberUtil_8cpp_source.html">BigNumberUtil.cpp</a>.</p>
+<p>Definition at line <a class="el" href="BigNumberUtil_8cpp_source.html#l00628">628</a> of file <a class="el" href="BigNumberUtil_8cpp_source.html">BigNumberUtil.cpp</a>.</p>
 
 </div>
 </div>
@@ -310,7 +310,7 @@ Static Public Member Functions</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>Returns 1 if <em>x</em> is zero or 0 otherwise.</dd></dl>
 <p>This function attempts to make the determination in constant time. </p>
 
-<p>Definition at line <a class="el" href="BigNumberUtil_8cpp_source.html#l00647">647</a> of file <a class="el" href="BigNumberUtil_8cpp_source.html">BigNumberUtil.cpp</a>.</p>
+<p>Definition at line <a class="el" href="BigNumberUtil_8cpp_source.html#l00761">761</a> of file <a class="el" href="BigNumberUtil_8cpp_source.html">BigNumberUtil.cpp</a>.</p>
 
 </div>
 </div>
@@ -377,7 +377,7 @@ Static Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section see"><dt>See Also</dt><dd><a class="el" href="classBigNumberUtil.html#aacdee1806a239eb9e58753ef1ddb964a" title="Multiplies two big numbers where one is in program memory. ">mul_P()</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="BigNumberUtil_8cpp_source.html#l00432">432</a> of file <a class="el" href="BigNumberUtil_8cpp_source.html">BigNumberUtil.cpp</a>.</p>
+<p>Definition at line <a class="el" href="BigNumberUtil_8cpp_source.html#l00546">546</a> of file <a class="el" href="BigNumberUtil_8cpp_source.html">BigNumberUtil.cpp</a>.</p>
 
 </div>
 </div>
@@ -444,7 +444,7 @@ Static Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section see"><dt>See Also</dt><dd><a class="el" href="classBigNumberUtil.html#a1c2c5484f2bf440ae292fd3dfd2d594f" title="Multiplies two big numbers. ">mul()</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="BigNumberUtil_8cpp_source.html#l00566">566</a> of file <a class="el" href="BigNumberUtil_8cpp_source.html">BigNumberUtil.cpp</a>.</p>
+<p>Definition at line <a class="el" href="BigNumberUtil_8cpp_source.html#l00680">680</a> of file <a class="el" href="BigNumberUtil_8cpp_source.html">BigNumberUtil.cpp</a>.</p>
 
 </div>
 </div>
@@ -505,7 +505,7 @@ Static Public Member Functions</h2></td></tr>
 <p>If <em>len</em> is shorter than the length of <em>limbs</em>, then the number will be truncated to the least significant <em>len</em> bytes. If <em>len</em> is longer than the length of <em>limbs</em>, then the high bytes will be filled with zeroes.</p>
 <dl class="section see"><dt>See Also</dt><dd><a class="el" href="classBigNumberUtil.html#a25041f898c417c8dd63f30536287ed79" title="Unpacks the little-endian byte representation of a big number into a limb array. ">unpackLE()</a>, <a class="el" href="classBigNumberUtil.html#af49dd38173ea0310776d283aabea2ba0" title="Packs the big-endian byte representation of a big number into a byte array. ">packBE()</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="BigNumberUtil_8cpp_source.html#l00294">294</a> of file <a class="el" href="BigNumberUtil_8cpp_source.html">BigNumberUtil.cpp</a>.</p>
+<p>Definition at line <a class="el" href="BigNumberUtil_8cpp_source.html#l00375">375</a> of file <a class="el" href="BigNumberUtil_8cpp_source.html">BigNumberUtil.cpp</a>.</p>
 
 </div>
 </div>
@@ -566,7 +566,7 @@ Static Public Member Functions</h2></td></tr>
 <p>If <em>len</em> is shorter than the length of <em>limbs</em>, then the number will be truncated to the least significant <em>len</em> bytes. If <em>len</em> is longer than the length of <em>limbs</em>, then the high bytes will be filled with zeroes.</p>
 <dl class="section see"><dt>See Also</dt><dd><a class="el" href="classBigNumberUtil.html#a25041f898c417c8dd63f30536287ed79" title="Unpacks the little-endian byte representation of a big number into a limb array. ">unpackLE()</a>, <a class="el" href="classBigNumberUtil.html#af49dd38173ea0310776d283aabea2ba0" title="Packs the big-endian byte representation of a big number into a byte array. ">packBE()</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="BigNumberUtil_8cpp_source.html#l00208">208</a> of file <a class="el" href="BigNumberUtil_8cpp_source.html">BigNumberUtil.cpp</a>.</p>
+<p>Definition at line <a class="el" href="BigNumberUtil_8cpp_source.html#l00264">264</a> of file <a class="el" href="BigNumberUtil_8cpp_source.html">BigNumberUtil.cpp</a>.</p>
 
 </div>
 </div>
@@ -627,7 +627,7 @@ Static Public Member Functions</h2></td></tr>
 <p>It is assumed that <em>x</em> is less than <em>y</em> * 2 so that a single conditional subtraction will bring it down below <em>y</em>. The reduction is performed in constant time.</p>
 <dl class="section see"><dt>See Also</dt><dd><a class="el" href="classBigNumberUtil.html#a00c9cde0b626788a60552a6bc9ce058b" title="Reduces x modulo y using subtraction where y is in program memory. ">reduceQuick_P()</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="BigNumberUtil_8cpp_source.html#l00484">484</a> of file <a class="el" href="BigNumberUtil_8cpp_source.html">BigNumberUtil.cpp</a>.</p>
+<p>Definition at line <a class="el" href="BigNumberUtil_8cpp_source.html#l00598">598</a> of file <a class="el" href="BigNumberUtil_8cpp_source.html">BigNumberUtil.cpp</a>.</p>
 
 </div>
 </div>
@@ -688,7 +688,7 @@ Static Public Member Functions</h2></td></tr>
 <p>It is assumed that <em>x</em> is less than <em>y</em> * 2 so that a single conditional subtraction will bring it down below <em>y</em>. The reduction is performed in constant time.</p>
 <dl class="section see"><dt>See Also</dt><dd><a class="el" href="classBigNumberUtil.html#a5af5f50c91594183da4e079d76702d34" title="Reduces x modulo y using subtraction. ">reduceQuick()</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="BigNumberUtil_8cpp_source.html#l00620">620</a> of file <a class="el" href="BigNumberUtil_8cpp_source.html">BigNumberUtil.cpp</a>.</p>
+<p>Definition at line <a class="el" href="BigNumberUtil_8cpp_source.html#l00734">734</a> of file <a class="el" href="BigNumberUtil_8cpp_source.html">BigNumberUtil.cpp</a>.</p>
 
 </div>
 </div>
@@ -749,7 +749,7 @@ Static Public Member Functions</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>Returns 1 if there was a borrow, or 0 if there was no borrow.</dd></dl>
 <dl class="section see"><dt>See Also</dt><dd><a class="el" href="classBigNumberUtil.html#aa6904b2727af6b767fe041b1b7f27414" title="Adds two big numbers. ">add()</a>, <a class="el" href="classBigNumberUtil.html#a1c2c5484f2bf440ae292fd3dfd2d594f" title="Multiplies two big numbers. ">mul()</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="BigNumberUtil_8cpp_source.html#l00408">408</a> of file <a class="el" href="BigNumberUtil_8cpp_source.html">BigNumberUtil.cpp</a>.</p>
+<p>Definition at line <a class="el" href="BigNumberUtil_8cpp_source.html#l00522">522</a> of file <a class="el" href="BigNumberUtil_8cpp_source.html">BigNumberUtil.cpp</a>.</p>
 
 </div>
 </div>
@@ -810,7 +810,7 @@ Static Public Member Functions</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>Returns 1 if there was a borrow, or 0 if there was no borrow.</dd></dl>
 <dl class="section see"><dt>See Also</dt><dd><a class="el" href="classBigNumberUtil.html#ab9a9f532fcfc182433adac44d8e4ee20" title="Adds two big numbers where one of them is in program memory. ">add_P()</a>, <a class="el" href="classBigNumberUtil.html#aacdee1806a239eb9e58753ef1ddb964a" title="Multiplies two big numbers where one is in program memory. ">mul_P()</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="BigNumberUtil_8cpp_source.html#l00541">541</a> of file <a class="el" href="BigNumberUtil_8cpp_source.html">BigNumberUtil.cpp</a>.</p>
+<p>Definition at line <a class="el" href="BigNumberUtil_8cpp_source.html#l00655">655</a> of file <a class="el" href="BigNumberUtil_8cpp_source.html">BigNumberUtil.cpp</a>.</p>
 
 </div>
 </div>
@@ -871,7 +871,7 @@ Static Public Member Functions</h2></td></tr>
 <p>If <em>len</em> is shorter than the length of <em>limbs</em>, then the high bytes will be filled with zeroes. If <em>len</em> is longer than the length of <em>limbs</em>, then the high bytes will be truncated and lost.</p>
 <dl class="section see"><dt>See Also</dt><dd><a class="el" href="classBigNumberUtil.html#af49dd38173ea0310776d283aabea2ba0" title="Packs the big-endian byte representation of a big number into a byte array. ">packBE()</a>, <a class="el" href="classBigNumberUtil.html#a25041f898c417c8dd63f30536287ed79" title="Unpacks the little-endian byte representation of a big number into a limb array. ">unpackLE()</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="BigNumberUtil_8cpp_source.html#l00134">134</a> of file <a class="el" href="BigNumberUtil_8cpp_source.html">BigNumberUtil.cpp</a>.</p>
+<p>Definition at line <a class="el" href="BigNumberUtil_8cpp_source.html#l00163">163</a> of file <a class="el" href="BigNumberUtil_8cpp_source.html">BigNumberUtil.cpp</a>.</p>
 
 </div>
 </div>
@@ -943,7 +943,7 @@ Static Public Member Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Mar 26 2016 19:04:41 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Aug 18 2016 18:42:10 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

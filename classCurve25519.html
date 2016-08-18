@@ -118,7 +118,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Ed25519</b></td></tr
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Diffie-Hellman key agreement based on the elliptic curve modulo 2^255 - 19. </p>
 <dl class="section note"><dt>Note</dt><dd>The public functions in this class need a substantial amount of stack space to store intermediate results while the curve function is being evaluated. About 1k of free stack space is recommended for safety.</dd></dl>
-<p>References: <a href="http://cr.yp.to/ecdh.html">http://cr.yp.to/ecdh.html</a> <a href="https://tools.ietf.org/html/draft-irtf-cfrg-curves-02">https://tools.ietf.org/html/draft-irtf-cfrg-curves-02</a></p>
+<p>References: <a href="http://cr.yp.to/ecdh.html,">http://cr.yp.to/ecdh.html,</a> <a href="http://tools.ietf.org/html/rfc7748">RFC 7748</a></p>
 <dl class="section see"><dt>See Also</dt><dd><a class="el" href="classEd25519.html" title="Digital signatures based on the elliptic curve modulo 2^255 - 19. ">Ed25519</a> </dd></dl>
 
 <p>Definition at line <a class="el" href="Curve25519_8h_source.html#l00030">30</a> of file <a class="el" href="Curve25519_8h_source.html">Curve25519.h</a>.</p>
@@ -185,7 +185,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Ed25519</b></td></tr
 <div class="line"></div>
 <div class="line"><span class="comment">// The &quot;k&quot; value can now be used to generate session keys for encryption.</span></div>
 <div class="line">...</div>
-</div><!-- fragment --><p>Reference: <a href="https://tools.ietf.org/html/draft-irtf-cfrg-curves-02">https://tools.ietf.org/html/draft-irtf-cfrg-curves-02</a></p>
+</div><!-- fragment --><p>Reference: <a href="http://tools.ietf.org/html/rfc7748">RFC 7748</a></p>
 <dl class="section see"><dt>See Also</dt><dd><a class="el" href="classCurve25519.html#a14022d6ac68ec691ffb0247275078ab9" title="Performs phase 2 of a Diffie-Hellman key exchange using Curve25519. ">dh2()</a> </dd></dl>
 
 <p>Definition at line <a class="el" href="Curve25519_8cpp_source.html#l00244">244</a> of file <a class="el" href="Curve25519_8cpp_source.html">Curve25519.cpp</a>.</p>
@@ -233,7 +233,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Ed25519</b></td></tr
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Returns true if the key exchange was successful, or false if the <em>k</em> value is invalid.</dd></dl>
-<p>Reference: <a href="https://tools.ietf.org/html/draft-irtf-cfrg-curves-02">https://tools.ietf.org/html/draft-irtf-cfrg-curves-02</a></p>
+<p>Reference: <a href="http://tools.ietf.org/html/rfc7748">RFC 7748</a></p>
 <dl class="section see"><dt>See Also</dt><dd><a class="el" href="classCurve25519.html#a2b6911583d17ea9a36bbbb40d58b3d89" title="Performs phase 1 of a Diffie-Hellman key exchange using Curve25519. ">dh1()</a> </dd></dl>
 
 <p>Definition at line <a class="el" href="Curve25519_8cpp_source.html#l00282">282</a> of file <a class="el" href="Curve25519_8cpp_source.html">Curve25519.cpp</a>.</p>
@@ -289,7 +289,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Ed25519</b></td></tr
 </dl>
 <p>This function is provided to assist with implementating other algorithms with the curve. Normally applications should use <a class="el" href="classCurve25519.html#a2b6911583d17ea9a36bbbb40d58b3d89" title="Performs phase 1 of a Diffie-Hellman key exchange using Curve25519. ">dh1()</a> and <a class="el" href="classCurve25519.html#a14022d6ac68ec691ffb0247275078ab9" title="Performs phase 2 of a Diffie-Hellman key exchange using Curve25519. ">dh2()</a> directly instead.</p>
 <dl class="section return"><dt>Returns</dt><dd>Returns true if the function was evaluated; false if <em>x</em> is not a proper member of the field modulo (2^255 - 19).</dd></dl>
-<p>Reference: <a href="https://tools.ietf.org/html/draft-irtf-cfrg-curves-02">https://tools.ietf.org/html/draft-irtf-cfrg-curves-02</a></p>
+<p>Reference: <a href="http://tools.ietf.org/html/rfc7748">RFC 7748</a></p>
 <dl class="section see"><dt>See Also</dt><dd><a class="el" href="classCurve25519.html#a2b6911583d17ea9a36bbbb40d58b3d89" title="Performs phase 1 of a Diffie-Hellman key exchange using Curve25519. ">dh1()</a>, <a class="el" href="classCurve25519.html#a14022d6ac68ec691ffb0247275078ab9" title="Performs phase 2 of a Diffie-Hellman key exchange using Curve25519. ">dh2()</a> </dd></dl>
 
 <p>Definition at line <a class="el" href="Curve25519_8cpp_source.html#l00079">79</a> of file <a class="el" href="Curve25519_8cpp_source.html">Curve25519.cpp</a>.</p>
@@ -303,7 +303,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Ed25519</b></td></tr
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Mar 26 2016 19:04:41 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Aug 18 2016 18:42:10 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

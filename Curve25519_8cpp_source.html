@@ -887,10 +887,10 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00962"></a><span class="lineno">  962</span>&#160;<span class="preprocessor"></span>    <span class="keyword">static</span> limb_t <span class="keyword">const</span> a24[3] PROGMEM = {0x41, 0xDB, 0x01};</div>
 <div class="line"><a name="l00963"></a><span class="lineno">  963</span>&#160;<span class="preprocessor">#elif BIGNUMBER_LIMB_16BIT</span></div>
 <div class="line"><a name="l00964"></a><span class="lineno">  964</span>&#160;<span class="preprocessor"></span>    <span class="keyword">static</span> limb_t <span class="keyword">const</span> a24[2] PROGMEM = {0xDB41, 0x0001};</div>
-<div class="line"><a name="l00965"></a><span class="lineno">  965</span>&#160;<span class="preprocessor">#elif BIGNUMBER_LIMB_32BIT</span></div>
+<div class="line"><a name="l00965"></a><span class="lineno">  965</span>&#160;<span class="preprocessor">#elif BIGNUMBER_LIMB_32BIT || BIGNUMBER_LIMB_64BIT</span></div>
 <div class="line"><a name="l00966"></a><span class="lineno">  966</span>&#160;<span class="preprocessor"></span>    <span class="keyword">static</span> limb_t <span class="keyword">const</span> a24[1] PROGMEM = {0x0001DB41};</div>
 <div class="line"><a name="l00967"></a><span class="lineno">  967</span>&#160;<span class="preprocessor">#else</span></div>
-<div class="line"><a name="l00968"></a><span class="lineno">  968</span>&#160;<span class="preprocessor"></span><span class="preprocessor">    #error &quot;limb_t must be 8, 16, or 32 bits in size&quot;</span></div>
+<div class="line"><a name="l00968"></a><span class="lineno">  968</span>&#160;<span class="preprocessor"></span><span class="preprocessor">    #error &quot;limb_t must be 8, 16, 32, or 64 bits in size&quot;</span></div>
 <div class="line"><a name="l00969"></a><span class="lineno">  969</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00970"></a><span class="lineno">  970</span>&#160;<span class="preprocessor"></span><span class="preprocessor">    #define NUM_A24_LIMBS   (sizeof(a24) / sizeof(limb_t))</span></div>
 <div class="line"><a name="l00971"></a><span class="lineno">  971</span>&#160;<span class="preprocessor"></span></div>
@@ -1201,7 +1201,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l01319"></a><span class="lineno"> 1319</span>&#160;    --sel;</div>
 <div class="line"><a name="l01320"></a><span class="lineno"> 1320</span>&#160;</div>
 <div class="line"><a name="l01321"></a><span class="lineno"> 1321</span>&#160;    <span class="comment">// Swap the two values based on &quot;select&quot;.  Algorithm from:</span></div>
-<div class="line"><a name="l01322"></a><span class="lineno"> 1322</span>&#160;    <span class="comment">// https://tools.ietf.org/html/draft-irtf-cfrg-curves-02</span></div>
+<div class="line"><a name="l01322"></a><span class="lineno"> 1322</span>&#160;    <span class="comment">// http://tools.ietf.org/html/rfc7748</span></div>
 <div class="line"><a name="l01323"></a><span class="lineno"> 1323</span>&#160;    <span class="keywordflow">for</span> (posn = 0; posn &lt; NUM_LIMBS_256BIT; ++posn) {</div>
 <div class="line"><a name="l01324"></a><span class="lineno"> 1324</span>&#160;        dummy = sel &amp; (x[posn] ^ y[posn]);</div>
 <div class="line"><a name="l01325"></a><span class="lineno"> 1325</span>&#160;        x[posn] ^= dummy;</div>
@@ -1414,51 +1414,50 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l01572"></a><span class="lineno"> 1572</span>&#160;{</div>
 <div class="line"><a name="l01573"></a><span class="lineno"> 1573</span>&#160;    <span class="comment">// sqrt(-1) mod (2^255 - 19).</span></div>
 <div class="line"><a name="l01574"></a><span class="lineno"> 1574</span>&#160;    <span class="keyword">static</span> limb_t <span class="keyword">const</span> numSqrtM1[NUM_LIMBS_256BIT] PROGMEM = {</div>
-<div class="line"><a name="l01575"></a><span class="lineno"> 1575</span>&#160;        LIMB(0x4A0EA0B0), LIMB(0xC4EE1B27), LIMB(0xAD2FE478), LIMB(0x2F431806),</div>
-<div class="line"><a name="l01576"></a><span class="lineno"> 1576</span>&#160;        LIMB(0x3DFBD7A7), LIMB(0x2B4D0099), LIMB(0x4FC1DF0B), LIMB(0x2B832480)</div>
+<div class="line"><a name="l01575"></a><span class="lineno"> 1575</span>&#160;        LIMB_PAIR(0x4A0EA0B0, 0xC4EE1B27), LIMB_PAIR(0xAD2FE478, 0x2F431806),</div>
+<div class="line"><a name="l01576"></a><span class="lineno"> 1576</span>&#160;        LIMB_PAIR(0x3DFBD7A7, 0x2B4D0099), LIMB_PAIR(0x4FC1DF0B, 0x2B832480)</div>
 <div class="line"><a name="l01577"></a><span class="lineno"> 1577</span>&#160;    };</div>
 <div class="line"><a name="l01578"></a><span class="lineno"> 1578</span>&#160;    limb_t y[NUM_LIMBS_256BIT];</div>
 <div class="line"><a name="l01579"></a><span class="lineno"> 1579</span>&#160;</div>
-<div class="line"><a name="l01580"></a><span class="lineno"> 1580</span>&#160;    <span class="comment">// Algorithm from:</span></div>
-<div class="line"><a name="l01581"></a><span class="lineno"> 1581</span>&#160;    <span class="comment">// https://tools.ietf.org/id/draft-josefsson-eddsa-ed25519-02.txt</span></div>
-<div class="line"><a name="l01582"></a><span class="lineno"> 1582</span>&#160;</div>
-<div class="line"><a name="l01583"></a><span class="lineno"> 1583</span>&#160;    <span class="comment">// Compute a candidate root: result = x^((p + 3) / 8) mod p.</span></div>
-<div class="line"><a name="l01584"></a><span class="lineno"> 1584</span>&#160;    <span class="comment">// (p + 3) / 8 = (2^252 - 2) which is 251 one bits followed by a zero:</span></div>
-<div class="line"><a name="l01585"></a><span class="lineno"> 1585</span>&#160;    <span class="comment">// 0FFFFFFF FFFFFFFF FFFFFFFF FFFFFFFF FFFFFFFF FFFFFFFF FFFFFFFF FFFFFFFE</span></div>
-<div class="line"><a name="l01586"></a><span class="lineno"> 1586</span>&#160;    pow250(result, x);</div>
-<div class="line"><a name="l01587"></a><span class="lineno"> 1587</span>&#160;    square(result, result);</div>
-<div class="line"><a name="l01588"></a><span class="lineno"> 1588</span>&#160;    mul(result, result, x);</div>
-<div class="line"><a name="l01589"></a><span class="lineno"> 1589</span>&#160;    square(result, result);</div>
-<div class="line"><a name="l01590"></a><span class="lineno"> 1590</span>&#160;</div>
-<div class="line"><a name="l01591"></a><span class="lineno"> 1591</span>&#160;    <span class="comment">// Did we get the square root immediately?</span></div>
-<div class="line"><a name="l01592"></a><span class="lineno"> 1592</span>&#160;    square(y, result);</div>
-<div class="line"><a name="l01593"></a><span class="lineno"> 1593</span>&#160;    <span class="keywordflow">if</span> (memcmp(x, y, <span class="keyword">sizeof</span>(y)) == 0) {</div>
-<div class="line"><a name="l01594"></a><span class="lineno"> 1594</span>&#160;        clean(y);</div>
-<div class="line"><a name="l01595"></a><span class="lineno"> 1595</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l01596"></a><span class="lineno"> 1596</span>&#160;    }</div>
-<div class="line"><a name="l01597"></a><span class="lineno"> 1597</span>&#160;</div>
-<div class="line"><a name="l01598"></a><span class="lineno"> 1598</span>&#160;    <span class="comment">// Multiply the result by sqrt(-1) and check again.</span></div>
-<div class="line"><a name="l01599"></a><span class="lineno"> 1599</span>&#160;    mul_P(result, result, numSqrtM1);</div>
-<div class="line"><a name="l01600"></a><span class="lineno"> 1600</span>&#160;    square(y, result);</div>
-<div class="line"><a name="l01601"></a><span class="lineno"> 1601</span>&#160;    <span class="keywordflow">if</span> (memcmp(x, y, <span class="keyword">sizeof</span>(y)) == 0) {</div>
-<div class="line"><a name="l01602"></a><span class="lineno"> 1602</span>&#160;        clean(y);</div>
-<div class="line"><a name="l01603"></a><span class="lineno"> 1603</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l01604"></a><span class="lineno"> 1604</span>&#160;    }</div>
-<div class="line"><a name="l01605"></a><span class="lineno"> 1605</span>&#160;</div>
-<div class="line"><a name="l01606"></a><span class="lineno"> 1606</span>&#160;    <span class="comment">// The number does not have a square root.</span></div>
-<div class="line"><a name="l01607"></a><span class="lineno"> 1607</span>&#160;    clean(y);</div>
-<div class="line"><a name="l01608"></a><span class="lineno"> 1608</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l01609"></a><span class="lineno"> 1609</span>&#160;}</div>
+<div class="line"><a name="l01580"></a><span class="lineno"> 1580</span>&#160;    <span class="comment">// Algorithm from: http://tools.ietf.org/html/rfc7748</span></div>
+<div class="line"><a name="l01581"></a><span class="lineno"> 1581</span>&#160;</div>
+<div class="line"><a name="l01582"></a><span class="lineno"> 1582</span>&#160;    <span class="comment">// Compute a candidate root: result = x^((p + 3) / 8) mod p.</span></div>
+<div class="line"><a name="l01583"></a><span class="lineno"> 1583</span>&#160;    <span class="comment">// (p + 3) / 8 = (2^252 - 2) which is 251 one bits followed by a zero:</span></div>
+<div class="line"><a name="l01584"></a><span class="lineno"> 1584</span>&#160;    <span class="comment">// 0FFFFFFF FFFFFFFF FFFFFFFF FFFFFFFF FFFFFFFF FFFFFFFF FFFFFFFF FFFFFFFE</span></div>
+<div class="line"><a name="l01585"></a><span class="lineno"> 1585</span>&#160;    pow250(result, x);</div>
+<div class="line"><a name="l01586"></a><span class="lineno"> 1586</span>&#160;    square(result, result);</div>
+<div class="line"><a name="l01587"></a><span class="lineno"> 1587</span>&#160;    mul(result, result, x);</div>
+<div class="line"><a name="l01588"></a><span class="lineno"> 1588</span>&#160;    square(result, result);</div>
+<div class="line"><a name="l01589"></a><span class="lineno"> 1589</span>&#160;</div>
+<div class="line"><a name="l01590"></a><span class="lineno"> 1590</span>&#160;    <span class="comment">// Did we get the square root immediately?</span></div>
+<div class="line"><a name="l01591"></a><span class="lineno"> 1591</span>&#160;    square(y, result);</div>
+<div class="line"><a name="l01592"></a><span class="lineno"> 1592</span>&#160;    <span class="keywordflow">if</span> (memcmp(x, y, <span class="keyword">sizeof</span>(y)) == 0) {</div>
+<div class="line"><a name="l01593"></a><span class="lineno"> 1593</span>&#160;        clean(y);</div>
+<div class="line"><a name="l01594"></a><span class="lineno"> 1594</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l01595"></a><span class="lineno"> 1595</span>&#160;    }</div>
+<div class="line"><a name="l01596"></a><span class="lineno"> 1596</span>&#160;</div>
+<div class="line"><a name="l01597"></a><span class="lineno"> 1597</span>&#160;    <span class="comment">// Multiply the result by sqrt(-1) and check again.</span></div>
+<div class="line"><a name="l01598"></a><span class="lineno"> 1598</span>&#160;    mul_P(result, result, numSqrtM1);</div>
+<div class="line"><a name="l01599"></a><span class="lineno"> 1599</span>&#160;    square(y, result);</div>
+<div class="line"><a name="l01600"></a><span class="lineno"> 1600</span>&#160;    <span class="keywordflow">if</span> (memcmp(x, y, <span class="keyword">sizeof</span>(y)) == 0) {</div>
+<div class="line"><a name="l01601"></a><span class="lineno"> 1601</span>&#160;        clean(y);</div>
+<div class="line"><a name="l01602"></a><span class="lineno"> 1602</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l01603"></a><span class="lineno"> 1603</span>&#160;    }</div>
+<div class="line"><a name="l01604"></a><span class="lineno"> 1604</span>&#160;</div>
+<div class="line"><a name="l01605"></a><span class="lineno"> 1605</span>&#160;    <span class="comment">// The number does not have a square root.</span></div>
+<div class="line"><a name="l01606"></a><span class="lineno"> 1606</span>&#160;    clean(y);</div>
+<div class="line"><a name="l01607"></a><span class="lineno"> 1607</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l01608"></a><span class="lineno"> 1608</span>&#160;}</div>
 <div class="ttc" id="classRNGClass_html_a418a833cf18198fd7e5d6dbd78c99c29"><div class="ttname"><a href="classRNGClass.html#a418a833cf18198fd7e5d6dbd78c99c29">RNGClass::rand</a></div><div class="ttdeci">void rand(uint8_t *data, size_t len)</div><div class="ttdoc">Generates random bytes into a caller-supplied buffer. </div><div class="ttdef"><b>Definition:</b> <a href="RNG_8cpp_source.html#l00508">RNG.cpp:508</a></div></div>
 <div class="ttc" id="classCurve25519_html_a2e4b7dd83a019b32c76584c99bfda21a"><div class="ttname"><a href="classCurve25519.html#a2e4b7dd83a019b32c76584c99bfda21a">Curve25519::eval</a></div><div class="ttdeci">static bool eval(uint8_t result[32], const uint8_t s[32], const uint8_t x[32])</div><div class="ttdoc">Evaluates the raw Curve25519 function. </div><div class="ttdef"><b>Definition:</b> <a href="Curve25519_8cpp_source.html#l00079">Curve25519.cpp:79</a></div></div>
 <div class="ttc" id="classBigNumberUtil_html_a25041f898c417c8dd63f30536287ed79"><div class="ttname"><a href="classBigNumberUtil.html#a25041f898c417c8dd63f30536287ed79">BigNumberUtil::unpackLE</a></div><div class="ttdeci">static void unpackLE(limb_t *limbs, size_t count, const uint8_t *bytes, size_t len)</div><div class="ttdoc">Unpacks the little-endian byte representation of a big number into a limb array. </div><div class="ttdef"><b>Definition:</b> <a href="BigNumberUtil_8cpp_source.html#l00055">BigNumberUtil.cpp:55</a></div></div>
-<div class="ttc" id="classBigNumberUtil_html_a989cd5f389ac5adc798d8767383e2810"><div class="ttname"><a href="classBigNumberUtil.html#a989cd5f389ac5adc798d8767383e2810">BigNumberUtil::packLE</a></div><div class="ttdeci">static void packLE(uint8_t *bytes, size_t len, const limb_t *limbs, size_t count)</div><div class="ttdoc">Packs the little-endian byte representation of a big number into a byte array. </div><div class="ttdef"><b>Definition:</b> <a href="BigNumberUtil_8cpp_source.html#l00208">BigNumberUtil.cpp:208</a></div></div>
+<div class="ttc" id="classBigNumberUtil_html_a989cd5f389ac5adc798d8767383e2810"><div class="ttname"><a href="classBigNumberUtil.html#a989cd5f389ac5adc798d8767383e2810">BigNumberUtil::packLE</a></div><div class="ttdeci">static void packLE(uint8_t *bytes, size_t len, const limb_t *limbs, size_t count)</div><div class="ttdoc">Packs the little-endian byte representation of a big number into a byte array. </div><div class="ttdef"><b>Definition:</b> <a href="BigNumberUtil_8cpp_source.html#l00264">BigNumberUtil.cpp:264</a></div></div>
 <div class="ttc" id="classCurve25519_html_a2b6911583d17ea9a36bbbb40d58b3d89"><div class="ttname"><a href="classCurve25519.html#a2b6911583d17ea9a36bbbb40d58b3d89">Curve25519::dh1</a></div><div class="ttdeci">static void dh1(uint8_t k[32], uint8_t f[32])</div><div class="ttdoc">Performs phase 1 of a Diffie-Hellman key exchange using Curve25519. </div><div class="ttdef"><b>Definition:</b> <a href="Curve25519_8cpp_source.html#l00244">Curve25519.cpp:244</a></div></div>
 <div class="ttc" id="classCurve25519_html_a14022d6ac68ec691ffb0247275078ab9"><div class="ttname"><a href="classCurve25519.html#a14022d6ac68ec691ffb0247275078ab9">Curve25519::dh2</a></div><div class="ttdeci">static bool dh2(uint8_t k[32], uint8_t f[32])</div><div class="ttdoc">Performs phase 2 of a Diffie-Hellman key exchange using Curve25519. </div><div class="ttdef"><b>Definition:</b> <a href="Curve25519_8cpp_source.html#l00282">Curve25519.cpp:282</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Mar 26 2016 19:04:40 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Aug 18 2016 18:42:10 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>
