@@ -740,14 +740,6 @@ static void poly_invntt(uint16_t *r)
   mul_coefficients(r, psis_inv_montgomery);
 }
 
-static void encode_a(unsigned char *r, const uint16_t *pk, const unsigned char *seed)
-{
-  int i;
-  poly_tobytes(r, pk);
-  for(i=0;i<NEWHOPE_SEEDBYTES;i++)
-    r[POLY_BYTES+i] = seed[i];
-}
-
 static void encode_b(unsigned char *r, const uint16_t *b, const uint16_t *c)
 {
   int i;
@@ -942,7 +934,7 @@ static void poly_uniform_torref(uint16_t *a, const unsigned char *seed)
 
 #endif // NEWHOPE_TORREF
 
-static void poly_getnoise(uint16_t *r, unsigned char *seed, unsigned char nonce)
+static void poly_getnoise(uint16_t *r, const unsigned char *seed, unsigned char nonce)
 {
     uint32_t input[16];
     uint32_t buf[16];
@@ -1057,28 +1049,56 @@ void NewHopePoly::clear()
 void NewHope::keygen(uint8_t send[NEWHOPE_SENDABYTES], NewHopePrivateKey &sk,
                      Variant variant, const uint8_t *random_seed)
 {
-    NewHopePolyExtended a;
-    NewHopePoly pk;
-    uint8_t seed[NEWHOPE_SEEDBYTES];
-    uint8_t noiseseed[32];
-
-    if (!random_seed) {
-        RNG.rand(seed, NEWHOPE_SEEDBYTES);
-        RNG.rand(noiseseed, 32);
-    } else {
-        memcpy(seed, random_seed, NEWHOPE_SEEDBYTES);
-        memcpy(noiseseed, random_seed + NEWHOPE_SEEDBYTES, 32);
-    }
-    sha3256(seed, seed, NEWHOPE_SEEDBYTES);
-
     // The order of calls is rearranged compared to the reference C version.
     // This allows us to get away with two temporary poly objects (a, pk)
     // instead of four (a, e, r, pk).  This saves 4k of stack space.
+#if NEWHOPE_SMALL_FOOTPRINT
+    NewHopePolyExtended a;
+    NewHopePoly pk;
+
+    if (!random_seed) {
+        RNG.rand(send + POLY_BYTES, NEWHOPE_SEEDBYTES);
+        RNG.rand(sk.seed, 32);
+    } else {
+        memcpy(send + POLY_BYTES, random_seed, NEWHOPE_SEEDBYTES);
+        memcpy(sk.seed, random_seed + NEWHOPE_SEEDBYTES, 32);
+    }
+    sha3256(send + POLY_BYTES, send + POLY_BYTES, NEWHOPE_SEEDBYTES);
 
     if (variant == Ref)
-        poly_uniform(a.coeffs, seed);
+        poly_uniform(a.coeffs, send + POLY_BYTES);
     else
-        poly_uniform_torref(a.coeffs, seed);
+        poly_uniform_torref(a.coeffs, send + POLY_BYTES);
+
+    poly_getnoise(pk.coeffs, sk.seed, 0);
+    poly_ntt(pk.coeffs);
+
+    poly_pointwise(pk.coeffs, pk.coeffs, a.coeffs);
+  
+    poly_getnoise(a.coeffs, sk.seed, 1);
+    poly_ntt(a.coeffs);
+
+    poly_add(pk.coeffs, a.coeffs, pk.coeffs);
+
+    poly_tobytes(send, pk.coeffs);
+#else
+    NewHopePolyExtended a;
+    NewHopePoly pk;
+    uint8_t noiseseed[32];
+
+    if (!random_seed) {
+        RNG.rand(send + POLY_BYTES, NEWHOPE_SEEDBYTES);
+        RNG.rand(noiseseed, 32);
+    } else {
+        memcpy(send + POLY_BYTES, random_seed, NEWHOPE_SEEDBYTES);
+        memcpy(noiseseed, random_seed + NEWHOPE_SEEDBYTES, 32);
+    }
+    sha3256(send + POLY_BYTES, send + POLY_BYTES, NEWHOPE_SEEDBYTES);
+
+    if (variant == Ref)
+        poly_uniform(a.coeffs, send + POLY_BYTES);
+    else
+        poly_uniform_torref(a.coeffs, send + POLY_BYTES);
 
     poly_getnoise(sk.coeffs, noiseseed, 0);
     poly_ntt(sk.coeffs);
@@ -1090,10 +1110,10 @@ void NewHope::keygen(uint8_t send[NEWHOPE_SENDABYTES], NewHopePrivateKey &sk,
 
     poly_add(pk.coeffs, a.coeffs, pk.coeffs);
 
-    encode_a(send, pk.coeffs, seed);
+    poly_tobytes(send, pk.coeffs);
 
-    clean(seed);
     clean(noiseseed);
+#endif
 }
 
 /**
@@ -1178,11 +1198,28 @@ void NewHope::shareda(uint8_t shared_key[NEWHOPE_SHAREDBYTES],
                       const NewHopePrivateKey &sk,
                       uint8_t received[NEWHOPE_SENDBBYTES])
 {
-    NewHopePoly v, bp;
-
     // The order of calls is rearranged compared to the reference C version.
     // This allows us to get away with two temporary poly objects (v, bp)
     // instead of three (v, bp, c).  This saves 2k of stack space.
+#if NEWHOPE_SMALL_FOOTPRINT
+    NewHopePoly v, bp;
+
+    poly_frombytes(bp.coeffs, received);
+
+    // Re-create the full sk value for Alice from the seed.
+    poly_getnoise(v.coeffs, sk.seed, 0);
+    poly_ntt(v.coeffs);
+
+    poly_pointwise(v.coeffs, v.coeffs, bp.coeffs);
+    poly_invntt(v.coeffs);
+
+    decode_b_2nd_half(bp.coeffs, received);
+ 
+    rec(shared_key, v.coeffs, bp.coeffs);
+
+    sha3256(shared_key, shared_key, 32); 
+#else
+    NewHopePoly v, bp;
 
     poly_frombytes(bp.coeffs, received);
 
@@ -1194,4 +1231,5 @@ void NewHope::shareda(uint8_t shared_key[NEWHOPE_SHAREDBYTES],
     rec(shared_key, v.coeffs, bp.coeffs);
 
     sha3256(shared_key, shared_key, 32); 
+#endif
 }

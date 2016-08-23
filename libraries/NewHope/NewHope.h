@@ -29,10 +29,16 @@
 #define NEWHOPE_SENDBBYTES  2048
 #define NEWHOPE_SHAREDBYTES 32
 
+#define NEWHOPE_SMALL_FOOTPRINT 1
+
 typedef struct
 {
     /** @cond */
+#if NEWHOPE_SMALL_FOOTPRINT
+    uint8_t seed[32];
+#else
     uint16_t coeffs[1024];
+#endif
     /** @endcond */
 
 } NewHopePrivateKey;
