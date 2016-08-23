@@ -215,8 +215,8 @@ All figures are for the Arduino Due running at 84 MHz:
 <tr><td>NewHope::keygen(), Ref</td><td align="right">29ms</td><td colspan="3">Generate key pair for Alice, Ref version</td></tr>
 <tr><td>NewHope::sharedb(), Ref</td><td align="right">40ms</td><td colspan="3">Generate shared secret and public key for Bob, Ref version</td></tr>
 <tr><td>NewHope::shareda(), Ref</td><td align="right">9ms</td><td colspan="3">Generate shared secret for Alice, Ref version</td></tr>
-<tr><td>NewHope::keygen(), Torref</td><td align="right">40ms</td><td colspan="3">Generate key pair for Alice, Torref version</td></tr>
-<tr><td>NewHope::sharedb(), Torref</td><td align="right">52ms</td><td colspan="3">Generate shared secret and public key for Bob, Torref version</td></tr>
+<tr><td>NewHope::keygen(), Torref</td><td align="right">42ms</td><td colspan="3">Generate key pair for Alice, Torref version</td></tr>
+<tr><td>NewHope::sharedb(), Torref</td><td align="right">53ms</td><td colspan="3">Generate shared secret and public key for Bob, Torref version</td></tr>
 <tr><td>NewHope::shareda(), Torref</td><td align="right">9ms</td><td colspan="3">Generate shared secret for Alice, Torref version</td></tr>
 </table>
 */
