@@ -55,7 +55,7 @@
  *
  * \code
  * uint8_t alice_public[NEWHOPE_SENDABYTES];
- * NewHopePoly alice_private;
+ * NewHopePrivateKey alice_private;
  * NewHope::keygen(alice_public, alice_private);
  * \endcode
  *
@@ -104,8 +104,12 @@
  */
 
 /**
- * \class NewHopePoly NewHope.h <NewHope.h>
- * \brief NewHope polynomial representation
+ * \class NewHopePrivateKey NewHope.h <NewHope.h>
+ * \brief NewHope private key representation
+ *
+ * Instances of NewHopePrivateKey are used to hold the private key value
+ * for alice between the calls to keygen() and shareda().  It should be
+ * treated as opaque.
  *
  * Reference: https://cryptojedi.org/crypto/#newhope
  */
@@ -850,6 +854,20 @@ static int discardtopoly(uint16_t *x)
 
 // End of public domain code imported from the C reference code.
  
+class NewHopePoly
+{
+public:
+    NewHopePoly();
+    ~NewHopePoly();
+
+    void clear();
+
+private:
+    uint16_t coeffs[1024];
+
+    friend class NewHope;
+};
+
 // Formats the ChaCha20 input block using a key and nonce.
 static void crypto_chacha20_set_key(uint32_t *block, const unsigned char *k, const unsigned char *n)
 {
@@ -977,8 +995,6 @@ static void sha3256(unsigned char *output, const unsigned char *input, unsigned 
     sha3.finalize(output, 32);
 }
 
-/** @endcond */
-
 /**
  * \brief Constructs a new "poly" object for the NewHope algorithm.
  */
@@ -1002,6 +1018,8 @@ void NewHopePoly::clear()
     clean(coeffs);
 }
 
+/** @endcond */
+
 /**
  * \enum NewHope::Variant
  * \brief Describes the variant of the New Hope algorithm to implement.
@@ -1024,7 +1042,7 @@ void NewHopePoly::clear()
  * \brief Generates the key pair for Alice in a New Hope key exchange.
  *
  * \param send The public key value for Alice to be sent to Bob.
- * \param sk The secret key value for Alice to be passed to shareda() later.
+ * \param sk The private key value for Alice to be passed to shareda() later.
  * \param variant The variant of the New Hope algorithm to use, usually Ref.
  * \param random_seed Points to 64 bytes of random data to use to generate
  * the key pair.  This is intended for test vectors only and should be set
@@ -1036,7 +1054,7 @@ void NewHopePoly::clear()
  *
  * \sa sharedb(), shareda()
  */
-void NewHope::keygen(uint8_t send[NEWHOPE_SENDABYTES], NewHopePoly &sk,
+void NewHope::keygen(uint8_t send[NEWHOPE_SENDABYTES], NewHopePrivateKey &sk,
                      Variant variant, const uint8_t *random_seed)
 {
     NewHopePolyExtended a;
@@ -1157,7 +1175,7 @@ void NewHope::sharedb(uint8_t shared_key[NEWHOPE_SHAREDBYTES],
  * \sa sharedb(), keygen()
  */
 void NewHope::shareda(uint8_t shared_key[NEWHOPE_SHAREDBYTES],
-                      const NewHopePoly &sk,
+                      const NewHopePrivateKey &sk,
                       uint8_t received[NEWHOPE_SENDBBYTES])
 {
     NewHopePoly v, bp;

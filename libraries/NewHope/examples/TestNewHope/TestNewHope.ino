@@ -96,7 +96,7 @@ static struct TestVector const testNewHope2 = { // "torref" variant
      0x3c, 0xfb, 0x28, 0xcc, 0xda, 0xe6, 0x36, 0x0c}
 };
 
-NewHopePoly alice_private;
+NewHopePrivateKey alice_private;
 uint8_t alice_public[NEWHOPE_SENDABYTES];
 uint8_t alice_shared[NEWHOPE_SHAREDBYTES];
 uint8_t bob_public[NEWHOPE_SENDBBYTES];

@@ -29,21 +29,13 @@
 #define NEWHOPE_SENDBBYTES  2048
 #define NEWHOPE_SHAREDBYTES 32
 
-class NewHope;
-
-class NewHopePoly
+typedef struct
 {
-public:
-    NewHopePoly();
-    ~NewHopePoly();
-
-    void clear();
-
-private:
+    /** @cond */
     uint16_t coeffs[1024];
+    /** @endcond */
 
-    friend class NewHope;
-};
+} NewHopePrivateKey;
 
 class NewHope
 {
@@ -58,14 +50,14 @@ public:
         Torref
     };
 
-    static void keygen(uint8_t send[NEWHOPE_SENDABYTES], NewHopePoly &sk,
+    static void keygen(uint8_t send[NEWHOPE_SENDABYTES], NewHopePrivateKey &sk,
                        Variant variant = Ref, const uint8_t *random_seed = 0);
     static void sharedb(uint8_t shared_key[NEWHOPE_SHAREDBYTES],
                         uint8_t send[NEWHOPE_SENDBBYTES],
                         uint8_t received[NEWHOPE_SENDABYTES],
                         Variant variant = Ref, const uint8_t *random_seed = 0);
     static void shareda(uint8_t shared_key[NEWHOPE_SHAREDBYTES],
-                        const NewHopePoly &sk,
+                        const NewHopePrivateKey &sk,
                         uint8_t received[NEWHOPE_SENDBBYTES]);
 };
 
