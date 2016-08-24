@@ -27,10 +27,7 @@
 #include <SHAKE.h>
 #include <RNG.h>
 #include <string.h>
-
-// Define this to 0 to disable the "torref" version, which will save
-// some code and data memory if you don't need that variant.
-#define NEWHOPE_TORREF 1
+#include <new>
 
 /**
  * \class NewHope NewHope.h <NewHope.h>
@@ -760,8 +757,6 @@ static void decode_b_2nd_half(uint16_t *c, const unsigned char *r)
   }
 }
 
-#if NEWHOPE_TORREF
-
 #define _5q (5*PARAM_Q)
 
 #define compare_and_swap(x,i,j) \
@@ -772,6 +767,25 @@ static void decode_b_2nd_half(uint16_t *c, const unsigned char *r)
   x[16*(i)] ^= t;\
   x[16*(j)] ^= t;
 
+static void batcher84(uint16_t *x);
+
+static int discardtopoly(uint16_t *x)
+{
+  int32_t i, r=0;
+
+  for(i=0;i<16;i++)
+    batcher84(x+i);
+
+  // Check whether we're safe:
+  for(i=1008;i<1024;i++)
+    r |= 61444 - x[i];
+  if(r >>= 31) return -1;
+
+  return 0;
+}
+
+// End of public domain code imported from the C reference code.
+ 
 // Code size efficient (but slower) version of the Batcher sort.
 // https://en.wikipedia.org/wiki/Batcher_odd%E2%80%93even_mergesort
 static void oddeven_merge(uint16_t *x, unsigned lo, unsigned hi, unsigned r)
@@ -827,39 +841,6 @@ static void batcher84(uint16_t *x)
     oddeven_merge_sort_range(x, 0, 127);
 }
 
-static int discardtopoly(uint16_t *x)
-{
-  int32_t i, r=0;
-
-  for(i=0;i<16;i++)
-    batcher84(x+i);
-
-  // Check whether we're safe:
-  for(i=1008;i<1024;i++)
-    r |= 61444 - x[i];
-  if(r >>= 31) return -1;
-
-  return 0;
-}
-
-#endif // NEWHOPE_TORREF
-
-// End of public domain code imported from the C reference code.
- 
-class NewHopePoly
-{
-public:
-    NewHopePoly();
-    ~NewHopePoly();
-
-    void clear();
-
-private:
-    uint16_t coeffs[1024];
-
-    friend class NewHope;
-};
-
 // Formats the ChaCha20 input block using a key and nonce.
 static void crypto_chacha20_set_key(uint32_t *block, const unsigned char *k, const unsigned char *n)
 {
@@ -873,21 +854,20 @@ static void crypto_chacha20_set_key(uint32_t *block, const unsigned char *k, con
         memset(block + 14, 0, 8);
 }
 
-static void poly_uniform(uint16_t *a, const unsigned char *seed)
+static void poly_uniform(SHAKE128 *shake, uint16_t *a, const unsigned char *seed)
 {
-    SHAKE128 shake;
     int ctr = 0;
     int posn = PARAM_N;
     uint16_t val;
 
     // Absorb the seed material into the SHAKE128 object.
-    shake.update(seed, NEWHOPE_SEEDBYTES);
+    shake->update(seed, NEWHOPE_SEEDBYTES);
 
     while (ctr < PARAM_N) {
         // Extract data from the SHAKE128 object directly into "a".
         if (posn >= PARAM_N) {
-            shake.extend((uint8_t *)(a + ctr),
-                         (PARAM_N - ctr) * sizeof(uint16_t));
+            shake->extend((uint8_t *)(a + ctr),
+                          (PARAM_N - ctr) * sizeof(uint16_t));
             posn = ctr;
         }
 
@@ -901,38 +881,13 @@ static void poly_uniform(uint16_t *a, const unsigned char *seed)
     }
 }
 
-#if NEWHOPE_TORREF
-
-// Extended version of NewHopePoly that can hold the complete
-// intermediate state for poly_uniform_torref().  This allows us
-// to generate the polynomial in-place and save 2k of stack space.
-class NewHopePolyExtended
+static void poly_uniform_torref(SHAKE128 *shake, uint16_t *a, const unsigned char *seed)
 {
-public:
-    ~NewHopePolyExtended() { clean(coeffs); }
-
-    uint16_t coeffs[84 * 16];
-};
-
-static void poly_uniform_torref(uint16_t *a, const unsigned char *seed)
-{
-    SHAKE128 shake;
-    shake.update(seed, 32);
+    shake->update(seed, 32);
     do {
-        shake.extend((uint8_t *)a, 84 * 16 * sizeof(uint16_t));
+        shake->extend((uint8_t *)a, 84 * 16 * sizeof(uint16_t));
     } while (discardtopoly(a));
 }
-
-#else // !NEWHOPE_TORREF
-
-typedef NewHopePoly NewHopePolyExtended;
-
-static void poly_uniform_torref(uint16_t *a, const unsigned char *seed)
-{
-    poly_uniform(a, seed);
-}
-
-#endif // NEWHOPE_TORREF
 
 static void poly_getnoise(uint16_t *r, const unsigned char *seed, unsigned char nonce)
 {
@@ -980,36 +935,6 @@ static void poly_getnoise(uint16_t *r, const unsigned char *seed, unsigned char 
     clean(buf);
 }
 
-static void sha3256(unsigned char *output, const unsigned char *input, unsigned int inputByteLen)
-{
-    SHA3_256 sha3;
-    sha3.update(input, inputByteLen);
-    sha3.finalize(output, 32);
-}
-
-/**
- * \brief Constructs a new "poly" object for the NewHope algorithm.
- */
-NewHopePoly::NewHopePoly()
-{
-}
-
-/**
- * \brief Clears sensitive data and destroys this "poly" object.
- */
-NewHopePoly::~NewHopePoly()
-{
-    clean(coeffs);
-}
-
-/**
- * \brief Clears sensitive data in this "poly" object.
- */
-void NewHopePoly::clear()
-{
-    clean(coeffs);
-}
-
 /** @endcond */
 
 /**
@@ -1029,6 +954,16 @@ void NewHopePoly::clear()
  * \note The NewHope class can be compiled without support for "torref"
  * to save memory.  In that case, Torref is identical to Ref.
  */
+
+/** @cond */
+
+#define ALLOC_OBJ(type, name)   \
+    uint64_t name##_x[(sizeof(type) + sizeof(uint64_t) - 1) / sizeof(uint64_t)]
+
+#define INIT_OBJ(type, name)  \
+    type *name = new (state.name##_x) type
+
+/** @endcond */
 
 /**
  * \brief Generates the key pair for Alice in a New Hope key exchange.
@@ -1052,39 +987,26 @@ void NewHope::keygen(uint8_t send[NEWHOPE_SENDABYTES], NewHopePrivateKey &sk,
     // The order of calls is rearranged compared to the reference C version.
     // This allows us to get away with two temporary poly objects (a, pk)
     // instead of four (a, e, r, pk).  This saves 4k of stack space.
+    //
+    // We also combine most of the state into a single union, which allows
+    // us to overlap some of the larger objects and reuse the stack space
+    // at different points within this function.
+    union {
+        struct {
+            uint16_t a[PARAM_N];        // Value of "a" as a "poly" object.
+            uint16_t pk[PARAM_N];       // Value of "pk" as a "poly" object.
+        };
+        struct {
+            uint16_t a_ext[84 * 16];    // Value of "a" for torref uniform.
+            ALLOC_OBJ(SHAKE128, shake); // SHAKE128 object for poly_uniform().
+        };
+        ALLOC_OBJ(SHA3_256, sha3);      // SHA3 object for hashing the seed.
+    } state;
 #if NEWHOPE_SMALL_FOOTPRINT
-    NewHopePolyExtended a;
-    NewHopePoly pk;
-
-    if (!random_seed) {
-        RNG.rand(send + POLY_BYTES, NEWHOPE_SEEDBYTES);
-        RNG.rand(sk.seed, 32);
-    } else {
-        memcpy(send + POLY_BYTES, random_seed, NEWHOPE_SEEDBYTES);
-        memcpy(sk.seed, random_seed + NEWHOPE_SEEDBYTES, 32);
-    }
-    sha3256(send + POLY_BYTES, send + POLY_BYTES, NEWHOPE_SEEDBYTES);
-
-    if (variant == Ref)
-        poly_uniform(a.coeffs, send + POLY_BYTES);
-    else
-        poly_uniform_torref(a.coeffs, send + POLY_BYTES);
-
-    poly_getnoise(pk.coeffs, sk.seed, 0);
-    poly_ntt(pk.coeffs);
-
-    poly_pointwise(pk.coeffs, pk.coeffs, a.coeffs);
-  
-    poly_getnoise(a.coeffs, sk.seed, 1);
-    poly_ntt(a.coeffs);
-
-    poly_add(pk.coeffs, a.coeffs, pk.coeffs);
-
-    poly_tobytes(send, pk.coeffs);
+    #define noiseseed (sk.seed)
 #else
-    NewHopePolyExtended a;
-    NewHopePoly pk;
     uint8_t noiseseed[32];
+#endif
 
     if (!random_seed) {
         RNG.rand(send + POLY_BYTES, NEWHOPE_SEEDBYTES);
@@ -1093,26 +1015,38 @@ void NewHope::keygen(uint8_t send[NEWHOPE_SENDABYTES], NewHopePrivateKey &sk,
         memcpy(send + POLY_BYTES, random_seed, NEWHOPE_SEEDBYTES);
         memcpy(noiseseed, random_seed + NEWHOPE_SEEDBYTES, 32);
     }
-    sha3256(send + POLY_BYTES, send + POLY_BYTES, NEWHOPE_SEEDBYTES);
+    INIT_OBJ(SHA3_256, sha3);
+    sha3->update(send + POLY_BYTES, NEWHOPE_SEEDBYTES);
+    sha3->finalize(send + POLY_BYTES, NEWHOPE_SEEDBYTES);
 
+    INIT_OBJ(SHAKE128, shake);
     if (variant == Ref)
-        poly_uniform(a.coeffs, send + POLY_BYTES);
+        poly_uniform(shake, state.a, send + POLY_BYTES);
     else
-        poly_uniform_torref(a.coeffs, send + POLY_BYTES);
+        poly_uniform_torref(shake, state.a_ext, send + POLY_BYTES);
 
+#if NEWHOPE_SMALL_FOOTPRINT
+    poly_getnoise(state.pk, noiseseed, 0);
+    poly_ntt(state.pk);
+    poly_pointwise(state.pk, state.pk, state.a);
+#else
     poly_getnoise(sk.coeffs, noiseseed, 0);
     poly_ntt(sk.coeffs);
-
-    poly_pointwise(pk.coeffs, sk.coeffs, a.coeffs);
+    poly_pointwise(state.pk, sk.coeffs, state.a);
+#endif
   
-    poly_getnoise(a.coeffs, noiseseed, 1);
-    poly_ntt(a.coeffs);
+    poly_getnoise(state.a, noiseseed, 1);
+    poly_ntt(state.a);
 
-    poly_add(pk.coeffs, a.coeffs, pk.coeffs);
+    poly_add(state.pk, state.a, state.pk);
 
-    poly_tobytes(send, pk.coeffs);
+    poly_tobytes(send, state.pk);
 
-    clean(noiseseed);
+    clean(&state, sizeof(state));
+#if NEWHOPE_SMALL_FOOTPRINT
+    #undef noiseseed
+#else
+    clean(noiseseed, sizeof(noiseseed));
 #endif
 }
 
@@ -1138,8 +1072,25 @@ void NewHope::sharedb(uint8_t shared_key[NEWHOPE_SHAREDBYTES],
                       uint8_t received[NEWHOPE_SENDABYTES],
                       Variant variant, const uint8_t *random_seed)
 {
-    NewHopePolyExtended a;
-    NewHopePoly v, bp;
+    // The order of calls is rearranged compared to the reference C version.
+    // This allows us to get away with 3 temporary poly objects (v, a, bp)
+    // instead of 8 (sp, ep, v, a, pka, c, epp, bp).  Saves 10k of stack space.
+    //
+    // We also combine most of the state into a single union, which allows
+    // us to overlap some of the larger objects and reuse the stack space
+    // at different points within this function.
+    union {
+        struct {
+            uint16_t a[PARAM_N];        // Value of "a" as a "poly" object.
+            uint16_t v[PARAM_N];        // Value of "v" as a "poly" object.
+            uint16_t bp[PARAM_N];       // Value of "bp" as a "poly" object.
+        };
+        struct {
+            uint16_t a_ext[84 * 16];    // Value of "a" for torref uniform.
+            ALLOC_OBJ(SHAKE128, shake); // SHAKE128 object for poly_uniform().
+        };
+        ALLOC_OBJ(SHA3_256, sha3);      // SHA3 object for hashing the seed.
+    } state;
     unsigned char noiseseed[32];
 
     if (!random_seed)
@@ -1147,42 +1098,42 @@ void NewHope::sharedb(uint8_t shared_key[NEWHOPE_SHAREDBYTES],
     else
         memcpy(noiseseed, random_seed, 32);
 
-    // The order of calls is rearranged compared to the reference C version.
-    // This allows us to get away with 3 temporary poly objects (v, a, bp)
-    // instead of 8 (sp, ep, v, a, pka, c, epp, bp).  Saves 10k of stack space.
-
+    INIT_OBJ(SHAKE128, shake);
     if (variant == Ref)
-        poly_uniform(a.coeffs, received + POLY_BYTES);
+        poly_uniform(shake, state.a, received + POLY_BYTES);
     else
-        poly_uniform_torref(a.coeffs, received + POLY_BYTES);
+        poly_uniform_torref(shake, state.a_ext, received + POLY_BYTES);
 
-    poly_getnoise(v.coeffs, noiseseed, 0);
-    poly_ntt(v.coeffs);
+    poly_getnoise(state.v, noiseseed, 0);
+    poly_ntt(state.v);
 
-    poly_pointwise(bp.coeffs, a.coeffs, v.coeffs);
+    poly_pointwise(state.bp, state.a, state.v);
 
-    poly_getnoise(a.coeffs, noiseseed, 1);
-    poly_ntt(a.coeffs);
+    poly_getnoise(state.a, noiseseed, 1);
+    poly_ntt(state.a);
 
-    poly_add(bp.coeffs, bp.coeffs, a.coeffs);
+    poly_add(state.bp, state.bp, state.a);
   
-    poly_frombytes(a.coeffs, received);
+    poly_frombytes(state.a, received);
 
-    poly_pointwise(v.coeffs, a.coeffs, v.coeffs);
-    poly_invntt(v.coeffs);
+    poly_pointwise(state.v, state.a, state.v);
+    poly_invntt(state.v);
 
-    poly_getnoise(a.coeffs, noiseseed, 2);
-    poly_add(v.coeffs, v.coeffs, a.coeffs);
+    poly_getnoise(state.a, noiseseed, 2);
+    poly_add(state.v, state.v, state.a);
 
-    helprec(a.coeffs, v.coeffs, noiseseed, 3);
+    helprec(state.a, state.v, noiseseed, 3);
 
-    encode_b(send, bp.coeffs, a.coeffs);
+    encode_b(send, state.bp, state.a);
   
-    rec(shared_key, v.coeffs, a.coeffs);
+    rec(shared_key, state.v, state.a);
 
-    sha3256(shared_key, shared_key, 32);
+    INIT_OBJ(SHA3_256, sha3);
+    sha3->update(shared_key, 32);
+    sha3->finalize(shared_key, 32);
 
-    clean(noiseseed);
+    clean(&state, sizeof(state));
+    clean(noiseseed, sizeof(noiseseed));
 }
 
 /**
@@ -1201,35 +1152,39 @@ void NewHope::shareda(uint8_t shared_key[NEWHOPE_SHAREDBYTES],
     // The order of calls is rearranged compared to the reference C version.
     // This allows us to get away with two temporary poly objects (v, bp)
     // instead of three (v, bp, c).  This saves 2k of stack space.
+    //
+    // We also combine most of the state into a single union, which allows
+    // us to overlap some of the larger objects and reuse the stack space
+    // at different points within this function.
+    union {
+        struct {
+            uint16_t v[PARAM_N];        // Value of "v" as a "poly" object.
+            uint16_t bp[PARAM_N];       // Value of "bp" as a "poly" object.
+        };
+        ALLOC_OBJ(SHA3_256, sha3);      // SHA3 object for hashing the result.
+    } state;
+
+    poly_frombytes(state.bp, received);
+
 #if NEWHOPE_SMALL_FOOTPRINT
-    NewHopePoly v, bp;
-
-    poly_frombytes(bp.coeffs, received);
-
-    // Re-create the full sk value for Alice from the seed.
-    poly_getnoise(v.coeffs, sk.seed, 0);
-    poly_ntt(v.coeffs);
-
-    poly_pointwise(v.coeffs, v.coeffs, bp.coeffs);
-    poly_invntt(v.coeffs);
-
-    decode_b_2nd_half(bp.coeffs, received);
- 
-    rec(shared_key, v.coeffs, bp.coeffs);
-
-    sha3256(shared_key, shared_key, 32); 
+    // Re-create the full private key for Alice from the seed.
+    poly_getnoise(state.v, sk.seed, 0);
+    poly_ntt(state.v);
+    poly_pointwise(state.v, state.v, state.bp);
+    poly_invntt(state.v);
 #else
-    NewHopePoly v, bp;
-
-    poly_frombytes(bp.coeffs, received);
-
-    poly_pointwise(v.coeffs, sk.coeffs, bp.coeffs);
-    poly_invntt(v.coeffs);
-
-    decode_b_2nd_half(bp.coeffs, received);
- 
-    rec(shared_key, v.coeffs, bp.coeffs);
-
-    sha3256(shared_key, shared_key, 32); 
+    // Alice's full private key was supplied.
+    poly_pointwise(state.v, sk.coeffs, state.bp);
+    poly_invntt(state.v);
 #endif
+
+    decode_b_2nd_half(state.bp, received);
+ 
+    rec(shared_key, state.v, state.bp);
+
+    INIT_OBJ(SHA3_256, sha3);
+    sha3->update(shared_key, 32);
+    sha3->finalize(shared_key, 32);
+
+    clean(&state, sizeof(state));
 }
