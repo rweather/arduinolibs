@@ -29,6 +29,18 @@
 #include <string.h>
 #include <new>
 
+/** @cond */
+
+#if defined(__AVR__)
+#include <avr/pgmspace.h>
+#define table_read(name, index) (pgm_read_word(&((name)[(index)])))
+#else
+#define PROGMEM
+#define table_read(name, index) ((name)[(index)])
+#endif
+
+/** @endcond */
+
 /**
  * \class NewHope NewHope.h <NewHope.h>
  * \brief NewHope post-quantum key exchange algorithm
@@ -140,7 +152,7 @@
 #define NEWHOPE_SEEDBYTES 32
 #define NEWHOPE_RECBYTES 256
 
-static uint16_t const omegas_montgomery[PARAM_N/2] = {
+static uint16_t const omegas_montgomery[PARAM_N/2] PROGMEM = {
     4075,6974,7373,7965,3262,5079,522,2169,6364,1018,1041,8775,2344,
     11011,5574,1973,4536,1050,6844,3860,3818,6118,2683,1190,4789,7822,
     7540,6752,5456,4449,3789,12142,11973,382,3988,468,6843,5339,6196,
@@ -183,7 +195,7 @@ static uint16_t const omegas_montgomery[PARAM_N/2] = {
     7247,9644,4053,10600,3364,3271,4057,4414,9442,7917,2174
 };
 
-static uint16_t const omegas_inv_montgomery[PARAM_N/2] = {
+static uint16_t const omegas_inv_montgomery[PARAM_N/2] PROGMEM = {
     4075,5315,4324,4916,10120,11767,7210,9027,10316,6715,1278,9945,
     3514,11248,11271,5925,147,8500,7840,6833,5537,4749,4467,7500,11099,
     9606,6171,8471,8429,5445,11239,7753,9090,12233,5529,5206,10587,
@@ -226,7 +238,7 @@ static uint16_t const omegas_inv_montgomery[PARAM_N/2] = {
     4320,11289,9198,12208,2963,7393,2366,9238
 };
 
-static uint16_t const psis_bitrev_montgomery[PARAM_N] = {
+static uint16_t const psis_bitrev_montgomery[PARAM_N] PROGMEM = {
     4075,6974,7373,7965,3262,5079,522,2169,6364,1018,1041,8775,2344,
     11011,5574,1973,4536,1050,6844,3860,3818,6118,2683,1190,4789,7822,
     7540,6752,5456,4449,3789,12142,11973,382,3988,468,6843,5339,6196,3710,
@@ -310,7 +322,7 @@ static uint16_t const psis_bitrev_montgomery[PARAM_N] = {
     10608,3821,6320,4649,6263,2929
 };
 
-static uint16_t const psis_inv_montgomery[PARAM_N] = {
+static uint16_t const psis_inv_montgomery[PARAM_N] PROGMEM = {
     256,10570,1510,7238,1034,7170,6291,7921,11665,3422,4000,2327,
     2088,5565,795,10647,1521,5484,2539,7385,1055,7173,8047,11683,
     1669,1994,3796,5809,4341,9398,11876,12230,10525,12037,12253,
@@ -396,7 +408,7 @@ static uint16_t const psis_inv_montgomery[PARAM_N] = {
     10798,12076,10503,3256,9243,3076,2195,10847,12083,10504,12034,10497
 };
 
-static uint16_t const bitrev_table[PARAM_N] = {
+static uint16_t const bitrev_table[PARAM_N] PROGMEM = {
   0,512,256,768,128,640,384,896,64,576,320,832,192,704,448,960,32,544,288,800,160,672,416,928,96,608,352,864,224,736,480,992,
   16,528,272,784,144,656,400,912,80,592,336,848,208,720,464,976,48,560,304,816,176,688,432,944,112,624,368,880,240,752,496,1008,
   8,520,264,776,136,648,392,904,72,584,328,840,200,712,456,968,40,552,296,808,168,680,424,936,104,616,360,872,232,744,488,1000,
@@ -466,7 +478,7 @@ static void bitrev_vector(uint16_t* poly)
 
     for(i = 0; i < PARAM_N; i++)
     {
-        r = bitrev_table[i];
+        r = table_read(bitrev_table,i);
         if (i < r)
         {
           tmp = poly[i];
@@ -481,7 +493,7 @@ static void mul_coefficients(uint16_t* poly, const uint16_t* factors)
     unsigned int i;
 
     for(i = 0; i < PARAM_N; i++)
-      poly[i] = montgomery_reduce((poly[i] * factors[i]));
+      poly[i] = montgomery_reduce((poly[i] * table_read(factors,i)));
 }
 
 /* GS_bo_to_no; omegas need to be in Montgomery domain */
@@ -500,7 +512,7 @@ static void ntt(uint16_t * a, const uint16_t* omega)
       jTwiddle = 0;
       for(j=start;j<PARAM_N-1;j+=2*distance)
       {
-        W = omega[jTwiddle++];
+        W = table_read(omega,jTwiddle++);
         temp = a[j];
         a[j] = (temp + a[j + distance]); // Omit reduction (be lazy)
         a[j + distance] = montgomery_reduce((W * ((uint32_t)temp + 3*PARAM_Q - a[j + distance])));
@@ -514,7 +526,7 @@ static void ntt(uint16_t * a, const uint16_t* omega)
       jTwiddle = 0;
       for(j=start;j<PARAM_N-1;j+=2*distance)
       {
-        W = omega[jTwiddle++];
+        W = table_read(omega,jTwiddle++);
         temp = a[j];
         a[j] = barrett_reduce((temp + a[j + distance]));
         a[j + distance] = montgomery_reduce((W * ((uint32_t)temp + 3*PARAM_Q - a[j + distance])));
