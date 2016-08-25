@@ -27,9 +27,14 @@
 #include <SHAKE.h>
 #include <RNG.h>
 #include <string.h>
-#include <new>
 
 /** @cond */
+
+// Older Arduino IDE's don't define placement new.  Provide our own definition.
+void *operator new(size_t size, void *ptr)
+{
+    return ptr;
+}
 
 #if defined(__AVR__)
 #include <avr/pgmspace.h>
