@@ -29,7 +29,11 @@
 #define NEWHOPE_SENDBBYTES  2048
 #define NEWHOPE_SHAREDBYTES 32
 
+#if defined(__AVR__)
 #define NEWHOPE_SMALL_FOOTPRINT 1
+#else
+#define NEWHOPE_SMALL_FOOTPRINT 0
+#endif
 
 typedef struct
 {
