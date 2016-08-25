@@ -671,7 +671,7 @@ static void rec(unsigned char *key, const uint16_t *v, const uint16_t *c)
 static void poly_frombytes(uint16_t *r, const unsigned char *a)
 {
   int i;
-  for(i=0;i<PARAM_N/4;i++)
+  for(i=(PARAM_N/4)-1;i>=0;i--)
   {
     r[4*i+0] =                               a[7*i+0]        | (((uint16_t)a[7*i+1] & 0x3f) << 8);
     r[4*i+1] = (a[7*i+1] >> 6) | (((uint16_t)a[7*i+2]) << 2) | (((uint16_t)a[7*i+3] & 0x0f) << 10);
@@ -753,10 +753,9 @@ static void poly_invntt(uint16_t *r)
   mul_coefficients(r, psis_inv_montgomery);
 }
 
-static void encode_b(unsigned char *r, const uint16_t *b, const uint16_t *c)
+static void encode_b_2nd_half(unsigned char *r, const uint16_t *c)
 {
   int i;
-  poly_tobytes(r,b);
   for(i=0;i<PARAM_N/4;i++)
     r[POLY_BYTES+i] = c[4*i] | (c[4*i+1] << 2) | (c[4*i+2] << 4) | (c[4*i+3] << 6);
 }
@@ -1109,6 +1108,88 @@ void NewHope::sharedb(uint8_t shared_key[NEWHOPE_SHAREDBYTES],
                       uint8_t received[NEWHOPE_SENDABYTES],
                       Variant variant, const uint8_t *random_seed)
 {
+#if NEWHOPE_SMALL_FOOTPRINT && NEWHOPE_BYTE_ALIGNED
+    // The order of calls is rearranged compared to the reference C version.
+    // This allows us to get away with 2 temporary poly objects (v, a)
+    // instead of 8 (sp, ep, v, a, pka, c, epp, bp).  Saves 12k of stack space.
+    // To achieve this, we reuse "send" as a third temporary poly object.
+    //
+    // We also combine most of the state into a single union, which allows
+    // us to overlap some of the larger objects and reuse the stack space
+    // at different points within this function.
+    union {
+        struct {
+            uint16_t a[PARAM_N];        // Value of "a" as a "poly" object.
+            uint16_t v[PARAM_N];        // Value of "v" as a "poly" object.
+        };
+        struct {
+            uint16_t a_ext[84 * 16];    // Value of "a" for torref uniform.
+            ALLOC_OBJ(SHAKE128, shake); // SHAKE128 object for poly_uniform().
+        };
+        ALLOC_OBJ(SHA3_256, sha3);      // SHA3 object for hashing the result.
+    } state;
+    uint8_t seed[32];
+    NewHopeChaChaState chacha;
+    #define bp  ((uint16_t *)send)
+
+    if (!random_seed) {
+        RNG.rand(seed, 32);
+        crypto_chacha20_set_key(chacha.input, seed);
+    } else {
+        crypto_chacha20_set_key(chacha.input, random_seed);
+    }
+
+    // Extract the seed for "a" that was sent by Alice.
+    memcpy(seed, received + POLY_BYTES, 32);
+
+    // Unpack the poly object from "received" into "send" / "bp".  Note that
+    // poly_frombytes() has been modified to process the words in reverse
+    // order just in case "received" and "send" are the same buffer.
+    poly_frombytes(bp, received);
+
+    poly_getnoise(state.a, &chacha, 0);
+    poly_ntt(state.a);
+
+    poly_pointwise(state.v, bp, state.a);
+    poly_invntt(state.v);
+
+    poly_getnoise(state.a, &chacha, 2);
+
+    poly_add(state.v, state.v, state.a);
+
+    helprec(&chacha, state.a, state.v, 3);
+
+    encode_b_2nd_half(send, state.a);
+  
+    rec(shared_key, state.v, state.a);
+
+    INIT_OBJ(SHA3_256, sha3);
+    sha3->update(shared_key, 32);
+    sha3->finalize(shared_key, 32);
+
+    INIT_OBJ(SHAKE128, shake);
+    if (variant == Ref)
+        poly_uniform(shake, state.a, seed);
+    else
+        poly_uniform_torref(shake, state.a_ext, seed);
+
+    poly_getnoise(state.v, &chacha, 0);
+    poly_ntt(state.v);
+
+    poly_pointwise(state.a, state.a, state.v);
+
+    poly_getnoise(state.v, &chacha, 1);
+    poly_ntt(state.v);
+
+    poly_add(state.a, state.a, state.v);
+
+    poly_tobytes(send, state.a);
+
+    clean(&state, sizeof(state));
+    clean(&chacha, sizeof(chacha));
+    clean(seed, sizeof(seed));
+    #undef bp
+#else
     // The order of calls is rearranged compared to the reference C version.
     // This allows us to get away with 3 temporary poly objects (v, a, bp)
     // instead of 8 (sp, ep, v, a, pka, c, epp, bp).  Saves 10k of stack space.
@@ -1172,7 +1253,8 @@ void NewHope::sharedb(uint8_t shared_key[NEWHOPE_SHAREDBYTES],
 
     helprec(&chacha, state.a, state.v, 3);
 
-    encode_b(send, state.bp, state.a);
+    poly_tobytes(send, state.bp);
+    encode_b_2nd_half(send, state.a);
   
     rec(shared_key, state.v, state.a);
 
@@ -1186,6 +1268,7 @@ void NewHope::sharedb(uint8_t shared_key[NEWHOPE_SHAREDBYTES],
 #endif
 #undef noiseseed
 #undef chacha
+#endif
 }
 
 /**
