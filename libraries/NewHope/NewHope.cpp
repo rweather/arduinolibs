@@ -140,6 +140,13 @@
 
 /** @cond */
 
+typedef struct
+{
+    uint32_t input[16];
+    uint32_t output[16];
+
+} NewHopeChaChaState;
+
 // The following is public domain code from the reference C version of
 // New Hope at https://cryptojedi.org/crypto/#newhope.  This part of
 // the Arduino port remains public domain.  Original authors:
@@ -598,26 +605,19 @@ static int16_t LDDecode(int32_t xi0, int32_t xi1, int32_t xi2, int32_t xi3)
   return t&1;
 }
 
-static void crypto_chacha20_set_key(uint32_t *block, const unsigned char *k, const unsigned char *n);
-
-static void helprec(uint16_t *c, const uint16_t *v, const unsigned char *seed, unsigned char nonce)
+static void helprec(NewHopeChaChaState *chacha, uint16_t *c, const uint16_t *v, unsigned char nonce)
 {
   int32_t v0[4], v1[4], v_tmp[4], k;
   unsigned char rbit;
   unsigned char *rand;
-  unsigned char n[8];
-  uint32_t input[16];
-  uint32_t output[16];
   int i;
 
-  for(i=0;i<7;i++)
-    n[i] = 0;
-  n[7] = nonce;
-
-  //crypto_stream_chacha20(rand,32,n,seed);
-  crypto_chacha20_set_key(input, seed, n);
-  ChaCha::hashCore(output, input, 20);
-  rand = (unsigned char *)output;
+  chacha->input[12] = 0;
+  chacha->input[13] = 0;
+  chacha->input[14] = 0;
+  chacha->input[15] = (((uint32_t)nonce) << 24);    // Assumes little-endian.
+  ChaCha::hashCore(chacha->output, chacha->input, 20);
+  rand = (unsigned char *)chacha->output;
  
   for(i=0; i<256; i++)
   {
@@ -641,8 +641,7 @@ static void helprec(uint16_t *c, const uint16_t *v, const unsigned char *seed, u
     c[768+i] = (   -k    + 2*v_tmp[3]) & 3;
   }
 
-  clean(input);
-  clean(output);
+  clean(&chacha, sizeof(chacha));
 }
 
 static void rec(unsigned char *key, const uint16_t *v, const uint16_t *c)
@@ -853,17 +852,17 @@ static void batcher84(uint16_t *x)
     oddeven_merge_sort_range(x, 0, 127);
 }
 
-// Formats the ChaCha20 input block using a key and nonce.
-static void crypto_chacha20_set_key(uint32_t *block, const unsigned char *k, const unsigned char *n)
+// Formats the ChaCha20 input block using a key.
+static void crypto_chacha20_set_key(uint32_t *block, const unsigned char *k)
 {
-    static const char tag256[] = "expand 32-byte k";
+    static const char tag256[] PROGMEM = "expand 32-byte k";
+#if defined(__AVR__)
+    memcpy_P(block, tag256, 16);
+#else
     memcpy(block, tag256, 16);
+#endif
     memcpy(block + 4, k, 32);
     memset(block + 12, 0, 8);
-    if (n)
-        memcpy(block + 14, n, 8);
-    else
-        memset(block + 14, 0, 8);
 }
 
 static void poly_uniform(SHAKE128 *shake, uint16_t *a, const unsigned char *seed)
@@ -901,10 +900,8 @@ static void poly_uniform_torref(SHAKE128 *shake, uint16_t *a, const unsigned cha
     } while (discardtopoly(a));
 }
 
-static void poly_getnoise(uint16_t *r, const unsigned char *seed, unsigned char nonce)
+static void poly_getnoise(uint16_t *r, NewHopeChaChaState *chacha, unsigned char nonce)
 {
-    uint32_t input[16];
-    uint32_t buf[16];
     int i, j;
     uint32_t a, b;
 
@@ -914,27 +911,29 @@ static void poly_getnoise(uint16_t *r, const unsigned char *seed, unsigned char 
     // as it will be just as random in both directions.  It's only a
     // problem for verifying fixed test vectors.
 
-    crypto_chacha20_set_key(input, seed, 0);
-    input[14] = nonce;                  // Assumes little-endian.
+    chacha->input[12] = 0;
+    chacha->input[13] = 0;
+    chacha->input[14] = nonce;                 // Assumes little-endian.
+    chacha->input[15] = 0;
 
     for (i = 0; i < PARAM_N; ++i) {
         // Generate a new block of random data if necessary.
         j = i % 16;
         if (j == 0) {
-            ChaCha::hashCore(buf, input, 20);
-            ++(input[12]);              // Assumes little-endian.
+            ChaCha::hashCore(chacha->output, chacha->input, 20);
+            ++(chacha->input[12]);              // Assumes little-endian.
         }
 
         // This is a slightly more efficient way to count bits than in
         // the reference C implementation.  The technique is from:
         // https://graphics.stanford.edu/~seander/bithacks.html#CountBitsSetParallel
-        a = buf[j] & 0xFFFF;            // Assumes little-endian.
+        a = chacha->output[j] & 0xFFFF;         // Assumes little-endian.
         a = a - ((a >> 1) & 0x5555);
         a = (a & 0x3333) + ((a >> 2) & 0x3333);
         a = ((a >> 4) + a) & 0x0F0F;
         a = ((a >> 8) + a) & 0x00FF;
 
-        b = (buf[j] >> 16) & 0xFFFF;    // Assumes little-endian.
+        b = (chacha->output[j] >> 16) & 0xFFFF; // Assumes little-endian.
         b = b - ((b >> 1) & 0x5555);
         b = (b & 0x3333) + ((b >> 2) & 0x3333);
         b = ((b >> 4) + b) & 0x0F0F;
@@ -943,8 +942,7 @@ static void poly_getnoise(uint16_t *r, const unsigned char *seed, unsigned char 
         r[i] = a + PARAM_Q - b;
     }
 
-    clean(input);
-    clean(buf);
+    clean(&chacha, sizeof(chacha));
 }
 
 /** @endcond */
@@ -974,6 +972,12 @@ static void poly_getnoise(uint16_t *r, const unsigned char *seed, unsigned char 
 
 #define INIT_OBJ(type, name)  \
     type *name = new (state.name##_x) type
+
+#if defined(__AVR__)
+#define NEWHOPE_BYTE_ALIGNED 1
+#else
+#define NEWHOPE_BYTE_ALIGNED 0
+#endif
 
 /** @endcond */
 
@@ -1014,10 +1018,17 @@ void NewHope::keygen(uint8_t send[NEWHOPE_SENDABYTES], NewHopePrivateKey &sk,
         };
         ALLOC_OBJ(SHA3_256, sha3);      // SHA3 object for hashing the seed.
     } state;
+
+    // Hide the ChaCha state and the noise seed inside "send".
+#if NEWHOPE_BYTE_ALIGNED
+    #define chacha (*((NewHopeChaChaState *)send))
+#else
+    NewHopeChaChaState chacha;
+#endif
 #if NEWHOPE_SMALL_FOOTPRINT
     #define noiseseed (sk.seed)
 #else
-    uint8_t noiseseed[32];
+    #define noiseseed (send + sizeof(NewHopeChaChaState))
 #endif
 
     if (!random_seed) {
@@ -1037,17 +1048,19 @@ void NewHope::keygen(uint8_t send[NEWHOPE_SENDABYTES], NewHopePrivateKey &sk,
     else
         poly_uniform_torref(shake, state.a_ext, send + POLY_BYTES);
 
+    crypto_chacha20_set_key(chacha.input, noiseseed);
+
 #if NEWHOPE_SMALL_FOOTPRINT
-    poly_getnoise(state.pk, noiseseed, 0);
+    poly_getnoise(state.pk, &chacha, 0);
     poly_ntt(state.pk);
     poly_pointwise(state.pk, state.pk, state.a);
 #else
-    poly_getnoise(sk.coeffs, noiseseed, 0);
+    poly_getnoise(sk.coeffs, &chacha, 0);
     poly_ntt(sk.coeffs);
     poly_pointwise(state.pk, sk.coeffs, state.a);
 #endif
   
-    poly_getnoise(state.a, noiseseed, 1);
+    poly_getnoise(state.a, &chacha, 1);
     poly_ntt(state.a);
 
     poly_add(state.pk, state.a, state.pk);
@@ -1055,11 +1068,11 @@ void NewHope::keygen(uint8_t send[NEWHOPE_SENDABYTES], NewHopePrivateKey &sk,
     poly_tobytes(send, state.pk);
 
     clean(&state, sizeof(state));
-#if NEWHOPE_SMALL_FOOTPRINT
-    #undef noiseseed
-#else
-    clean(noiseseed, sizeof(noiseseed));
+#if !NEWHOPE_BYTE_ALIGNED
+    clean(&chacha, sizeof(chacha));
 #endif
+    #undef noiseseed
+    #undef chacha
 }
 
 /**
@@ -1067,6 +1080,8 @@ void NewHope::keygen(uint8_t send[NEWHOPE_SENDABYTES], NewHopePrivateKey &sk,
  *
  * \param shared_key The shared secret key.
  * \param send The public key value for Bob to be sent to Alice.
+ * This is allowed to be the same pointer as \a received to replace
+ * the received value from Alice with the new value to send for Bob.
  * \param received The public key value that was received from Alice.
  * \param variant The variant of the New Hope algorithm to use, usually Ref.
  * \param random_seed Points to 32 bytes of random data to use to generate
@@ -1076,6 +1091,11 @@ void NewHope::keygen(uint8_t send[NEWHOPE_SENDABYTES], NewHopePrivateKey &sk,
  * The \a send value should be sent to Alice over the communications link
  * and then it can be discarded.  Bob can immediately start encrypting
  * session traffic with \a shared_key or some transformed version of it.
+ *
+ * It is assumed that if \a send and \a received overlap, then they are
+ * the same pointer.  The bytes at the end of \a send may be used for
+ * temporary storage while the leading bytes of \a send / \a received
+ * are being processed.
  *
  * \sa shareda(), keygen()
  */
@@ -1101,9 +1121,18 @@ void NewHope::sharedb(uint8_t shared_key[NEWHOPE_SHAREDBYTES],
             uint16_t a_ext[84 * 16];    // Value of "a" for torref uniform.
             ALLOC_OBJ(SHAKE128, shake); // SHAKE128 object for poly_uniform().
         };
-        ALLOC_OBJ(SHA3_256, sha3);      // SHA3 object for hashing the seed.
+        ALLOC_OBJ(SHA3_256, sha3);      // SHA3 object for hashing the result.
     } state;
-    unsigned char noiseseed[32];
+
+    // Hide the ChaCha state and the noise seed inside "send".
+    // Put them at the end of the "send" buffer in case "received"
+    // overlaps with the start of "send".
+#if NEWHOPE_BYTE_ALIGNED
+    #define chacha (*((NewHopeChaChaState *)(send + NEWHOPE_SENDABYTES)))
+#else
+    NewHopeChaChaState chacha;
+#endif
+    #define noiseseed (send + NEWHOPE_SENDABYTES + sizeof(NewHopeChaChaState))
 
     if (!random_seed)
         RNG.rand(noiseseed, 32);
@@ -1116,12 +1145,14 @@ void NewHope::sharedb(uint8_t shared_key[NEWHOPE_SHAREDBYTES],
     else
         poly_uniform_torref(shake, state.a_ext, received + POLY_BYTES);
 
-    poly_getnoise(state.v, noiseseed, 0);
+    crypto_chacha20_set_key(chacha.input, noiseseed);
+
+    poly_getnoise(state.v, &chacha, 0);
     poly_ntt(state.v);
 
     poly_pointwise(state.bp, state.a, state.v);
 
-    poly_getnoise(state.a, noiseseed, 1);
+    poly_getnoise(state.a, &chacha, 1);
     poly_ntt(state.a);
 
     poly_add(state.bp, state.bp, state.a);
@@ -1131,10 +1162,10 @@ void NewHope::sharedb(uint8_t shared_key[NEWHOPE_SHAREDBYTES],
     poly_pointwise(state.v, state.a, state.v);
     poly_invntt(state.v);
 
-    poly_getnoise(state.a, noiseseed, 2);
+    poly_getnoise(state.a, &chacha, 2);
     poly_add(state.v, state.v, state.a);
 
-    helprec(state.a, state.v, noiseseed, 3);
+    helprec(&chacha, state.a, state.v, 3);
 
     encode_b(send, state.bp, state.a);
   
@@ -1145,7 +1176,11 @@ void NewHope::sharedb(uint8_t shared_key[NEWHOPE_SHAREDBYTES],
     sha3->finalize(shared_key, 32);
 
     clean(&state, sizeof(state));
-    clean(noiseseed, sizeof(noiseseed));
+#if !NEWHOPE_BYTE_ALIGNED
+    clean(&chacha, sizeof(chacha));
+#endif
+#undef noiseseed
+#undef chacha
 }
 
 /**
@@ -1173,19 +1208,25 @@ void NewHope::shareda(uint8_t shared_key[NEWHOPE_SHAREDBYTES],
             uint16_t v[PARAM_N];        // Value of "v" as a "poly" object.
             uint16_t bp[PARAM_N];       // Value of "bp" as a "poly" object.
         };
+        struct {
+            uint16_t v_alt[PARAM_N];
+            ALLOC_OBJ(NewHopeChaChaState, chacha);
+        };
         ALLOC_OBJ(SHA3_256, sha3);      // SHA3 object for hashing the result.
     } state;
 
-    poly_frombytes(state.bp, received);
-
 #if NEWHOPE_SMALL_FOOTPRINT
     // Re-create the full private key for Alice from the seed.
-    poly_getnoise(state.v, sk.seed, 0);
+    INIT_OBJ(NewHopeChaChaState, chacha);
+    crypto_chacha20_set_key(chacha->input, sk.seed);
+    poly_getnoise(state.v, chacha, 0);
     poly_ntt(state.v);
+    poly_frombytes(state.bp, received);
     poly_pointwise(state.v, state.v, state.bp);
     poly_invntt(state.v);
 #else
     // Alice's full private key was supplied.
+    poly_frombytes(state.bp, received);
     poly_pointwise(state.v, sk.coeffs, state.bp);
     poly_invntt(state.v);
 #endif
