@@ -671,7 +671,7 @@ static void rec(unsigned char *key, const uint16_t *v, const uint16_t *c)
 static void poly_frombytes(uint16_t *r, const unsigned char *a)
 {
   int i;
-  for(i=(PARAM_N/4)-1;i>=0;i--)
+  for(i=0;i<PARAM_N/4;i++)
   {
     r[4*i+0] =                               a[7*i+0]        | (((uint16_t)a[7*i+1] & 0x3f) << 8);
     r[4*i+1] = (a[7*i+1] >> 6) | (((uint16_t)a[7*i+2]) << 2) | (((uint16_t)a[7*i+3] & 0x0f) << 10);
@@ -1112,7 +1112,7 @@ void NewHope::sharedb(uint8_t shared_key[NEWHOPE_SHAREDBYTES],
     // The order of calls is rearranged compared to the reference C version.
     // This allows us to get away with 2 temporary poly objects (v, a)
     // instead of 8 (sp, ep, v, a, pka, c, epp, bp).  Saves 12k of stack space.
-    // To achieve this, we reuse "send" as a third temporary poly object.
+    // To achieve this, we reuse "send" as the third temporary poly object bp.
     //
     // We also combine most of the state into a single union, which allows
     // us to overlap some of the larger objects and reuse the stack space
@@ -1139,23 +1139,18 @@ void NewHope::sharedb(uint8_t shared_key[NEWHOPE_SHAREDBYTES],
         crypto_chacha20_set_key(chacha.input, random_seed);
     }
 
-    // Extract the seed for "a" that was sent by Alice.
+    poly_frombytes(state.a, received);
     memcpy(seed, received + POLY_BYTES, 32);
 
-    // Unpack the poly object from "received" into "send" / "bp".  Note that
-    // poly_frombytes() has been modified to process the words in reverse
-    // order just in case "received" and "send" are the same buffer.
-    poly_frombytes(bp, received);
+    poly_getnoise(bp, &chacha, 0);
+    poly_ntt(bp);
 
-    poly_getnoise(state.a, &chacha, 0);
-    poly_ntt(state.a);
-
-    poly_pointwise(state.v, bp, state.a);
+    poly_pointwise(state.v, state.a, bp);
     poly_invntt(state.v);
 
-    poly_getnoise(state.a, &chacha, 2);
+    poly_getnoise(bp, &chacha, 2);
 
-    poly_add(state.v, state.v, state.a);
+    poly_add(state.v, state.v, bp);
 
     helprec(&chacha, state.a, state.v, 3);
 
