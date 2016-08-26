@@ -434,7 +434,6 @@ void testVectors()
         Serial.print("ok ... ");
     else
         Serial.print("fail ... ");
-    Serial.println(buffer[0], HEX);
     Serial.print(elapsed);
     Serial.println(" us");
 

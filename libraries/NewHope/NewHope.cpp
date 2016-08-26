@@ -159,7 +159,7 @@ typedef struct
 
 #define PARAM_N 1024
 #define PARAM_K 16
-#define PARAM_Q 12289 
+#define PARAM_Q ((int32_t)12289)
 #define POLY_BYTES 1792
 #define NEWHOPE_SEEDBYTES 32
 #define NEWHOPE_RECBYTES 256
@@ -467,7 +467,7 @@ inline uint16_t montgomery_reduce(uint32_t a)
   uint32_t u;
 
   u = (a * qinv);
-  u &= ((1<<rlog)-1);
+  u &= ((((uint32_t)1)<<rlog)-1);
   u *= PARAM_Q;
   a = a + u;
   return a >> 18;
@@ -505,7 +505,7 @@ static void mul_coefficients(uint16_t* poly, const uint16_t* factors)
     unsigned int i;
 
     for(i = 0; i < PARAM_N; i++)
-      poly[i] = montgomery_reduce((poly[i] * table_read(factors,i)));
+      poly[i] = montgomery_reduce((poly[i] * (uint32_t)table_read(factors,i)));
 }
 
 /* GS_bo_to_no; omegas need to be in Montgomery domain */
@@ -628,10 +628,10 @@ static void helprec(NewHopeChaChaState *chacha, uint16_t *c, const uint16_t *v, 
   {
     rbit = (rand[i>>3] >> (i&7)) & 1;
 
-    k  = f(v0+0, v1+0, 8*v[  0+i] + 4*rbit);
-    k += f(v0+1, v1+1, 8*v[256+i] + 4*rbit);
-    k += f(v0+2, v1+2, 8*v[512+i] + 4*rbit);
-    k += f(v0+3, v1+3, 8*v[768+i] + 4*rbit);
+    k  = f(v0+0, v1+0, 8*(int32_t)v[  0+i] + 4*rbit);
+    k += f(v0+1, v1+1, 8*(int32_t)v[256+i] + 4*rbit);
+    k += f(v0+2, v1+2, 8*(int32_t)v[512+i] + 4*rbit);
+    k += f(v0+3, v1+3, 8*(int32_t)v[768+i] + 4*rbit);
 
     k = (2*PARAM_Q-1-k) >> 31;
 
@@ -659,10 +659,10 @@ static void rec(unsigned char *key, const uint16_t *v, const uint16_t *c)
 
   for(i=0; i<256; i++)
   {
-    tmp[0] = 16*PARAM_Q + 8*(int32_t)v[  0+i] - PARAM_Q * (2*c[  0+i]+c[768+i]);
-    tmp[1] = 16*PARAM_Q + 8*(int32_t)v[256+i] - PARAM_Q * (2*c[256+i]+c[768+i]);
-    tmp[2] = 16*PARAM_Q + 8*(int32_t)v[512+i] - PARAM_Q * (2*c[512+i]+c[768+i]);
-    tmp[3] = 16*PARAM_Q + 8*(int32_t)v[768+i] - PARAM_Q * (           c[768+i]);
+    tmp[0] = 16*PARAM_Q + 8*(int32_t)v[  0+i] - PARAM_Q * (2*(int32_t)c[  0+i]+c[768+i]);
+    tmp[1] = 16*PARAM_Q + 8*(int32_t)v[256+i] - PARAM_Q * (2*(int32_t)c[256+i]+c[768+i]);
+    tmp[2] = 16*PARAM_Q + 8*(int32_t)v[512+i] - PARAM_Q * (2*(int32_t)c[512+i]+c[768+i]);
+    tmp[3] = 16*PARAM_Q + 8*(int32_t)v[768+i] - PARAM_Q * (                    c[768+i]);
 
     key[i>>3] |= LDDecode(tmp[0], tmp[1], tmp[2], tmp[3]) << (i & 7);
   }
@@ -728,8 +728,8 @@ static void poly_pointwise(uint16_t *r, const uint16_t *a, const uint16_t *b)
   uint16_t t;
   for(i=0;i<PARAM_N;i++)
   {
-    t    = montgomery_reduce(3186*b[i]); /* t is now in Montgomery domain */
-    r[i] = montgomery_reduce(a[i] * t); /* r->coeffs[i] is back in normal domain */
+    t    = montgomery_reduce(3186*(uint32_t)b[i]); /* t is now in Montgomery domain */
+    r[i] = montgomery_reduce(a[i] * (uint32_t)t); /* r->coeffs[i] is back in normal domain */
   }
 }
 
@@ -737,7 +737,7 @@ static void poly_add(uint16_t *r, const uint16_t *a, const uint16_t *b)
 {
   int i;
   for(i=0;i<PARAM_N;i++)
-    r[i] = barrett_reduce(a[i] + b[i]);
+    r[i] = barrett_reduce(a[i] + (uint32_t)b[i]);
 }
 
 static void poly_ntt(uint16_t *r)
