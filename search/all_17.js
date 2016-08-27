@@ -19,7 +19,6 @@ var searchData=
   ['_7ehash',['~Hash',['../classHash.html#a4e4b4797dda8678aaed058bae155813e',1,'Hash']]],
   ['_7ekeccakcore',['~KeccakCore',['../classKeccakCore.html#a4579e3a9b24f1d615fa8d660c23e77a4',1,'KeccakCore']]],
   ['_7eloginshell',['~LoginShell',['../classLoginShell.html#aaae466b141c9ea50870b66509402a2f9',1,'LoginShell']]],
-  ['_7enewhopepoly',['~NewHopePoly',['../classNewHopePoly.html#ad7c3c83cb078be4e6f136eeea7e21250',1,'NewHopePoly']]],
   ['_7enoisesource',['~NoiseSource',['../classNoiseSource.html#a4eca1e894a5d719fb9bf4df34a791cdb',1,'NoiseSource']]],
   ['_7eofbcommon',['~OFBCommon',['../classOFBCommon.html#aae7435157e51bf977d3481e94e17ae01',1,'OFBCommon']]],
   ['_7eomac',['~OMAC',['../classOMAC.html#a6bb2222c997608ec68b25831da965e8f',1,'OMAC']]],

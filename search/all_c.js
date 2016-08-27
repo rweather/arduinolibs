@@ -1,7 +1,8 @@
 var searchData=
 [
   ['newhope',['NewHope',['../classNewHope.html',1,'']]],
-  ['newhopepoly',['NewHopePoly',['../classNewHopePoly.html',1,'NewHopePoly'],['../classNewHopePoly.html#aec9804046c753436ffbe88afd175bb39',1,'NewHopePoly::NewHopePoly()']]],
+  ['newhope_2dsmall_2edox',['newhope-small.dox',['../newhope-small_8dox.html',1,'']]],
+  ['newhopeprivatekey',['NewHopePrivateKey',['../structNewHopePrivateKey.html',1,'']]],
   ['nextfield',['nextField',['../classForm.html#a788a186ea4a7ebd75283a948ca45f4d1',1,'Form']]],
   ['no_5ftemperature',['NO_TEMPERATURE',['../classRTC.html#a9ed5480b362a83f1f45c4d3bcf7c3bf8',1,'RTC']]],
   ['nodisplay',['noDisplay',['../classLCD.html#af3974da6d988ba2d21c25135ada12108',1,'LCD']]],

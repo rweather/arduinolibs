@@ -232,9 +232,21 @@ Performance on AVR</h2>
 <td><a class="el" href="classP521.html#ab075909f5cecbb801c6b7c41f20de223" title="Verifies a signature using a specific P-521 public key. ">P521::verify()</a></td><td align="right">109078ms</td><td colspan="3">Digital signature verification </td></tr>
 <tr>
 <td><a class="el" href="classP521.html#a15ca802e298c7ff3be06924b0edb7daa" title="Derives the public key from a private key for P-521 signing operations. ">P521::derivePublicKey()</a></td><td align="right">46290ms</td><td colspan="3">Derive a public key from a private key </td></tr>
+<tr>
+<td><a class="el" href="classNewHope.html#a335b17b40949f66aa579d1035384662c" title="Generates the key pair for Alice in a New Hope key exchange. ">NewHope::keygen()</a>, Ref</td><td align="right">639ms</td><td colspan="3">Generate key pair for Alice, Ref version </td></tr>
+<tr>
+<td><a class="el" href="classNewHope.html#a2f09529f5f73cf9763c28b58b13bbd14" title="Generates the public key and shared secret for Bob. ">NewHope::sharedb()</a>, Ref</td><td align="right">1237ms</td><td colspan="3">Generate shared secret and public key for Bob, Ref version </td></tr>
+<tr>
+<td><a class="el" href="classNewHope.html#ac8128e0799fe74a6c69c541e0d6bd66e" title="Generates the shared secret for Alice. ">NewHope::shareda()</a>, Ref</td><td align="right">496ms</td><td colspan="3">Generate shared secret for Alice, Ref version </td></tr>
+<tr>
+<td><a class="el" href="classNewHope.html#a335b17b40949f66aa579d1035384662c" title="Generates the key pair for Alice in a New Hope key exchange. ">NewHope::keygen()</a>, Torref</td><td align="right">777ms</td><td colspan="3">Generate key pair for Alice, Torref version </td></tr>
+<tr>
+<td><a class="el" href="classNewHope.html#a2f09529f5f73cf9763c28b58b13bbd14" title="Generates the public key and shared secret for Bob. ">NewHope::sharedb()</a>, Torref</td><td align="right">1376ms</td><td colspan="3">Generate shared secret and public key for Bob, Torref version </td></tr>
+<tr>
+<td><a class="el" href="classNewHope.html#ac8128e0799fe74a6c69c541e0d6bd66e" title="Generates the shared secret for Alice. ">NewHope::shareda()</a>, Torref</td><td align="right">496ms</td><td colspan="3">Generate shared secret for Alice, Torref version </td></tr>
 </table>
 <p>Where a cipher supports more than one key size (such as <a class="el" href="classChaCha.html" title="ChaCha stream cipher. ">ChaCha</a>), the values are typically almost identical for 128-bit and 256-bit keys so only the maximum is shown above.</p>
-<p>Due to the memory requirements, <a class="el" href="classNewHope.html" title="NewHope post-quantum key exchange algorithm. ">NewHope</a> is not yet possible on AVR-based Arduino systems.</p>
+<p>Due to the memory requirements, <a class="el" href="classP521.html" title="Elliptic curve operations with the NIST P-521 curve. ">P521</a> and <a class="el" href="classNewHope.html" title="NewHope post-quantum key exchange algorithm. ">NewHope</a> performance was measured on an Arduino Mega 2560 running at 16 MHz. They are too big to fit in the RAM size of the Uno.</p>
 <h2><a class="anchor" id="crypto_performance_arm"></a>
 Performance on ARM</h2>
 <p>All figures are for the Arduino Due running at 84 MHz:</p>
@@ -364,22 +376,22 @@ Performance on ARM</h2>
 <tr>
 <td><a class="el" href="classP521.html#a15ca802e298c7ff3be06924b0edb7daa" title="Derives the public key from a private key for P-521 signing operations. ">P521::derivePublicKey()</a></td><td align="right">1503ms</td><td colspan="3">Derive a public key from a private key </td></tr>
 <tr>
-<td><a class="el" href="classNewHope.html#ae8f821867bce309220aee7a43c2d4f51" title="Generates the key pair for Alice in a New Hope key exchange. ">NewHope::keygen()</a>, Ref</td><td align="right">29ms</td><td colspan="3">Generate key pair for Alice, Ref version </td></tr>
+<td><a class="el" href="classNewHope.html#a335b17b40949f66aa579d1035384662c" title="Generates the key pair for Alice in a New Hope key exchange. ">NewHope::keygen()</a>, Ref</td><td align="right">29ms</td><td colspan="3">Generate key pair for Alice, Ref version </td></tr>
 <tr>
-<td><a class="el" href="classNewHope.html#a2f09529f5f73cf9763c28b58b13bbd14" title="Generates the public key and shared secret for Bob. ">NewHope::sharedb()</a>, Ref</td><td align="right">40ms</td><td colspan="3">Generate shared secret and public key for Bob, Ref version </td></tr>
+<td><a class="el" href="classNewHope.html#a2f09529f5f73cf9763c28b58b13bbd14" title="Generates the public key and shared secret for Bob. ">NewHope::sharedb()</a>, Ref</td><td align="right">41ms</td><td colspan="3">Generate shared secret and public key for Bob, Ref version </td></tr>
 <tr>
-<td><a class="el" href="classNewHope.html#ae490ebcfcbc18179b03c1a1ae8874458" title="Generates the shared secret for Alice. ">NewHope::shareda()</a>, Ref</td><td align="right">9ms</td><td colspan="3">Generate shared secret for Alice, Ref version </td></tr>
+<td><a class="el" href="classNewHope.html#ac8128e0799fe74a6c69c541e0d6bd66e" title="Generates the shared secret for Alice. ">NewHope::shareda()</a>, Ref</td><td align="right">9ms</td><td colspan="3">Generate shared secret for Alice, Ref version </td></tr>
 <tr>
-<td><a class="el" href="classNewHope.html#ae8f821867bce309220aee7a43c2d4f51" title="Generates the key pair for Alice in a New Hope key exchange. ">NewHope::keygen()</a>, Torref</td><td align="right">42ms</td><td colspan="3">Generate key pair for Alice, Torref version </td></tr>
+<td><a class="el" href="classNewHope.html#a335b17b40949f66aa579d1035384662c" title="Generates the key pair for Alice in a New Hope key exchange. ">NewHope::keygen()</a>, Torref</td><td align="right">42ms</td><td colspan="3">Generate key pair for Alice, Torref version </td></tr>
 <tr>
 <td><a class="el" href="classNewHope.html#a2f09529f5f73cf9763c28b58b13bbd14" title="Generates the public key and shared secret for Bob. ">NewHope::sharedb()</a>, Torref</td><td align="right">53ms</td><td colspan="3">Generate shared secret and public key for Bob, Torref version </td></tr>
 <tr>
-<td><a class="el" href="classNewHope.html#ae490ebcfcbc18179b03c1a1ae8874458" title="Generates the shared secret for Alice. ">NewHope::shareda()</a>, Torref</td><td align="right">9ms</td><td colspan="3">Generate shared secret for Alice, Torref version </td></tr>
+<td><a class="el" href="classNewHope.html#ac8128e0799fe74a6c69c541e0d6bd66e" title="Generates the shared secret for Alice. ">NewHope::shareda()</a>, Torref</td><td align="right">9ms</td><td colspan="3">Generate shared secret for Alice, Torref version </td></tr>
 </table>
 </div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Aug 23 2016 18:54:05 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Aug 27 2016 14:32:20 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

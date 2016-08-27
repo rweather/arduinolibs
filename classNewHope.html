@@ -107,41 +107,44 @@ Public Types</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:ae8f821867bce309220aee7a43c2d4f51"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNewHope.html#ae8f821867bce309220aee7a43c2d4f51">keygen</a> (uint8_t send[NEWHOPE_SENDABYTES], <a class="el" href="classNewHopePoly.html">NewHopePoly</a> &amp;sk, <a class="el" href="classNewHope.html#a679601da301134f037c3a5786bd7085f">Variant</a> variant=<a class="el" href="classNewHope.html#a679601da301134f037c3a5786bd7085fa2326f3fd76345d5900834593a74f6596">Ref</a>, const uint8_t *random_seed=0)</td></tr>
-<tr class="memdesc:ae8f821867bce309220aee7a43c2d4f51"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generates the key pair for Alice in a New Hope key exchange.  <a href="#ae8f821867bce309220aee7a43c2d4f51">More...</a><br/></td></tr>
-<tr class="separator:ae8f821867bce309220aee7a43c2d4f51"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a335b17b40949f66aa579d1035384662c"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNewHope.html#a335b17b40949f66aa579d1035384662c">keygen</a> (uint8_t send[NEWHOPE_SENDABYTES], <a class="el" href="structNewHopePrivateKey.html">NewHopePrivateKey</a> &amp;sk, <a class="el" href="classNewHope.html#a679601da301134f037c3a5786bd7085f">Variant</a> variant=<a class="el" href="classNewHope.html#a679601da301134f037c3a5786bd7085fa2326f3fd76345d5900834593a74f6596">Ref</a>, const uint8_t *random_seed=0)</td></tr>
+<tr class="memdesc:a335b17b40949f66aa579d1035384662c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generates the key pair for Alice in a New Hope key exchange.  <a href="#a335b17b40949f66aa579d1035384662c">More...</a><br/></td></tr>
+<tr class="separator:a335b17b40949f66aa579d1035384662c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2f09529f5f73cf9763c28b58b13bbd14"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNewHope.html#a2f09529f5f73cf9763c28b58b13bbd14">sharedb</a> (uint8_t shared_key[NEWHOPE_SHAREDBYTES], uint8_t send[NEWHOPE_SENDBBYTES], uint8_t received[NEWHOPE_SENDABYTES], <a class="el" href="classNewHope.html#a679601da301134f037c3a5786bd7085f">Variant</a> variant=<a class="el" href="classNewHope.html#a679601da301134f037c3a5786bd7085fa2326f3fd76345d5900834593a74f6596">Ref</a>, const uint8_t *random_seed=0)</td></tr>
 <tr class="memdesc:a2f09529f5f73cf9763c28b58b13bbd14"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generates the public key and shared secret for Bob.  <a href="#a2f09529f5f73cf9763c28b58b13bbd14">More...</a><br/></td></tr>
 <tr class="separator:a2f09529f5f73cf9763c28b58b13bbd14"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae490ebcfcbc18179b03c1a1ae8874458"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNewHope.html#ae490ebcfcbc18179b03c1a1ae8874458">shareda</a> (uint8_t shared_key[NEWHOPE_SHAREDBYTES], const <a class="el" href="classNewHopePoly.html">NewHopePoly</a> &amp;sk, uint8_t received[NEWHOPE_SENDBBYTES])</td></tr>
-<tr class="memdesc:ae490ebcfcbc18179b03c1a1ae8874458"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generates the shared secret for Alice.  <a href="#ae490ebcfcbc18179b03c1a1ae8874458">More...</a><br/></td></tr>
-<tr class="separator:ae490ebcfcbc18179b03c1a1ae8874458"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac8128e0799fe74a6c69c541e0d6bd66e"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNewHope.html#ac8128e0799fe74a6c69c541e0d6bd66e">shareda</a> (uint8_t shared_key[NEWHOPE_SHAREDBYTES], const <a class="el" href="structNewHopePrivateKey.html">NewHopePrivateKey</a> &amp;sk, uint8_t received[NEWHOPE_SENDBBYTES])</td></tr>
+<tr class="memdesc:ac8128e0799fe74a6c69c541e0d6bd66e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generates the shared secret for Alice.  <a href="#ac8128e0799fe74a6c69c541e0d6bd66e">More...</a><br/></td></tr>
+<tr class="separator:ac8128e0799fe74a6c69c541e0d6bd66e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p><a class="el" href="classNewHope.html" title="NewHope post-quantum key exchange algorithm. ">NewHope</a> post-quantum key exchange algorithm. </p>
 <p>New Hope is an ephemeral key exchange algorithm, similar to Diffie-Hellman, which is believed to be resistant to quantum computers.</p>
-<dl class="section note"><dt>Note</dt><dd>The functions in this class need up to 7k of stack space to store temporary intermediate values in addition to up to 4k of memory in the application to store public and private key parameters. Due to these memory requirements, this class is only suitable for use on high-end ARM-based Arduino variants like the Arduino Due. It won't fit in the available memory on AVR-based Arduino variants.</dd></dl>
+<dl class="section note"><dt>Note</dt><dd>The functions in this class need a substantial amount of memory for function parameters and stack space. On an 8-bit AVR system it is possible to operate with around 2K of parameter space and 4.5K of stack space if the parameters are in shared buffers. More information on the memory requirements and how they were reduced are on <a class="el" href="newhope_small.html">this page</a>.</dd></dl>
 <p>Key exchange occurs between two parties, Alice and Bob, and results in a 32-byte (256-bit) shared secret. Alice's public key is 1824 bytes in size and Bob's public key is 2048 bytes in size.</p>
 <p>Alice, either the client or the server depending upon the application, generates a key pair as follows:</p>
 <div class="fragment"><div class="line">uint8_t alice_public[NEWHOPE_SENDABYTES];</div>
-<div class="line"><a class="code" href="classNewHopePoly.html">NewHopePoly</a> alice_private;</div>
-<div class="line"><a class="code" href="classNewHope.html#ae8f821867bce309220aee7a43c2d4f51">NewHope::keygen</a>(alice_public, alice_private);</div>
+<div class="line"><a class="code" href="structNewHopePrivateKey.html">NewHopePrivateKey</a> alice_private;</div>
+<div class="line"><a class="code" href="classNewHope.html#a335b17b40949f66aa579d1035384662c">NewHope::keygen</a>(alice_public, alice_private);</div>
 </div><!-- fragment --><p>Alice's application sends the contents of <code>alice_public</code> to Bob, who then performs the following operations:</p>
 <div class="fragment"><div class="line">uint8_t bob_public[NEWHOPE_SENDABYTES];</div>
 <div class="line">uint8_t shared_secret[NEWHOPE_SHAREDBYTES];</div>
 <div class="line"><a class="code" href="classNewHope.html#a2f09529f5f73cf9763c28b58b13bbd14">NewHope::sharedb</a>(shared_secret, bob_public, alice_public);</div>
 </div><!-- fragment --><p>Bob's application sends the contents of <code>bob_public</code> to Alice, and can then begin encrypting session traffic with <code>shared_secret</code> or some transformed version of it.</p>
-<p>When Alice's application receives <code>bob_public</code>, the application performs the folllowing final steps to generate her version of the shared secret:</p>
+<p>To reduce the memory requirements, the second and third parameters to <a class="el" href="classNewHope.html#a2f09529f5f73cf9763c28b58b13bbd14" title="Generates the public key and shared secret for Bob. ">sharedb()</a> can point to the same 2048-byte buffer. On entry, the first 1824 bytes of the buffer are filled with Alice's public key. On exit, the buffer is filled with the 2048 bytes of Bob's public key:</p>
 <div class="fragment"><div class="line">uint8_t shared_secret[NEWHOPE_SHAREDBYTES];</div>
-<div class="line"><a class="code" href="classNewHope.html#ae490ebcfcbc18179b03c1a1ae8874458">NewHope::shareda</a>(shared_secret, alice_private, bob_public);</div>
-</div><!-- fragment --><p>In the New Hope paper there are two versions of the algorithm described, referred to as "ref" and "torref" in author's reference C code. This class implements "ref" by default, but it is possible to enable the "torref" variant with an extra parameter on the <a class="el" href="classNewHope.html#ae8f821867bce309220aee7a43c2d4f51" title="Generates the key pair for Alice in a New Hope key exchange. ">keygen()</a> and <a class="el" href="classNewHope.html#a2f09529f5f73cf9763c28b58b13bbd14" title="Generates the public key and shared secret for Bob. ">sharedb()</a> function calls:</p>
-<div class="fragment"><div class="line"><a class="code" href="classNewHope.html#ae8f821867bce309220aee7a43c2d4f51">NewHope::keygen</a>(alice_public, alice_private, <a class="code" href="classNewHope.html#a679601da301134f037c3a5786bd7085fae270e706968a8e01e5c1cb40422b22c6">NewHope::Torref</a>);</div>
+<div class="line"><a class="code" href="classNewHope.html#a2f09529f5f73cf9763c28b58b13bbd14">NewHope::sharedb</a>(shared_secret, public_key, public_key);</div>
+</div><!-- fragment --><p>When Alice's application receives <code>bob_public</code>, the application performs the folllowing final steps to generate her version of the shared secret:</p>
+<div class="fragment"><div class="line">uint8_t shared_secret[NEWHOPE_SHAREDBYTES];</div>
+<div class="line"><a class="code" href="classNewHope.html#ac8128e0799fe74a6c69c541e0d6bd66e">NewHope::shareda</a>(shared_secret, alice_private, bob_public);</div>
+</div><!-- fragment --><p>In the New Hope paper there are two versions of the algorithm described, referred to as "ref" and "torref" in author's reference C code. This class implements "ref" by default, but it is possible to enable the "torref" variant with an extra parameter on the <a class="el" href="classNewHope.html#a335b17b40949f66aa579d1035384662c" title="Generates the key pair for Alice in a New Hope key exchange. ">keygen()</a> and <a class="el" href="classNewHope.html#a2f09529f5f73cf9763c28b58b13bbd14" title="Generates the public key and shared secret for Bob. ">sharedb()</a> function calls:</p>
+<div class="fragment"><div class="line"><a class="code" href="classNewHope.html#a335b17b40949f66aa579d1035384662c">NewHope::keygen</a>(alice_public, alice_private, <a class="code" href="classNewHope.html#a679601da301134f037c3a5786bd7085fae270e706968a8e01e5c1cb40422b22c6">NewHope::Torref</a>);</div>
 <div class="line"><a class="code" href="classNewHope.html#a2f09529f5f73cf9763c28b58b13bbd14">NewHope::sharedb</a>(shared_secret, bob_public, alice_public, <a class="code" href="classNewHope.html#a679601da301134f037c3a5786bd7085fae270e706968a8e01e5c1cb40422b22c6">NewHope::Torref</a>);</div>
-</div><!-- fragment --><p>The <a class="el" href="classNewHope.html#ae490ebcfcbc18179b03c1a1ae8874458" title="Generates the shared secret for Alice. ">shareda()</a> function is the same for both "ref" and "torref".</p>
+</div><!-- fragment --><p>The <a class="el" href="classNewHope.html#ac8128e0799fe74a6c69c541e0d6bd66e" title="Generates the shared secret for Alice. ">shareda()</a> function is the same for both "ref" and "torref".</p>
 <p>The "ref" and "torref" variants are not binary-compatible. Public keys generated with one variant will not work with the other variant. The application author must make a decision as to which variant they need and then use it universally. The paper contains more information on why an application may want to use "torref" instead of "ref".</p>
 <p>Reference: <a href="https://cryptojedi.org/crypto/#newhope">https://cryptojedi.org/crypto/#newhope</a> </p>
 
-<p>Definition at line <a class="el" href="NewHope_8h_source.html#l00048">48</a> of file <a class="el" href="NewHope_8h_source.html">NewHope.h</a>.</p>
+<p>Definition at line <a class="el" href="NewHope_8h_source.html#l00050">50</a> of file <a class="el" href="NewHope_8h_source.html">NewHope.h</a>.</p>
 </div><h2 class="groupheader">Member Enumeration Documentation</h2>
 <a class="anchor" id="a679601da301134f037c3a5786bd7085f"></a>
 <div class="memitem">
@@ -164,12 +167,12 @@ Static Public Member Functions</h2></td></tr>
 </td></tr>
 </table>
 
-<p>Definition at line <a class="el" href="NewHope_8h_source.html#l00055">55</a> of file <a class="el" href="NewHope_8h_source.html">NewHope.h</a>.</p>
+<p>Definition at line <a class="el" href="NewHope_8h_source.html#l00057">57</a> of file <a class="el" href="NewHope_8h_source.html">NewHope.h</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="ae8f821867bce309220aee7a43c2d4f51"></a>
+<a class="anchor" id="a335b17b40949f66aa579d1035384662c"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -185,7 +188,7 @@ Static Public Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classNewHopePoly.html">NewHopePoly</a> &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="structNewHopePrivateKey.html">NewHopePrivateKey</a> &amp;&#160;</td>
           <td class="paramname"><em>sk</em>, </td>
         </tr>
         <tr>
@@ -217,20 +220,20 @@ Static Public Member Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">send</td><td>The public key value for Alice to be sent to Bob. </td></tr>
-    <tr><td class="paramname">sk</td><td>The secret key value for Alice to be passed to <a class="el" href="classNewHope.html#ae490ebcfcbc18179b03c1a1ae8874458" title="Generates the shared secret for Alice. ">shareda()</a> later. </td></tr>
+    <tr><td class="paramname">sk</td><td>The private key value for Alice to be passed to <a class="el" href="classNewHope.html#ac8128e0799fe74a6c69c541e0d6bd66e" title="Generates the shared secret for Alice. ">shareda()</a> later. </td></tr>
     <tr><td class="paramname">variant</td><td>The variant of the New Hope algorithm to use, usually Ref. </td></tr>
     <tr><td class="paramname">random_seed</td><td>Points to 64 bytes of random data to use to generate the key pair. This is intended for test vectors only and should be set to NULL in real applications.</td></tr>
   </table>
   </dd>
 </dl>
 <p>The <em>send</em> value should be sent to Bob over the communications link and then it can be discarded. The <em>sk</em> value must be retained until the later call to <a class="el" href="classNewHope.html#a2f09529f5f73cf9763c28b58b13bbd14" title="Generates the public key and shared secret for Bob. ">sharedb()</a>.</p>
-<dl class="section see"><dt>See Also</dt><dd><a class="el" href="classNewHope.html#a2f09529f5f73cf9763c28b58b13bbd14" title="Generates the public key and shared secret for Bob. ">sharedb()</a>, <a class="el" href="classNewHope.html#ae490ebcfcbc18179b03c1a1ae8874458" title="Generates the shared secret for Alice. ">shareda()</a> </dd></dl>
+<dl class="section see"><dt>See Also</dt><dd><a class="el" href="classNewHope.html#a2f09529f5f73cf9763c28b58b13bbd14" title="Generates the public key and shared secret for Bob. ">sharedb()</a>, <a class="el" href="classNewHope.html#ac8128e0799fe74a6c69c541e0d6bd66e" title="Generates the shared secret for Alice. ">shareda()</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="NewHope_8cpp_source.html#l01039">1039</a> of file <a class="el" href="NewHope_8cpp_source.html">NewHope.cpp</a>.</p>
+<p>Definition at line <a class="el" href="NewHope_8cpp_source.html#l01014">1014</a> of file <a class="el" href="NewHope_8cpp_source.html">NewHope.cpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="ae490ebcfcbc18179b03c1a1ae8874458"></a>
+<a class="anchor" id="ac8128e0799fe74a6c69c541e0d6bd66e"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -246,7 +249,7 @@ Static Public Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classNewHopePoly.html">NewHopePoly</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="structNewHopePrivateKey.html">NewHopePrivateKey</a> &amp;&#160;</td>
           <td class="paramname"><em>sk</em>, </td>
         </tr>
         <tr>
@@ -272,14 +275,14 @@ Static Public Member Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">shared_key</td><td>The shared secret key. </td></tr>
-    <tr><td class="paramname">sk</td><td>Alice's secret private key which was generated by <a class="el" href="classNewHope.html#ae8f821867bce309220aee7a43c2d4f51" title="Generates the key pair for Alice in a New Hope key exchange. ">keygen()</a>. </td></tr>
+    <tr><td class="paramname">sk</td><td>Alice's secret private key which was generated by <a class="el" href="classNewHope.html#a335b17b40949f66aa579d1035384662c" title="Generates the key pair for Alice in a New Hope key exchange. ">keygen()</a>. </td></tr>
     <tr><td class="paramname">received</td><td>The public key value that was received from Bob.</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section see"><dt>See Also</dt><dd><a class="el" href="classNewHope.html#a2f09529f5f73cf9763c28b58b13bbd14" title="Generates the public key and shared secret for Bob. ">sharedb()</a>, <a class="el" href="classNewHope.html#ae8f821867bce309220aee7a43c2d4f51" title="Generates the key pair for Alice in a New Hope key exchange. ">keygen()</a> </dd></dl>
+<dl class="section see"><dt>See Also</dt><dd><a class="el" href="classNewHope.html#a2f09529f5f73cf9763c28b58b13bbd14" title="Generates the public key and shared secret for Bob. ">sharedb()</a>, <a class="el" href="classNewHope.html#a335b17b40949f66aa579d1035384662c" title="Generates the key pair for Alice in a New Hope key exchange. ">keygen()</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="NewHope_8cpp_source.html#l01159">1159</a> of file <a class="el" href="NewHope_8cpp_source.html">NewHope.cpp</a>.</p>
+<p>Definition at line <a class="el" href="NewHope_8cpp_source.html#l01288">1288</a> of file <a class="el" href="NewHope_8cpp_source.html">NewHope.cpp</a>.</p>
 
 </div>
 </div>
@@ -337,7 +340,7 @@ Static Public Member Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">shared_key</td><td>The shared secret key. </td></tr>
-    <tr><td class="paramname">send</td><td>The public key value for Bob to be sent to Alice. </td></tr>
+    <tr><td class="paramname">send</td><td>The public key value for Bob to be sent to Alice. This is allowed to be the same pointer as <em>received</em> to replace the received value from Alice with the new value to send for Bob. </td></tr>
     <tr><td class="paramname">received</td><td>The public key value that was received from Alice. </td></tr>
     <tr><td class="paramname">variant</td><td>The variant of the New Hope algorithm to use, usually Ref. </td></tr>
     <tr><td class="paramname">random_seed</td><td>Points to 32 bytes of random data to use to generate the temporary private key for Bob. This is intended for test vectors only and should be set to NULL in real applications.</td></tr>
@@ -345,9 +348,10 @@ Static Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 <p>The <em>send</em> value should be sent to Alice over the communications link and then it can be discarded. Bob can immediately start encrypting session traffic with <em>shared_key</em> or some transformed version of it.</p>
-<dl class="section see"><dt>See Also</dt><dd><a class="el" href="classNewHope.html#ae490ebcfcbc18179b03c1a1ae8874458" title="Generates the shared secret for Alice. ">shareda()</a>, <a class="el" href="classNewHope.html#ae8f821867bce309220aee7a43c2d4f51" title="Generates the key pair for Alice in a New Hope key exchange. ">keygen()</a> </dd></dl>
+<p>It is assumed that if <em>send</em> and <em>received</em> overlap, then they are the same pointer. The bytes at the end of <em>send</em> may be used for temporary storage while the leading bytes of <em>send</em> / <em>received</em> are being processed.</p>
+<dl class="section see"><dt>See Also</dt><dd><a class="el" href="classNewHope.html#ac8128e0799fe74a6c69c541e0d6bd66e" title="Generates the shared secret for Alice. ">shareda()</a>, <a class="el" href="classNewHope.html#a335b17b40949f66aa579d1035384662c" title="Generates the key pair for Alice in a New Hope key exchange. ">keygen()</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="NewHope_8cpp_source.html#l01098">1098</a> of file <a class="el" href="NewHope_8cpp_source.html">NewHope.cpp</a>.</p>
+<p>Definition at line <a class="el" href="NewHope_8cpp_source.html#l01116">1116</a> of file <a class="el" href="NewHope_8cpp_source.html">NewHope.cpp</a>.</p>
 
 </div>
 </div>
@@ -358,7 +362,7 @@ Static Public Member Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Aug 23 2016 18:54:05 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Aug 27 2016 14:32:20 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>
