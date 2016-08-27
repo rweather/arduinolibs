@@ -53,12 +53,12 @@ void *operator new(size_t size, void *ptr)
  * New Hope is an ephemeral key exchange algorithm, similar to Diffie-Hellman,
  * which is believed to be resistant to quantum computers.
  *
- * \note The functions in this class need up to 7k of stack space to
- * store temporary intermediate values in addition to up to 4k of
- * memory in the application to store public and private key parameters.
- * Due to these memory requirements, this class is only suitable for
- * use on high-end ARM-based Arduino variants like the Arduino Due.
- * It won't fit in the available memory on AVR-based Arduino variants.
+ * \note The functions in this class need a substantial amount of memory
+ * for function parameters and stack space.  On an 8-bit AVR system
+ * it is possible to operate with around 2K of parameter space and 4.5K of
+ * stack space if the parameters are in shared buffers.  More information
+ * on the memory requirements and how they were reduced are on
+ * \ref newhope_small "this page".
  *
  * Key exchange occurs between two parties, Alice and Bob, and results
  * in a 32-byte (256-bit) shared secret.  Alice's public key is 1824
@@ -85,6 +85,16 @@ void *operator new(size_t size, void *ptr)
  * Bob's application sends the contents of <tt>bob_public</tt> to Alice,
  * and can then begin encrypting session traffic with <tt>shared_secret</tt>
  * or some transformed version of it.
+ *
+ * To reduce the memory requirements, the second and third parameters to
+ * sharedb() can point to the same 2048-byte buffer.  On entry, the first
+ * 1824 bytes of the buffer are filled with Alice's public key.  On exit,
+ * the buffer is filled with the 2048 bytes of Bob's public key:
+ *
+ * \code
+ * uint8_t shared_secret[NEWHOPE_SHAREDBYTES];
+ * NewHope::sharedb(shared_secret, public_key, public_key);
+ * \endcode
  *
  * When Alice's application receives <tt>bob_public</tt>, the application
  * performs the folllowing final steps to generate her version of the

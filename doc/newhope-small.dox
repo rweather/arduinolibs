@@ -1,0 +1,321 @@
+/*
+ * Copyright (C) 2016 Southern Storm Software, Pty Ltd.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a
+ * copy of this software and associated documentation files (the "Software"),
+ * to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included
+ * in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+ * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
+ */
+
+/**
+\file newhope-small.dox
+\page newhope_small Small Memory Footprint New Hope
+
+This page describes the techniques that were used to reduce the
+post-quantum <a href="https://cryptojedi.org/crypto/#newhope">New Hope</a>
+key exchange algorithm in size for running on Arduino systems with limited
+amounts of RAM.  It is intended to help other implementors of New Hope
+save time in figuring out how to reduce the memory size of the algorithm.
+
+On systems like AVR and x86 that allow byte-aligned access to 16-bit values,
+this implementation requires around 2K of memory for the function parameters
+and up to 4.5K of temporary stack space for intermediate values.  On systems
+like ARM, the sizes are similar but the sharedb() function requires another
+2K of temporary stack space if the input parameters are not aligned on a
+16-bit boundary.
+
+\section newhope_small_keygen keygen()
+
+In pseudo-code, the keygen() function from the reference C implementation of
+New Hope from the algorithm authors performs the following operations
+(the size in bytes of all parameters and local variables are indicated):
+
+\code
+keygen(send[1824], sk[2048]):
+    locals: seed[32], noiseseed[32], a[2048], e[2048], r[2048], pk[2048]
+    seed = sha3(randombytes(32))
+    noiseseed = randombytes(32)
+    a  = uniform(seed)
+    sk = ntt(getnoise(noiseseed, 0))
+    e  = ntt(getnoise(noiseseed, 1))
+    r  = pointwise(sk, a)
+    pk = e + r
+    send = encode_a(pk, seed)
+\endcode
+
+This requires a total of 3872 bytes of parameter space and 8256 bytes of
+stack space.  There is also additional stack space for temporary SHA3,
+SHAKE128, and ChaCha20 objects and output buffers.  Those objects can
+easily account for another 400 to 500 bytes of stack space.
+
+We note that some of the local variables in the pseudo-code above are only
+live in some parts of function.  For example, <i>pk</i> is not touched until
+the second-last statement and by that time <i>sk</i> and <i>a</i> are no
+longer required.  We can rearrange the function to reuse local variables
+that are no longer live as follows:
+
+\code
+keygen(send[1824], sk[2048]):
+    locals: seed[32], noiseseed[32], a[2048], pk[2048]
+    seed = sha3(randombytes(32))
+    noiseseed = randombytes(32)
+    a  = uniform(seed)
+    sk = ntt(getnoise(noiseseed, 0))
+    pk = pointwise(sk, a)
+    a  = ntt(getnoise(noiseseed, 1))
+    pk = a + pk
+    send = encode_a(pk, seed)
+\endcode
+
+This saves 4096 bytes of stack space.  It is possible to save the 64 bytes
+for <i>seed</i> and <i>noiseseed</i> by directly writing them to the
+<i>send</i> buffer:
+
+\code
+keygen(send[1824], sk[2048]):
+    locals: a[2048], pk[2048]
+    send(1792:1823) = sha3(randombytes(32))
+    send(0:31) = randombytes(32)
+    a  = uniform(send(1792:1823))
+    sk = ntt(getnoise(send(0:31), 0))
+    pk = pointwise(sk, a)
+    a  = ntt(getnoise(send(0:31), 1))
+    pk = a + pk
+    send(0:1791) = tobytes(pk)
+\endcode
+
+Packing temporary values into the caller-supplied parameters is a common
+feature of the optimizations described on this page.  Since the caller
+has already supplied a big chunk of free memory to the function, it would
+be a shame not to make use of it.
+
+The Arduino implementation also packs the temporary SHA3, SHAKE128, and
+ChaCha20 objects into the <i>send</i> buffer and unused local variables at
+different points in the function.  This considerably reduces the stack
+footprint of sub-functions like uniform(), getnoise(), and helprec().
+
+At this point we are using 3872 of parameter space and 4096 bytes of
+stack space.  We can reduce the parameter space even further by noticing
+that the <i>sk</i> value is wholely determined by the 32-byte
+<i>noiseseed</i> value.  The shareda() function could regenerate
+<i>sk</i> itself from the 32-byte <i>noiseseed</i>, trading off time
+for memory:
+
+\code
+keygen(send[1824], noiseseed[32]):
+    locals: a[2048], pk[2048]
+    send(1792:1823) = sha3(randombytes(32))
+    noiseseed = randombytes(32)
+    a  = uniform(send(1792:1823))
+    pk = ntt(getnoise(noiseseed, 0))
+    pk = pointwise(pk, a)
+    a  = ntt(getnoise(noiseseed, 1))
+    pk = a + pk
+    send(0:1791) = tobytes(pk)
+\endcode
+
+Now we have 1856 bytes of parameter space and 4096 bytes of stack space.
+Plus a few hundred bytes of stack frame overhead for sub-functions
+(the Arduino version of SHA3/SHAKE128 requires 200 bytes of stack space
+for temporary values - other sub-functions are similar).  The Arduino
+version of New Hope uses up to 400 bytes of stack space overhead in
+the worst case.
+
+The uniform() function has two variants for the "ref" and "torref" versions
+of the New Hope algorithm.  The "torref" variant requires 2688 bytes to
+represent the <i>a</i> value before sorting reduces it to 2048 bytes.  This
+isn't actually a problem because we can lay out the stack space with a union:
+
+\code
+struct {
+    union {
+        uint16_t a[PARAM_N];
+        uint16_t pk[PARAM_N];
+    };
+    uint16_t a_ext[84 * 16];
+} state;
+\endcode
+
+The uniform data derived from the seed is generated into <i>a_ext</i>,
+sorted, and then the trailing 640 bytes of <i>a_ext</i> are discarded.
+The trailing space is then used to store <i>pk</i> later in the function.
+
+\section newhope_small_shareda shareda()
+
+Before tackling the more difficult sharedb(), we will move onto the final
+New Hope step for generating the shared secret for Alice.  In pseudo-code,
+the original reference C implementation is as follows:
+
+\code
+shareda(shared[32], sk[2048], received[2048]):
+    locals: v[2048], bp[2048], c[2048]
+    (bp, c) = decode_b(received)
+    v = invntt(pointwise(sk, bp))
+    shared = sha3(rec(v, c))
+\endcode
+
+We can eliminate <i>c</i> by splitting the decode_b() step:
+
+\code
+shareda(shared[32], sk[2048], received[2048]):
+    locals: v[2048], bp[2048]
+    bp = decode_b_1st_half(received(0:1791))
+    v = invntt(pointwise(sk, bp))
+    bp = decode_b_2nd_half(received(1792:2047))
+    shared = sha3(rec(v, bp))
+\endcode
+
+We now have 4128 bytes of parameter space and 4096 bytes of stack space.
+The <i>shared</i> buffer can overlap with either <i>sk</i> or <i>received</i>
+in the caller to save another 32 bytes of parameter space.
+
+Earlier we replaced <i>sk</i> with the 32-byte <i>noiseseed</i>.  We can
+regenerate <i>sk</i> within shareda() as follows:
+
+\code
+shareda(shared[32], noiseseed[32], received[2048]):
+    locals: v[2048], bp[2048]
+    v = ntt(getnoise(noiseseed, 0))
+    bp = decode_b_1st_half(received(0:1791))
+    v = invntt(pointwise(v, bp))
+    bp = decode_b_2nd_half(received(1792:2047))
+    shared = sha3(rec(v, bp))
+\endcode
+
+This results in 2112 bytes of parameter space (2080 if <i>shared</i>
+overlaps with <i>noiseseed</i> or <i>received</i>) and 4096 bytes
+of direct stack space.  Plus up to 400 bytes of stack overhead for
+sub-functions as before.
+
+\section newhope_small_sharedb sharedb()
+
+As before we start with the pseudo-code for the reference C implementation
+of sharedb():
+
+\code
+sharedb(shared[32], send[2048], received[1824]):
+    locals: sp[2048], ep[2048], v[2048], a[2048], pka[2048],
+            c[2048], epp[2048], bp[2048], seed[32], noiseseed[32]
+    noiseseed = randombytes(32)
+    (pka, seed) = decode_a(received)
+    a   = uniform(seed)
+    sp  = ntt(getnoise(noiseseed, 0))
+    ep  = ntt(getnoise(noiseseed, 1))
+    bp  = pointwise(a, sp)
+    bp  = bp + ep
+    v   = invntt(pointwise(pka, sp))
+    epp = getnoise(noiseseed, 2))
+    v   = v + epp
+    c   = helprec(v, noiseseed, 3)
+    send = encode_b(bp, c)
+    shared = sha3(rec(v, c))
+\endcode
+
+This requires a massive 3904 bytes of parameter space and 16448 bytes
+of stack space!  We start by doing liveness analysis on the local
+variables and hiding <i>seed</i> and <i>noiseseed</i> inside parameters:
+
+\code
+sharedb(shared[32], send[2048], received[1824]):
+    locals: a[2048], v[2048], bp[2048]
+    send(1824:1855) = randombytes(32)
+    a  = uniform(received(1792:1823))
+    v  = ntt(getnoise(send(1824:1855), 0))
+    bp = pointwise(a, v)
+    a  = ntt(getnoise(send(1824:1855), 1))
+    bp = bp + a
+    a  = frombytes(received(0:1791))
+    v  = invntt(pointwise(a, v))
+    a  = getnoise(send(1824:1855), 2)
+    v  = v + a
+    a  = helprec(v, send(1824:1855), 3)
+    send = encode_b(bp, a)
+    shared = sha3(rec(v, a))
+\endcode
+
+Now we are down to 3904 bytes of parameter space and 6144 bytes of
+stack space.  We can save 1824 bytes of parameter space by combining
+the <i>send</i> and <i>received</i> buffers into one 2048 buffer.
+On entry, this combined buffer contains Alice's public key and on exit
+it contains Bob's public key.  Now it is 2080 bytes of parameter space.
+
+Note above that <i>noiseseed</i> was placed into bytes 1824-1855 of
+<i>send</i>.  This was to ensure that it did not overwrite the
+<i>received</i> value if the buffers were shared.
+
+This is the best we can do on systems that require that 16-bit values
+are aligned on 16-bit address boundaries.  If however we are operating on
+an 8-bit system like the AVR, we can do even better.  The <i>send</i>
+buffer is the same size as <i>bp</i>: 2048 bytes.  As long as we are
+careful to move the incoming values in <i>received</i> out of the way
+before-hand, we can use the <i>send</i> buffer as a temporary poly object:
+
+\code
+sharedb(shared[32], send[2048], received[1824]):
+    locals: a[2048], v[2048], seed[32], noiseseed[32]
+    noiseseed = randombytes(32)
+    (a, seed) = decode_a(received)
+    send = ntt(getnoise(noiseseed, 0))
+    v = invntt(pointwise(a, send))
+    send = getnoise(noiseseed, 2)
+    v = v + send
+    a = helprec(v, noiseseed, 3)
+    send(1792:2047) = encode_b_2nd_half(a)
+    shared = sha3(rec(v, a))
+    a = uniform(seed)
+    v = ntt(getnoise(noiseseed, 0))
+    a = pointwise(a, v)
+    v = ntt(getnoise(noiseseed, 1))
+    a = a + v
+    send(0:1791) = encode_b_1st_half(a)
+\endcode
+
+This requires 3904 bytes of parameter space and 4160 bytes of stack space.
+The parameter space can be further reduced to 2080 bytes if <i>send</i>
+and <i>received</i> occupy the same buffer.  Plus up to 400 bytes of
+stack overhead for sub-functions as before.
+
+Note that "ntt(getnoise(noiseseed, 0))" is evaluated twice.  This frees up
+a local variable earlier in the function, at the cost of some speed.
+
+\section newhope_small_summary Summary
+
+In summary, the three primitives of New Hope require the following amounts
+of memory on systems with byte alignment and buffer sharing:
+
+<table>
+<tr><td>Primitive</td><td>Parameter Space</td><td>Direct Stack Space</td><td>Stack with Overhead (400 bytes)</td><td>Parameters + Stack + Overhead</td></tr>
+<tr><td>keygen()</td><td align="right">1856</td><td align="right">4096</td><td align="right">4496</td><td align="right">6352</td></tr>
+<tr><td>sharedb()</td><td align="right">2080</td><td align="right">4160</td><td align="right">4560</td><td align="right">6640</td></tr>
+<tr><td>shareda()</td><td align="right">2080</td><td align="right">4096</td><td align="right">4496</td><td align="right">6576</td></tr>
+</table>
+
+On 16-bit, 32-bit, or 64-bit systems that lack byte alignment,
+with a full 2048-byte public key for Alice, and no buffer sharing,
+the maximum memory requirements are:
+
+<table>
+<tr><td>Primitive</td><td>Parameter Space</td><td>Direct Stack Space</td><td>Stack with Overhead (400 bytes)</td><td>Parameters + Stack + Overhead</td></tr>
+<tr><td>keygen()</td><td align="right">3872</td><td align="right">4096</td><td align="right">4496</td><td align="right">8368</td></tr>
+<tr><td>sharedb()</td><td align="right">3904</td><td align="right">6144</td><td align="right">6544</td><td align="right">10448</td></tr>
+<tr><td>shareda()</td><td align="right">4128</td><td align="right">4096</td><td align="right">4496</td><td align="right">8624</td></tr>
+</table>
+
+All operations can be performed in around 6.5K of memory on an 8-bit
+AVR Arduino system, and with at most 10.2K of memory on a 32-bit ARM
+Arduino system.
+
+*/

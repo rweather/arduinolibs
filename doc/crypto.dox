@@ -136,14 +136,21 @@ Ardunino Mega 2560 running at 16 MHz are similar:
 <tr><td>P521::sign()</td><td align="right">60514ms</td><td colspan="3">Digital signature generation</td></tr>
 <tr><td>P521::verify()</td><td align="right">109078ms</td><td colspan="3">Digital signature verification</td></tr>
 <tr><td>P521::derivePublicKey()</td><td align="right">46290ms</td><td colspan="3">Derive a public key from a private key</td></tr>
+<tr><td>NewHope::keygen(), Ref</td><td align="right">639ms</td><td colspan="3">Generate key pair for Alice, Ref version</td></tr>
+<tr><td>NewHope::sharedb(), Ref</td><td align="right">1237ms</td><td colspan="3">Generate shared secret and public key for Bob, Ref version</td></tr>
+<tr><td>NewHope::shareda(), Ref</td><td align="right">496ms</td><td colspan="3">Generate shared secret for Alice, Ref version</td></tr>
+<tr><td>NewHope::keygen(), Torref</td><td align="right">777ms</td><td colspan="3">Generate key pair for Alice, Torref version</td></tr>
+<tr><td>NewHope::sharedb(), Torref</td><td align="right">1376ms</td><td colspan="3">Generate shared secret and public key for Bob, Torref version</td></tr>
+<tr><td>NewHope::shareda(), Torref</td><td align="right">496ms</td><td colspan="3">Generate shared secret for Alice, Torref version</td></tr>
 </table>
 
 Where a cipher supports more than one key size (such as ChaCha), the values
 are typically almost identical for 128-bit and 256-bit keys so only the
 maximum is shown above.
 
-Due to the memory requirements, NewHope is not yet possible on AVR-based
-Arduino systems.
+Due to the memory requirements, P521 and NewHope performance was measured on
+an Arduino Mega 2560 running at 16 MHz.  They are too big to fit in the
+RAM size of the Uno.
 
 \subsection crypto_performance_arm Performance on ARM
 
@@ -213,7 +220,7 @@ All figures are for the Arduino Due running at 84 MHz:
 <tr><td>P521::verify()</td><td align="right">3423ms</td><td colspan="3">Digital signature verification</td></tr>
 <tr><td>P521::derivePublicKey()</td><td align="right">1503ms</td><td colspan="3">Derive a public key from a private key</td></tr>
 <tr><td>NewHope::keygen(), Ref</td><td align="right">29ms</td><td colspan="3">Generate key pair for Alice, Ref version</td></tr>
-<tr><td>NewHope::sharedb(), Ref</td><td align="right">40ms</td><td colspan="3">Generate shared secret and public key for Bob, Ref version</td></tr>
+<tr><td>NewHope::sharedb(), Ref</td><td align="right">41ms</td><td colspan="3">Generate shared secret and public key for Bob, Ref version</td></tr>
 <tr><td>NewHope::shareda(), Ref</td><td align="right">9ms</td><td colspan="3">Generate shared secret for Alice, Ref version</td></tr>
 <tr><td>NewHope::keygen(), Torref</td><td align="right">42ms</td><td colspan="3">Generate key pair for Alice, Torref version</td></tr>
 <tr><td>NewHope::sharedb(), Torref</td><td align="right">53ms</td><td colspan="3">Generate shared secret and public key for Bob, Torref version</td></tr>
