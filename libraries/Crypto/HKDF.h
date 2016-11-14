@@ -34,52 +34,70 @@
  * \sa Hash, SHA256
  */
 
-template < typename T >
-class HKDF
+template < typename T > class HKDF
 {
 public:
-    ~HKDF() { delete & hash; }
 
     /**
-     * \brief First phase of HKDF.
-     * \brief Extracts a pseudorandom key from a given key and salt.
-     *  \param salt Optional (might be NULL) salt value (a non-secret random value);
-     * 	\param saltLen The salt length in bytes. If salt is NUll this value is ignored.
+     * \brief Instanciates an HKDF object using a T cypher.
+     */
+    HKDF()
+    {
+	PRK = new uint8_t[hash.hashSize()];
+    }
+
+    ~HKDF()
+    {
+	delete & hash;
+	delete (uint8_t *) PRK;
+    }
+
+    /**
+     * \brief First phase of HKDF (aka extract).
+     * \brief Sets within a (PRK) pseudorandom key generated using a given key
+     * and salt.
+     *  \param salt Optional (might be NULL) salt value (non-secret random value).
+     * 	\param saltLen The salt length in bytes.
+     *  If salt is NUll this value is ignored.
      *  \param inputKey Input keying material.
      *	\param keyLen inputKey length in bytes.
-     *	\param outputKey a previous allocated buffer of the same length of the
-     *   hash function being used.
      *
      * Reference: RFC5869 - https://tools.ietf.org/html/rfc5869
      *
      * \sa expand()
      */
-    void extract(void *salt, size_t saltLen, void *inputKey, size_t keyLen, void *outputKey)
+    void setKey(const void *salt, size_t saltLen, const void *inputKey, size_t keyLen)
     {
-	uint8_t s[hash.hashSize()];
+	void *s;
+	uint8_t tmp[hash.hashSize()];
+
 	if (salt == NULL) {
-	    memset(s, 0, hash.hashSize());
-	    salt = s;
+	    s = tmp;
 	    saltLen = hash.hashSize();
+	    memset(s, 0, saltLen);
+	} else {
+	    s = (void *) salt;
 	}
 
-	hash.resetHMAC(salt, saltLen);
+	hash.resetHMAC(s, saltLen);
 	hash.update(inputKey, keyLen);
-	hash.finalizeHMAC(salt, saltLen, outputKey, hash.hashSize());
+	hash.finalizeHMAC(s, saltLen, PRK, hash.hashSize());
     }
 
     /**
      * \brief Second phase of HKDF.
-     * 	\brief Expands a given pseudorandom key using a given info.
-     *  \param inputKey The pseudorandom key extracted with extract().
-     *	\param info The optional (can be NULL) context and application specific information.
+     * 	\brief Expands the PRK (pseudorandom key) using a given info, 
+     *  to a given length L.
+     *  If the PRK is not set, the result is unpredictible.
+     *	\param info The optional (can be NULL) context and 
+     *  application specific information.
      *	\param infoLen The length of info. If info is NULL this value is ignored.
      *	\param outputKey Output keying material. A buffer of L lenght bytes.
      *	\param L The length of outputKey in bytes.
      *
      * \sa extract()
      */
-    void expand(void *inputKey, void *info, size_t infoLen,void *outputKey, size_t L)
+    void expand(const void *info, size_t infoLen, void *outputKey, const size_t L)
     {
 	int N = L / hash.hashSize();
 	uint8_t i;
@@ -93,18 +111,18 @@ public:
 	    memcpy(salt + hash.hashSize(), info, infoLen);
 	}
 	// Calculate T(1)
-	hash.resetHMAC(inputKey, hash.hashSize());
+	hash.resetHMAC (PRK, hash.hashSize());
 	hash.update(salt + hash.hashSize(), infoLen + 1);
-	hash.finalizeHMAC(inputKey, hash.hashSize(), outputKey, hash.hashSize());
+	hash.finalizeHMAC (PRK, hash.hashSize(), outputKey, hash.hashSize());
 
 	salt[saltLen - 1] += 1;
 	memcpy(salt, outputKey, hash.hashSize());
 
 	// Calculate T(2) ... T(N)
 	for (i = 1; i < N; i++) {
-	    hash.resetHMAC(inputKey, hash.hashSize());
+	    hash.resetHMAC(PRK, hash.hashSize());
 	    hash.update(salt, saltLen);
-	    hash.finalizeHMAC(inputKey,
+	    hash.finalizeHMAC(PRK,
 			      hash.hashSize(),
 			      ((uint8_t *) outputKey) + (i * hash.hashSize()),
 			      hash.hashSize());
@@ -119,12 +137,9 @@ public:
 	if (L % hash.hashSize()) {
 	    uint8_t rslt[hash.hashSize()];
 	    int remain = L - N * hash.hashSize();
-	    hash.resetHMAC(inputKey, hash.hashSize());
+	    hash.resetHMAC(PRK, hash.hashSize());
 	    hash.update(salt, saltLen);
-	    hash.finalizeHMAC(inputKey,
-			      hash.hashSize(),
-			      rslt,
-			      hash.hashSize());
+	    hash.finalizeHMAC(PRK, hash.hashSize(), rslt, hash.hashSize());
 
 	    memcpy(((uint8_t *) outputKey) + (N * hash.hashSize()),
 		   rslt,
@@ -132,9 +147,18 @@ public:
 	}
     }
 
+    /**
+     * \brief Clearing the Pseudorandom Key.
+     *
+     */
+    void clear()
+    {
+	memset (PRK, 0, hash.hashSize());
+    }
 
-  private:
-      T hash;
+private:
+    T hash;
+    void *PRK; // The Pseudorandom Key.
 };
 
 #endif

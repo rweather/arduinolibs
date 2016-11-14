@@ -159,36 +159,25 @@ static TestHashVectorHKDF const testVectorHKDF_SHA256_3 = {
 
 HKDF < SHA256 > hkdfsha256;
 
-void testHKDF(HKDF < SHA256 > *hash, const struct TestHashVectorHKDF *test)
+void
+testHKDF (HKDF < SHA256 > *hash, const struct TestHashVectorHKDF *test)
 {
-    uint8_t prk[HASH_SIZE];
     uint8_t okm[test->L];
     Serial.print(test->name);
     Serial.print(" ... ");
 
-    hash->extract(test->salt,
-		  test->salt_size,
-		  test->IKM,
-		  test->IKM_size,
-		  prk);
-
-    if (!memcmp(prk, test->PRK, HASH_SIZE))
-	Serial.print("Extract: Passed");
-    else
-	Serial.print("Extract Failed");
-
-
-    Serial.print(" ... ");
-    hash->expand(prk, test->info, test->info_size, okm, test->L);
+    hash->setKey(test->salt, test->salt_size, test->IKM, test->IKM_size);
+    hash->expand(test->info, test->info_size, okm, test->L);
+    hash->clear();
 
     if (!memcmp(okm, test->OKM, test->L))
-	Serial.println("Expand: Passed");
+	Serial.println("Passed");
     else
-	Serial.println("Expand: Failed");
-
+	Serial.println("Failed");
 }
 
-void setup()
+void
+setup()
 {
     Serial.begin(9600);
 
@@ -204,6 +193,7 @@ void setup()
     testHKDF(&hkdfsha256, &testVectorHKDF_SHA256_3);
 }
 
-void loop()
+void
+loop()
 {
 }
