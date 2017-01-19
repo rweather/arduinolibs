@@ -24,6 +24,7 @@
 #define CRYPTO_HKDF_h
 
 #include "Hash.h"
+#include <string.h>
 
 /**
  * \class HKDF HKDF.h <HKDF.h>
@@ -145,6 +146,7 @@ public:
 		   rslt,
 		   remain);
 	}
+        hash.clear();
     }
 
     /**
@@ -154,6 +156,7 @@ public:
     void clear()
     {
 	memset (PRK, 0, hash.hashSize());
+        hash.clear();
     }
 
 private:
