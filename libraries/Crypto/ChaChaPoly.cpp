@@ -81,6 +81,10 @@ bool ChaChaPoly::setKey(const uint8_t *key, size_t len)
     return chacha.setKey(key, len);
 }
 
+void ChaChaPoly::setNumRounds(uint8_t numRounds){
+    chacha.setNumRounds(numRounds);
+}
+
 bool ChaChaPoly::setIV(const uint8_t *iv, size_t len)
 {
     // ChaCha::setIV() supports both 64-bit and 96-bit nonces.
