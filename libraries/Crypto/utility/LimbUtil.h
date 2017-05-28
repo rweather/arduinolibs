@@ -57,7 +57,7 @@
 #define LIMB_PAIR(x,y)  LIMB((x)), LIMB((y))
 #elif BIGNUMBER_LIMB_16BIT
 #define LIMB(value)     ((uint16_t)(value)), \
-                        ((uint16_t)((value) >> 16))
+                        ((uint16_t)(((uint32_t)(value)) >> 16))
 #define LIMB_PAIR(x,y)  LIMB((x)), LIMB((y))
 #elif BIGNUMBER_LIMB_32BIT
 #define LIMB(value)     (value)
