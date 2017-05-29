@@ -48,6 +48,7 @@ public:
     void computeTag(void *tag, size_t len);
     bool checkTag(const void *tag, size_t len);
 
+    void setNumRounds(uint8_t numRounds);
     void clear();
 
 private:
