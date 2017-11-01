@@ -143,129 +143,111 @@ bool Speck::setKey(const uint8_t *key, size_t len)
     );
 
     // Expand the key to the full key schedule.
-    __asm__ __volatile__ (
-        "1:\n"
-        // l[li_out] = (k[i] + rightRotate8_64(l[li_in])) ^ i;
-        "add %A1,%2\n"              // X = &(l[li_in])
-        "adc %B1,__zero_reg__\n"
-        "ld r15,X+\n"               // x = rightRotate8_64(l[li_in])
-        "ld r8,X+\n"
-        "ld r9,X+\n"
-        "ld r10,X+\n"
-        "ld r11,X+\n"
-        "ld r12,X+\n"
-        "ld r13,X+\n"
-        "ld r14,X+\n"
+    uint8_t li_in = 0;
+    uint8_t li_out = m - 1;
+    for (uint8_t i = 0; i < (rounds - 1); ++i) {
+        __asm__ __volatile__ (
+            // l[li_out] = (k[i] + rightRotate8_64(l[li_in])) ^ i;
+            "ld r15,X+\n"               // x = rightRotate8_64(l[li_in])
+            "ld r8,X+\n"
+            "ld r9,X+\n"
+            "ld r10,X+\n"
+            "ld r11,X+\n"
+            "ld r12,X+\n"
+            "ld r13,X+\n"
+            "ld r14,X+\n"
 
-        "ld r16,Z+\n"               // y = k[i]
-        "ld r17,Z+\n" 
-        "ld r18,Z+\n" 
-        "ld r19,Z+\n" 
-        "ld r20,Z+\n" 
-        "ld r21,Z+\n" 
-        "ld r22,Z+\n" 
-        "ld r23,Z+\n" 
+            "ld r16,Z+\n"               // y = k[i]
+            "ld r17,Z+\n"
+            "ld r18,Z+\n"
+            "ld r19,Z+\n"
+            "ld r20,Z+\n"
+            "ld r21,Z+\n"
+            "ld r22,Z+\n"
+            "ld r23,Z+\n"
 
-        "add r8,r16\n"              // x += y
-        "adc r9,r17\n"
-        "adc r10,r18\n"
-        "adc r11,r19\n"
-        "adc r12,r20\n"
-        "adc r13,r21\n"
-        "adc r14,r22\n"
-        "adc r15,r23\n"
+            "add r8,r16\n"              // x += y
+            "adc r9,r17\n"
+            "adc r10,r18\n"
+            "adc r11,r19\n"
+            "adc r12,r20\n"
+            "adc r13,r21\n"
+            "adc r14,r22\n"
+            "adc r15,r23\n"
 
-        "eor r8,%4\n"               // x ^= i
+            "eor r8,%3\n"               // x ^= i
 
-        // X = X - li_in + li_out
-        "ldi r24,8\n"               // li_in = li_in + 1
-        "add %2,r24\n"
-        "sub %A1,%2\n"              // return X to its initial value
-        "sbc %B1,__zero_reg__\n"
-        "ldi r25,0x1f\n"
-        "and %2,r25\n"              // li_in = li_in % 4
-        "add %A1,%3\n"              // X = &(l[li_out])
-        "adc %B1,__zero_reg__\n"
+            // k[i + 1] = leftRotate3_64(k[i]) ^ l[li_out];
+            "movw r26,%A2\n"            // l[li_out] = x
+            "st X+,r8\n"
+            "st X+,r9\n"
+            "st X+,r10\n"
+            "st X+,r11\n"
+            "st X+,r12\n"
+            "st X+,r13\n"
+            "st X+,r14\n"
+            "st X+,r15\n"
 
-        "st X+,r8\n"                // l[li_out] = x
-        "st X+,r9\n"
-        "st X+,r10\n"
-        "st X+,r11\n"
-        "st X+,r12\n"
-        "st X+,r13\n"
-        "st X+,r14\n"
-        "st X+,r15\n"
+            "lsl r16\n"                 // y = leftRotate1_64(y)
+            "rol r17\n"
+            "rol r18\n"
+            "rol r19\n"
+            "rol r20\n"
+            "rol r21\n"
+            "rol r22\n"
+            "rol r23\n"
+            "adc r16,__zero_reg__\n"
 
-        "add %3,r24\n"              // li_out = li_out + 1
-        "sub %A1,%3\n"              // return X to its initial value
-        "sbc %B1,__zero_reg__\n"
-        "and %3,r25\n"              // li_out = li_out % 4
+            "lsl r16\n"                 // y = leftRotate1_64(y)
+            "rol r17\n"
+            "rol r18\n"
+            "rol r19\n"
+            "rol r20\n"
+            "rol r21\n"
+            "rol r22\n"
+            "rol r23\n"
+            "adc r16,__zero_reg__\n"
 
-        // k[i + 1] = leftRotate3_64(k[i]) ^ l[li_out];
-        "lsl r16\n"                 // y = leftRotate1_64(y)
-        "rol r17\n"
-        "rol r18\n"
-        "rol r19\n"
-        "rol r20\n"
-        "rol r21\n"
-        "rol r22\n"
-        "rol r23\n"
-        "adc r16,__zero_reg__\n"
+            "lsl r16\n"                 // y = leftRotate1_64(y)
+            "rol r17\n"
+            "rol r18\n"
+            "rol r19\n"
+            "rol r20\n"
+            "rol r21\n"
+            "rol r22\n"
+            "rol r23\n"
+            "adc r16,__zero_reg__\n"
 
-        "lsl r16\n"                 // y = leftRotate1_64(y)
-        "rol r17\n"
-        "rol r18\n"
-        "rol r19\n"
-        "rol r20\n"
-        "rol r21\n"
-        "rol r22\n"
-        "rol r23\n"
-        "adc r16,__zero_reg__\n"
+            "eor r16,r8\n"              // y ^= x
+            "eor r17,r9\n"
+            "eor r18,r10\n"
+            "eor r19,r11\n"
+            "eor r20,r12\n"
+            "eor r21,r13\n"
+            "eor r22,r14\n"
+            "eor r23,r15\n"
 
-        "lsl r16\n"                 // y = leftRotate1_64(y)
-        "rol r17\n"
-        "rol r18\n"
-        "rol r19\n"
-        "rol r20\n"
-        "rol r21\n"
-        "rol r22\n"
-        "rol r23\n"
-        "adc r16,__zero_reg__\n"
+            "st Z+,r16\n"               // k[i + 1] = y
+            "st Z+,r17\n"
+            "st Z+,r18\n"
+            "st Z+,r19\n"
+            "st Z+,r20\n"
+            "st Z+,r21\n"
+            "st Z+,r22\n"
+            "st Z+,r23\n"
 
-        "eor r16,r8\n"              // y ^= x
-        "eor r17,r9\n"
-        "eor r18,r10\n"
-        "eor r19,r11\n"
-        "eor r20,r12\n"
-        "eor r21,r13\n"
-        "eor r22,r14\n"
-        "eor r23,r15\n"
-
-        "st Z,r16\n"                // k[i + 1] = y
-        "std Z+1,r17\n"
-        "std Z+2,r18\n"
-        "std Z+3,r19\n"
-        "std Z+4,r20\n"
-        "std Z+5,r21\n"
-        "std Z+6,r22\n"
-        "std Z+7,r23\n"
-
-        // Loop
-        "inc %4\n"                  // ++i
-        "dec %5\n"                  // --rounds
-        "breq 2f\n"
-        "rjmp 1b\n"
-        "2:\n"
-
-        : : "z"(k), "x"(l),
-            "r"((uint8_t)0),                // initial value of li_in
-            "r"((uint8_t)((m - 1) * 8)),    // initial value of li_out
-            "r"(0),                         // initial value of i
-            "r"(rounds - 1)
-        :  "r8",  "r9", "r10", "r11", "r12", "r13", "r14", "r15",
-          "r16", "r17", "r18", "r19", "r20", "r21", "r22", "r23",
-          "r24", "r25"
-    );
+            : : "z"(&(k[i])), "x"(&(l[li_in])),
+                "r"(&(l[li_out])),
+                "r"(i)
+            :  "r8",  "r9", "r10", "r11", "r12", "r13", "r14", "r15",
+              "r16", "r17", "r18", "r19", "r20", "r21", "r22", "r23",
+              "r24", "r25"
+        );
+        if ((++li_in) >= m)
+            li_in = 0;
+        if ((++li_out) >= m)
+            li_out = 0;
+    }
 #else
     uint64_t l[4];
     uint8_t m;
@@ -335,41 +317,32 @@ void Speck::encryptBlock(uint8_t *output, const uint8_t *input)
     __asm__ __volatile__ (
         "1:\n"
         // x = (rightRotate8_64(x) + y) ^ *s++;
-        "mov __tmp_reg__,%A0\n"     // x = rightRotate8_64(x)
-        "mov %A0,%B0\n"
-        "mov %B0,%C0\n"
-        "mov %C0,%D0\n"
-        "mov %D0,%A1\n"
-        "mov %A1,%B1\n"
-        "mov %B1,%C1\n"
-        "mov %C1,%D1\n"
-        "mov %D1,__tmp_reg__\n"
-
-        "add %A0,%A2\n"             // x += y
-        "adc %B0,%B2\n"
-        "adc %C0,%C2\n"
-        "adc %D0,%D2\n"
-        "adc %A1,%A3\n"
-        "adc %B1,%B3\n"
-        "adc %C1,%C3\n"
-        "adc %D1,%D3\n"
+        "add %B0,%A2\n"             // x = rightRotate8_64(x), x += y
+        "adc %C0,%B2\n"             // Note: right rotate is implicit.
+        "adc %D0,%C2\n"
+        "adc %A1,%D2\n"
+        "adc %B1,%A3\n"
+        "adc %C1,%B3\n"
+        "adc %D1,%C3\n"
+        "adc %A0,%D3\n"
 
         "ld __tmp_reg__,Z+\n"       // x ^= *s++
-        "eor %A0,__tmp_reg__\n"
-        "ld __tmp_reg__,Z+\n"
-        "eor %B0,__tmp_reg__\n"
-        "ld __tmp_reg__,Z+\n"
-        "eor %C0,__tmp_reg__\n"
-        "ld __tmp_reg__,Z+\n"
-        "eor %D0,__tmp_reg__\n"
-        "ld __tmp_reg__,Z+\n"
-        "eor %A1,__tmp_reg__\n"
-        "ld __tmp_reg__,Z+\n"
-        "eor %B1,__tmp_reg__\n"
-        "ld __tmp_reg__,Z+\n"
-        "eor %C1,__tmp_reg__\n"
-        "ld __tmp_reg__,Z+\n"
-        "eor %D1,__tmp_reg__\n"
+        "eor __tmp_reg__,%B0\n"     // Also fully apply the right rotate.
+        "ld %B0,Z+\n"
+        "eor %B0,%C0\n"
+        "ld %C0,Z+\n"
+        "eor %C0,%D0\n"
+        "ld %D0,Z+\n"
+        "eor %D0,%A1\n"
+        "ld %A1,Z+\n"
+        "eor %A1,%B1\n"
+        "ld %B1,Z+\n"
+        "eor %B1,%C1\n"
+        "ld %C1,Z+\n"
+        "eor %C1,%D1\n"
+        "ld %D1,Z+\n"
+        "eor %D1,%A0\n"
+        "mov %A0,__tmp_reg__\n"
 
         // y = leftRotate3_64(y) ^ x;
         "lsl %A2\n"                 // y = leftRotate1_64(y)
@@ -530,40 +503,31 @@ void Speck::decryptBlock(uint8_t *output, const uint8_t *input)
 
         // x = leftRotate8_64((x ^ *s--) - y);
         "ld __tmp_reg__,-Z\n"       // x ^= *s--
-        "eor %D1,__tmp_reg__\n"
-        "ld __tmp_reg__,-Z\n"
-        "eor %C1,__tmp_reg__\n"
-        "ld __tmp_reg__,-Z\n"
-        "eor %B1,__tmp_reg__\n"
-        "ld __tmp_reg__,-Z\n"
-        "eor %A1,__tmp_reg__\n"
-        "ld __tmp_reg__,-Z\n"
-        "eor %D0,__tmp_reg__\n"
-        "ld __tmp_reg__,-Z\n"
-        "eor %C0,__tmp_reg__\n"
-        "ld __tmp_reg__,-Z\n"
-        "eor %B0,__tmp_reg__\n"
-        "ld __tmp_reg__,-Z\n"
-        "eor %A0,__tmp_reg__\n"
-
-        "sub %A0,%A2\n"             // x -= y
-        "sbc %B0,%B2\n"
-        "sbc %C0,%C2\n"
-        "sbc %D0,%D2\n"
-        "sbc %A1,%A3\n"
-        "sbc %B1,%B3\n"
-        "sbc %C1,%C3\n"
-        "sbc %D1,%D3\n"
-
-        "mov __tmp_reg__,%D1\n"     // x = lefRotate8_64(x)
-        "mov %D1,%C1\n"
-        "mov %C1,%B1\n"
-        "mov %B1,%A1\n"
-        "mov %A1,%D0\n"
-        "mov %D0,%C0\n"
-        "mov %C0,%B0\n"
-        "mov %B0,%A0\n"
+        "eor __tmp_reg__,%D1\n"     // Note: also implicitly left-rotates regs
+        "ld %D1,-Z\n"
+        "eor %D1,%C1\n"
+        "ld %C1,-Z\n"
+        "eor %C1,%B1\n"
+        "ld %B1,-Z\n"
+        "eor %B1,%A1\n"
+        "ld %A1,-Z\n"
+        "eor %A1,%D0\n"
+        "ld %D0,-Z\n"
+        "eor %D0,%C0\n"
+        "ld %C0,-Z\n"
+        "eor %C0,%B0\n"
+        "ld %B0,-Z\n"
+        "eor %B0,%A0\n"
         "mov %A0,__tmp_reg__\n"
+
+        "sub %B0,%A2\n"             // x -= y
+        "sbc %C0,%B2\n"             // Note: regs are already left-rotated
+        "sbc %D0,%C2\n"
+        "sbc %A1,%D2\n"
+        "sbc %B1,%A3\n"
+        "sbc %C1,%B3\n"
+        "sbc %D1,%C3\n"
+        "sbc %A0,%D3\n"
 
         // Loop
         "dec %5\n"                  // --round
