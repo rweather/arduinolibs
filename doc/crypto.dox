@@ -81,27 +81,27 @@ Ardunino Mega 2560 running at 16 MHz are similar:
 <tr><td>ChaCha (20 rounds)</td><td align="right">14.87us</td><td align="right">14.88us</td><td align="right">43.74us</td><td align="right">132</td></tr>
 <tr><td>ChaCha (12 rounds)</td><td align="right">10.38us</td><td align="right">10.38us</td><td align="right">43.74us</td><td align="right">132</td></tr>
 <tr><td>ChaCha (8 rounds)</td><td align="right">8.13us</td><td align="right">8.14us</td><td align="right">43.74us</td><td align="right">132</td></tr>
-<tr><td>Speck (128-bit key, ECB mode)</td><td align="right">10.72us</td><td align="right">11.09us</td><td align="right">287.02us</td><td align="right">275</td></tr>
-<tr><td>Speck (192-bit key, ECB mode)</td><td align="right">11.03us</td><td align="right">11.42us</td><td align="right">298.21us</td><td align="right">275</td></tr>
-<tr><td>Speck (256-bit key, ECB mode)</td><td align="right">11.35us</td><td align="right">11.74us</td><td align="right">309.66us</td><td align="right">275</td></tr>
-<tr><td>SpeckSmall (128-bit key, ECB mode)</td><td align="right">35.25us</td><td align="right">36.46us</td><td align="right">207.66us</td><td align="right">67</td></tr>
-<tr><td>SpeckSmall (192-bit key, ECB mode)</td><td align="right">36.56us</td><td align="right">37.56us</td><td align="right">220.55us</td><td align="right">67</td></tr>
-<tr><td>SpeckSmall (256-bit key, ECB mode)</td><td align="right">37.87us</td><td align="right">38.67us</td><td align="right">233.32us</td><td align="right">67</td></tr>
-<tr><td>SpeckTiny (128-bit key, ECB mode)</td><td align="right">35.25us</td><td align="right"> </td><td align="right">10.22us</td><td align="right">35</td></tr>
-<tr><td>SpeckTiny (192-bit key, ECB mode)</td><td align="right">36.56us</td><td align="right"> </td><td align="right">13.62us</td><td align="right">35</td></tr>
-<tr><td>SpeckTiny (256-bit key, ECB mode)</td><td align="right">37.87us</td><td align="right"> </td><td align="right">16.89us</td><td align="right">35</td></tr>
+<tr><td>Speck (128-bit key, ECB mode)</td><td align="right">9.74us</td><td align="right">10.12us</td><td align="right">253.94us</td><td align="right">275</td></tr>
+<tr><td>Speck (192-bit key, ECB mode)</td><td align="right">10.03us</td><td align="right">10.41us</td><td align="right">264.63us</td><td align="right">275</td></tr>
+<tr><td>Speck (256-bit key, ECB mode)</td><td align="right">10.31us</td><td align="right">10.71us</td><td align="right">275.26us</td><td align="right">275</td></tr>
+<tr><td>SpeckSmall (128-bit key, ECB mode)</td><td align="right">33.93us</td><td align="right">34.82us</td><td align="right">207.66us</td><td align="right">67</td></tr>
+<tr><td>SpeckSmall (192-bit key, ECB mode)</td><td align="right">35.20us</td><td align="right">35.88us</td><td align="right">220.55us</td><td align="right">67</td></tr>
+<tr><td>SpeckSmall (256-bit key, ECB mode)</td><td align="right">36.46us</td><td align="right">36.93us</td><td align="right">233.32us</td><td align="right">67</td></tr>
+<tr><td>SpeckTiny (128-bit key, ECB mode)</td><td align="right">33.93us</td><td align="right"> </td><td align="right">10.22us</td><td align="right">35</td></tr>
+<tr><td>SpeckTiny (192-bit key, ECB mode)</td><td align="right">35.20us</td><td align="right"> </td><td align="right">13.62us</td><td align="right">35</td></tr>
+<tr><td>SpeckTiny (256-bit key, ECB mode)</td><td align="right">36.46us</td><td align="right"> </td><td align="right">16.89us</td><td align="right">35</td></tr>
 <tr><td colspan="5"> </td></tr>
 <tr><td>AEAD Algorithm</td><td align="right">Encryption (per byte)</td><td align="right">Decryption (per byte)</td><td align="right">Key Setup</td><td>State Size (bytes)</td></tr>
 <tr><td>ChaChaPoly</td><td align="right">41.20us</td><td align="right">41.19us</td><td align="right">902.36us</td><td align="right">221</td></tr>
 <tr><td>GCM&lt;AES128&gt;</td><td align="right">109.71us</td><td align="right">109.26us</td><td align="right">1265.69us</td><td align="right">284</td></tr>
 <tr><td>GCM&lt;AES192&gt;</td><td align="right">116.38us</td><td align="right">115.92us</td><td align="right">1485.56us</td><td align="right">316</td></tr>
 <tr><td>GCM&lt;AES256&gt;</td><td align="right">123.04us</td><td align="right">122.59us</td><td align="right">1760.28us</td><td align="right">348</td></tr>
-<tr><td>GCM&lt;Speck&gt; (256-bit key)</td><td align="right">87.78us</td><td align="right">87.32us</td><td align="right">714.41us</td><td align="right">378</td></tr>
-<tr><td>GCM&lt;SpeckTiny&gt; (256-bit key)</td><td align="right">114.30us</td><td align="right">113.84us</td><td align="right">1270.32us</td><td align="right">138</td></tr>
+<tr><td>GCM&lt;Speck&gt; (256-bit key)</td><td align="right">86.74us</td><td align="right">86.29us</td><td align="right">646.88us</td><td align="right">378</td></tr>
+<tr><td>GCM&lt;SpeckTiny&gt; (256-bit key)</td><td align="right">112.90us</td><td align="right">112.44us</td><td align="right">1225.48us</td><td align="right">138</td></tr>
 <tr><td>EAX&lt;AES128&gt;</td><td align="right">71.14us</td><td align="right">71.14us</td><td align="right">1311.97us</td><td align="right">268</td></tr>
 <tr><td>EAX&lt;AES256&gt;</td><td align="right">97.80us</td><td align="right">97.80us</td><td align="right">1806.57us</td><td align="right">332</td></tr>
-<tr><td>EAX&lt;Speck&gt; (256-bit key)</td><td align="right">27.27us</td><td align="right">27.26us</td><td align="right">760.74us</td><td align="right">362</td></tr>
-<tr><td>EAX&lt;SpeckTiny&gt; (256-bit key)</td><td align="right">80.31us</td><td align="right">80.31us</td><td align="right">1316.60us</td><td align="right">122</td></tr>
+<tr><td>EAX&lt;Speck&gt; (256-bit key)</td><td align="right">25.89us</td><td align="right">25.88us</td><td align="right">690.63us</td><td align="right">362</td></tr>
+<tr><td>EAX&lt;SpeckTiny&gt; (256-bit key)</td><td align="right">78.20us</td><td align="right">78.20us</td><td align="right">1269.19us</td><td align="right">122</td></tr>
 <tr><td colspan="5"> </td></tr>
 <tr><td>Hash Algorithm</td><td align="right">Hashing (per byte)</td><td align="right">Finalization</td><td> </td><td>State Size (bytes)</td></tr>
 <tr><td>SHA256</td><td align="right">43.85us</td><td align="right">2841.04us</td><td align="right"> </td><td align="right">107</td></tr>
