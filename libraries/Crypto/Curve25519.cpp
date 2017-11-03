@@ -43,7 +43,8 @@
 
 // Global switch to enable/disable AVR inline assembly optimizations.
 #if defined(__AVR__)
-#define CURVE25519_ASM_AVR 1
+// Disabled for now - there are issues with newer Arduino compilers.  FIXME
+//#define CURVE25519_ASM_AVR 1
 #endif
 
 // The overhead of clean() calls in mul(), reduceQuick(), etc can
