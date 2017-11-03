@@ -1,15 +1,11 @@
 
-Arduino Libraries
-=================
+Important Note
+==============
 
-This distribution contains a bunch of libraries and example applications
-that I have made for Arduino, covering a variety of tasks from blinking LED's
-to LCD's and RTC-based alarm clocks.  They are distributed under the
-terms of the MIT license.
+This is a temporary useless fork with XXTEA implementation (which is definitly not a real secure solution).
 
-The [documentation](http://rweather.github.com/arduinolibs/index.html)
-contains more information on the libraries and examples.
+I made this for my own testings.
 
-For more information on these libraries, to report bugs, or to suggest
-improvements, please contact the author Rhys Weatherley via
-[email](mailto:rhys.weatherley@gmail.com).
+You should probably get back to the original and excellent work from rweather:
+[arduinolibs](http://rweather.github.com/arduinolibs/index.html)
+
