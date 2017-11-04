@@ -34,7 +34,7 @@ public:
     RNGClass();
     ~RNGClass();
 
-    void begin(const char *tag, int eepromAddress);
+    void begin(const char *tag);
     void addNoiseSource(NoiseSource &source);
 
     void setAutoSaveTime(uint16_t minutes);
@@ -55,7 +55,6 @@ public:
 private:
     uint32_t block[16];
     uint32_t stream[16];
-    int address;
     uint16_t credits : 15;
     uint16_t firstSave : 1;
     unsigned long timer;

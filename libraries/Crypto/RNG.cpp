@@ -35,6 +35,8 @@
 #define RNG_WATCHDOG 1      // Harvest entropy from watchdog jitter.
 #include <avr/eeprom.h>
 #include <avr/wdt.h>
+#include <avr/io.h>
+#define RNG_EEPROM_ADDRESS (E2END + 1 - RNGClass::SEED_SIZE)
 #endif
 #include <string.h>
 
@@ -73,8 +75,8 @@
  *     Ethernet.begin(mac_address);
  *
  *     // Initialize the random number generator with the application tag
- *     // "MyApp 1.0" and load the previous seed from EEPROM address 950.
- *     RNG.begin("MyApp 1.0", 950);
+ *     // "MyApp 1.0" and load the previous seed from EEPROM.
+ *     RNG.begin("MyApp 1.0");
  *
  *     // Stir in the Ethernet MAC address.
  *     RNG.stir(mac_address, sizeof(mac_address));
@@ -101,8 +103,8 @@
  * \endcode
  *
  * The loop() function will automatically save the random number seed on a
- * regular basis.  By default the seed is saved every hour but this can be
- * changed using setAutoSaveTime().
+ * regular basis to the last SEED_SIZE bytes of EEPROM memory.  By default
+ * the seed is saved every hour but this can be changed using setAutoSaveTime().
  *
  * Keep in mind that saving too often may cause the EEPROM to wear out quicker.
  * It is wise to limit saving to once an hour or once a day depending
@@ -136,6 +138,9 @@ RNGClass RNG;
 /**
  * \var RNGClass::SEED_SIZE
  * \brief Size of a saved random number seed in EEPROM space.
+ *
+ * The seed is saved into the last SEED_SIZE bytes of EEPROM memory.
+ * The address is dependent upon the size of EEPROM fitted in the device.
  */
 
 // Number of ChaCha hash rounds to use for random number generation.
@@ -228,8 +233,7 @@ ISR(WDT_vect)
  * \sa begin()
  */
 RNGClass::RNGClass()
-    : address(0)
-    , credits(0)
+    : credits(0)
     , firstSave(1)
     , timer(0)
     , timeout(3600000UL)    // 1 hour in milliseconds
@@ -344,27 +348,19 @@ static void eraseAndWriteSeed()
  * usually this should be a value that is unique to the application and
  * version such as "MyApp 1.0" so that different applications do not
  * generate the same sequence of values upon first boot.
- * \param eepromAddress The EEPROM address to load the previously saved
- * seed from and to save new seeds when save() is called.  There must be
- * at least SEED_SIZE (49) bytes of EEPROM space available at the address.
  *
  * This function should be followed by calls to addNoiseSource() to
  * register the application's noise sources.
  *
- * The \a eepromAddress is ignored on the Arduino Due.  The seed is instead
- * stored in the last page of system flash memory.
- *
  * \sa addNoiseSource(), stir(), save()
  */
-void RNGClass::begin(const char *tag, int eepromAddress)
+void RNGClass::begin(const char *tag)
 {
-    // Save the EEPROM address for use by save().
-    address = eepromAddress;
-
     // Initialize the ChaCha20 input block from the saved seed.
     memcpy_P(block, tagRNG, sizeof(tagRNG));
     memcpy_P(block + 4, initRNG, sizeof(initRNG));
 #if defined(RNG_EEPROM)
+    int address = RNG_EEPROM_ADDRESS;
     if (eeprom_read_byte((const uint8_t *)address) == 'S') {
         // We have a saved seed: XOR it with the initialization block.
         for (int posn = 0; posn < 12; ++posn) {
@@ -691,6 +687,7 @@ void RNGClass::save()
     ++(block[12]);
     ChaCha::hashCore(stream, block, RNG_ROUNDS);
 #if defined(RNG_EEPROM)
+    int address = RNG_EEPROM_ADDRESS;
     eeprom_write_block(stream, (void *)(address + 1), 48);
     eeprom_update_byte((uint8_t *)address, 'S');
 #elif defined(RNG_DUE_TRNG)
@@ -808,6 +805,7 @@ void RNGClass::destroy()
     clean(block);
     clean(stream);
 #if defined(RNG_EEPROM)
+    int address = RNG_EEPROM_ADDRESS;
     for (int posn = 0; posn < SEED_SIZE; ++posn)
         eeprom_write_byte((uint8_t *)(address + posn), 0xFF);
 #elif defined(RNG_DUE_TRNG)

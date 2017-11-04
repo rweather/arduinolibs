@@ -908,7 +908,7 @@ void setup()
     // Start the random number generator.  We don't initialise a noise
     // source here because we don't need one for testing purposes.
     // Real applications should of course use a proper noise source.
-    RNG.begin("TestNewHope 1.0", 950);
+    RNG.begin("TestNewHope 1.0");
 
     // Perform the tests.
     Serial.println();

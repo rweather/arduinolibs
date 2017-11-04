@@ -11,9 +11,6 @@
 // even if the input noise or seed data is otherwise identical.
 #define RNG_APP_TAG "MyApp 1.0"
 
-// EEPROM address to save the random number seed at.
-#define RNG_EEPROM_ADDRESS 950
-
 // Noise source to seed the random number generator.
 TransistorNoiseSource noise(A1);
 //RingOscillatorNoiseSource noise;
@@ -28,7 +25,7 @@ void setup() {
     Serial.println("start");
 
     // Initialize the random number generator.
-    RNG.begin(RNG_APP_TAG, RNG_EEPROM_ADDRESS);
+    RNG.begin(RNG_APP_TAG);
 
     // Add the noise source to the list of sources known to RNG.
     RNG.addNoiseSource(noise);

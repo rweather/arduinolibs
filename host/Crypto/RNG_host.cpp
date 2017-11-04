@@ -57,7 +57,7 @@ RNGClass::~RNGClass()
     clean(stream);
 }
 
-void RNGClass::begin(const char *tag, int eepromAddress)
+void RNGClass::begin(const char *tag)
 {
 }
 

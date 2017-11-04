@@ -133,8 +133,8 @@ all of the application's noise sources:
 \code
 void setup() {
     // Initialize the random number generator with the application tag
-    // "MyApp 1.0" and load the previous seed from EEPROM address 950.
-    RNG.begin("MyApp 1.0", 950);
+    // "MyApp 1.0" and load the previous seed from EEPROM.
+    RNG.begin("MyApp 1.0");
 
     // Add the noise source to the list of sources known to RNG.
     RNG.addNoiseSource(noise);
@@ -143,17 +143,16 @@ void setup() {
 }
 \endcode
 
-The begin() function is passed two arguments: a tag string that should
-be different for every application and an EEPROM address to use to
-load and save the random number seed.  The tag string ensures that
-different applications and versions will generate different random numbers
-upon first boot before the noise source has collected any entropy.
-If the device also has a unique serial number or a MAC address, then
-those can be mixed in during the setup() function after calling begin():
+The begin() function is passed a tag string that should be different for
+every application.  The tag string ensures that different applications and
+versions will generate different random numbers upon first boot before
+the noise source has collected any entropy.  If the device also has a unique
+serial number or a MAC address, then those can be mixed in during the
+setup() function after calling begin():
 
 \code
 void setup() {
-    RNG.begin("MyApp 1.0", 950);
+    RNG.begin("MyApp 1.0");
     RNG.stir(serial_number, sizeof(serial_number));
     RNG.stir(mac_address, sizeof(mac_address));
     RNG.addNoiseSource(noise);
@@ -161,8 +160,8 @@ void setup() {
 }
 \endcode
 
-The random number generator needs 49 bytes of EEPROM space at the
-specified address to store the previous seed.  When the system is started
+The random number generator uses 49 bytes of space at the end of
+EEPROM memory to store the previous seed.  When the system is started
 next time, the previous saved seed is loaded and then deliberately
 overwritten with a new seed.  This ensures that the device will not
 accidentally generate the same sequence of random numbers if it is
