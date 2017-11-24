@@ -415,6 +415,13 @@ void RNGClass::begin(const char *tag)
     // Stir in the unique identifier for the CPU so that different
     // devices will give different outputs even without seeding.
     stirUniqueIdentifier();
+#else
+    // AVR devices don't have anything like a serial number so it is
+    // difficult to make every device unique.  Use the compilation
+    // time and date to provide a little randomness across applications
+    // if not across devices running the same pre-compiled application.
+    tag = __TIME__ __DATE__;
+    stir((const uint8_t *)tag, strlen(tag));
 #endif
 
 #if defined(RNG_WATCHDOG)
