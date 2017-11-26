@@ -50,7 +50,7 @@ public:
 
     void destroy();
 
-    static const int SEED_SIZE = 49;
+    static const int SEED_SIZE = 48;
 
 private:
     uint32_t block[16];

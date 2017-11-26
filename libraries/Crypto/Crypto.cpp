@@ -77,3 +77,38 @@ bool secure_compare(const void *data1, const void *data2, size_t len)
     }
     return (bool)((((uint16_t)0x0100) - result) >> 8);
 }
+
+/**
+ * \brief Calculates the CRC-8 value over an array in memory.
+ *
+ * \param tag Starting tag to distinguish this calculation.
+ * \param data The data to checksum.
+ * \param size The number of bytes to checksum.
+ * \return The CRC-8 value over the data.
+ *
+ * This function does not provide any real security.  It is a simple
+ * check that seed values have been initialized within EEPROM or Flash.
+ * If the CRC-8 check fails, then it is assumed that the EEPROM/Flash
+ * contents are invalid and should be re-initialized.
+ *
+ * Reference: http://www.sunshine2k.de/articles/coding/crc/understanding_crc.html#ch4
+ */
+uint8_t crypto_crc8(uint8_t tag, const void *data, unsigned size)
+{
+    const uint8_t *d = (const uint8_t *)data;
+    uint8_t crc = 0xFF ^ tag;
+    uint8_t bit;
+    while (size > 0) {
+        crc ^= *d++;
+        for (bit = 0; bit < 8; ++bit) {
+            // if (crc & 0x80)
+            //     crc = (crc << 1) ^ 0x1D;
+            // else
+            //     crc = (crc << 1);
+            uint8_t generator = (uint8_t)((((int8_t)crc) >> 7) & 0x1D);
+            crc = (crc << 1) ^ generator;
+        }
+        --size;
+    }
+    return crc;
+}

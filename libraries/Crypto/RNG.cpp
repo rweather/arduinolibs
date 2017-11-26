@@ -154,6 +154,9 @@ RNGClass RNG;
 
 /** @cond */
 
+// Imported from Crypto.cpp.
+extern uint8_t crypto_crc8(uint8_t tag, const void *data, unsigned size);
+
 // Tag for 256-bit ChaCha20 keys.  This will always appear in the
 // first 16 bytes of the block.  The remaining 48 bytes are the seed.
 static const char tagRNG[16] PROGMEM = {
@@ -361,17 +364,19 @@ void RNGClass::begin(const char *tag)
     memcpy_P(block + 4, initRNG, sizeof(initRNG));
 #if defined(RNG_EEPROM)
     int address = RNG_EEPROM_ADDRESS;
-    if (eeprom_read_byte((const uint8_t *)address) == 'S') {
+    eeprom_read_block(stream, (const void *)address, SEED_SIZE);
+    if (crypto_crc8('S', stream, SEED_SIZE - 1) ==
+            ((const uint8_t *)stream)[SEED_SIZE - 1]) {
         // We have a saved seed: XOR it with the initialization block.
-        for (int posn = 0; posn < 12; ++posn) {
-            block[posn + 4] ^=
-                eeprom_read_dword((const uint32_t *)(address + posn * 4 + 1));
-        }
+        // Note: the CRC-8 value is included.  No point throwing it away.
+        for (int posn = 0; posn < 12; ++posn)
+            block[posn + 4] ^= stream[posn];
     }
 #elif defined(RNG_DUE_TRNG)
     // Do we have a seed saved in the last page of flash memory on the Due?
     int posn, counter;
-    if (((const uint32_t *)RNG_SEED_ADDR)[0] == 'S') {
+    if (crypto_crc8('S', ((const uint32_t *)RNG_SEED_ADDR) + 1, SEED_SIZE)
+            == ((const uint32_t *)RNG_SEED_ADDR)[0]) {
         // XOR the saved seed with the initialization block.
         for (posn = 0; posn < 12; ++posn)
             block[posn + 4] ^= ((const uint32_t *)RNG_SEED_ADDR)[posn + 1];
@@ -694,12 +699,16 @@ void RNGClass::save()
     ++(block[12]);
     ChaCha::hashCore(stream, block, RNG_ROUNDS);
 #if defined(RNG_EEPROM)
+    // We shorten the seed from 48 bytes to 47 to leave room for
+    // the CRC-8 value.  We do this to align the data on an 8-byte
+    // boundary in EERPOM.
     int address = RNG_EEPROM_ADDRESS;
-    eeprom_write_block(stream, (void *)(address + 1), 48);
-    eeprom_update_byte((uint8_t *)address, 'S');
+    eeprom_write_block(stream, (void *)address, SEED_SIZE - 1);
+    eeprom_write_byte((uint8_t *)(address + SEED_SIZE - 1),
+                      crypto_crc8('S', stream, SEED_SIZE - 1));
 #elif defined(RNG_DUE_TRNG)
     unsigned posn;
-    ((uint32_t *)(RNG_SEED_ADDR))[0] = 'S';
+    ((uint32_t *)(RNG_SEED_ADDR))[0] = crypto_crc8('S', stream, SEED_SIZE);
     for (posn = 0; posn < 12; ++posn)
         ((uint32_t *)(RNG_SEED_ADDR))[posn + 1] = stream[posn];
     for (posn = 13; posn < (RNG_FLASH_PAGE_SIZE / 4); ++posn)

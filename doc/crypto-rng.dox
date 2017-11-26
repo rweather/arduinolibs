@@ -160,7 +160,7 @@ void setup() {
 }
 \endcode
 
-The random number generator uses 49 bytes of space at the end of
+The random number generator uses 48 bytes of space at the end of
 EEPROM memory to store the previous seed.  When the system is started
 next time, the previous saved seed is loaded and then deliberately
 overwritten with a new seed.  This ensures that the device will not
