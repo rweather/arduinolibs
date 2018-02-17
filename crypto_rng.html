@@ -117,26 +117,26 @@ Initializing the random number generator</h1>
 <div class="line"><span class="preprocessor">#include &lt;TransistorNoiseSource.h&gt;</span></div>
 </div><!-- fragment --><p>Next we create a global variable for the noise source and specify the I/O pin that the noise circuit is connected to:</p>
 <div class="fragment"><div class="line"><a class="code" href="classTransistorNoiseSource.html">TransistorNoiseSource</a> noise(A1);</div>
-</div><!-- fragment --><p>Then in the setup() function we call <a class="el" href="classRNGClass.html#a7f1aab3c324f8e8a424d683425e0fcf8">RNG.begin()</a> to start the random number generator running and call <a class="el" href="classRNGClass.html#aacf23b192b0e4cc8726d9abe05f5a9db">RNG.addNoiseSource()</a> to register all of the application's noise sources:</p>
+</div><!-- fragment --><p>Then in the setup() function we call <a class="el" href="classRNGClass.html#a77eb101a225ce541800ac1361a92b1a6">RNG.begin()</a> to start the random number generator running and call <a class="el" href="classRNGClass.html#aacf23b192b0e4cc8726d9abe05f5a9db">RNG.addNoiseSource()</a> to register all of the application's noise sources:</p>
 <div class="fragment"><div class="line"><span class="keywordtype">void</span> setup() {</div>
 <div class="line">    <span class="comment">// Initialize the random number generator with the application tag</span></div>
-<div class="line">    <span class="comment">// &quot;MyApp 1.0&quot; and load the previous seed from EEPROM address 950.</span></div>
-<div class="line">    RNG.<a class="code" href="classRNGClass.html#a7f1aab3c324f8e8a424d683425e0fcf8">begin</a>(<span class="stringliteral">&quot;MyApp 1.0&quot;</span>, 950);</div>
+<div class="line">    <span class="comment">// &quot;MyApp 1.0&quot; and load the previous seed from EEPROM.</span></div>
+<div class="line">    RNG.<a class="code" href="classRNGClass.html#a77eb101a225ce541800ac1361a92b1a6">begin</a>(<span class="stringliteral">&quot;MyApp 1.0&quot;</span>);</div>
 <div class="line"></div>
 <div class="line">    <span class="comment">// Add the noise source to the list of sources known to RNG.</span></div>
 <div class="line">    RNG.<a class="code" href="classRNGClass.html#aacf23b192b0e4cc8726d9abe05f5a9db">addNoiseSource</a>(noise);</div>
 <div class="line"></div>
 <div class="line">    <span class="comment">// ...</span></div>
 <div class="line">}</div>
-</div><!-- fragment --><p>The begin() function is passed two arguments: a tag string that should be different for every application and an EEPROM address to use to load and save the random number seed. The tag string ensures that different applications and versions will generate different random numbers upon first boot before the noise source has collected any entropy. If the device also has a unique serial number or a MAC address, then those can be mixed in during the setup() function after calling begin():</p>
+</div><!-- fragment --><p>The begin() function is passed a tag string that should be different for every application. The tag string ensures that different applications and versions will generate different random numbers upon first boot before the noise source has collected any entropy. If the device also has a unique serial number or a MAC address, then those can be mixed in during the setup() function after calling begin():</p>
 <div class="fragment"><div class="line"><span class="keywordtype">void</span> setup() {</div>
-<div class="line">    RNG.<a class="code" href="classRNGClass.html#a7f1aab3c324f8e8a424d683425e0fcf8">begin</a>(<span class="stringliteral">&quot;MyApp 1.0&quot;</span>, 950);</div>
+<div class="line">    RNG.<a class="code" href="classRNGClass.html#a77eb101a225ce541800ac1361a92b1a6">begin</a>(<span class="stringliteral">&quot;MyApp 1.0&quot;</span>);</div>
 <div class="line">    RNG.<a class="code" href="classRNGClass.html#ad99535ea23ae2fec55bdebb8c24def02">stir</a>(serial_number, <span class="keyword">sizeof</span>(serial_number));</div>
 <div class="line">    RNG.<a class="code" href="classRNGClass.html#ad99535ea23ae2fec55bdebb8c24def02">stir</a>(mac_address, <span class="keyword">sizeof</span>(mac_address));</div>
 <div class="line">    RNG.<a class="code" href="classRNGClass.html#aacf23b192b0e4cc8726d9abe05f5a9db">addNoiseSource</a>(noise);</div>
 <div class="line">    ...</div>
 <div class="line">}</div>
-</div><!-- fragment --><p>The random number generator needs 49 bytes of EEPROM space at the specified address to store the previous seed. When the system is started next time, the previous saved seed is loaded and then deliberately overwritten with a new seed. This ensures that the device will not accidentally generate the same sequence of random numbers if it is restarted before the first automatic save of the seed.</p>
+</div><!-- fragment --><p>The random number generator uses 48 bytes of space at the end of EEPROM memory to store the previous seed. When the system is started next time, the previous saved seed is loaded and then deliberately overwritten with a new seed. This ensures that the device will not accidentally generate the same sequence of random numbers if it is restarted before the first automatic save of the seed.</p>
 <p>By default the seed is saved once an hour, although this can be changed with <a class="el" href="classRNGClass.html#a5848e87a5f2f0302c88b0377f0e3366d">RNG.setAutoSaveTime()</a>. Because the device may be restarted before the first hour expires, there is a special case in the code: the first time that the entropy pool fills up, a save will be automatically forced.</p>
 <p>The Arduino Due does not have EEPROM so RNG saves the seed into the last page of system flash memory instead. The RNG class will also mix in data from the CPU's built-in True Random Number Generator (TRNG). Assuming that the CPU's TRNG is trustworthy, this should be sufficient to properly seed the random number generator. It is recommended to also mix in data from other noise sources just in case the CPU's TRNG is not trustworthy.</p>
 <p>To use the random number generator properly, there are some regular tasks that must be performed every time around the application's main loop(). Newly accumulated noise must be mixed in and auto-saves must be performed on a regular basis. The <a class="el" href="classRNGClass.html#a8cb91e39f0c4591de5bf98b1e2880b13">RNG.loop()</a> function takes care of these tasks for us:</p>
@@ -190,7 +190,7 @@ Destroying secret data</h1>
 </div><!-- fragment --> </div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Nov 3 2017 10:48:53 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Feb 18 2018 09:12:22 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

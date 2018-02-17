@@ -4,7 +4,7 @@ var searchData=
   ['backlightonselect',['BacklightOnSelect',['../classLCD.html#a264bf94308c95d8598426e13dc8cdb28a781f3c5e42506bf4f86ba06d69b23d35',1,'LCD']]],
   ['backlightpin',['backlightPin',['../classLCD.html#a171f59ba80e7775ebd3a399f56482a9c',1,'LCD']]],
   ['backspace',['backspace',['../classTerminal.html#ae4aec627f980fe0d26653401785d41bc',1,'Terminal']]],
-  ['begin',['begin',['../classRNGClass.html#a7f1aab3c324f8e8a424d683425e0fcf8',1,'RNGClass::begin()'],['../classShell.html#ad9acba905b6e0b661cce19d57c067990',1,'Shell::begin(Stream &amp;stream, size_t maxHistory=0, Terminal::Mode mode=Serial)'],['../classShell.html#a3ff0cc86725388d4fe92520e5a18ad92',1,'Shell::begin(Client &amp;client, size_t maxHistory=0, Terminal::Mode mode=Telnet)'],['../classTerminal.html#a6bf417195a7d2a2fab6b3518f25764a2',1,'Terminal::begin()']]],
+  ['begin',['begin',['../classRNGClass.html#a77eb101a225ce541800ac1361a92b1a6',1,'RNGClass::begin()'],['../classShell.html#ad9acba905b6e0b661cce19d57c067990',1,'Shell::begin(Stream &amp;stream, size_t maxHistory=0, Terminal::Mode mode=Serial)'],['../classShell.html#a3ff0cc86725388d4fe92520e5a18ad92',1,'Shell::begin(Client &amp;client, size_t maxHistory=0, Terminal::Mode mode=Telnet)'],['../classTerminal.html#a6bf417195a7d2a2fab6b3518f25764a2',1,'Terminal::begin()']]],
   ['beginsession',['beginSession',['../classLoginShell.html#a88a72760d4dc960c32e2fa4b691f9558',1,'LoginShell::beginSession()'],['../classShell.html#a3ad32b7cd3b48c78953ab9f7384d5a58',1,'Shell::beginSession()']]],
   ['bignumberutil',['BigNumberUtil',['../classBigNumberUtil.html',1,'']]],
   ['bitmap',['Bitmap',['../classBitmap.html',1,'Bitmap'],['../classBitmap.html#a40526748415c8bbc58a8510d636c20f4',1,'Bitmap::Bitmap()']]],

@@ -4,7 +4,7 @@ var searchData=
   ['snake_20video_20game_20using_20an_20infrared_20remote_20control',['Snake Video Game Using an Infrared Remote Control',['../ir_snake.html',1,'']]],
   ['small_20memory_20footprint_20new_20hope',['Small Memory Footprint New Hope',['../newhope_small.html',1,'']]],
   ['save',['save',['../classRNGClass.html#a139584fb249148e2058d1d645d090db7',1,'RNGClass']]],
-  ['screensavermode',['ScreenSaverMode',['../classLCD.html#a264bf94308c95d8598426e13dc8cdb28',1,'LCD::ScreenSaverMode()'],['../classLCD.html#a1917fa285f81f476b4c7cc20d15456b8',1,'LCD::screenSaverMode() const ']]],
+  ['screensavermode',['screenSaverMode',['../classLCD.html#a1917fa285f81f476b4c7cc20d15456b8',1,'LCD::screenSaverMode() const '],['../classLCD.html#a264bf94308c95d8598426e13dc8cdb28',1,'LCD::ScreenSaverMode()']]],
   ['scroll',['scroll',['../classBitmap.html#ae08eb6f9086f9923d8dc83a469ae4c4a',1,'Bitmap::scroll(int dx, int dy, Color fillColor=Black)'],['../classBitmap.html#af79ad4432297ff453fddc55625fec485',1,'Bitmap::scroll(int x, int y, int width, int height, int dx, int dy, Color fillColor=Black)']]],
   ['scrolldown',['scrollDown',['../classTerminal.html#a661474bb4790aa82178b3ce9a85e5dea',1,'Terminal']]],
   ['scrollup',['scrollUp',['../classTerminal.html#a30d8d69fd84cafc6c2c94ae6fc65b690',1,'Terminal']]],
