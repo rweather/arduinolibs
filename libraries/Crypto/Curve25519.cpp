@@ -341,9 +341,9 @@ uint8_t Curve25519::isWeakPoint(const uint8_t k[32])
     uint8_t result = 0;
     for (uint8_t posn = 0; posn < 5; ++posn) {
         const uint8_t *point = points[posn];
-        uint8_t check = (pgm_read_byte(point + 31) ^ k[31]) & 0x7F;
+        uint8_t check = (pgm_read_byte(&(point[31])) ^ k[31]) & 0x7F;
         for (uint8_t index = 31; index > 0; --index)
-            check |= (pgm_read_byte(point + index - 1) ^ k[index - 1]);
+            check |= (pgm_read_byte(&(point[index - 1])) ^ k[index - 1]);
         result |= (uint8_t)((((uint16_t)0x0100) - check) >> 8);
     }
 
