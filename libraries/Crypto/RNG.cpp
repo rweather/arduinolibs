@@ -37,6 +37,12 @@
 #include <avr/wdt.h>
 #include <avr/io.h>
 #define RNG_EEPROM_ADDRESS (E2END + 1 - RNGClass::SEED_SIZE)
+#elif defined(ESP8266)
+// ESP8266 does not have EEPROM but it does have SPI flash memory.
+// It also has a TRNG register for generating "true" random numbers.
+// For now we use the TRNG but don't save the seed in flash memory.
+#define RNG_ESP8266 1
+#define RNG_ESP8266_GET_TRNG() (ESP8266_DREG(0x20E44))
 #endif
 #include <string.h>
 
@@ -420,6 +426,13 @@ void RNGClass::begin(const char *tag)
     // Stir in the unique identifier for the CPU so that different
     // devices will give different outputs even without seeding.
     stirUniqueIdentifier();
+#elif defined(RNG_ESP8266)
+    // ESP8266's have a 32-bit CPU chip ID and 32-bit flash chip ID
+    // that we can use as a device unique identifier.
+    uint32_t ids[2];
+    ids[0] = ESP.getChipId();
+    ids[1] = ESP.getFlashChipId();
+    stir((const uint8_t *)ids, sizeof(ids));
 #else
     // AVR devices don't have anything like a serial number so it is
     // difficult to make every device unique.  Use the compilation
@@ -762,6 +775,17 @@ void RNGClass::loop()
             ++credits;
         }
     }
+#elif defined(RNG_ESP8266)
+    // Read a word from the ESP8266's TRNG and XOR it into the state.
+    block[4 + trngPosn] ^= RNG_ESP8266_GET_TRNG();
+    if (++trngPosn >= 12)
+        trngPosn = 0;
+    if (credits < RNG_MAX_CREDITS) {
+        // Credit 1 bit of entropy for the word.  The TRNG should be
+        // better than this but it is so fast that we want to collect
+        // up more data before passing it to the application.
+        ++credits;
+    }
 #elif defined(RNG_WATCHDOG)
     // Read the 32 bit buffer from the WDT interrupt.
     cli();
@@ -844,10 +868,17 @@ void RNGClass::rekey()
     ChaCha::hashCore(stream, block, RNG_ROUNDS);
     memcpy(block + 4, stream, 48);
 
+#if defined(RNG_ESP8266)
+    // XOR in some data from the ESP8266's TRNG every time we re-key.
+    // This makes the RNG safer if the application forgets to call loop().
+    for (uint8_t posn = 0; posn < 12; ++posn)
+        block[posn + 4] ^= RNG_ESP8266_GET_TRNG();
+#else
     // Permute the high word of the counter using the system microsecond
     // counter to introduce a little bit of non-stir randomness for each
     // request.  Note: If random data is requested on a predictable schedule
     // then this may not help very much.  It is still necessary to stir in
     // high quality entropy data on a regular basis using stir().
     block[13] ^= micros();
+#endif
 }
