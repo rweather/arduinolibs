@@ -36,7 +36,10 @@ void *operator new(size_t size, void *ptr)
     return ptr;
 }
 
-#if defined(__AVR__)
+#if defined(ESP8266)
+#include <pgmspace.h>
+#define table_read(name, index) (pgm_read_word(&((name)[(index)])))
+#elif defined(__AVR__)
 #include <avr/pgmspace.h>
 #define table_read(name, index) (pgm_read_word(&((name)[(index)])))
 #else
@@ -987,9 +990,17 @@ static void poly_getnoise(uint16_t *r, NewHopeChaChaState *chacha, unsigned char
 #define INIT_OBJ(type, name)  \
     type *name = new (state.name##_x) type
 
-#if defined(__AVR__)
+#if defined(ESP8266)
+// If we try to put the state on the stack, then it causes a stack smash.
+// Possibly a system stack size limitation.  Allocate the NewHope state on
+// the heap instead for ESP8266.
+#define NEWHOPE_HEAP_STATE   1
+#define NEWHOPE_BYTE_ALIGNED 0
+#elif defined(__AVR__)
+#define NEWHOPE_HEAP_STATE   0
 #define NEWHOPE_BYTE_ALIGNED 1
 #else
+#define NEWHOPE_HEAP_STATE   0
 #define NEWHOPE_BYTE_ALIGNED 0
 #endif
 
@@ -1021,7 +1032,7 @@ void NewHope::keygen(uint8_t send[NEWHOPE_SENDABYTES], NewHopePrivateKey &sk,
     // We also combine most of the state into a single union, which allows
     // us to overlap some of the larger objects and reuse the stack space
     // at different points within this function.
-    union {
+    typedef union {
         struct {
             uint16_t a[PARAM_N];        // Value of "a" as a "poly" object.
             uint16_t pk[PARAM_N];       // Value of "pk" as a "poly" object.
@@ -1031,7 +1042,13 @@ void NewHope::keygen(uint8_t send[NEWHOPE_SENDABYTES], NewHopePrivateKey &sk,
             ALLOC_OBJ(SHAKE128, shake); // SHAKE128 object for poly_uniform().
         };
         ALLOC_OBJ(SHA3_256, sha3);      // SHA3 object for hashing the seed.
-    } state;
+    } NewHopeKeygenState;
+#if NEWHOPE_HEAP_STATE
+    NewHopeKeygenState *heapState = new NewHopeKeygenState();
+    #define state (*heapState)
+#else
+    NewHopeKeygenState state;
+#endif
 
     // Hide the ChaCha state and the noise seed inside "send".
 #if NEWHOPE_BYTE_ALIGNED
@@ -1087,6 +1104,10 @@ void NewHope::keygen(uint8_t send[NEWHOPE_SENDABYTES], NewHopePrivateKey &sk,
 #endif
     #undef noiseseed
     #undef chacha
+#if NEWHOPE_HEAP_STATE
+    delete heapState;
+    #undef state
+#endif
 }
 
 /**
@@ -1202,7 +1223,7 @@ void NewHope::sharedb(uint8_t shared_key[NEWHOPE_SHAREDBYTES],
     // We also combine most of the state into a single union, which allows
     // us to overlap some of the larger objects and reuse the stack space
     // at different points within this function.
-    union {
+    typedef union {
         struct {
             uint16_t a[PARAM_N];        // Value of "a" as a "poly" object.
             uint16_t v[PARAM_N];        // Value of "v" as a "poly" object.
@@ -1213,7 +1234,13 @@ void NewHope::sharedb(uint8_t shared_key[NEWHOPE_SHAREDBYTES],
             ALLOC_OBJ(SHAKE128, shake); // SHAKE128 object for poly_uniform().
         };
         ALLOC_OBJ(SHA3_256, sha3);      // SHA3 object for hashing the result.
-    } state;
+    } NewHopeSharedBState;
+#if NEWHOPE_HEAP_STATE
+    NewHopeSharedBState *heapState = new NewHopeSharedBState();
+    #define state (*heapState)
+#else
+    NewHopeSharedBState state;
+#endif
 
     // Hide the ChaCha state and the noise seed inside "send".
     // Put them at the end of the "send" buffer in case "received"
@@ -1274,6 +1301,10 @@ void NewHope::sharedb(uint8_t shared_key[NEWHOPE_SHAREDBYTES],
 #undef noiseseed
 #undef chacha
 #endif
+#if NEWHOPE_HEAP_STATE
+    delete heapState;
+    #undef state
+#endif
 }
 
 /**
@@ -1296,7 +1327,7 @@ void NewHope::shareda(uint8_t shared_key[NEWHOPE_SHAREDBYTES],
     // We also combine most of the state into a single union, which allows
     // us to overlap some of the larger objects and reuse the stack space
     // at different points within this function.
-    union {
+    typedef union {
         struct {
             uint16_t v[PARAM_N];        // Value of "v" as a "poly" object.
             uint16_t bp[PARAM_N];       // Value of "bp" as a "poly" object.
@@ -1306,7 +1337,13 @@ void NewHope::shareda(uint8_t shared_key[NEWHOPE_SHAREDBYTES],
             ALLOC_OBJ(NewHopeChaChaState, chacha);
         };
         ALLOC_OBJ(SHA3_256, sha3);      // SHA3 object for hashing the result.
-    } state;
+    } NewHopeSharedAState;
+#if NEWHOPE_HEAP_STATE
+    NewHopeSharedAState *heapState = new NewHopeSharedAState();
+    #define state (*heapState)
+#else
+    NewHopeSharedAState state;
+#endif
 
 #if NEWHOPE_SMALL_FOOTPRINT
     // Re-create the full private key for Alice from the seed.
@@ -1333,4 +1370,8 @@ void NewHope::shareda(uint8_t shared_key[NEWHOPE_SHAREDBYTES],
     sha3->finalize(shared_key, 32);
 
     clean(&state, sizeof(state));
+#if NEWHOPE_HEAP_STATE
+    delete heapState;
+    #undef state
+#endif
 }
