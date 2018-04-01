@@ -1,0 +1,101 @@
+/*
+ * Copyright (C) 2018 Southern Storm Software, Pty Ltd.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a
+ * copy of this software and associated documentation files (the "Software"),
+ * to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included
+ * in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+ * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
+ */
+
+/**
+\file crypto-esp.dox
+\page crypto_esp Using the cryptography library with ESP8266
+
+This library has been tested with ESP8266-based Arduino devices.
+Some people have had problems with earlier versions of the library,
+some of which have been fixed in the library and some of which
+need to be dealt with in the calling application.
+
+This page describes the common problems that have been encountered
+and some suggested work arounds.
+
+\section crypto_esp_progmem Program memory
+
+Earlier versions of the Arduino toolchain for ESP8266 had issues
+with program memory accesses.  This example is from the Curve25519 code:
+
+\code
+uint8_t check = (pgm_read_byte(point + 31) ^ k[31]) & 0x7F;
+\endcode
+
+This would cause crashes.  Rewriting the code as follows would help:
+
+\code
+uint8_t check = (pgm_read_byte(&(point[31])) ^ k[31]) & 0x7F;
+\endcode
+
+Note how a pointer operation (<tt>point + 31</tt>) was changed into
+an array operation (<tt>&(point[31])</tt>).  Logically these two should
+be equivalent but earlier compilers somehow compiled the pointer-using
+code incorrectly.
+
+This problem appears to have been fixed in more recent versions of the
+compiler so the first thing to try is to update your toolchain.  Otherwise
+you may need to change more program memory accesses to get the library
+to work.  Merge requests welcome.
+
+\section crypto_esp_watchdog Watchdog
+
+The most common reason why the cryptography code "fails" on ESP8266
+is because of the system watchdog.  By default the software watchdog
+on the ESP8266 will fire off after about 3 seconds and the hardware
+watchdog will fire off after about 8 seconds if the software
+watchdog was disabled.
+
+Some of the example programs in the cryptography library can take a
+long time to run through all the tests, which makes watchdog failure
+very likely.  User application code can have the same problem.
+
+If you see the message <tt>"Soft WDT reset"</tt> then this is probably
+the cause.  However disabling the software watchdog with either
+<tt>wdt_disable()</tt> or <tt>ESP.wdtDisable()</tt> will only shift
+the problem to later when the hardware watchdog fires off.
+
+The macro crypto_feed_watchdog() in Crypto.h has been added to the
+library.  If you call it at regular intervals and before or after
+cryptography operations then it should reduce the watchdog reset problem.
+It is safe to use this macro on non-ESP8266 platforms where it
+will define away to nothing.
+
+The example programs have been modified to feed the watchdog regularly
+during the testing process.  And long-running public key functions in
+classes like Curve25519 and P521 will feed the watchdog while the
+curves are being evaluated.  But you still may need to call
+crypto_feed_watchdog() from your own code to keep the watchdog happy.
+
+\section crypto_esp_stack Stack space
+
+Another problem occurred in the NewHope implementation due to lack of
+stack space.  NewHope was putting so much data on the stack that it
+caused a stack overflow and an exception.  NewHope has been modified
+to move the state to the heap on ESP8266 to get it off the stack.
+
+It is possible that your own application may have similar issues
+if you are allocating cryptographic objects on the stack.  Recommend that
+you move data into global data space or to the heap to work around
+this problem.
+
+*/

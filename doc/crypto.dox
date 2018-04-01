@@ -65,6 +65,7 @@ and HMAC modes.
 \section crypto_other Examples and other topics
 
 \li \ref crypto_rng "Generating random numbers"
+\li \ref crypto_esp "Using the cryptography library with ESP8266"
 
 \section crypto_performance Performance
 
