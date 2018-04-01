@@ -244,6 +244,8 @@ ISR(WDT_vect)
 RNGClass::RNGClass()
     : credits(0)
     , firstSave(1)
+    , initialized(0)
+    , trngPending(0)
     , timer(0)
     , timeout(3600000UL)    // 1 hour in milliseconds
     , count(0)
@@ -365,6 +367,10 @@ static void eraseAndWriteSeed()
  */
 void RNGClass::begin(const char *tag)
 {
+    // Bail out if we have already done this.
+    if (initialized)
+        return;
+
     // Initialize the ChaCha20 input block from the saved seed.
     memcpy_P(block, tagRNG, sizeof(tagRNG));
     memcpy_P(block + 4, initRNG, sizeof(initRNG));
@@ -380,11 +386,10 @@ void RNGClass::begin(const char *tag)
     }
 #elif defined(RNG_DUE_TRNG)
     // Do we have a seed saved in the last page of flash memory on the Due?
-    int posn, counter;
     if (crypto_crc8('S', ((const uint32_t *)RNG_SEED_ADDR) + 1, SEED_SIZE)
             == ((const uint32_t *)RNG_SEED_ADDR)[0]) {
         // XOR the saved seed with the initialization block.
-        for (posn = 0; posn < 12; ++posn)
+        for (int posn = 0; posn < 12; ++posn)
             block[posn + 4] ^= ((const uint32_t *)RNG_SEED_ADDR)[posn + 1];
     }
 
@@ -394,19 +399,10 @@ void RNGClass::begin(const char *tag)
     pmc_enable_periph_clk(ID_TRNG);
     REG_TRNG_CR = TRNG_CR_KEY(0x524E47) | TRNG_CR_ENABLE;
     REG_TRNG_IDR = TRNG_IDR_DATRDY; // Disable interrupts - we will poll.
-    for (posn = 0; posn < 12; ++posn) {
-        // According to the documentation the TRNG should produce a new
-        // 32-bit random value every 84 clock cycles.  If it still hasn't
-        // produced a value after 200 iterations, then assume that the
-        // TRNG is not producing output and stop.
-        for (counter = 0; counter < 200; ++counter) {
-            if ((REG_TRNG_ISR & TRNG_ISR_DATRDY) != 0)
-                break;
-        }
-        if (counter >= 200)
-            break;
-        block[posn + 4] ^= REG_TRNG_ODATA;
-    }
+    mixTRNG();
+#elif defined(RNG_ESP8266)
+    // Mix in some output from the ESP8266's TRNG to initialize the state.
+    mixTRNG();
 #endif
 
     // No entropy credits for the saved seed.
@@ -463,6 +459,9 @@ void RNGClass::begin(const char *tag)
     // that if the system is reset without a call to save() that we won't
     // accidentally generate the same sequence of random data again.
     save();
+
+    // The RNG has now been initialized.
+    initialized = 1;
 }
 
 /**
@@ -528,11 +527,28 @@ void RNGClass::setAutoSaveTime(uint16_t minutes)
  */
 void RNGClass::rand(uint8_t *data, size_t len)
 {
+    // Make sure that the RNG is initialized in case the application
+    // forgot to call RNG.begin() at startup time.
+    if (!initialized)
+        begin(0);
+
     // Decrease the amount of entropy in the pool.
     if (len > (credits / 8))
         credits = 0;
     else
         credits -= len * 8;
+
+    // If we have pending TRNG data from the loop() function,
+    // then force a stir on the state.  Otherwise mix in some
+    // fresh data from the TRNG because it is possible that
+    // the application forgot to call RNG.loop().
+    if (trngPending) {
+        stir(0, 0, 0);
+        trngPending = 0;
+        trngPosn = 0;
+    } else {
+        mixTRNG();
+    }
 
     // Generate the random data.
     uint8_t count = 0;
@@ -774,6 +790,7 @@ void RNGClass::loop()
             // up more data before passing it to the application.
             ++credits;
         }
+        trngPending = 1;
     }
 #elif defined(RNG_ESP8266)
     // Read a word from the ESP8266's TRNG and XOR it into the state.
@@ -786,6 +803,7 @@ void RNGClass::loop()
         // up more data before passing it to the application.
         ++credits;
     }
+    trngPending = 1;
 #elif defined(RNG_WATCHDOG)
     // Read the 32 bit buffer from the WDT interrupt.
     cli();
@@ -801,15 +819,21 @@ void RNGClass::loop()
         value ^= rightShift11(value);
         value += leftShift15(value);
 
+        // Credit 1 bit of entropy for each byte of input.  It can take
+        // between 30 and 40 seconds to accumulate 256 bits of credit.
+        credits += 4;
+        if (credits > RNG_MAX_CREDITS)
+            credits = RNG_MAX_CREDITS;
+
         // XOR the word with the state.  Stir once we accumulate 48 bytes,
         // which happens about once every 6.4 seconds.
         block[4 + trngPosn] ^= value;
         if (++trngPosn >= 12) {
             trngPosn = 0;
-
-            // Credit 1 bit of entropy for each byte of input.  It can take
-            // between 30 and 40 seconds to accumulate 256 bits of credit.
-            stir(0, 0, 48);
+            trngPending = 0;
+            stir(0, 0, 0);
+        } else {
+            trngPending = 1;
         }
     } else {
         sei();
@@ -868,17 +892,58 @@ void RNGClass::rekey()
     ChaCha::hashCore(stream, block, RNG_ROUNDS);
     memcpy(block + 4, stream, 48);
 
-#if defined(RNG_ESP8266)
-    // XOR in some data from the ESP8266's TRNG every time we re-key.
-    // This makes the RNG safer if the application forgets to call loop().
-    for (uint8_t posn = 0; posn < 12; ++posn)
-        block[posn + 4] ^= RNG_ESP8266_GET_TRNG();
-#else
     // Permute the high word of the counter using the system microsecond
     // counter to introduce a little bit of non-stir randomness for each
     // request.  Note: If random data is requested on a predictable schedule
     // then this may not help very much.  It is still necessary to stir in
     // high quality entropy data on a regular basis using stir().
     block[13] ^= micros();
+}
+
+/**
+ * \brief Mix in fresh data from the TRNG when rand() is called.
+ */
+void RNGClass::mixTRNG()
+{
+#if defined(RNG_DUE_TRNG)
+    // Mix in 12 words from the Due's TRNG.
+    for (int posn = 0; posn < 12; ++posn) {
+        // According to the documentation the TRNG should produce a new
+        // 32-bit random value every 84 clock cycles.  If it still hasn't
+        // produced a value after 200 iterations, then assume that the
+        // TRNG is not producing output and stop.
+        int counter;
+        for (counter = 0; counter < 200; ++counter) {
+            if ((REG_TRNG_ISR & TRNG_ISR_DATRDY) != 0)
+                break;
+        }
+        if (counter >= 200)
+            break;
+        block[posn + 4] ^= REG_TRNG_ODATA;
+    }
+#elif defined(RNG_ESP8266)
+    // Read 12 words from the ESP8266's TRNG and XOR them into the state.
+    for (uint8_t index = 4; index < 16; ++index)
+        block[index] ^= RNG_ESP8266_GET_TRNG();
+#elif defined(RNG_WATCHDOG)
+    // Read the pending 32 bit buffer from the WDT interrupt and mix it in.
+    cli();
+    if (outBits >= 32) {
+        uint32_t value = hash;
+        hash = 0;
+        outBits = 0;
+        sei();
+
+        // Final steps of the Jenkin's one-at-a-time hash function.
+        // https://en.wikipedia.org/wiki/Jenkins_hash_function
+        value += leftShift3(value);
+        value ^= rightShift11(value);
+        value += leftShift15(value);
+
+        // XOR the word with the state.
+        block[4] ^= value;
+    } else {
+        sei();
+    }
 #endif
 }
