@@ -27,7 +27,7 @@ This example runs tests on the BLAKE2b implementation to verify correct behaviou
 #include <Crypto.h>
 #include <BLAKE2b.h>
 #include <string.h>
-#if defined(ESP8266)
+#if defined(ESP8266) || defined(ESP32)
 #include <pgmspace.h>
 #else
 #include <avr/pgmspace.h>

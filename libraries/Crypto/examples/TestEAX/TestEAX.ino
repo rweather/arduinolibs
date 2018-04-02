@@ -30,7 +30,7 @@ This example runs tests on the EAX implementation to verify correct behaviour.
 #include <Speck.h>
 #include <SpeckTiny.h>
 #include <string.h>
-#if defined(ESP8266)
+#if defined(ESP8266) || defined(ESP32)
 #include <pgmspace.h>
 #else
 #include <avr/pgmspace.h>
@@ -540,7 +540,7 @@ void setup()
     Serial.println();
     delete eax;
     eax256 = new EAX<AES256>();
-    perfCipher(eax, &testVectorEAX1, "AES-256");
+    perfCipher(eax256, &testVectorEAX1, "AES-256");
     Serial.println();
     delete eax256;
     eaxSpeck = new EAX<Speck>();

@@ -41,10 +41,27 @@
 // ESP8266 does not have EEPROM but it does have SPI flash memory.
 // It also has a TRNG register for generating "true" random numbers.
 // For now we use the TRNG but don't save the seed in flash memory.
-#define RNG_ESP8266 1
-#define RNG_ESP8266_GET_TRNG() (ESP8266_DREG(0x20E44))
+#define RNG_WORD_TRNG 1
+#define RNG_WORD_TRNG_GET() (ESP8266_DREG(0x20E44))
+#elif defined(ESP32)
+// ESP32 has a word-based TRNG and an API for Non-Volatile Storage (NVS).
+#define RNG_WORD_TRNG 1
+#define RNG_WORD_TRNG_GET() (esp_random())
+#define RNG_ESP_NVS 1
+#include <nvs.h>
 #endif
 #include <string.h>
+
+// Throw an error if there is no built-in hardware random number source.
+// If this happens, then you need to do one of two things:
+//    1. Edit RNG.cpp to add your platform's hardware TRNG.
+//    2. Provide a proper noise source like TransistorNoiseSource
+//       in your sketch and then comment out the #error line below.
+#if !defined(RNG_DUE_TRNG) && \
+    !defined(RNG_WATCHDOG) && \
+    !defined(RNG_WORD_TRNG)
+#error "no hardware random number source detected for this platform"
+#endif
 
 /**
  * \class RNGClass RNG.h <RNG.h>
@@ -400,8 +417,25 @@ void RNGClass::begin(const char *tag)
     REG_TRNG_CR = TRNG_CR_KEY(0x524E47) | TRNG_CR_ENABLE;
     REG_TRNG_IDR = TRNG_IDR_DATRDY; // Disable interrupts - we will poll.
     mixTRNG();
-#elif defined(RNG_ESP8266)
-    // Mix in some output from the ESP8266's TRNG to initialize the state.
+#endif
+#if defined(RNG_ESP_NVS)
+    // Do we have a seed saved in ESP non-volatile storage (NVS)?
+    nvs_handle handle = 0;
+    if (nvs_open("rng", NVS_READONLY, &handle) == 0) {
+        size_t len = 0;
+        if (nvs_get_blob(handle, "seed", NULL, &len) == 0 && len == SEED_SIZE) {
+            uint32_t seed[12];
+            if (nvs_get_blob(handle, "seed", seed, &len) == 0) {
+                for (int posn = 0; posn < 12; ++posn)
+                    block[posn + 4] ^= seed[posn];
+            }
+            clean(seed);
+        }
+        nvs_close(handle);
+    }
+#endif
+#if defined(RNG_WORD_TRNG)
+    // Mix in some output from a word-based TRNG to initialize the state.
     mixTRNG();
 #endif
 
@@ -422,13 +456,17 @@ void RNGClass::begin(const char *tag)
     // Stir in the unique identifier for the CPU so that different
     // devices will give different outputs even without seeding.
     stirUniqueIdentifier();
-#elif defined(RNG_ESP8266)
+#elif defined(ESP8266)
     // ESP8266's have a 32-bit CPU chip ID and 32-bit flash chip ID
     // that we can use as a device unique identifier.
     uint32_t ids[2];
     ids[0] = ESP.getChipId();
     ids[1] = ESP.getFlashChipId();
     stir((const uint8_t *)ids, sizeof(ids));
+#elif defined(ESP32)
+    // ESP32's have a MAC address that can be used as a device identifier.
+    uint64_t mac = ESP.getEfuseMac();
+    stir((const uint8_t *)&mac, sizeof(mac));
 #else
     // AVR devices don't have anything like a serial number so it is
     // difficult to make every device unique.  Use the compilation
@@ -743,6 +781,15 @@ void RNGClass::save()
     for (posn = 13; posn < (RNG_FLASH_PAGE_SIZE / 4); ++posn)
         ((uint32_t *)(RNG_SEED_ADDR))[posn + 13] = 0xFFFFFFFF;
     eraseAndWriteSeed();
+#elif defined(RNG_ESP_NVS)
+    // Save the seed into ESP non-volatile storage (NVS).
+    nvs_handle handle = 0;
+    if (nvs_open("rng", NVS_READWRITE, &handle) == 0) {
+        nvs_erase_all(handle);
+        nvs_set_blob(handle, "seed", stream, SEED_SIZE);
+        nvs_commit(handle);
+        nvs_close(handle);
+    }
 #endif
     rekey();
     timer = millis();
@@ -792,9 +839,9 @@ void RNGClass::loop()
         }
         trngPending = 1;
     }
-#elif defined(RNG_ESP8266)
-    // Read a word from the ESP8266's TRNG and XOR it into the state.
-    block[4 + trngPosn] ^= RNG_ESP8266_GET_TRNG();
+#elif defined(RNG_WORD_TRNG)
+    // Read a word from the TRNG and XOR it into the state.
+    block[4 + trngPosn] ^= RNG_WORD_TRNG_GET();
     if (++trngPosn >= 12)
         trngPosn = 0;
     if (credits < RNG_MAX_CREDITS) {
@@ -876,7 +923,15 @@ void RNGClass::destroy()
     for (unsigned posn = 0; posn < (RNG_FLASH_PAGE_SIZE / 4); ++posn)
         ((uint32_t *)(RNG_SEED_ADDR))[posn] = 0xFFFFFFFF;
     eraseAndWriteSeed();
+#elif defined(RNG_ESP_NVS)
+    nvs_handle handle = 0;
+    if (nvs_open("rng", NVS_READWRITE, &handle) == 0) {
+        nvs_erase_all(handle);
+        nvs_commit(handle);
+        nvs_close(handle);
+    }
 #endif
+    initialized = 0;
 }
 
 /**
@@ -921,10 +976,10 @@ void RNGClass::mixTRNG()
             break;
         block[posn + 4] ^= REG_TRNG_ODATA;
     }
-#elif defined(RNG_ESP8266)
-    // Read 12 words from the ESP8266's TRNG and XOR them into the state.
+#elif defined(RNG_WORD_TRNG)
+    // Read 12 words from the TRNG and XOR them into the state.
     for (uint8_t index = 4; index < 16; ++index)
-        block[index] ^= RNG_ESP8266_GET_TRNG();
+        block[index] ^= RNG_WORD_TRNG_GET();
 #elif defined(RNG_WATCHDOG)
     // Read the pending 32 bit buffer from the WDT interrupt and mix it in.
     cli();

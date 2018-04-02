@@ -30,7 +30,7 @@ This example runs tests on the GCM implementation to verify correct behaviour.
 #include <SpeckTiny.h>
 #include <GCM.h>
 #include <string.h>
-#if defined(ESP8266)
+#if defined(ESP8266) || defined(ESP32)
 #include <pgmspace.h>
 #else
 #include <avr/pgmspace.h>
