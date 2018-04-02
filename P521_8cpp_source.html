@@ -782,534 +782,535 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00965"></a><span class="lineno">  965</span>&#160;    mulNoReduce(temp, x, y);</div>
 <div class="line"><a name="l00966"></a><span class="lineno">  966</span>&#160;    reduce(result, temp);</div>
 <div class="line"><a name="l00967"></a><span class="lineno">  967</span>&#160;    strict_clean(temp);</div>
-<div class="line"><a name="l00968"></a><span class="lineno">  968</span>&#160;}</div>
-<div class="line"><a name="l00969"></a><span class="lineno">  969</span>&#160;</div>
-<div class="line"><a name="l00989"></a><span class="lineno">  989</span>&#160;<span class="keywordtype">void</span> P521::mulLiteral(limb_t *result, <span class="keyword">const</span> limb_t *x, limb_t y)</div>
-<div class="line"><a name="l00990"></a><span class="lineno">  990</span>&#160;{</div>
-<div class="line"><a name="l00991"></a><span class="lineno">  991</span>&#160;    uint8_t index;</div>
-<div class="line"><a name="l00992"></a><span class="lineno">  992</span>&#160;    dlimb_t carry = 0;</div>
-<div class="line"><a name="l00993"></a><span class="lineno">  993</span>&#160;    <span class="keyword">const</span> limb_t *xx = x;</div>
-<div class="line"><a name="l00994"></a><span class="lineno">  994</span>&#160;    limb_t *rr = result;</div>
-<div class="line"><a name="l00995"></a><span class="lineno">  995</span>&#160;</div>
-<div class="line"><a name="l00996"></a><span class="lineno">  996</span>&#160;    <span class="comment">// Multiply x by the literal and put it into the result array.</span></div>
-<div class="line"><a name="l00997"></a><span class="lineno">  997</span>&#160;    <span class="comment">// We assume that y is small enough that overflow from the</span></div>
-<div class="line"><a name="l00998"></a><span class="lineno">  998</span>&#160;    <span class="comment">// highest limb will not occur during this process.</span></div>
-<div class="line"><a name="l00999"></a><span class="lineno">  999</span>&#160;    <span class="keywordflow">for</span> (index = 0; index &lt; NUM_LIMBS_521BIT; ++index) {</div>
-<div class="line"><a name="l01000"></a><span class="lineno"> 1000</span>&#160;        carry += ((dlimb_t)(*xx++)) * y;</div>
-<div class="line"><a name="l01001"></a><span class="lineno"> 1001</span>&#160;        *rr++ = (limb_t)carry;</div>
-<div class="line"><a name="l01002"></a><span class="lineno"> 1002</span>&#160;        carry &gt;&gt;= LIMB_BITS;</div>
-<div class="line"><a name="l01003"></a><span class="lineno"> 1003</span>&#160;    }</div>
-<div class="line"><a name="l01004"></a><span class="lineno"> 1004</span>&#160;</div>
-<div class="line"><a name="l01005"></a><span class="lineno"> 1005</span>&#160;    <span class="comment">// Reduce the value modulo 2^521 - 1.  The high half is only a</span></div>
-<div class="line"><a name="l01006"></a><span class="lineno"> 1006</span>&#160;    <span class="comment">// single limb, so we can short-cut some of reduce() here.</span></div>
-<div class="line"><a name="l01007"></a><span class="lineno"> 1007</span>&#160;<span class="preprocessor">#if BIGNUMBER_LIMB_16BIT || BIGNUMBER_LIMB_32BIT || BIGNUMBER_LIMB_64BIT</span></div>
-<div class="line"><a name="l01008"></a><span class="lineno"> 1008</span>&#160;<span class="preprocessor"></span>    limb_t word = result[NUM_LIMBS_521BIT - 1];</div>
-<div class="line"><a name="l01009"></a><span class="lineno"> 1009</span>&#160;    carry = (word &gt;&gt; 9) + 1;</div>
-<div class="line"><a name="l01010"></a><span class="lineno"> 1010</span>&#160;    word &amp;= 0x1FF;</div>
-<div class="line"><a name="l01011"></a><span class="lineno"> 1011</span>&#160;    rr = result;</div>
-<div class="line"><a name="l01012"></a><span class="lineno"> 1012</span>&#160;    <span class="keywordflow">for</span> (index = 0; index &lt; (NUM_LIMBS_521BIT - 1); ++index) {</div>
-<div class="line"><a name="l01013"></a><span class="lineno"> 1013</span>&#160;        carry += *rr;</div>
-<div class="line"><a name="l01014"></a><span class="lineno"> 1014</span>&#160;        *rr++ = (limb_t)carry;</div>
-<div class="line"><a name="l01015"></a><span class="lineno"> 1015</span>&#160;        carry &gt;&gt;= LIMB_BITS;</div>
-<div class="line"><a name="l01016"></a><span class="lineno"> 1016</span>&#160;    }</div>
-<div class="line"><a name="l01017"></a><span class="lineno"> 1017</span>&#160;    carry += word;</div>
-<div class="line"><a name="l01018"></a><span class="lineno"> 1018</span>&#160;    word = (limb_t)carry;</div>
-<div class="line"><a name="l01019"></a><span class="lineno"> 1019</span>&#160;    *rr = word;</div>
-<div class="line"><a name="l01020"></a><span class="lineno"> 1020</span>&#160;</div>
-<div class="line"><a name="l01021"></a><span class="lineno"> 1021</span>&#160;    <span class="comment">// If the carry out was 1, then mask it off and we have the answer.</span></div>
-<div class="line"><a name="l01022"></a><span class="lineno"> 1022</span>&#160;    <span class="comment">// If the carry out was 0, then we need to add 2^521 - 1 back again.</span></div>
-<div class="line"><a name="l01023"></a><span class="lineno"> 1023</span>&#160;    <span class="comment">// To preserve the timing we perform a conditional subtract of 1 and</span></div>
-<div class="line"><a name="l01024"></a><span class="lineno"> 1024</span>&#160;    <span class="comment">// then mask off the high bits.</span></div>
-<div class="line"><a name="l01025"></a><span class="lineno"> 1025</span>&#160;    carry = ((word &gt;&gt; 9) ^ 0x01) &amp; 0x01;</div>
-<div class="line"><a name="l01026"></a><span class="lineno"> 1026</span>&#160;    rr = result;</div>
-<div class="line"><a name="l01027"></a><span class="lineno"> 1027</span>&#160;    <span class="keywordflow">for</span> (index = 0; index &lt; NUM_LIMBS_521BIT; ++index) {</div>
-<div class="line"><a name="l01028"></a><span class="lineno"> 1028</span>&#160;        carry = ((dlimb_t)(*rr)) - carry;</div>
-<div class="line"><a name="l01029"></a><span class="lineno"> 1029</span>&#160;        *rr++ = (limb_t)carry;</div>
-<div class="line"><a name="l01030"></a><span class="lineno"> 1030</span>&#160;        carry = (carry &gt;&gt; LIMB_BITS) &amp; 0x01;</div>
-<div class="line"><a name="l01031"></a><span class="lineno"> 1031</span>&#160;    }</div>
-<div class="line"><a name="l01032"></a><span class="lineno"> 1032</span>&#160;    *(--rr) &amp;= 0x1FF;</div>
-<div class="line"><a name="l01033"></a><span class="lineno"> 1033</span>&#160;<span class="preprocessor">#elif BIGNUMBER_LIMB_8BIT</span></div>
-<div class="line"><a name="l01034"></a><span class="lineno"> 1034</span>&#160;<span class="preprocessor"></span>    <span class="comment">// Same as above, but for 8-bit limbs.</span></div>
-<div class="line"><a name="l01035"></a><span class="lineno"> 1035</span>&#160;    limb_t word = result[NUM_LIMBS_521BIT - 1];</div>
-<div class="line"><a name="l01036"></a><span class="lineno"> 1036</span>&#160;    carry = (word &gt;&gt; 1) + 1;</div>
-<div class="line"><a name="l01037"></a><span class="lineno"> 1037</span>&#160;    word &amp;= 0x01;</div>
-<div class="line"><a name="l01038"></a><span class="lineno"> 1038</span>&#160;    rr = result;</div>
-<div class="line"><a name="l01039"></a><span class="lineno"> 1039</span>&#160;    <span class="keywordflow">for</span> (index = 0; index &lt; (NUM_LIMBS_521BIT - 1); ++index) {</div>
-<div class="line"><a name="l01040"></a><span class="lineno"> 1040</span>&#160;        carry += *rr;</div>
-<div class="line"><a name="l01041"></a><span class="lineno"> 1041</span>&#160;        *rr++ = (limb_t)carry;</div>
-<div class="line"><a name="l01042"></a><span class="lineno"> 1042</span>&#160;        carry &gt;&gt;= LIMB_BITS;</div>
-<div class="line"><a name="l01043"></a><span class="lineno"> 1043</span>&#160;    }</div>
-<div class="line"><a name="l01044"></a><span class="lineno"> 1044</span>&#160;    carry += word;</div>
-<div class="line"><a name="l01045"></a><span class="lineno"> 1045</span>&#160;    word = (limb_t)carry;</div>
-<div class="line"><a name="l01046"></a><span class="lineno"> 1046</span>&#160;    *rr = word;</div>
-<div class="line"><a name="l01047"></a><span class="lineno"> 1047</span>&#160;    carry = ((word &gt;&gt; 1) ^ 0x01) &amp; 0x01;</div>
-<div class="line"><a name="l01048"></a><span class="lineno"> 1048</span>&#160;    rr = result;</div>
-<div class="line"><a name="l01049"></a><span class="lineno"> 1049</span>&#160;    <span class="keywordflow">for</span> (index = 0; index &lt; NUM_LIMBS_521BIT; ++index) {</div>
-<div class="line"><a name="l01050"></a><span class="lineno"> 1050</span>&#160;        carry = ((dlimb_t)(*rr)) - carry;</div>
-<div class="line"><a name="l01051"></a><span class="lineno"> 1051</span>&#160;        *rr++ = (limb_t)carry;</div>
-<div class="line"><a name="l01052"></a><span class="lineno"> 1052</span>&#160;        carry = (carry &gt;&gt; LIMB_BITS) &amp; 0x01;</div>
-<div class="line"><a name="l01053"></a><span class="lineno"> 1053</span>&#160;    }</div>
-<div class="line"><a name="l01054"></a><span class="lineno"> 1054</span>&#160;    *(--rr) &amp;= 0x01;</div>
-<div class="line"><a name="l01055"></a><span class="lineno"> 1055</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l01056"></a><span class="lineno"> 1056</span>&#160;<span class="preprocessor"></span>}</div>
-<div class="line"><a name="l01057"></a><span class="lineno"> 1057</span>&#160;</div>
-<div class="line"><a name="l01068"></a><span class="lineno"> 1068</span>&#160;<span class="keywordtype">void</span> P521::add(limb_t *result, <span class="keyword">const</span> limb_t *x, <span class="keyword">const</span> limb_t *y)</div>
-<div class="line"><a name="l01069"></a><span class="lineno"> 1069</span>&#160;{</div>
-<div class="line"><a name="l01070"></a><span class="lineno"> 1070</span>&#160;    dlimb_t carry = 0;</div>
-<div class="line"><a name="l01071"></a><span class="lineno"> 1071</span>&#160;    limb_t *rr = result;</div>
-<div class="line"><a name="l01072"></a><span class="lineno"> 1072</span>&#160;    <span class="keywordflow">for</span> (uint8_t posn = 0; posn &lt; NUM_LIMBS_521BIT; ++posn) {</div>
-<div class="line"><a name="l01073"></a><span class="lineno"> 1073</span>&#160;        carry += *x++;</div>
-<div class="line"><a name="l01074"></a><span class="lineno"> 1074</span>&#160;        carry += *y++;</div>
-<div class="line"><a name="l01075"></a><span class="lineno"> 1075</span>&#160;        *rr++ = (limb_t)carry;</div>
-<div class="line"><a name="l01076"></a><span class="lineno"> 1076</span>&#160;        carry &gt;&gt;= LIMB_BITS;</div>
-<div class="line"><a name="l01077"></a><span class="lineno"> 1077</span>&#160;    }</div>
-<div class="line"><a name="l01078"></a><span class="lineno"> 1078</span>&#160;    reduceQuick(result);</div>
-<div class="line"><a name="l01079"></a><span class="lineno"> 1079</span>&#160;}</div>
-<div class="line"><a name="l01080"></a><span class="lineno"> 1080</span>&#160;</div>
-<div class="line"><a name="l01091"></a><span class="lineno"> 1091</span>&#160;<span class="keywordtype">void</span> P521::sub(limb_t *result, <span class="keyword">const</span> limb_t *x, <span class="keyword">const</span> limb_t *y)</div>
-<div class="line"><a name="l01092"></a><span class="lineno"> 1092</span>&#160;{</div>
-<div class="line"><a name="l01093"></a><span class="lineno"> 1093</span>&#160;    dlimb_t borrow;</div>
-<div class="line"><a name="l01094"></a><span class="lineno"> 1094</span>&#160;    uint8_t posn;</div>
-<div class="line"><a name="l01095"></a><span class="lineno"> 1095</span>&#160;    limb_t *rr = result;</div>
-<div class="line"><a name="l01096"></a><span class="lineno"> 1096</span>&#160;</div>
-<div class="line"><a name="l01097"></a><span class="lineno"> 1097</span>&#160;    <span class="comment">// Subtract y from x to generate the intermediate result.</span></div>
-<div class="line"><a name="l01098"></a><span class="lineno"> 1098</span>&#160;    borrow = 0;</div>
-<div class="line"><a name="l01099"></a><span class="lineno"> 1099</span>&#160;    <span class="keywordflow">for</span> (posn = 0; posn &lt; NUM_LIMBS_521BIT; ++posn) {</div>
-<div class="line"><a name="l01100"></a><span class="lineno"> 1100</span>&#160;        borrow = ((dlimb_t)(*x++)) - (*y++) - ((borrow &gt;&gt; LIMB_BITS) &amp; 0x01);</div>
-<div class="line"><a name="l01101"></a><span class="lineno"> 1101</span>&#160;        *rr++ = (limb_t)borrow;</div>
-<div class="line"><a name="l01102"></a><span class="lineno"> 1102</span>&#160;    }</div>
-<div class="line"><a name="l01103"></a><span class="lineno"> 1103</span>&#160;</div>
-<div class="line"><a name="l01104"></a><span class="lineno"> 1104</span>&#160;    <span class="comment">// If we had a borrow, then the result has gone negative and we</span></div>
-<div class="line"><a name="l01105"></a><span class="lineno"> 1105</span>&#160;    <span class="comment">// have to add 2^521 - 1 to the result to make it positive again.</span></div>
-<div class="line"><a name="l01106"></a><span class="lineno"> 1106</span>&#160;    <span class="comment">// The top bits of &quot;borrow&quot; will be all 1&#39;s if there is a borrow</span></div>
-<div class="line"><a name="l01107"></a><span class="lineno"> 1107</span>&#160;    <span class="comment">// or it will be all 0&#39;s if there was no borrow.  Easiest is to</span></div>
-<div class="line"><a name="l01108"></a><span class="lineno"> 1108</span>&#160;    <span class="comment">// conditionally subtract 1 and then mask off the high bits.</span></div>
-<div class="line"><a name="l01109"></a><span class="lineno"> 1109</span>&#160;    rr = result;</div>
-<div class="line"><a name="l01110"></a><span class="lineno"> 1110</span>&#160;    borrow = (borrow &gt;&gt; LIMB_BITS) &amp; 1U;</div>
-<div class="line"><a name="l01111"></a><span class="lineno"> 1111</span>&#160;    borrow = ((dlimb_t)(*rr)) - borrow;</div>
-<div class="line"><a name="l01112"></a><span class="lineno"> 1112</span>&#160;    *rr++ = (limb_t)borrow;</div>
-<div class="line"><a name="l01113"></a><span class="lineno"> 1113</span>&#160;    <span class="keywordflow">for</span> (posn = 1; posn &lt; NUM_LIMBS_521BIT; ++posn) {</div>
-<div class="line"><a name="l01114"></a><span class="lineno"> 1114</span>&#160;        borrow = ((dlimb_t)(*rr)) - ((borrow &gt;&gt; LIMB_BITS) &amp; 0x01);</div>
-<div class="line"><a name="l01115"></a><span class="lineno"> 1115</span>&#160;        *rr++ = (limb_t)borrow;</div>
-<div class="line"><a name="l01116"></a><span class="lineno"> 1116</span>&#160;    }</div>
-<div class="line"><a name="l01117"></a><span class="lineno"> 1117</span>&#160;<span class="preprocessor">#if BIGNUMBER_LIMB_8BIT</span></div>
-<div class="line"><a name="l01118"></a><span class="lineno"> 1118</span>&#160;<span class="preprocessor"></span>    *(--rr) &amp;= 0x01;</div>
-<div class="line"><a name="l01119"></a><span class="lineno"> 1119</span>&#160;<span class="preprocessor">#else</span></div>
-<div class="line"><a name="l01120"></a><span class="lineno"> 1120</span>&#160;<span class="preprocessor"></span>    *(--rr) &amp;= 0x1FF;</div>
-<div class="line"><a name="l01121"></a><span class="lineno"> 1121</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l01122"></a><span class="lineno"> 1122</span>&#160;<span class="preprocessor"></span>}</div>
-<div class="line"><a name="l01123"></a><span class="lineno"> 1123</span>&#160;</div>
-<div class="line"><a name="l01139"></a><span class="lineno"> 1139</span>&#160;<span class="keywordtype">void</span> P521::dblPoint(limb_t *xout, limb_t *yout, limb_t *zout,</div>
-<div class="line"><a name="l01140"></a><span class="lineno"> 1140</span>&#160;                    <span class="keyword">const</span> limb_t *xin, <span class="keyword">const</span> limb_t *yin,</div>
-<div class="line"><a name="l01141"></a><span class="lineno"> 1141</span>&#160;                    <span class="keyword">const</span> limb_t *zin)</div>
-<div class="line"><a name="l01142"></a><span class="lineno"> 1142</span>&#160;{</div>
-<div class="line"><a name="l01143"></a><span class="lineno"> 1143</span>&#160;    limb_t alpha[NUM_LIMBS_521BIT];</div>
-<div class="line"><a name="l01144"></a><span class="lineno"> 1144</span>&#160;    limb_t beta[NUM_LIMBS_521BIT];</div>
-<div class="line"><a name="l01145"></a><span class="lineno"> 1145</span>&#160;    limb_t gamma[NUM_LIMBS_521BIT];</div>
-<div class="line"><a name="l01146"></a><span class="lineno"> 1146</span>&#160;    limb_t delta[NUM_LIMBS_521BIT];</div>
-<div class="line"><a name="l01147"></a><span class="lineno"> 1147</span>&#160;    limb_t tmp[NUM_LIMBS_521BIT];</div>
-<div class="line"><a name="l01148"></a><span class="lineno"> 1148</span>&#160;</div>
-<div class="line"><a name="l01149"></a><span class="lineno"> 1149</span>&#160;    <span class="comment">// Double the point.  If it is the point at infinity (z = 0),</span></div>
-<div class="line"><a name="l01150"></a><span class="lineno"> 1150</span>&#160;    <span class="comment">// then zout will still be zero at the end of this process so</span></div>
-<div class="line"><a name="l01151"></a><span class="lineno"> 1151</span>&#160;    <span class="comment">// we don&#39;t need any special handling for that case.</span></div>
-<div class="line"><a name="l01152"></a><span class="lineno"> 1152</span>&#160;    square(delta, zin);       <span class="comment">// delta = z^2</span></div>
-<div class="line"><a name="l01153"></a><span class="lineno"> 1153</span>&#160;    square(gamma, yin);       <span class="comment">// gamma = y^2</span></div>
-<div class="line"><a name="l01154"></a><span class="lineno"> 1154</span>&#160;    mul(beta, xin, gamma);    <span class="comment">// beta = x * gamma</span></div>
-<div class="line"><a name="l01155"></a><span class="lineno"> 1155</span>&#160;    sub(tmp, xin, delta);     <span class="comment">// alpha = 3 * (x - delta) * (x + delta)</span></div>
-<div class="line"><a name="l01156"></a><span class="lineno"> 1156</span>&#160;    mulLiteral(alpha, tmp, 3);</div>
-<div class="line"><a name="l01157"></a><span class="lineno"> 1157</span>&#160;    add(tmp, xin, delta);</div>
-<div class="line"><a name="l01158"></a><span class="lineno"> 1158</span>&#160;    mul(alpha, alpha, tmp);</div>
-<div class="line"><a name="l01159"></a><span class="lineno"> 1159</span>&#160;    square(xout, alpha);      <span class="comment">// xout = alpha^2 - 8 * beta</span></div>
-<div class="line"><a name="l01160"></a><span class="lineno"> 1160</span>&#160;    mulLiteral(tmp, beta, 8);</div>
-<div class="line"><a name="l01161"></a><span class="lineno"> 1161</span>&#160;    sub(xout, xout, tmp);</div>
-<div class="line"><a name="l01162"></a><span class="lineno"> 1162</span>&#160;    add(zout, yin, zin);      <span class="comment">// zout = (y + z)^2 - gamma - delta</span></div>
-<div class="line"><a name="l01163"></a><span class="lineno"> 1163</span>&#160;    square(zout, zout);</div>
-<div class="line"><a name="l01164"></a><span class="lineno"> 1164</span>&#160;    sub(zout, zout, gamma);</div>
-<div class="line"><a name="l01165"></a><span class="lineno"> 1165</span>&#160;    sub(zout, zout, delta);</div>
-<div class="line"><a name="l01166"></a><span class="lineno"> 1166</span>&#160;    mulLiteral(yout, beta, 4);<span class="comment">// yout = alpha * (4 * beta - xout) - 8 * gamma^2</span></div>
-<div class="line"><a name="l01167"></a><span class="lineno"> 1167</span>&#160;    sub(yout, yout, xout);</div>
-<div class="line"><a name="l01168"></a><span class="lineno"> 1168</span>&#160;    mul(yout, alpha, yout);</div>
-<div class="line"><a name="l01169"></a><span class="lineno"> 1169</span>&#160;    square(gamma, gamma);</div>
-<div class="line"><a name="l01170"></a><span class="lineno"> 1170</span>&#160;    mulLiteral(gamma, gamma, 8);</div>
-<div class="line"><a name="l01171"></a><span class="lineno"> 1171</span>&#160;    sub(yout, yout, gamma);</div>
-<div class="line"><a name="l01172"></a><span class="lineno"> 1172</span>&#160;</div>
-<div class="line"><a name="l01173"></a><span class="lineno"> 1173</span>&#160;    <span class="comment">// Clean up.</span></div>
-<div class="line"><a name="l01174"></a><span class="lineno"> 1174</span>&#160;    strict_clean(alpha);</div>
-<div class="line"><a name="l01175"></a><span class="lineno"> 1175</span>&#160;    strict_clean(beta);</div>
-<div class="line"><a name="l01176"></a><span class="lineno"> 1176</span>&#160;    strict_clean(gamma);</div>
-<div class="line"><a name="l01177"></a><span class="lineno"> 1177</span>&#160;    strict_clean(delta);</div>
-<div class="line"><a name="l01178"></a><span class="lineno"> 1178</span>&#160;    strict_clean(tmp);</div>
-<div class="line"><a name="l01179"></a><span class="lineno"> 1179</span>&#160;}</div>
-<div class="line"><a name="l01180"></a><span class="lineno"> 1180</span>&#160;</div>
-<div class="line"><a name="l01200"></a><span class="lineno"> 1200</span>&#160;<span class="keywordtype">void</span> P521::addPoint(limb_t *xout, limb_t *yout, limb_t *zout,</div>
-<div class="line"><a name="l01201"></a><span class="lineno"> 1201</span>&#160;                    <span class="keyword">const</span> limb_t *x1, <span class="keyword">const</span> limb_t *y1,</div>
-<div class="line"><a name="l01202"></a><span class="lineno"> 1202</span>&#160;                    <span class="keyword">const</span> limb_t *z1, <span class="keyword">const</span> limb_t *x2,</div>
-<div class="line"><a name="l01203"></a><span class="lineno"> 1203</span>&#160;                    <span class="keyword">const</span> limb_t *y2)</div>
-<div class="line"><a name="l01204"></a><span class="lineno"> 1204</span>&#160;{</div>
-<div class="line"><a name="l01205"></a><span class="lineno"> 1205</span>&#160;    limb_t z1z1[NUM_LIMBS_521BIT];</div>
-<div class="line"><a name="l01206"></a><span class="lineno"> 1206</span>&#160;    limb_t u2[NUM_LIMBS_521BIT];</div>
-<div class="line"><a name="l01207"></a><span class="lineno"> 1207</span>&#160;    limb_t s2[NUM_LIMBS_521BIT];</div>
-<div class="line"><a name="l01208"></a><span class="lineno"> 1208</span>&#160;    limb_t h[NUM_LIMBS_521BIT];</div>
-<div class="line"><a name="l01209"></a><span class="lineno"> 1209</span>&#160;    limb_t i[NUM_LIMBS_521BIT];</div>
-<div class="line"><a name="l01210"></a><span class="lineno"> 1210</span>&#160;    limb_t j[NUM_LIMBS_521BIT];</div>
-<div class="line"><a name="l01211"></a><span class="lineno"> 1211</span>&#160;    limb_t r[NUM_LIMBS_521BIT];</div>
-<div class="line"><a name="l01212"></a><span class="lineno"> 1212</span>&#160;    limb_t v[NUM_LIMBS_521BIT];</div>
-<div class="line"><a name="l01213"></a><span class="lineno"> 1213</span>&#160;</div>
-<div class="line"><a name="l01214"></a><span class="lineno"> 1214</span>&#160;    <span class="comment">// Determine if the first value is the point-at-infinity identity element.</span></div>
-<div class="line"><a name="l01215"></a><span class="lineno"> 1215</span>&#160;    <span class="comment">// The second z value is always 1 so it cannot be the point-at-infinity.</span></div>
-<div class="line"><a name="l01216"></a><span class="lineno"> 1216</span>&#160;    limb_t p1IsIdentity = <a class="code" href="classBigNumberUtil.html#ad0aafacd8e224bd543341973c62ff1dd">BigNumberUtil::isZero</a>(z1, NUM_LIMBS_521BIT);</div>
-<div class="line"><a name="l01217"></a><span class="lineno"> 1217</span>&#160;</div>
-<div class="line"><a name="l01218"></a><span class="lineno"> 1218</span>&#160;    <span class="comment">// Multiply the points, assuming that z2 = 1.</span></div>
-<div class="line"><a name="l01219"></a><span class="lineno"> 1219</span>&#160;    square(z1z1, z1);               <span class="comment">// z1z1 = z1^2</span></div>
-<div class="line"><a name="l01220"></a><span class="lineno"> 1220</span>&#160;    mul(u2, x2, z1z1);              <span class="comment">// u2 = x2 * z1z1</span></div>
-<div class="line"><a name="l01221"></a><span class="lineno"> 1221</span>&#160;    mul(s2, y2, z1);                <span class="comment">// s2 = y2 * z1 * z1z1</span></div>
-<div class="line"><a name="l01222"></a><span class="lineno"> 1222</span>&#160;    mul(s2, s2, z1z1);</div>
-<div class="line"><a name="l01223"></a><span class="lineno"> 1223</span>&#160;    sub(h, u2, x1);                 <span class="comment">// h = u2 - x1</span></div>
-<div class="line"><a name="l01224"></a><span class="lineno"> 1224</span>&#160;    mulLiteral(i, h, 2);            <span class="comment">// i = (2 * h)^2</span></div>
-<div class="line"><a name="l01225"></a><span class="lineno"> 1225</span>&#160;    square(i, i);</div>
-<div class="line"><a name="l01226"></a><span class="lineno"> 1226</span>&#160;    sub(r, s2, y1);                 <span class="comment">// r = 2 * (s2 - y1)</span></div>
-<div class="line"><a name="l01227"></a><span class="lineno"> 1227</span>&#160;    add(r, r, r);</div>
-<div class="line"><a name="l01228"></a><span class="lineno"> 1228</span>&#160;    mul(j, h, i);                   <span class="comment">// j = h * i</span></div>
-<div class="line"><a name="l01229"></a><span class="lineno"> 1229</span>&#160;    mul(v, x1, i);                  <span class="comment">// v = x1 * i</span></div>
-<div class="line"><a name="l01230"></a><span class="lineno"> 1230</span>&#160;    square(xout, r);                <span class="comment">// xout = r^2 - j - 2 * v</span></div>
-<div class="line"><a name="l01231"></a><span class="lineno"> 1231</span>&#160;    sub(xout, xout, j);</div>
-<div class="line"><a name="l01232"></a><span class="lineno"> 1232</span>&#160;    sub(xout, xout, v);</div>
+<div class="line"><a name="l00968"></a><span class="lineno">  968</span>&#160;    crypto_feed_watchdog();</div>
+<div class="line"><a name="l00969"></a><span class="lineno">  969</span>&#160;}</div>
+<div class="line"><a name="l00970"></a><span class="lineno">  970</span>&#160;</div>
+<div class="line"><a name="l00990"></a><span class="lineno">  990</span>&#160;<span class="keywordtype">void</span> P521::mulLiteral(limb_t *result, <span class="keyword">const</span> limb_t *x, limb_t y)</div>
+<div class="line"><a name="l00991"></a><span class="lineno">  991</span>&#160;{</div>
+<div class="line"><a name="l00992"></a><span class="lineno">  992</span>&#160;    uint8_t index;</div>
+<div class="line"><a name="l00993"></a><span class="lineno">  993</span>&#160;    dlimb_t carry = 0;</div>
+<div class="line"><a name="l00994"></a><span class="lineno">  994</span>&#160;    <span class="keyword">const</span> limb_t *xx = x;</div>
+<div class="line"><a name="l00995"></a><span class="lineno">  995</span>&#160;    limb_t *rr = result;</div>
+<div class="line"><a name="l00996"></a><span class="lineno">  996</span>&#160;</div>
+<div class="line"><a name="l00997"></a><span class="lineno">  997</span>&#160;    <span class="comment">// Multiply x by the literal and put it into the result array.</span></div>
+<div class="line"><a name="l00998"></a><span class="lineno">  998</span>&#160;    <span class="comment">// We assume that y is small enough that overflow from the</span></div>
+<div class="line"><a name="l00999"></a><span class="lineno">  999</span>&#160;    <span class="comment">// highest limb will not occur during this process.</span></div>
+<div class="line"><a name="l01000"></a><span class="lineno"> 1000</span>&#160;    <span class="keywordflow">for</span> (index = 0; index &lt; NUM_LIMBS_521BIT; ++index) {</div>
+<div class="line"><a name="l01001"></a><span class="lineno"> 1001</span>&#160;        carry += ((dlimb_t)(*xx++)) * y;</div>
+<div class="line"><a name="l01002"></a><span class="lineno"> 1002</span>&#160;        *rr++ = (limb_t)carry;</div>
+<div class="line"><a name="l01003"></a><span class="lineno"> 1003</span>&#160;        carry &gt;&gt;= LIMB_BITS;</div>
+<div class="line"><a name="l01004"></a><span class="lineno"> 1004</span>&#160;    }</div>
+<div class="line"><a name="l01005"></a><span class="lineno"> 1005</span>&#160;</div>
+<div class="line"><a name="l01006"></a><span class="lineno"> 1006</span>&#160;    <span class="comment">// Reduce the value modulo 2^521 - 1.  The high half is only a</span></div>
+<div class="line"><a name="l01007"></a><span class="lineno"> 1007</span>&#160;    <span class="comment">// single limb, so we can short-cut some of reduce() here.</span></div>
+<div class="line"><a name="l01008"></a><span class="lineno"> 1008</span>&#160;<span class="preprocessor">#if BIGNUMBER_LIMB_16BIT || BIGNUMBER_LIMB_32BIT || BIGNUMBER_LIMB_64BIT</span></div>
+<div class="line"><a name="l01009"></a><span class="lineno"> 1009</span>&#160;<span class="preprocessor"></span>    limb_t word = result[NUM_LIMBS_521BIT - 1];</div>
+<div class="line"><a name="l01010"></a><span class="lineno"> 1010</span>&#160;    carry = (word &gt;&gt; 9) + 1;</div>
+<div class="line"><a name="l01011"></a><span class="lineno"> 1011</span>&#160;    word &amp;= 0x1FF;</div>
+<div class="line"><a name="l01012"></a><span class="lineno"> 1012</span>&#160;    rr = result;</div>
+<div class="line"><a name="l01013"></a><span class="lineno"> 1013</span>&#160;    <span class="keywordflow">for</span> (index = 0; index &lt; (NUM_LIMBS_521BIT - 1); ++index) {</div>
+<div class="line"><a name="l01014"></a><span class="lineno"> 1014</span>&#160;        carry += *rr;</div>
+<div class="line"><a name="l01015"></a><span class="lineno"> 1015</span>&#160;        *rr++ = (limb_t)carry;</div>
+<div class="line"><a name="l01016"></a><span class="lineno"> 1016</span>&#160;        carry &gt;&gt;= LIMB_BITS;</div>
+<div class="line"><a name="l01017"></a><span class="lineno"> 1017</span>&#160;    }</div>
+<div class="line"><a name="l01018"></a><span class="lineno"> 1018</span>&#160;    carry += word;</div>
+<div class="line"><a name="l01019"></a><span class="lineno"> 1019</span>&#160;    word = (limb_t)carry;</div>
+<div class="line"><a name="l01020"></a><span class="lineno"> 1020</span>&#160;    *rr = word;</div>
+<div class="line"><a name="l01021"></a><span class="lineno"> 1021</span>&#160;</div>
+<div class="line"><a name="l01022"></a><span class="lineno"> 1022</span>&#160;    <span class="comment">// If the carry out was 1, then mask it off and we have the answer.</span></div>
+<div class="line"><a name="l01023"></a><span class="lineno"> 1023</span>&#160;    <span class="comment">// If the carry out was 0, then we need to add 2^521 - 1 back again.</span></div>
+<div class="line"><a name="l01024"></a><span class="lineno"> 1024</span>&#160;    <span class="comment">// To preserve the timing we perform a conditional subtract of 1 and</span></div>
+<div class="line"><a name="l01025"></a><span class="lineno"> 1025</span>&#160;    <span class="comment">// then mask off the high bits.</span></div>
+<div class="line"><a name="l01026"></a><span class="lineno"> 1026</span>&#160;    carry = ((word &gt;&gt; 9) ^ 0x01) &amp; 0x01;</div>
+<div class="line"><a name="l01027"></a><span class="lineno"> 1027</span>&#160;    rr = result;</div>
+<div class="line"><a name="l01028"></a><span class="lineno"> 1028</span>&#160;    <span class="keywordflow">for</span> (index = 0; index &lt; NUM_LIMBS_521BIT; ++index) {</div>
+<div class="line"><a name="l01029"></a><span class="lineno"> 1029</span>&#160;        carry = ((dlimb_t)(*rr)) - carry;</div>
+<div class="line"><a name="l01030"></a><span class="lineno"> 1030</span>&#160;        *rr++ = (limb_t)carry;</div>
+<div class="line"><a name="l01031"></a><span class="lineno"> 1031</span>&#160;        carry = (carry &gt;&gt; LIMB_BITS) &amp; 0x01;</div>
+<div class="line"><a name="l01032"></a><span class="lineno"> 1032</span>&#160;    }</div>
+<div class="line"><a name="l01033"></a><span class="lineno"> 1033</span>&#160;    *(--rr) &amp;= 0x1FF;</div>
+<div class="line"><a name="l01034"></a><span class="lineno"> 1034</span>&#160;<span class="preprocessor">#elif BIGNUMBER_LIMB_8BIT</span></div>
+<div class="line"><a name="l01035"></a><span class="lineno"> 1035</span>&#160;<span class="preprocessor"></span>    <span class="comment">// Same as above, but for 8-bit limbs.</span></div>
+<div class="line"><a name="l01036"></a><span class="lineno"> 1036</span>&#160;    limb_t word = result[NUM_LIMBS_521BIT - 1];</div>
+<div class="line"><a name="l01037"></a><span class="lineno"> 1037</span>&#160;    carry = (word &gt;&gt; 1) + 1;</div>
+<div class="line"><a name="l01038"></a><span class="lineno"> 1038</span>&#160;    word &amp;= 0x01;</div>
+<div class="line"><a name="l01039"></a><span class="lineno"> 1039</span>&#160;    rr = result;</div>
+<div class="line"><a name="l01040"></a><span class="lineno"> 1040</span>&#160;    <span class="keywordflow">for</span> (index = 0; index &lt; (NUM_LIMBS_521BIT - 1); ++index) {</div>
+<div class="line"><a name="l01041"></a><span class="lineno"> 1041</span>&#160;        carry += *rr;</div>
+<div class="line"><a name="l01042"></a><span class="lineno"> 1042</span>&#160;        *rr++ = (limb_t)carry;</div>
+<div class="line"><a name="l01043"></a><span class="lineno"> 1043</span>&#160;        carry &gt;&gt;= LIMB_BITS;</div>
+<div class="line"><a name="l01044"></a><span class="lineno"> 1044</span>&#160;    }</div>
+<div class="line"><a name="l01045"></a><span class="lineno"> 1045</span>&#160;    carry += word;</div>
+<div class="line"><a name="l01046"></a><span class="lineno"> 1046</span>&#160;    word = (limb_t)carry;</div>
+<div class="line"><a name="l01047"></a><span class="lineno"> 1047</span>&#160;    *rr = word;</div>
+<div class="line"><a name="l01048"></a><span class="lineno"> 1048</span>&#160;    carry = ((word &gt;&gt; 1) ^ 0x01) &amp; 0x01;</div>
+<div class="line"><a name="l01049"></a><span class="lineno"> 1049</span>&#160;    rr = result;</div>
+<div class="line"><a name="l01050"></a><span class="lineno"> 1050</span>&#160;    <span class="keywordflow">for</span> (index = 0; index &lt; NUM_LIMBS_521BIT; ++index) {</div>
+<div class="line"><a name="l01051"></a><span class="lineno"> 1051</span>&#160;        carry = ((dlimb_t)(*rr)) - carry;</div>
+<div class="line"><a name="l01052"></a><span class="lineno"> 1052</span>&#160;        *rr++ = (limb_t)carry;</div>
+<div class="line"><a name="l01053"></a><span class="lineno"> 1053</span>&#160;        carry = (carry &gt;&gt; LIMB_BITS) &amp; 0x01;</div>
+<div class="line"><a name="l01054"></a><span class="lineno"> 1054</span>&#160;    }</div>
+<div class="line"><a name="l01055"></a><span class="lineno"> 1055</span>&#160;    *(--rr) &amp;= 0x01;</div>
+<div class="line"><a name="l01056"></a><span class="lineno"> 1056</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l01057"></a><span class="lineno"> 1057</span>&#160;<span class="preprocessor"></span>}</div>
+<div class="line"><a name="l01058"></a><span class="lineno"> 1058</span>&#160;</div>
+<div class="line"><a name="l01069"></a><span class="lineno"> 1069</span>&#160;<span class="keywordtype">void</span> P521::add(limb_t *result, <span class="keyword">const</span> limb_t *x, <span class="keyword">const</span> limb_t *y)</div>
+<div class="line"><a name="l01070"></a><span class="lineno"> 1070</span>&#160;{</div>
+<div class="line"><a name="l01071"></a><span class="lineno"> 1071</span>&#160;    dlimb_t carry = 0;</div>
+<div class="line"><a name="l01072"></a><span class="lineno"> 1072</span>&#160;    limb_t *rr = result;</div>
+<div class="line"><a name="l01073"></a><span class="lineno"> 1073</span>&#160;    <span class="keywordflow">for</span> (uint8_t posn = 0; posn &lt; NUM_LIMBS_521BIT; ++posn) {</div>
+<div class="line"><a name="l01074"></a><span class="lineno"> 1074</span>&#160;        carry += *x++;</div>
+<div class="line"><a name="l01075"></a><span class="lineno"> 1075</span>&#160;        carry += *y++;</div>
+<div class="line"><a name="l01076"></a><span class="lineno"> 1076</span>&#160;        *rr++ = (limb_t)carry;</div>
+<div class="line"><a name="l01077"></a><span class="lineno"> 1077</span>&#160;        carry &gt;&gt;= LIMB_BITS;</div>
+<div class="line"><a name="l01078"></a><span class="lineno"> 1078</span>&#160;    }</div>
+<div class="line"><a name="l01079"></a><span class="lineno"> 1079</span>&#160;    reduceQuick(result);</div>
+<div class="line"><a name="l01080"></a><span class="lineno"> 1080</span>&#160;}</div>
+<div class="line"><a name="l01081"></a><span class="lineno"> 1081</span>&#160;</div>
+<div class="line"><a name="l01092"></a><span class="lineno"> 1092</span>&#160;<span class="keywordtype">void</span> P521::sub(limb_t *result, <span class="keyword">const</span> limb_t *x, <span class="keyword">const</span> limb_t *y)</div>
+<div class="line"><a name="l01093"></a><span class="lineno"> 1093</span>&#160;{</div>
+<div class="line"><a name="l01094"></a><span class="lineno"> 1094</span>&#160;    dlimb_t borrow;</div>
+<div class="line"><a name="l01095"></a><span class="lineno"> 1095</span>&#160;    uint8_t posn;</div>
+<div class="line"><a name="l01096"></a><span class="lineno"> 1096</span>&#160;    limb_t *rr = result;</div>
+<div class="line"><a name="l01097"></a><span class="lineno"> 1097</span>&#160;</div>
+<div class="line"><a name="l01098"></a><span class="lineno"> 1098</span>&#160;    <span class="comment">// Subtract y from x to generate the intermediate result.</span></div>
+<div class="line"><a name="l01099"></a><span class="lineno"> 1099</span>&#160;    borrow = 0;</div>
+<div class="line"><a name="l01100"></a><span class="lineno"> 1100</span>&#160;    <span class="keywordflow">for</span> (posn = 0; posn &lt; NUM_LIMBS_521BIT; ++posn) {</div>
+<div class="line"><a name="l01101"></a><span class="lineno"> 1101</span>&#160;        borrow = ((dlimb_t)(*x++)) - (*y++) - ((borrow &gt;&gt; LIMB_BITS) &amp; 0x01);</div>
+<div class="line"><a name="l01102"></a><span class="lineno"> 1102</span>&#160;        *rr++ = (limb_t)borrow;</div>
+<div class="line"><a name="l01103"></a><span class="lineno"> 1103</span>&#160;    }</div>
+<div class="line"><a name="l01104"></a><span class="lineno"> 1104</span>&#160;</div>
+<div class="line"><a name="l01105"></a><span class="lineno"> 1105</span>&#160;    <span class="comment">// If we had a borrow, then the result has gone negative and we</span></div>
+<div class="line"><a name="l01106"></a><span class="lineno"> 1106</span>&#160;    <span class="comment">// have to add 2^521 - 1 to the result to make it positive again.</span></div>
+<div class="line"><a name="l01107"></a><span class="lineno"> 1107</span>&#160;    <span class="comment">// The top bits of &quot;borrow&quot; will be all 1&#39;s if there is a borrow</span></div>
+<div class="line"><a name="l01108"></a><span class="lineno"> 1108</span>&#160;    <span class="comment">// or it will be all 0&#39;s if there was no borrow.  Easiest is to</span></div>
+<div class="line"><a name="l01109"></a><span class="lineno"> 1109</span>&#160;    <span class="comment">// conditionally subtract 1 and then mask off the high bits.</span></div>
+<div class="line"><a name="l01110"></a><span class="lineno"> 1110</span>&#160;    rr = result;</div>
+<div class="line"><a name="l01111"></a><span class="lineno"> 1111</span>&#160;    borrow = (borrow &gt;&gt; LIMB_BITS) &amp; 1U;</div>
+<div class="line"><a name="l01112"></a><span class="lineno"> 1112</span>&#160;    borrow = ((dlimb_t)(*rr)) - borrow;</div>
+<div class="line"><a name="l01113"></a><span class="lineno"> 1113</span>&#160;    *rr++ = (limb_t)borrow;</div>
+<div class="line"><a name="l01114"></a><span class="lineno"> 1114</span>&#160;    <span class="keywordflow">for</span> (posn = 1; posn &lt; NUM_LIMBS_521BIT; ++posn) {</div>
+<div class="line"><a name="l01115"></a><span class="lineno"> 1115</span>&#160;        borrow = ((dlimb_t)(*rr)) - ((borrow &gt;&gt; LIMB_BITS) &amp; 0x01);</div>
+<div class="line"><a name="l01116"></a><span class="lineno"> 1116</span>&#160;        *rr++ = (limb_t)borrow;</div>
+<div class="line"><a name="l01117"></a><span class="lineno"> 1117</span>&#160;    }</div>
+<div class="line"><a name="l01118"></a><span class="lineno"> 1118</span>&#160;<span class="preprocessor">#if BIGNUMBER_LIMB_8BIT</span></div>
+<div class="line"><a name="l01119"></a><span class="lineno"> 1119</span>&#160;<span class="preprocessor"></span>    *(--rr) &amp;= 0x01;</div>
+<div class="line"><a name="l01120"></a><span class="lineno"> 1120</span>&#160;<span class="preprocessor">#else</span></div>
+<div class="line"><a name="l01121"></a><span class="lineno"> 1121</span>&#160;<span class="preprocessor"></span>    *(--rr) &amp;= 0x1FF;</div>
+<div class="line"><a name="l01122"></a><span class="lineno"> 1122</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l01123"></a><span class="lineno"> 1123</span>&#160;<span class="preprocessor"></span>}</div>
+<div class="line"><a name="l01124"></a><span class="lineno"> 1124</span>&#160;</div>
+<div class="line"><a name="l01140"></a><span class="lineno"> 1140</span>&#160;<span class="keywordtype">void</span> P521::dblPoint(limb_t *xout, limb_t *yout, limb_t *zout,</div>
+<div class="line"><a name="l01141"></a><span class="lineno"> 1141</span>&#160;                    <span class="keyword">const</span> limb_t *xin, <span class="keyword">const</span> limb_t *yin,</div>
+<div class="line"><a name="l01142"></a><span class="lineno"> 1142</span>&#160;                    <span class="keyword">const</span> limb_t *zin)</div>
+<div class="line"><a name="l01143"></a><span class="lineno"> 1143</span>&#160;{</div>
+<div class="line"><a name="l01144"></a><span class="lineno"> 1144</span>&#160;    limb_t alpha[NUM_LIMBS_521BIT];</div>
+<div class="line"><a name="l01145"></a><span class="lineno"> 1145</span>&#160;    limb_t beta[NUM_LIMBS_521BIT];</div>
+<div class="line"><a name="l01146"></a><span class="lineno"> 1146</span>&#160;    limb_t gamma[NUM_LIMBS_521BIT];</div>
+<div class="line"><a name="l01147"></a><span class="lineno"> 1147</span>&#160;    limb_t delta[NUM_LIMBS_521BIT];</div>
+<div class="line"><a name="l01148"></a><span class="lineno"> 1148</span>&#160;    limb_t tmp[NUM_LIMBS_521BIT];</div>
+<div class="line"><a name="l01149"></a><span class="lineno"> 1149</span>&#160;</div>
+<div class="line"><a name="l01150"></a><span class="lineno"> 1150</span>&#160;    <span class="comment">// Double the point.  If it is the point at infinity (z = 0),</span></div>
+<div class="line"><a name="l01151"></a><span class="lineno"> 1151</span>&#160;    <span class="comment">// then zout will still be zero at the end of this process so</span></div>
+<div class="line"><a name="l01152"></a><span class="lineno"> 1152</span>&#160;    <span class="comment">// we don&#39;t need any special handling for that case.</span></div>
+<div class="line"><a name="l01153"></a><span class="lineno"> 1153</span>&#160;    square(delta, zin);       <span class="comment">// delta = z^2</span></div>
+<div class="line"><a name="l01154"></a><span class="lineno"> 1154</span>&#160;    square(gamma, yin);       <span class="comment">// gamma = y^2</span></div>
+<div class="line"><a name="l01155"></a><span class="lineno"> 1155</span>&#160;    mul(beta, xin, gamma);    <span class="comment">// beta = x * gamma</span></div>
+<div class="line"><a name="l01156"></a><span class="lineno"> 1156</span>&#160;    sub(tmp, xin, delta);     <span class="comment">// alpha = 3 * (x - delta) * (x + delta)</span></div>
+<div class="line"><a name="l01157"></a><span class="lineno"> 1157</span>&#160;    mulLiteral(alpha, tmp, 3);</div>
+<div class="line"><a name="l01158"></a><span class="lineno"> 1158</span>&#160;    add(tmp, xin, delta);</div>
+<div class="line"><a name="l01159"></a><span class="lineno"> 1159</span>&#160;    mul(alpha, alpha, tmp);</div>
+<div class="line"><a name="l01160"></a><span class="lineno"> 1160</span>&#160;    square(xout, alpha);      <span class="comment">// xout = alpha^2 - 8 * beta</span></div>
+<div class="line"><a name="l01161"></a><span class="lineno"> 1161</span>&#160;    mulLiteral(tmp, beta, 8);</div>
+<div class="line"><a name="l01162"></a><span class="lineno"> 1162</span>&#160;    sub(xout, xout, tmp);</div>
+<div class="line"><a name="l01163"></a><span class="lineno"> 1163</span>&#160;    add(zout, yin, zin);      <span class="comment">// zout = (y + z)^2 - gamma - delta</span></div>
+<div class="line"><a name="l01164"></a><span class="lineno"> 1164</span>&#160;    square(zout, zout);</div>
+<div class="line"><a name="l01165"></a><span class="lineno"> 1165</span>&#160;    sub(zout, zout, gamma);</div>
+<div class="line"><a name="l01166"></a><span class="lineno"> 1166</span>&#160;    sub(zout, zout, delta);</div>
+<div class="line"><a name="l01167"></a><span class="lineno"> 1167</span>&#160;    mulLiteral(yout, beta, 4);<span class="comment">// yout = alpha * (4 * beta - xout) - 8 * gamma^2</span></div>
+<div class="line"><a name="l01168"></a><span class="lineno"> 1168</span>&#160;    sub(yout, yout, xout);</div>
+<div class="line"><a name="l01169"></a><span class="lineno"> 1169</span>&#160;    mul(yout, alpha, yout);</div>
+<div class="line"><a name="l01170"></a><span class="lineno"> 1170</span>&#160;    square(gamma, gamma);</div>
+<div class="line"><a name="l01171"></a><span class="lineno"> 1171</span>&#160;    mulLiteral(gamma, gamma, 8);</div>
+<div class="line"><a name="l01172"></a><span class="lineno"> 1172</span>&#160;    sub(yout, yout, gamma);</div>
+<div class="line"><a name="l01173"></a><span class="lineno"> 1173</span>&#160;</div>
+<div class="line"><a name="l01174"></a><span class="lineno"> 1174</span>&#160;    <span class="comment">// Clean up.</span></div>
+<div class="line"><a name="l01175"></a><span class="lineno"> 1175</span>&#160;    strict_clean(alpha);</div>
+<div class="line"><a name="l01176"></a><span class="lineno"> 1176</span>&#160;    strict_clean(beta);</div>
+<div class="line"><a name="l01177"></a><span class="lineno"> 1177</span>&#160;    strict_clean(gamma);</div>
+<div class="line"><a name="l01178"></a><span class="lineno"> 1178</span>&#160;    strict_clean(delta);</div>
+<div class="line"><a name="l01179"></a><span class="lineno"> 1179</span>&#160;    strict_clean(tmp);</div>
+<div class="line"><a name="l01180"></a><span class="lineno"> 1180</span>&#160;}</div>
+<div class="line"><a name="l01181"></a><span class="lineno"> 1181</span>&#160;</div>
+<div class="line"><a name="l01201"></a><span class="lineno"> 1201</span>&#160;<span class="keywordtype">void</span> P521::addPoint(limb_t *xout, limb_t *yout, limb_t *zout,</div>
+<div class="line"><a name="l01202"></a><span class="lineno"> 1202</span>&#160;                    <span class="keyword">const</span> limb_t *x1, <span class="keyword">const</span> limb_t *y1,</div>
+<div class="line"><a name="l01203"></a><span class="lineno"> 1203</span>&#160;                    <span class="keyword">const</span> limb_t *z1, <span class="keyword">const</span> limb_t *x2,</div>
+<div class="line"><a name="l01204"></a><span class="lineno"> 1204</span>&#160;                    <span class="keyword">const</span> limb_t *y2)</div>
+<div class="line"><a name="l01205"></a><span class="lineno"> 1205</span>&#160;{</div>
+<div class="line"><a name="l01206"></a><span class="lineno"> 1206</span>&#160;    limb_t z1z1[NUM_LIMBS_521BIT];</div>
+<div class="line"><a name="l01207"></a><span class="lineno"> 1207</span>&#160;    limb_t u2[NUM_LIMBS_521BIT];</div>
+<div class="line"><a name="l01208"></a><span class="lineno"> 1208</span>&#160;    limb_t s2[NUM_LIMBS_521BIT];</div>
+<div class="line"><a name="l01209"></a><span class="lineno"> 1209</span>&#160;    limb_t h[NUM_LIMBS_521BIT];</div>
+<div class="line"><a name="l01210"></a><span class="lineno"> 1210</span>&#160;    limb_t i[NUM_LIMBS_521BIT];</div>
+<div class="line"><a name="l01211"></a><span class="lineno"> 1211</span>&#160;    limb_t j[NUM_LIMBS_521BIT];</div>
+<div class="line"><a name="l01212"></a><span class="lineno"> 1212</span>&#160;    limb_t r[NUM_LIMBS_521BIT];</div>
+<div class="line"><a name="l01213"></a><span class="lineno"> 1213</span>&#160;    limb_t v[NUM_LIMBS_521BIT];</div>
+<div class="line"><a name="l01214"></a><span class="lineno"> 1214</span>&#160;</div>
+<div class="line"><a name="l01215"></a><span class="lineno"> 1215</span>&#160;    <span class="comment">// Determine if the first value is the point-at-infinity identity element.</span></div>
+<div class="line"><a name="l01216"></a><span class="lineno"> 1216</span>&#160;    <span class="comment">// The second z value is always 1 so it cannot be the point-at-infinity.</span></div>
+<div class="line"><a name="l01217"></a><span class="lineno"> 1217</span>&#160;    limb_t p1IsIdentity = <a class="code" href="classBigNumberUtil.html#ad0aafacd8e224bd543341973c62ff1dd">BigNumberUtil::isZero</a>(z1, NUM_LIMBS_521BIT);</div>
+<div class="line"><a name="l01218"></a><span class="lineno"> 1218</span>&#160;</div>
+<div class="line"><a name="l01219"></a><span class="lineno"> 1219</span>&#160;    <span class="comment">// Multiply the points, assuming that z2 = 1.</span></div>
+<div class="line"><a name="l01220"></a><span class="lineno"> 1220</span>&#160;    square(z1z1, z1);               <span class="comment">// z1z1 = z1^2</span></div>
+<div class="line"><a name="l01221"></a><span class="lineno"> 1221</span>&#160;    mul(u2, x2, z1z1);              <span class="comment">// u2 = x2 * z1z1</span></div>
+<div class="line"><a name="l01222"></a><span class="lineno"> 1222</span>&#160;    mul(s2, y2, z1);                <span class="comment">// s2 = y2 * z1 * z1z1</span></div>
+<div class="line"><a name="l01223"></a><span class="lineno"> 1223</span>&#160;    mul(s2, s2, z1z1);</div>
+<div class="line"><a name="l01224"></a><span class="lineno"> 1224</span>&#160;    sub(h, u2, x1);                 <span class="comment">// h = u2 - x1</span></div>
+<div class="line"><a name="l01225"></a><span class="lineno"> 1225</span>&#160;    mulLiteral(i, h, 2);            <span class="comment">// i = (2 * h)^2</span></div>
+<div class="line"><a name="l01226"></a><span class="lineno"> 1226</span>&#160;    square(i, i);</div>
+<div class="line"><a name="l01227"></a><span class="lineno"> 1227</span>&#160;    sub(r, s2, y1);                 <span class="comment">// r = 2 * (s2 - y1)</span></div>
+<div class="line"><a name="l01228"></a><span class="lineno"> 1228</span>&#160;    add(r, r, r);</div>
+<div class="line"><a name="l01229"></a><span class="lineno"> 1229</span>&#160;    mul(j, h, i);                   <span class="comment">// j = h * i</span></div>
+<div class="line"><a name="l01230"></a><span class="lineno"> 1230</span>&#160;    mul(v, x1, i);                  <span class="comment">// v = x1 * i</span></div>
+<div class="line"><a name="l01231"></a><span class="lineno"> 1231</span>&#160;    square(xout, r);                <span class="comment">// xout = r^2 - j - 2 * v</span></div>
+<div class="line"><a name="l01232"></a><span class="lineno"> 1232</span>&#160;    sub(xout, xout, j);</div>
 <div class="line"><a name="l01233"></a><span class="lineno"> 1233</span>&#160;    sub(xout, xout, v);</div>
-<div class="line"><a name="l01234"></a><span class="lineno"> 1234</span>&#160;    sub(yout, v, xout);             <span class="comment">// yout = r * (v - xout) - 2 * y1 * j</span></div>
-<div class="line"><a name="l01235"></a><span class="lineno"> 1235</span>&#160;    mul(yout, r, yout);</div>
-<div class="line"><a name="l01236"></a><span class="lineno"> 1236</span>&#160;    mul(j, y1, j);</div>
-<div class="line"><a name="l01237"></a><span class="lineno"> 1237</span>&#160;    sub(yout, yout, j);</div>
+<div class="line"><a name="l01234"></a><span class="lineno"> 1234</span>&#160;    sub(xout, xout, v);</div>
+<div class="line"><a name="l01235"></a><span class="lineno"> 1235</span>&#160;    sub(yout, v, xout);             <span class="comment">// yout = r * (v - xout) - 2 * y1 * j</span></div>
+<div class="line"><a name="l01236"></a><span class="lineno"> 1236</span>&#160;    mul(yout, r, yout);</div>
+<div class="line"><a name="l01237"></a><span class="lineno"> 1237</span>&#160;    mul(j, y1, j);</div>
 <div class="line"><a name="l01238"></a><span class="lineno"> 1238</span>&#160;    sub(yout, yout, j);</div>
-<div class="line"><a name="l01239"></a><span class="lineno"> 1239</span>&#160;    mul(zout, z1, h);               <span class="comment">// zout = 2 * z1 * h</span></div>
-<div class="line"><a name="l01240"></a><span class="lineno"> 1240</span>&#160;    add(zout, zout, zout);</div>
-<div class="line"><a name="l01241"></a><span class="lineno"> 1241</span>&#160;</div>
-<div class="line"><a name="l01242"></a><span class="lineno"> 1242</span>&#160;    <span class="comment">// Select the answer to return.  If (x1, y1, z1) was the identity,</span></div>
-<div class="line"><a name="l01243"></a><span class="lineno"> 1243</span>&#160;    <span class="comment">// then the answer is (x2, y2, z2).  Otherwise it is (xout, yout, zout).</span></div>
-<div class="line"><a name="l01244"></a><span class="lineno"> 1244</span>&#160;    <span class="comment">// Conditionally move the second argument over the output if necessary.</span></div>
-<div class="line"><a name="l01245"></a><span class="lineno"> 1245</span>&#160;    cmove(p1IsIdentity, xout, x2);</div>
-<div class="line"><a name="l01246"></a><span class="lineno"> 1246</span>&#160;    cmove(p1IsIdentity, yout, y2);</div>
-<div class="line"><a name="l01247"></a><span class="lineno"> 1247</span>&#160;    cmove1(p1IsIdentity, zout); <span class="comment">// z2 = 1</span></div>
-<div class="line"><a name="l01248"></a><span class="lineno"> 1248</span>&#160;</div>
-<div class="line"><a name="l01249"></a><span class="lineno"> 1249</span>&#160;    <span class="comment">// Clean up.</span></div>
-<div class="line"><a name="l01250"></a><span class="lineno"> 1250</span>&#160;    strict_clean(z1z1);</div>
-<div class="line"><a name="l01251"></a><span class="lineno"> 1251</span>&#160;    strict_clean(u2);</div>
-<div class="line"><a name="l01252"></a><span class="lineno"> 1252</span>&#160;    strict_clean(s2);</div>
-<div class="line"><a name="l01253"></a><span class="lineno"> 1253</span>&#160;    strict_clean(h);</div>
-<div class="line"><a name="l01254"></a><span class="lineno"> 1254</span>&#160;    strict_clean(i);</div>
-<div class="line"><a name="l01255"></a><span class="lineno"> 1255</span>&#160;    strict_clean(j);</div>
-<div class="line"><a name="l01256"></a><span class="lineno"> 1256</span>&#160;    strict_clean(r);</div>
-<div class="line"><a name="l01257"></a><span class="lineno"> 1257</span>&#160;    strict_clean(v);</div>
-<div class="line"><a name="l01258"></a><span class="lineno"> 1258</span>&#160;}</div>
-<div class="line"><a name="l01259"></a><span class="lineno"> 1259</span>&#160;</div>
-<div class="line"><a name="l01272"></a><span class="lineno"> 1272</span>&#160;<span class="keywordtype">void</span> P521::cmove(limb_t select, limb_t *x, <span class="keyword">const</span> limb_t *y)</div>
-<div class="line"><a name="l01273"></a><span class="lineno"> 1273</span>&#160;{</div>
-<div class="line"><a name="l01274"></a><span class="lineno"> 1274</span>&#160;    uint8_t posn;</div>
-<div class="line"><a name="l01275"></a><span class="lineno"> 1275</span>&#160;    limb_t dummy;</div>
-<div class="line"><a name="l01276"></a><span class="lineno"> 1276</span>&#160;    limb_t sel;</div>
-<div class="line"><a name="l01277"></a><span class="lineno"> 1277</span>&#160;</div>
-<div class="line"><a name="l01278"></a><span class="lineno"> 1278</span>&#160;    <span class="comment">// Turn &quot;select&quot; into an all-zeroes or all-ones mask.  We don&#39;t care</span></div>
-<div class="line"><a name="l01279"></a><span class="lineno"> 1279</span>&#160;    <span class="comment">// which bit or bits is set in the original &quot;select&quot; value.</span></div>
-<div class="line"><a name="l01280"></a><span class="lineno"> 1280</span>&#160;    sel = (limb_t)(((((dlimb_t)1) &lt;&lt; LIMB_BITS) - select) &gt;&gt; LIMB_BITS);</div>
-<div class="line"><a name="l01281"></a><span class="lineno"> 1281</span>&#160;    --sel;</div>
-<div class="line"><a name="l01282"></a><span class="lineno"> 1282</span>&#160;</div>
-<div class="line"><a name="l01283"></a><span class="lineno"> 1283</span>&#160;    <span class="comment">// Move y into x based on &quot;select&quot;.</span></div>
-<div class="line"><a name="l01284"></a><span class="lineno"> 1284</span>&#160;    <span class="keywordflow">for</span> (posn = 0; posn &lt; NUM_LIMBS_521BIT; ++posn) {</div>
-<div class="line"><a name="l01285"></a><span class="lineno"> 1285</span>&#160;        dummy = sel &amp; (*x ^ *y++);</div>
-<div class="line"><a name="l01286"></a><span class="lineno"> 1286</span>&#160;        *x++ ^= dummy;</div>
-<div class="line"><a name="l01287"></a><span class="lineno"> 1287</span>&#160;    }</div>
-<div class="line"><a name="l01288"></a><span class="lineno"> 1288</span>&#160;}</div>
-<div class="line"><a name="l01289"></a><span class="lineno"> 1289</span>&#160;</div>
-<div class="line"><a name="l01301"></a><span class="lineno"> 1301</span>&#160;<span class="keywordtype">void</span> P521::cmove1(limb_t select, limb_t *x)</div>
-<div class="line"><a name="l01302"></a><span class="lineno"> 1302</span>&#160;{</div>
-<div class="line"><a name="l01303"></a><span class="lineno"> 1303</span>&#160;    uint8_t posn;</div>
-<div class="line"><a name="l01304"></a><span class="lineno"> 1304</span>&#160;    limb_t dummy;</div>
-<div class="line"><a name="l01305"></a><span class="lineno"> 1305</span>&#160;    limb_t sel;</div>
-<div class="line"><a name="l01306"></a><span class="lineno"> 1306</span>&#160;</div>
-<div class="line"><a name="l01307"></a><span class="lineno"> 1307</span>&#160;    <span class="comment">// Turn &quot;select&quot; into an all-zeroes or all-ones mask.  We don&#39;t care</span></div>
-<div class="line"><a name="l01308"></a><span class="lineno"> 1308</span>&#160;    <span class="comment">// which bit or bits is set in the original &quot;select&quot; value.</span></div>
-<div class="line"><a name="l01309"></a><span class="lineno"> 1309</span>&#160;    sel = (limb_t)(((((dlimb_t)1) &lt;&lt; LIMB_BITS) - select) &gt;&gt; LIMB_BITS);</div>
-<div class="line"><a name="l01310"></a><span class="lineno"> 1310</span>&#160;    --sel;</div>
-<div class="line"><a name="l01311"></a><span class="lineno"> 1311</span>&#160;</div>
-<div class="line"><a name="l01312"></a><span class="lineno"> 1312</span>&#160;    <span class="comment">// Move 1 into x based on &quot;select&quot;.</span></div>
-<div class="line"><a name="l01313"></a><span class="lineno"> 1313</span>&#160;    dummy = sel &amp; (*x ^ 1);</div>
-<div class="line"><a name="l01314"></a><span class="lineno"> 1314</span>&#160;    *x++ ^= dummy;</div>
-<div class="line"><a name="l01315"></a><span class="lineno"> 1315</span>&#160;    <span class="keywordflow">for</span> (posn = 1; posn &lt; NUM_LIMBS_521BIT; ++posn) {</div>
-<div class="line"><a name="l01316"></a><span class="lineno"> 1316</span>&#160;        dummy = sel &amp; *x;</div>
-<div class="line"><a name="l01317"></a><span class="lineno"> 1317</span>&#160;        *x++ ^= dummy;</div>
-<div class="line"><a name="l01318"></a><span class="lineno"> 1318</span>&#160;    }</div>
-<div class="line"><a name="l01319"></a><span class="lineno"> 1319</span>&#160;}</div>
-<div class="line"><a name="l01320"></a><span class="lineno"> 1320</span>&#160;</div>
-<div class="line"><a name="l01329"></a><span class="lineno"> 1329</span>&#160;<span class="keywordtype">void</span> P521::recip(limb_t *result, <span class="keyword">const</span> limb_t *x)</div>
-<div class="line"><a name="l01330"></a><span class="lineno"> 1330</span>&#160;{</div>
-<div class="line"><a name="l01331"></a><span class="lineno"> 1331</span>&#160;    limb_t t1[NUM_LIMBS_521BIT];</div>
-<div class="line"><a name="l01332"></a><span class="lineno"> 1332</span>&#160;</div>
-<div class="line"><a name="l01333"></a><span class="lineno"> 1333</span>&#160;    <span class="comment">// The reciprocal is the same as x ^ (p - 2) where p = 2^521 - 1.</span></div>
-<div class="line"><a name="l01334"></a><span class="lineno"> 1334</span>&#160;    <span class="comment">// The big-endian hexadecimal expansion of (p - 2) is:</span></div>
-<div class="line"><a name="l01335"></a><span class="lineno"> 1335</span>&#160;    <span class="comment">// 01FF FFFFFFF FFFFFFFF ... FFFFFFFF FFFFFFFD</span></div>
-<div class="line"><a name="l01336"></a><span class="lineno"> 1336</span>&#160;    <span class="comment">//</span></div>
-<div class="line"><a name="l01337"></a><span class="lineno"> 1337</span>&#160;    <span class="comment">// The naive implementation needs to do 2 multiplications per 1 bit and</span></div>
-<div class="line"><a name="l01338"></a><span class="lineno"> 1338</span>&#160;    <span class="comment">// 1 multiplication per 0 bit.  We can improve upon this by creating a</span></div>
-<div class="line"><a name="l01339"></a><span class="lineno"> 1339</span>&#160;    <span class="comment">// pattern 1111 and then shifting and multiplying to create 11111111,</span></div>
-<div class="line"><a name="l01340"></a><span class="lineno"> 1340</span>&#160;    <span class="comment">// and then 1111111111111111, and so on for the top 512-bits.</span></div>
-<div class="line"><a name="l01341"></a><span class="lineno"> 1341</span>&#160;</div>
-<div class="line"><a name="l01342"></a><span class="lineno"> 1342</span>&#160;    <span class="comment">// Build a 4-bit pattern 1111 in the result.</span></div>
-<div class="line"><a name="l01343"></a><span class="lineno"> 1343</span>&#160;    square(result, x);</div>
-<div class="line"><a name="l01344"></a><span class="lineno"> 1344</span>&#160;    mul(result, result, x);</div>
-<div class="line"><a name="l01345"></a><span class="lineno"> 1345</span>&#160;    square(result, result);</div>
-<div class="line"><a name="l01346"></a><span class="lineno"> 1346</span>&#160;    mul(result, result, x);</div>
-<div class="line"><a name="l01347"></a><span class="lineno"> 1347</span>&#160;    square(result, result);</div>
-<div class="line"><a name="l01348"></a><span class="lineno"> 1348</span>&#160;    mul(result, result, x);</div>
-<div class="line"><a name="l01349"></a><span class="lineno"> 1349</span>&#160;</div>
-<div class="line"><a name="l01350"></a><span class="lineno"> 1350</span>&#160;    <span class="comment">// Shift and multiply by increasing powers of two.  This turns</span></div>
-<div class="line"><a name="l01351"></a><span class="lineno"> 1351</span>&#160;    <span class="comment">// 1111 into 11111111, and then 1111111111111111, and so on.</span></div>
-<div class="line"><a name="l01352"></a><span class="lineno"> 1352</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> power = 4; power &lt;= 256; power &lt;&lt;= 1) {</div>
-<div class="line"><a name="l01353"></a><span class="lineno"> 1353</span>&#160;        square(t1, result);</div>
-<div class="line"><a name="l01354"></a><span class="lineno"> 1354</span>&#160;        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> temp = 1; temp &lt; power; ++temp)</div>
-<div class="line"><a name="l01355"></a><span class="lineno"> 1355</span>&#160;            square(t1, t1);</div>
-<div class="line"><a name="l01356"></a><span class="lineno"> 1356</span>&#160;        mul(result, result, t1);</div>
-<div class="line"><a name="l01357"></a><span class="lineno"> 1357</span>&#160;    }</div>
-<div class="line"><a name="l01358"></a><span class="lineno"> 1358</span>&#160;</div>
-<div class="line"><a name="l01359"></a><span class="lineno"> 1359</span>&#160;    <span class="comment">// Handle the 9 lowest bits of (p - 2), 111111101, from highest to lowest.</span></div>
-<div class="line"><a name="l01360"></a><span class="lineno"> 1360</span>&#160;    <span class="keywordflow">for</span> (uint8_t index = 0; index &lt; 7; ++index) {</div>
-<div class="line"><a name="l01361"></a><span class="lineno"> 1361</span>&#160;        square(result, result);</div>
-<div class="line"><a name="l01362"></a><span class="lineno"> 1362</span>&#160;        mul(result, result, x);</div>
-<div class="line"><a name="l01363"></a><span class="lineno"> 1363</span>&#160;    }</div>
-<div class="line"><a name="l01364"></a><span class="lineno"> 1364</span>&#160;    square(result, result);</div>
+<div class="line"><a name="l01239"></a><span class="lineno"> 1239</span>&#160;    sub(yout, yout, j);</div>
+<div class="line"><a name="l01240"></a><span class="lineno"> 1240</span>&#160;    mul(zout, z1, h);               <span class="comment">// zout = 2 * z1 * h</span></div>
+<div class="line"><a name="l01241"></a><span class="lineno"> 1241</span>&#160;    add(zout, zout, zout);</div>
+<div class="line"><a name="l01242"></a><span class="lineno"> 1242</span>&#160;</div>
+<div class="line"><a name="l01243"></a><span class="lineno"> 1243</span>&#160;    <span class="comment">// Select the answer to return.  If (x1, y1, z1) was the identity,</span></div>
+<div class="line"><a name="l01244"></a><span class="lineno"> 1244</span>&#160;    <span class="comment">// then the answer is (x2, y2, z2).  Otherwise it is (xout, yout, zout).</span></div>
+<div class="line"><a name="l01245"></a><span class="lineno"> 1245</span>&#160;    <span class="comment">// Conditionally move the second argument over the output if necessary.</span></div>
+<div class="line"><a name="l01246"></a><span class="lineno"> 1246</span>&#160;    cmove(p1IsIdentity, xout, x2);</div>
+<div class="line"><a name="l01247"></a><span class="lineno"> 1247</span>&#160;    cmove(p1IsIdentity, yout, y2);</div>
+<div class="line"><a name="l01248"></a><span class="lineno"> 1248</span>&#160;    cmove1(p1IsIdentity, zout); <span class="comment">// z2 = 1</span></div>
+<div class="line"><a name="l01249"></a><span class="lineno"> 1249</span>&#160;</div>
+<div class="line"><a name="l01250"></a><span class="lineno"> 1250</span>&#160;    <span class="comment">// Clean up.</span></div>
+<div class="line"><a name="l01251"></a><span class="lineno"> 1251</span>&#160;    strict_clean(z1z1);</div>
+<div class="line"><a name="l01252"></a><span class="lineno"> 1252</span>&#160;    strict_clean(u2);</div>
+<div class="line"><a name="l01253"></a><span class="lineno"> 1253</span>&#160;    strict_clean(s2);</div>
+<div class="line"><a name="l01254"></a><span class="lineno"> 1254</span>&#160;    strict_clean(h);</div>
+<div class="line"><a name="l01255"></a><span class="lineno"> 1255</span>&#160;    strict_clean(i);</div>
+<div class="line"><a name="l01256"></a><span class="lineno"> 1256</span>&#160;    strict_clean(j);</div>
+<div class="line"><a name="l01257"></a><span class="lineno"> 1257</span>&#160;    strict_clean(r);</div>
+<div class="line"><a name="l01258"></a><span class="lineno"> 1258</span>&#160;    strict_clean(v);</div>
+<div class="line"><a name="l01259"></a><span class="lineno"> 1259</span>&#160;}</div>
+<div class="line"><a name="l01260"></a><span class="lineno"> 1260</span>&#160;</div>
+<div class="line"><a name="l01273"></a><span class="lineno"> 1273</span>&#160;<span class="keywordtype">void</span> P521::cmove(limb_t select, limb_t *x, <span class="keyword">const</span> limb_t *y)</div>
+<div class="line"><a name="l01274"></a><span class="lineno"> 1274</span>&#160;{</div>
+<div class="line"><a name="l01275"></a><span class="lineno"> 1275</span>&#160;    uint8_t posn;</div>
+<div class="line"><a name="l01276"></a><span class="lineno"> 1276</span>&#160;    limb_t dummy;</div>
+<div class="line"><a name="l01277"></a><span class="lineno"> 1277</span>&#160;    limb_t sel;</div>
+<div class="line"><a name="l01278"></a><span class="lineno"> 1278</span>&#160;</div>
+<div class="line"><a name="l01279"></a><span class="lineno"> 1279</span>&#160;    <span class="comment">// Turn &quot;select&quot; into an all-zeroes or all-ones mask.  We don&#39;t care</span></div>
+<div class="line"><a name="l01280"></a><span class="lineno"> 1280</span>&#160;    <span class="comment">// which bit or bits is set in the original &quot;select&quot; value.</span></div>
+<div class="line"><a name="l01281"></a><span class="lineno"> 1281</span>&#160;    sel = (limb_t)(((((dlimb_t)1) &lt;&lt; LIMB_BITS) - select) &gt;&gt; LIMB_BITS);</div>
+<div class="line"><a name="l01282"></a><span class="lineno"> 1282</span>&#160;    --sel;</div>
+<div class="line"><a name="l01283"></a><span class="lineno"> 1283</span>&#160;</div>
+<div class="line"><a name="l01284"></a><span class="lineno"> 1284</span>&#160;    <span class="comment">// Move y into x based on &quot;select&quot;.</span></div>
+<div class="line"><a name="l01285"></a><span class="lineno"> 1285</span>&#160;    <span class="keywordflow">for</span> (posn = 0; posn &lt; NUM_LIMBS_521BIT; ++posn) {</div>
+<div class="line"><a name="l01286"></a><span class="lineno"> 1286</span>&#160;        dummy = sel &amp; (*x ^ *y++);</div>
+<div class="line"><a name="l01287"></a><span class="lineno"> 1287</span>&#160;        *x++ ^= dummy;</div>
+<div class="line"><a name="l01288"></a><span class="lineno"> 1288</span>&#160;    }</div>
+<div class="line"><a name="l01289"></a><span class="lineno"> 1289</span>&#160;}</div>
+<div class="line"><a name="l01290"></a><span class="lineno"> 1290</span>&#160;</div>
+<div class="line"><a name="l01302"></a><span class="lineno"> 1302</span>&#160;<span class="keywordtype">void</span> P521::cmove1(limb_t select, limb_t *x)</div>
+<div class="line"><a name="l01303"></a><span class="lineno"> 1303</span>&#160;{</div>
+<div class="line"><a name="l01304"></a><span class="lineno"> 1304</span>&#160;    uint8_t posn;</div>
+<div class="line"><a name="l01305"></a><span class="lineno"> 1305</span>&#160;    limb_t dummy;</div>
+<div class="line"><a name="l01306"></a><span class="lineno"> 1306</span>&#160;    limb_t sel;</div>
+<div class="line"><a name="l01307"></a><span class="lineno"> 1307</span>&#160;</div>
+<div class="line"><a name="l01308"></a><span class="lineno"> 1308</span>&#160;    <span class="comment">// Turn &quot;select&quot; into an all-zeroes or all-ones mask.  We don&#39;t care</span></div>
+<div class="line"><a name="l01309"></a><span class="lineno"> 1309</span>&#160;    <span class="comment">// which bit or bits is set in the original &quot;select&quot; value.</span></div>
+<div class="line"><a name="l01310"></a><span class="lineno"> 1310</span>&#160;    sel = (limb_t)(((((dlimb_t)1) &lt;&lt; LIMB_BITS) - select) &gt;&gt; LIMB_BITS);</div>
+<div class="line"><a name="l01311"></a><span class="lineno"> 1311</span>&#160;    --sel;</div>
+<div class="line"><a name="l01312"></a><span class="lineno"> 1312</span>&#160;</div>
+<div class="line"><a name="l01313"></a><span class="lineno"> 1313</span>&#160;    <span class="comment">// Move 1 into x based on &quot;select&quot;.</span></div>
+<div class="line"><a name="l01314"></a><span class="lineno"> 1314</span>&#160;    dummy = sel &amp; (*x ^ 1);</div>
+<div class="line"><a name="l01315"></a><span class="lineno"> 1315</span>&#160;    *x++ ^= dummy;</div>
+<div class="line"><a name="l01316"></a><span class="lineno"> 1316</span>&#160;    <span class="keywordflow">for</span> (posn = 1; posn &lt; NUM_LIMBS_521BIT; ++posn) {</div>
+<div class="line"><a name="l01317"></a><span class="lineno"> 1317</span>&#160;        dummy = sel &amp; *x;</div>
+<div class="line"><a name="l01318"></a><span class="lineno"> 1318</span>&#160;        *x++ ^= dummy;</div>
+<div class="line"><a name="l01319"></a><span class="lineno"> 1319</span>&#160;    }</div>
+<div class="line"><a name="l01320"></a><span class="lineno"> 1320</span>&#160;}</div>
+<div class="line"><a name="l01321"></a><span class="lineno"> 1321</span>&#160;</div>
+<div class="line"><a name="l01330"></a><span class="lineno"> 1330</span>&#160;<span class="keywordtype">void</span> P521::recip(limb_t *result, <span class="keyword">const</span> limb_t *x)</div>
+<div class="line"><a name="l01331"></a><span class="lineno"> 1331</span>&#160;{</div>
+<div class="line"><a name="l01332"></a><span class="lineno"> 1332</span>&#160;    limb_t t1[NUM_LIMBS_521BIT];</div>
+<div class="line"><a name="l01333"></a><span class="lineno"> 1333</span>&#160;</div>
+<div class="line"><a name="l01334"></a><span class="lineno"> 1334</span>&#160;    <span class="comment">// The reciprocal is the same as x ^ (p - 2) where p = 2^521 - 1.</span></div>
+<div class="line"><a name="l01335"></a><span class="lineno"> 1335</span>&#160;    <span class="comment">// The big-endian hexadecimal expansion of (p - 2) is:</span></div>
+<div class="line"><a name="l01336"></a><span class="lineno"> 1336</span>&#160;    <span class="comment">// 01FF FFFFFFF FFFFFFFF ... FFFFFFFF FFFFFFFD</span></div>
+<div class="line"><a name="l01337"></a><span class="lineno"> 1337</span>&#160;    <span class="comment">//</span></div>
+<div class="line"><a name="l01338"></a><span class="lineno"> 1338</span>&#160;    <span class="comment">// The naive implementation needs to do 2 multiplications per 1 bit and</span></div>
+<div class="line"><a name="l01339"></a><span class="lineno"> 1339</span>&#160;    <span class="comment">// 1 multiplication per 0 bit.  We can improve upon this by creating a</span></div>
+<div class="line"><a name="l01340"></a><span class="lineno"> 1340</span>&#160;    <span class="comment">// pattern 1111 and then shifting and multiplying to create 11111111,</span></div>
+<div class="line"><a name="l01341"></a><span class="lineno"> 1341</span>&#160;    <span class="comment">// and then 1111111111111111, and so on for the top 512-bits.</span></div>
+<div class="line"><a name="l01342"></a><span class="lineno"> 1342</span>&#160;</div>
+<div class="line"><a name="l01343"></a><span class="lineno"> 1343</span>&#160;    <span class="comment">// Build a 4-bit pattern 1111 in the result.</span></div>
+<div class="line"><a name="l01344"></a><span class="lineno"> 1344</span>&#160;    square(result, x);</div>
+<div class="line"><a name="l01345"></a><span class="lineno"> 1345</span>&#160;    mul(result, result, x);</div>
+<div class="line"><a name="l01346"></a><span class="lineno"> 1346</span>&#160;    square(result, result);</div>
+<div class="line"><a name="l01347"></a><span class="lineno"> 1347</span>&#160;    mul(result, result, x);</div>
+<div class="line"><a name="l01348"></a><span class="lineno"> 1348</span>&#160;    square(result, result);</div>
+<div class="line"><a name="l01349"></a><span class="lineno"> 1349</span>&#160;    mul(result, result, x);</div>
+<div class="line"><a name="l01350"></a><span class="lineno"> 1350</span>&#160;</div>
+<div class="line"><a name="l01351"></a><span class="lineno"> 1351</span>&#160;    <span class="comment">// Shift and multiply by increasing powers of two.  This turns</span></div>
+<div class="line"><a name="l01352"></a><span class="lineno"> 1352</span>&#160;    <span class="comment">// 1111 into 11111111, and then 1111111111111111, and so on.</span></div>
+<div class="line"><a name="l01353"></a><span class="lineno"> 1353</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> power = 4; power &lt;= 256; power &lt;&lt;= 1) {</div>
+<div class="line"><a name="l01354"></a><span class="lineno"> 1354</span>&#160;        square(t1, result);</div>
+<div class="line"><a name="l01355"></a><span class="lineno"> 1355</span>&#160;        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> temp = 1; temp &lt; power; ++temp)</div>
+<div class="line"><a name="l01356"></a><span class="lineno"> 1356</span>&#160;            square(t1, t1);</div>
+<div class="line"><a name="l01357"></a><span class="lineno"> 1357</span>&#160;        mul(result, result, t1);</div>
+<div class="line"><a name="l01358"></a><span class="lineno"> 1358</span>&#160;    }</div>
+<div class="line"><a name="l01359"></a><span class="lineno"> 1359</span>&#160;</div>
+<div class="line"><a name="l01360"></a><span class="lineno"> 1360</span>&#160;    <span class="comment">// Handle the 9 lowest bits of (p - 2), 111111101, from highest to lowest.</span></div>
+<div class="line"><a name="l01361"></a><span class="lineno"> 1361</span>&#160;    <span class="keywordflow">for</span> (uint8_t index = 0; index &lt; 7; ++index) {</div>
+<div class="line"><a name="l01362"></a><span class="lineno"> 1362</span>&#160;        square(result, result);</div>
+<div class="line"><a name="l01363"></a><span class="lineno"> 1363</span>&#160;        mul(result, result, x);</div>
+<div class="line"><a name="l01364"></a><span class="lineno"> 1364</span>&#160;    }</div>
 <div class="line"><a name="l01365"></a><span class="lineno"> 1365</span>&#160;    square(result, result);</div>
-<div class="line"><a name="l01366"></a><span class="lineno"> 1366</span>&#160;    mul(result, result, x);</div>
-<div class="line"><a name="l01367"></a><span class="lineno"> 1367</span>&#160;</div>
-<div class="line"><a name="l01368"></a><span class="lineno"> 1368</span>&#160;    <span class="comment">// Clean up.</span></div>
-<div class="line"><a name="l01369"></a><span class="lineno"> 1369</span>&#160;    clean(t1);</div>
-<div class="line"><a name="l01370"></a><span class="lineno"> 1370</span>&#160;}</div>
-<div class="line"><a name="l01371"></a><span class="lineno"> 1371</span>&#160;</div>
-<div class="line"><a name="l01380"></a><span class="lineno"> 1380</span>&#160;<span class="keywordtype">void</span> P521::reduceQ(limb_t *result, <span class="keyword">const</span> limb_t *r)</div>
-<div class="line"><a name="l01381"></a><span class="lineno"> 1381</span>&#160;{</div>
-<div class="line"><a name="l01382"></a><span class="lineno"> 1382</span>&#160;    <span class="comment">// Algorithm from: http://en.wikipedia.org/wiki/Barrett_reduction</span></div>
-<div class="line"><a name="l01383"></a><span class="lineno"> 1383</span>&#160;    <span class="comment">//</span></div>
-<div class="line"><a name="l01384"></a><span class="lineno"> 1384</span>&#160;    <span class="comment">// We assume that r is less than or equal to (q - 1)^2.</span></div>
-<div class="line"><a name="l01385"></a><span class="lineno"> 1385</span>&#160;    <span class="comment">//</span></div>
-<div class="line"><a name="l01386"></a><span class="lineno"> 1386</span>&#160;    <span class="comment">// We want to compute result = r mod q.  Find the smallest k such</span></div>
-<div class="line"><a name="l01387"></a><span class="lineno"> 1387</span>&#160;    <span class="comment">// that 2^k &gt; q.  In our case, k = 521.  Then set m = floor(4^k / q)</span></div>
-<div class="line"><a name="l01388"></a><span class="lineno"> 1388</span>&#160;    <span class="comment">// and let r = r - q * floor(m * r / 4^k).  This will be the result</span></div>
-<div class="line"><a name="l01389"></a><span class="lineno"> 1389</span>&#160;    <span class="comment">// or it will be at most one subtraction of q away from the result.</span></div>
-<div class="line"><a name="l01390"></a><span class="lineno"> 1390</span>&#160;    <span class="comment">//</span></div>
-<div class="line"><a name="l01391"></a><span class="lineno"> 1391</span>&#160;    <span class="comment">// Note: m is a 522-bit number, which fits in the same number of limbs</span></div>
-<div class="line"><a name="l01392"></a><span class="lineno"> 1392</span>&#160;    <span class="comment">// as a 521-bit number assuming that limbs are 8 bits or more in size.</span></div>
-<div class="line"><a name="l01393"></a><span class="lineno"> 1393</span>&#160;    <span class="keyword">static</span> limb_t <span class="keyword">const</span> numM[NUM_LIMBS_521BIT] PROGMEM = {</div>
-<div class="line"><a name="l01394"></a><span class="lineno"> 1394</span>&#160;        LIMB_PAIR(0x6EC79BF7, 0x449048E1), LIMB_PAIR(0x7663B851, 0xC44A3647),</div>
-<div class="line"><a name="l01395"></a><span class="lineno"> 1395</span>&#160;        LIMB_PAIR(0x08F65A2F, 0x8033FEB7), LIMB_PAIR(0x40D06994, 0xAE79787C),</div>
-<div class="line"><a name="l01396"></a><span class="lineno"> 1396</span>&#160;        LIMB_PAIR(0x00000005, 0x00000000), LIMB_PAIR(0x00000000, 0x00000000),</div>
-<div class="line"><a name="l01397"></a><span class="lineno"> 1397</span>&#160;        LIMB_PAIR(0x00000000, 0x00000000), LIMB_PAIR(0x00000000, 0x00000000),</div>
-<div class="line"><a name="l01398"></a><span class="lineno"> 1398</span>&#160;        LIMB_PARTIAL(0x200)</div>
-<div class="line"><a name="l01399"></a><span class="lineno"> 1399</span>&#160;    };</div>
-<div class="line"><a name="l01400"></a><span class="lineno"> 1400</span>&#160;    limb_t temp[NUM_LIMBS_1042BIT + NUM_LIMBS_521BIT];</div>
-<div class="line"><a name="l01401"></a><span class="lineno"> 1401</span>&#160;    limb_t temp2[NUM_LIMBS_521BIT];</div>
-<div class="line"><a name="l01402"></a><span class="lineno"> 1402</span>&#160;</div>
-<div class="line"><a name="l01403"></a><span class="lineno"> 1403</span>&#160;    <span class="comment">// Multiply r by m.</span></div>
-<div class="line"><a name="l01404"></a><span class="lineno"> 1404</span>&#160;    <a class="code" href="classBigNumberUtil.html#aacdee1806a239eb9e58753ef1ddb964a">BigNumberUtil::mul_P</a>(temp, r, NUM_LIMBS_1042BIT, numM, NUM_LIMBS_521BIT);</div>
-<div class="line"><a name="l01405"></a><span class="lineno"> 1405</span>&#160;</div>
-<div class="line"><a name="l01406"></a><span class="lineno"> 1406</span>&#160;    <span class="comment">// Compute (m * r / 4^521) = (m * r / 2^1042).</span></div>
-<div class="line"><a name="l01407"></a><span class="lineno"> 1407</span>&#160;<span class="preprocessor">#if BIGNUMBER_LIMB_8BIT || BIGNUMBER_LIMB_16BIT</span></div>
-<div class="line"><a name="l01408"></a><span class="lineno"> 1408</span>&#160;<span class="preprocessor"></span>    dlimb_t carry = temp[NUM_LIMBS_BITS(1040)] &gt;&gt; 2;</div>
-<div class="line"><a name="l01409"></a><span class="lineno"> 1409</span>&#160;    <span class="keywordflow">for</span> (uint8_t index = 0; index &lt; NUM_LIMBS_521BIT; ++index) {</div>
-<div class="line"><a name="l01410"></a><span class="lineno"> 1410</span>&#160;        carry += ((dlimb_t)(temp[NUM_LIMBS_BITS(1040) + index + 1])) &lt;&lt; (LIMB_BITS - 2);</div>
-<div class="line"><a name="l01411"></a><span class="lineno"> 1411</span>&#160;        temp2[index] = (limb_t)carry;</div>
-<div class="line"><a name="l01412"></a><span class="lineno"> 1412</span>&#160;        carry &gt;&gt;= LIMB_BITS;</div>
-<div class="line"><a name="l01413"></a><span class="lineno"> 1413</span>&#160;    }</div>
-<div class="line"><a name="l01414"></a><span class="lineno"> 1414</span>&#160;<span class="preprocessor">#elif BIGNUMBER_LIMB_32BIT || BIGNUMBER_LIMB_64BIT</span></div>
-<div class="line"><a name="l01415"></a><span class="lineno"> 1415</span>&#160;<span class="preprocessor"></span>    dlimb_t carry = temp[NUM_LIMBS_BITS(1024)] &gt;&gt; 18;</div>
-<div class="line"><a name="l01416"></a><span class="lineno"> 1416</span>&#160;    <span class="keywordflow">for</span> (uint8_t index = 0; index &lt; NUM_LIMBS_521BIT; ++index) {</div>
-<div class="line"><a name="l01417"></a><span class="lineno"> 1417</span>&#160;        carry += ((dlimb_t)(temp[NUM_LIMBS_BITS(1024) + index + 1])) &lt;&lt; (LIMB_BITS - 18);</div>
-<div class="line"><a name="l01418"></a><span class="lineno"> 1418</span>&#160;        temp2[index] = (limb_t)carry;</div>
-<div class="line"><a name="l01419"></a><span class="lineno"> 1419</span>&#160;        carry &gt;&gt;= LIMB_BITS;</div>
-<div class="line"><a name="l01420"></a><span class="lineno"> 1420</span>&#160;    }</div>
-<div class="line"><a name="l01421"></a><span class="lineno"> 1421</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l01422"></a><span class="lineno"> 1422</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l01423"></a><span class="lineno"> 1423</span>&#160;    <span class="comment">// Multiply (m * r) / 2^1042 by q and subtract it from r.</span></div>
-<div class="line"><a name="l01424"></a><span class="lineno"> 1424</span>&#160;    <span class="comment">// We can ignore the high words of the subtraction result</span></div>
-<div class="line"><a name="l01425"></a><span class="lineno"> 1425</span>&#160;    <span class="comment">// because they will all turn into zero after the subtraction.</span></div>
-<div class="line"><a name="l01426"></a><span class="lineno"> 1426</span>&#160;    <a class="code" href="classBigNumberUtil.html#aacdee1806a239eb9e58753ef1ddb964a">BigNumberUtil::mul_P</a>(temp, temp2, NUM_LIMBS_521BIT,</div>
-<div class="line"><a name="l01427"></a><span class="lineno"> 1427</span>&#160;                         P521_q, NUM_LIMBS_521BIT);</div>
-<div class="line"><a name="l01428"></a><span class="lineno"> 1428</span>&#160;    <a class="code" href="classBigNumberUtil.html#a6618e03bfcb3086961df508b40cc1e67">BigNumberUtil::sub</a>(result, r, temp, NUM_LIMBS_521BIT);</div>
-<div class="line"><a name="l01429"></a><span class="lineno"> 1429</span>&#160;</div>
-<div class="line"><a name="l01430"></a><span class="lineno"> 1430</span>&#160;    <span class="comment">// Perform a trial subtraction of q from the result to reduce it.</span></div>
-<div class="line"><a name="l01431"></a><span class="lineno"> 1431</span>&#160;    <a class="code" href="classBigNumberUtil.html#a00c9cde0b626788a60552a6bc9ce058b">BigNumberUtil::reduceQuick_P</a>(result, result, P521_q, NUM_LIMBS_521BIT);</div>
-<div class="line"><a name="l01432"></a><span class="lineno"> 1432</span>&#160;</div>
-<div class="line"><a name="l01433"></a><span class="lineno"> 1433</span>&#160;    <span class="comment">// Clean up and exit.</span></div>
-<div class="line"><a name="l01434"></a><span class="lineno"> 1434</span>&#160;    clean(temp);</div>
-<div class="line"><a name="l01435"></a><span class="lineno"> 1435</span>&#160;    clean(temp2);</div>
-<div class="line"><a name="l01436"></a><span class="lineno"> 1436</span>&#160;}</div>
-<div class="line"><a name="l01437"></a><span class="lineno"> 1437</span>&#160;</div>
-<div class="line"><a name="l01448"></a><span class="lineno"> 1448</span>&#160;<span class="keywordtype">void</span> P521::mulQ(limb_t *result, <span class="keyword">const</span> limb_t *x, <span class="keyword">const</span> limb_t *y)</div>
-<div class="line"><a name="l01449"></a><span class="lineno"> 1449</span>&#160;{</div>
-<div class="line"><a name="l01450"></a><span class="lineno"> 1450</span>&#160;    limb_t temp[NUM_LIMBS_1042BIT];</div>
-<div class="line"><a name="l01451"></a><span class="lineno"> 1451</span>&#160;    mulNoReduce(temp, x, y);</div>
-<div class="line"><a name="l01452"></a><span class="lineno"> 1452</span>&#160;    reduceQ(result, temp);</div>
-<div class="line"><a name="l01453"></a><span class="lineno"> 1453</span>&#160;    strict_clean(temp);</div>
-<div class="line"><a name="l01454"></a><span class="lineno"> 1454</span>&#160;}</div>
-<div class="line"><a name="l01455"></a><span class="lineno"> 1455</span>&#160;</div>
-<div class="line"><a name="l01464"></a><span class="lineno"> 1464</span>&#160;<span class="keywordtype">void</span> P521::recipQ(limb_t *result, <span class="keyword">const</span> limb_t *x)</div>
-<div class="line"><a name="l01465"></a><span class="lineno"> 1465</span>&#160;{</div>
-<div class="line"><a name="l01466"></a><span class="lineno"> 1466</span>&#160;    <span class="comment">// Bottom 265 bits of q - 2.  The top 256 bits are all-1&#39;s.</span></div>
-<div class="line"><a name="l01467"></a><span class="lineno"> 1467</span>&#160;    <span class="keyword">static</span> limb_t <span class="keyword">const</span> P521_q_m2[] PROGMEM = {</div>
-<div class="line"><a name="l01468"></a><span class="lineno"> 1468</span>&#160;        LIMB_PAIR(0x91386407, 0xbb6fb71e), LIMB_PAIR(0x899c47ae, 0x3bb5c9b8),</div>
-<div class="line"><a name="l01469"></a><span class="lineno"> 1469</span>&#160;        LIMB_PAIR(0xf709a5d0, 0x7fcc0148), LIMB_PAIR(0xbf2f966b, 0x51868783),</div>
-<div class="line"><a name="l01470"></a><span class="lineno"> 1470</span>&#160;        LIMB_PARTIAL(0x1fa)</div>
-<div class="line"><a name="l01471"></a><span class="lineno"> 1471</span>&#160;    };</div>
-<div class="line"><a name="l01472"></a><span class="lineno"> 1472</span>&#160;</div>
-<div class="line"><a name="l01473"></a><span class="lineno"> 1473</span>&#160;    <span class="comment">// Raise x to the power of q - 2, mod q.  We start with the top</span></div>
-<div class="line"><a name="l01474"></a><span class="lineno"> 1474</span>&#160;    <span class="comment">// 256 bits which are all-1&#39;s, using a similar technique to recip().</span></div>
-<div class="line"><a name="l01475"></a><span class="lineno"> 1475</span>&#160;    limb_t t1[NUM_LIMBS_521BIT];</div>
-<div class="line"><a name="l01476"></a><span class="lineno"> 1476</span>&#160;    mulQ(result, x, x);</div>
-<div class="line"><a name="l01477"></a><span class="lineno"> 1477</span>&#160;    mulQ(result, result, x);</div>
-<div class="line"><a name="l01478"></a><span class="lineno"> 1478</span>&#160;    mulQ(result, result, result);</div>
-<div class="line"><a name="l01479"></a><span class="lineno"> 1479</span>&#160;    mulQ(result, result, x);</div>
-<div class="line"><a name="l01480"></a><span class="lineno"> 1480</span>&#160;    mulQ(result, result, result);</div>
-<div class="line"><a name="l01481"></a><span class="lineno"> 1481</span>&#160;    mulQ(result, result, x);</div>
-<div class="line"><a name="l01482"></a><span class="lineno"> 1482</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> power = 4; power &lt;= 128; power &lt;&lt;= 1) {</div>
-<div class="line"><a name="l01483"></a><span class="lineno"> 1483</span>&#160;        mulQ(t1, result, result);</div>
-<div class="line"><a name="l01484"></a><span class="lineno"> 1484</span>&#160;        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> temp = 1; temp &lt; power; ++temp)</div>
-<div class="line"><a name="l01485"></a><span class="lineno"> 1485</span>&#160;            mulQ(t1, t1, t1);</div>
-<div class="line"><a name="l01486"></a><span class="lineno"> 1486</span>&#160;        mulQ(result, result, t1);</div>
-<div class="line"><a name="l01487"></a><span class="lineno"> 1487</span>&#160;    }</div>
-<div class="line"><a name="l01488"></a><span class="lineno"> 1488</span>&#160;    clean(t1);</div>
-<div class="line"><a name="l01489"></a><span class="lineno"> 1489</span>&#160;</div>
-<div class="line"><a name="l01490"></a><span class="lineno"> 1490</span>&#160;    <span class="comment">// Deal with the bottom 265 bits from highest to lowest.  Square for</span></div>
-<div class="line"><a name="l01491"></a><span class="lineno"> 1491</span>&#160;    <span class="comment">// each bit and multiply in x whenever there is a 1 bit.  The timing</span></div>
-<div class="line"><a name="l01492"></a><span class="lineno"> 1492</span>&#160;    <span class="comment">// is based on the publicly-known constant q - 2, not on the value of x.</span></div>
-<div class="line"><a name="l01493"></a><span class="lineno"> 1493</span>&#160;    <span class="keywordtype">size_t</span> bit = 265;</div>
-<div class="line"><a name="l01494"></a><span class="lineno"> 1494</span>&#160;    <span class="keywordflow">while</span> (bit &gt; 0) {</div>
-<div class="line"><a name="l01495"></a><span class="lineno"> 1495</span>&#160;        --bit;</div>
-<div class="line"><a name="l01496"></a><span class="lineno"> 1496</span>&#160;        mulQ(result, result, result);</div>
-<div class="line"><a name="l01497"></a><span class="lineno"> 1497</span>&#160;        <span class="keywordflow">if</span> (pgm_read_limb(&amp;(P521_q_m2[bit / LIMB_BITS])) &amp;</div>
-<div class="line"><a name="l01498"></a><span class="lineno"> 1498</span>&#160;                (((limb_t)1) &lt;&lt; (bit % LIMB_BITS))) {</div>
-<div class="line"><a name="l01499"></a><span class="lineno"> 1499</span>&#160;            mulQ(result, result, x);</div>
-<div class="line"><a name="l01500"></a><span class="lineno"> 1500</span>&#160;        }</div>
-<div class="line"><a name="l01501"></a><span class="lineno"> 1501</span>&#160;    }</div>
-<div class="line"><a name="l01502"></a><span class="lineno"> 1502</span>&#160;}</div>
-<div class="line"><a name="l01503"></a><span class="lineno"> 1503</span>&#160;</div>
-<div class="line"><a name="l01514"></a><span class="lineno"> 1514</span>&#160;<span class="keywordtype">void</span> P521::generateK(uint8_t k[66], <span class="keyword">const</span> uint8_t hm[66],</div>
-<div class="line"><a name="l01515"></a><span class="lineno"> 1515</span>&#160;                     <span class="keyword">const</span> uint8_t x[66], <a class="code" href="classHash.html">Hash</a> *hash, uint64_t count)</div>
-<div class="line"><a name="l01516"></a><span class="lineno"> 1516</span>&#160;{</div>
-<div class="line"><a name="l01517"></a><span class="lineno"> 1517</span>&#160;    <span class="keywordtype">size_t</span> hlen = hash-&gt;<a class="code" href="classHash.html#adcdd30de3e5ecaa2f798c0c5644d9ef8">hashSize</a>();</div>
-<div class="line"><a name="l01518"></a><span class="lineno"> 1518</span>&#160;    uint8_t V[64];</div>
-<div class="line"><a name="l01519"></a><span class="lineno"> 1519</span>&#160;    uint8_t K[64];</div>
-<div class="line"><a name="l01520"></a><span class="lineno"> 1520</span>&#160;    uint8_t marker;</div>
-<div class="line"><a name="l01521"></a><span class="lineno"> 1521</span>&#160;</div>
-<div class="line"><a name="l01522"></a><span class="lineno"> 1522</span>&#160;    <span class="comment">// If for some reason a hash function was supplied with more than</span></div>
-<div class="line"><a name="l01523"></a><span class="lineno"> 1523</span>&#160;    <span class="comment">// 512 bits of output, truncate hash values to the first 512 bits.</span></div>
-<div class="line"><a name="l01524"></a><span class="lineno"> 1524</span>&#160;    <span class="comment">// We cannot support more than this yet.</span></div>
-<div class="line"><a name="l01525"></a><span class="lineno"> 1525</span>&#160;    <span class="keywordflow">if</span> (hlen &gt; 64)</div>
-<div class="line"><a name="l01526"></a><span class="lineno"> 1526</span>&#160;        hlen = 64;</div>
-<div class="line"><a name="l01527"></a><span class="lineno"> 1527</span>&#160;</div>
-<div class="line"><a name="l01528"></a><span class="lineno"> 1528</span>&#160;    <span class="comment">// RFC 6979, Section 3.2, Step a.  Hash the message, reduce modulo q,</span></div>
-<div class="line"><a name="l01529"></a><span class="lineno"> 1529</span>&#160;    <span class="comment">// and produce an octet string the same length as q, bits2octets(H(m)).</span></div>
-<div class="line"><a name="l01530"></a><span class="lineno"> 1530</span>&#160;    <span class="comment">// We support hashes up to 512 bits and q is a 521-bit number, so &quot;hm&quot;</span></div>
-<div class="line"><a name="l01531"></a><span class="lineno"> 1531</span>&#160;    <span class="comment">// is already the bits2octets(H(m)) value that we need.</span></div>
-<div class="line"><a name="l01532"></a><span class="lineno"> 1532</span>&#160;</div>
-<div class="line"><a name="l01533"></a><span class="lineno"> 1533</span>&#160;    <span class="comment">// Steps b and c.  Set V to all-ones and K to all-zeroes.</span></div>
-<div class="line"><a name="l01534"></a><span class="lineno"> 1534</span>&#160;    memset(V, 0x01, hlen);</div>
-<div class="line"><a name="l01535"></a><span class="lineno"> 1535</span>&#160;    memset(K, 0x00, hlen);</div>
-<div class="line"><a name="l01536"></a><span class="lineno"> 1536</span>&#160;</div>
-<div class="line"><a name="l01537"></a><span class="lineno"> 1537</span>&#160;    <span class="comment">// Step d.  K = HMAC_K(V || 0x00 || x || hm).  We make a small</span></div>
-<div class="line"><a name="l01538"></a><span class="lineno"> 1538</span>&#160;    <span class="comment">// modification here to append the count value if it is non-zero.</span></div>
-<div class="line"><a name="l01539"></a><span class="lineno"> 1539</span>&#160;    <span class="comment">// We use this to generate a new k if we have to re-enter this</span></div>
-<div class="line"><a name="l01540"></a><span class="lineno"> 1540</span>&#160;    <span class="comment">// function because the previous one was rejected by sign().</span></div>
-<div class="line"><a name="l01541"></a><span class="lineno"> 1541</span>&#160;    <span class="comment">// This is slightly different to RFC 6979 which says that the</span></div>
-<div class="line"><a name="l01542"></a><span class="lineno"> 1542</span>&#160;    <span class="comment">// loop in step h below should be continued.  That code path is</span></div>
-<div class="line"><a name="l01543"></a><span class="lineno"> 1543</span>&#160;    <span class="comment">// difficult to access, so instead modify K and V in steps d and f.</span></div>
-<div class="line"><a name="l01544"></a><span class="lineno"> 1544</span>&#160;    <span class="comment">// This alternative construction is compatible with the second</span></div>
-<div class="line"><a name="l01545"></a><span class="lineno"> 1545</span>&#160;    <span class="comment">// variant described in section 3.6 of RFC 6979.</span></div>
-<div class="line"><a name="l01546"></a><span class="lineno"> 1546</span>&#160;    hash-&gt;<a class="code" href="classHash.html#adf50359c1f525af884721cc9034e7945">resetHMAC</a>(K, hlen);</div>
-<div class="line"><a name="l01547"></a><span class="lineno"> 1547</span>&#160;    hash-&gt;<a class="code" href="classHash.html#aec9761ee427d122e7450de8df200265c">update</a>(V, hlen);</div>
-<div class="line"><a name="l01548"></a><span class="lineno"> 1548</span>&#160;    marker = 0x00;</div>
-<div class="line"><a name="l01549"></a><span class="lineno"> 1549</span>&#160;    hash-&gt;<a class="code" href="classHash.html#aec9761ee427d122e7450de8df200265c">update</a>(&amp;marker, 1);</div>
-<div class="line"><a name="l01550"></a><span class="lineno"> 1550</span>&#160;    hash-&gt;<a class="code" href="classHash.html#aec9761ee427d122e7450de8df200265c">update</a>(x, 66);</div>
-<div class="line"><a name="l01551"></a><span class="lineno"> 1551</span>&#160;    hash-&gt;<a class="code" href="classHash.html#aec9761ee427d122e7450de8df200265c">update</a>(hm, 66);</div>
-<div class="line"><a name="l01552"></a><span class="lineno"> 1552</span>&#160;    <span class="keywordflow">if</span> (count)</div>
-<div class="line"><a name="l01553"></a><span class="lineno"> 1553</span>&#160;        hash-&gt;<a class="code" href="classHash.html#aec9761ee427d122e7450de8df200265c">update</a>(&amp;count, <span class="keyword">sizeof</span>(count));</div>
-<div class="line"><a name="l01554"></a><span class="lineno"> 1554</span>&#160;    hash-&gt;<a class="code" href="classHash.html#aab42fa5420cc0bda4321a3d3866cfd06">finalizeHMAC</a>(K, hlen, K, hlen);</div>
-<div class="line"><a name="l01555"></a><span class="lineno"> 1555</span>&#160;</div>
-<div class="line"><a name="l01556"></a><span class="lineno"> 1556</span>&#160;    <span class="comment">// Step e.  V = HMAC_K(V)</span></div>
-<div class="line"><a name="l01557"></a><span class="lineno"> 1557</span>&#160;    hash-&gt;<a class="code" href="classHash.html#adf50359c1f525af884721cc9034e7945">resetHMAC</a>(K, hlen);</div>
-<div class="line"><a name="l01558"></a><span class="lineno"> 1558</span>&#160;    hash-&gt;<a class="code" href="classHash.html#aec9761ee427d122e7450de8df200265c">update</a>(V, hlen);</div>
-<div class="line"><a name="l01559"></a><span class="lineno"> 1559</span>&#160;    hash-&gt;<a class="code" href="classHash.html#aab42fa5420cc0bda4321a3d3866cfd06">finalizeHMAC</a>(K, hlen, V, hlen);</div>
-<div class="line"><a name="l01560"></a><span class="lineno"> 1560</span>&#160;</div>
-<div class="line"><a name="l01561"></a><span class="lineno"> 1561</span>&#160;    <span class="comment">// Step f.  K = HMAC_K(V || 0x01 || x || hm)</span></div>
-<div class="line"><a name="l01562"></a><span class="lineno"> 1562</span>&#160;    hash-&gt;<a class="code" href="classHash.html#adf50359c1f525af884721cc9034e7945">resetHMAC</a>(K, hlen);</div>
-<div class="line"><a name="l01563"></a><span class="lineno"> 1563</span>&#160;    hash-&gt;<a class="code" href="classHash.html#aec9761ee427d122e7450de8df200265c">update</a>(V, hlen);</div>
-<div class="line"><a name="l01564"></a><span class="lineno"> 1564</span>&#160;    marker = 0x01;</div>
-<div class="line"><a name="l01565"></a><span class="lineno"> 1565</span>&#160;    hash-&gt;<a class="code" href="classHash.html#aec9761ee427d122e7450de8df200265c">update</a>(&amp;marker, 1);</div>
-<div class="line"><a name="l01566"></a><span class="lineno"> 1566</span>&#160;    hash-&gt;<a class="code" href="classHash.html#aec9761ee427d122e7450de8df200265c">update</a>(x, 66);</div>
-<div class="line"><a name="l01567"></a><span class="lineno"> 1567</span>&#160;    hash-&gt;<a class="code" href="classHash.html#aec9761ee427d122e7450de8df200265c">update</a>(hm, 66);</div>
-<div class="line"><a name="l01568"></a><span class="lineno"> 1568</span>&#160;    <span class="keywordflow">if</span> (count)</div>
-<div class="line"><a name="l01569"></a><span class="lineno"> 1569</span>&#160;        hash-&gt;<a class="code" href="classHash.html#aec9761ee427d122e7450de8df200265c">update</a>(&amp;count, <span class="keyword">sizeof</span>(count));</div>
-<div class="line"><a name="l01570"></a><span class="lineno"> 1570</span>&#160;    hash-&gt;<a class="code" href="classHash.html#aab42fa5420cc0bda4321a3d3866cfd06">finalizeHMAC</a>(K, hlen, K, hlen);</div>
-<div class="line"><a name="l01571"></a><span class="lineno"> 1571</span>&#160;</div>
-<div class="line"><a name="l01572"></a><span class="lineno"> 1572</span>&#160;    <span class="comment">// Step g.  V = HMAC_K(V)</span></div>
-<div class="line"><a name="l01573"></a><span class="lineno"> 1573</span>&#160;    hash-&gt;<a class="code" href="classHash.html#adf50359c1f525af884721cc9034e7945">resetHMAC</a>(K, hlen);</div>
-<div class="line"><a name="l01574"></a><span class="lineno"> 1574</span>&#160;    hash-&gt;<a class="code" href="classHash.html#aec9761ee427d122e7450de8df200265c">update</a>(V, hlen);</div>
-<div class="line"><a name="l01575"></a><span class="lineno"> 1575</span>&#160;    hash-&gt;<a class="code" href="classHash.html#aab42fa5420cc0bda4321a3d3866cfd06">finalizeHMAC</a>(K, hlen, V, hlen);</div>
-<div class="line"><a name="l01576"></a><span class="lineno"> 1576</span>&#160;</div>
-<div class="line"><a name="l01577"></a><span class="lineno"> 1577</span>&#160;    <span class="comment">// Step h.  Generate candidate k values until we find what we want.</span></div>
-<div class="line"><a name="l01578"></a><span class="lineno"> 1578</span>&#160;    <span class="keywordflow">for</span> (;;) {</div>
-<div class="line"><a name="l01579"></a><span class="lineno"> 1579</span>&#160;        <span class="comment">// Step h.1 and h.2.  Generate a string of 66 bytes in length.</span></div>
-<div class="line"><a name="l01580"></a><span class="lineno"> 1580</span>&#160;        <span class="comment">//      T = empty</span></div>
-<div class="line"><a name="l01581"></a><span class="lineno"> 1581</span>&#160;        <span class="comment">//      while (len(T) &lt; 66)</span></div>
-<div class="line"><a name="l01582"></a><span class="lineno"> 1582</span>&#160;        <span class="comment">//          V = HMAC_K(V)</span></div>
-<div class="line"><a name="l01583"></a><span class="lineno"> 1583</span>&#160;        <span class="comment">//          T = T || V</span></div>
-<div class="line"><a name="l01584"></a><span class="lineno"> 1584</span>&#160;        <span class="keywordtype">size_t</span> posn = 0;</div>
-<div class="line"><a name="l01585"></a><span class="lineno"> 1585</span>&#160;        <span class="keywordflow">while</span> (posn &lt; 66) {</div>
-<div class="line"><a name="l01586"></a><span class="lineno"> 1586</span>&#160;            <span class="keywordtype">size_t</span> temp = 66 - posn;</div>
-<div class="line"><a name="l01587"></a><span class="lineno"> 1587</span>&#160;            <span class="keywordflow">if</span> (temp &gt; hlen)</div>
-<div class="line"><a name="l01588"></a><span class="lineno"> 1588</span>&#160;                temp = hlen;</div>
-<div class="line"><a name="l01589"></a><span class="lineno"> 1589</span>&#160;            hash-&gt;<a class="code" href="classHash.html#adf50359c1f525af884721cc9034e7945">resetHMAC</a>(K, hlen);</div>
-<div class="line"><a name="l01590"></a><span class="lineno"> 1590</span>&#160;            hash-&gt;<a class="code" href="classHash.html#aec9761ee427d122e7450de8df200265c">update</a>(V, hlen);</div>
-<div class="line"><a name="l01591"></a><span class="lineno"> 1591</span>&#160;            hash-&gt;<a class="code" href="classHash.html#aab42fa5420cc0bda4321a3d3866cfd06">finalizeHMAC</a>(K, hlen, V, hlen);</div>
-<div class="line"><a name="l01592"></a><span class="lineno"> 1592</span>&#160;            memcpy(k + posn, V, temp);</div>
-<div class="line"><a name="l01593"></a><span class="lineno"> 1593</span>&#160;            posn += temp;</div>
-<div class="line"><a name="l01594"></a><span class="lineno"> 1594</span>&#160;        }</div>
-<div class="line"><a name="l01595"></a><span class="lineno"> 1595</span>&#160;</div>
-<div class="line"><a name="l01596"></a><span class="lineno"> 1596</span>&#160;        <span class="comment">// Step h.3.  k = bits2int(T) and exit the loop if k is not in</span></div>
-<div class="line"><a name="l01597"></a><span class="lineno"> 1597</span>&#160;        <span class="comment">// the range 1 to q - 1.  Note: We have to extract the 521 most</span></div>
-<div class="line"><a name="l01598"></a><span class="lineno"> 1598</span>&#160;        <span class="comment">// significant bits of T, which means shifting it right by seven</span></div>
-<div class="line"><a name="l01599"></a><span class="lineno"> 1599</span>&#160;        <span class="comment">// bits to put it into the correct form.</span></div>
-<div class="line"><a name="l01600"></a><span class="lineno"> 1600</span>&#160;        <span class="keywordflow">for</span> (posn = 65; posn &gt; 0; --posn)</div>
-<div class="line"><a name="l01601"></a><span class="lineno"> 1601</span>&#160;            k[posn] = (k[posn - 1] &lt;&lt; 1) | (k[posn] &gt;&gt; 7);</div>
-<div class="line"><a name="l01602"></a><span class="lineno"> 1602</span>&#160;        k[0] &gt;&gt;= 7;</div>
-<div class="line"><a name="l01603"></a><span class="lineno"> 1603</span>&#160;        <span class="keywordflow">if</span> (<a class="code" href="classP521.html#a5802ebd25142789bb2df930ecd765d39">isValidPrivateKey</a>(k))</div>
-<div class="line"><a name="l01604"></a><span class="lineno"> 1604</span>&#160;            <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l01605"></a><span class="lineno"> 1605</span>&#160;</div>
-<div class="line"><a name="l01606"></a><span class="lineno"> 1606</span>&#160;        <span class="comment">// Generate new K and V values and try again.</span></div>
-<div class="line"><a name="l01607"></a><span class="lineno"> 1607</span>&#160;        <span class="comment">//      K = HMAC_K(V || 0x00)</span></div>
-<div class="line"><a name="l01608"></a><span class="lineno"> 1608</span>&#160;        <span class="comment">//      V = HMAC_K(V)</span></div>
-<div class="line"><a name="l01609"></a><span class="lineno"> 1609</span>&#160;        hash-&gt;<a class="code" href="classHash.html#adf50359c1f525af884721cc9034e7945">resetHMAC</a>(K, hlen);</div>
-<div class="line"><a name="l01610"></a><span class="lineno"> 1610</span>&#160;        hash-&gt;<a class="code" href="classHash.html#aec9761ee427d122e7450de8df200265c">update</a>(V, hlen);</div>
-<div class="line"><a name="l01611"></a><span class="lineno"> 1611</span>&#160;        marker = 0x00;</div>
-<div class="line"><a name="l01612"></a><span class="lineno"> 1612</span>&#160;        hash-&gt;<a class="code" href="classHash.html#aec9761ee427d122e7450de8df200265c">update</a>(&amp;marker, 1);</div>
-<div class="line"><a name="l01613"></a><span class="lineno"> 1613</span>&#160;        hash-&gt;<a class="code" href="classHash.html#aab42fa5420cc0bda4321a3d3866cfd06">finalizeHMAC</a>(K, hlen, K, hlen);</div>
-<div class="line"><a name="l01614"></a><span class="lineno"> 1614</span>&#160;        hash-&gt;<a class="code" href="classHash.html#adf50359c1f525af884721cc9034e7945">resetHMAC</a>(K, hlen);</div>
-<div class="line"><a name="l01615"></a><span class="lineno"> 1615</span>&#160;        hash-&gt;<a class="code" href="classHash.html#aec9761ee427d122e7450de8df200265c">update</a>(V, hlen);</div>
-<div class="line"><a name="l01616"></a><span class="lineno"> 1616</span>&#160;        hash-&gt;<a class="code" href="classHash.html#aab42fa5420cc0bda4321a3d3866cfd06">finalizeHMAC</a>(K, hlen, V, hlen);</div>
-<div class="line"><a name="l01617"></a><span class="lineno"> 1617</span>&#160;    }</div>
-<div class="line"><a name="l01618"></a><span class="lineno"> 1618</span>&#160;</div>
-<div class="line"><a name="l01619"></a><span class="lineno"> 1619</span>&#160;    <span class="comment">// Clean up.</span></div>
-<div class="line"><a name="l01620"></a><span class="lineno"> 1620</span>&#160;    clean(V);</div>
-<div class="line"><a name="l01621"></a><span class="lineno"> 1621</span>&#160;    clean(K);</div>
-<div class="line"><a name="l01622"></a><span class="lineno"> 1622</span>&#160;}</div>
-<div class="line"><a name="l01623"></a><span class="lineno"> 1623</span>&#160;</div>
-<div class="line"><a name="l01636"></a><span class="lineno"> 1636</span>&#160;<span class="keywordtype">void</span> P521::generateK(uint8_t k[66], <span class="keyword">const</span> uint8_t hm[66],</div>
-<div class="line"><a name="l01637"></a><span class="lineno"> 1637</span>&#160;                     <span class="keyword">const</span> uint8_t x[66], uint64_t count)</div>
-<div class="line"><a name="l01638"></a><span class="lineno"> 1638</span>&#160;{</div>
-<div class="line"><a name="l01639"></a><span class="lineno"> 1639</span>&#160;    <a class="code" href="classSHA512.html">SHA512</a> hash;</div>
-<div class="line"><a name="l01640"></a><span class="lineno"> 1640</span>&#160;    generateK(k, hm, x, &amp;hash, count);</div>
-<div class="line"><a name="l01641"></a><span class="lineno"> 1641</span>&#160;}</div>
+<div class="line"><a name="l01366"></a><span class="lineno"> 1366</span>&#160;    square(result, result);</div>
+<div class="line"><a name="l01367"></a><span class="lineno"> 1367</span>&#160;    mul(result, result, x);</div>
+<div class="line"><a name="l01368"></a><span class="lineno"> 1368</span>&#160;</div>
+<div class="line"><a name="l01369"></a><span class="lineno"> 1369</span>&#160;    <span class="comment">// Clean up.</span></div>
+<div class="line"><a name="l01370"></a><span class="lineno"> 1370</span>&#160;    clean(t1);</div>
+<div class="line"><a name="l01371"></a><span class="lineno"> 1371</span>&#160;}</div>
+<div class="line"><a name="l01372"></a><span class="lineno"> 1372</span>&#160;</div>
+<div class="line"><a name="l01381"></a><span class="lineno"> 1381</span>&#160;<span class="keywordtype">void</span> P521::reduceQ(limb_t *result, <span class="keyword">const</span> limb_t *r)</div>
+<div class="line"><a name="l01382"></a><span class="lineno"> 1382</span>&#160;{</div>
+<div class="line"><a name="l01383"></a><span class="lineno"> 1383</span>&#160;    <span class="comment">// Algorithm from: http://en.wikipedia.org/wiki/Barrett_reduction</span></div>
+<div class="line"><a name="l01384"></a><span class="lineno"> 1384</span>&#160;    <span class="comment">//</span></div>
+<div class="line"><a name="l01385"></a><span class="lineno"> 1385</span>&#160;    <span class="comment">// We assume that r is less than or equal to (q - 1)^2.</span></div>
+<div class="line"><a name="l01386"></a><span class="lineno"> 1386</span>&#160;    <span class="comment">//</span></div>
+<div class="line"><a name="l01387"></a><span class="lineno"> 1387</span>&#160;    <span class="comment">// We want to compute result = r mod q.  Find the smallest k such</span></div>
+<div class="line"><a name="l01388"></a><span class="lineno"> 1388</span>&#160;    <span class="comment">// that 2^k &gt; q.  In our case, k = 521.  Then set m = floor(4^k / q)</span></div>
+<div class="line"><a name="l01389"></a><span class="lineno"> 1389</span>&#160;    <span class="comment">// and let r = r - q * floor(m * r / 4^k).  This will be the result</span></div>
+<div class="line"><a name="l01390"></a><span class="lineno"> 1390</span>&#160;    <span class="comment">// or it will be at most one subtraction of q away from the result.</span></div>
+<div class="line"><a name="l01391"></a><span class="lineno"> 1391</span>&#160;    <span class="comment">//</span></div>
+<div class="line"><a name="l01392"></a><span class="lineno"> 1392</span>&#160;    <span class="comment">// Note: m is a 522-bit number, which fits in the same number of limbs</span></div>
+<div class="line"><a name="l01393"></a><span class="lineno"> 1393</span>&#160;    <span class="comment">// as a 521-bit number assuming that limbs are 8 bits or more in size.</span></div>
+<div class="line"><a name="l01394"></a><span class="lineno"> 1394</span>&#160;    <span class="keyword">static</span> limb_t <span class="keyword">const</span> numM[NUM_LIMBS_521BIT] PROGMEM = {</div>
+<div class="line"><a name="l01395"></a><span class="lineno"> 1395</span>&#160;        LIMB_PAIR(0x6EC79BF7, 0x449048E1), LIMB_PAIR(0x7663B851, 0xC44A3647),</div>
+<div class="line"><a name="l01396"></a><span class="lineno"> 1396</span>&#160;        LIMB_PAIR(0x08F65A2F, 0x8033FEB7), LIMB_PAIR(0x40D06994, 0xAE79787C),</div>
+<div class="line"><a name="l01397"></a><span class="lineno"> 1397</span>&#160;        LIMB_PAIR(0x00000005, 0x00000000), LIMB_PAIR(0x00000000, 0x00000000),</div>
+<div class="line"><a name="l01398"></a><span class="lineno"> 1398</span>&#160;        LIMB_PAIR(0x00000000, 0x00000000), LIMB_PAIR(0x00000000, 0x00000000),</div>
+<div class="line"><a name="l01399"></a><span class="lineno"> 1399</span>&#160;        LIMB_PARTIAL(0x200)</div>
+<div class="line"><a name="l01400"></a><span class="lineno"> 1400</span>&#160;    };</div>
+<div class="line"><a name="l01401"></a><span class="lineno"> 1401</span>&#160;    limb_t temp[NUM_LIMBS_1042BIT + NUM_LIMBS_521BIT];</div>
+<div class="line"><a name="l01402"></a><span class="lineno"> 1402</span>&#160;    limb_t temp2[NUM_LIMBS_521BIT];</div>
+<div class="line"><a name="l01403"></a><span class="lineno"> 1403</span>&#160;</div>
+<div class="line"><a name="l01404"></a><span class="lineno"> 1404</span>&#160;    <span class="comment">// Multiply r by m.</span></div>
+<div class="line"><a name="l01405"></a><span class="lineno"> 1405</span>&#160;    <a class="code" href="classBigNumberUtil.html#aacdee1806a239eb9e58753ef1ddb964a">BigNumberUtil::mul_P</a>(temp, r, NUM_LIMBS_1042BIT, numM, NUM_LIMBS_521BIT);</div>
+<div class="line"><a name="l01406"></a><span class="lineno"> 1406</span>&#160;</div>
+<div class="line"><a name="l01407"></a><span class="lineno"> 1407</span>&#160;    <span class="comment">// Compute (m * r / 4^521) = (m * r / 2^1042).</span></div>
+<div class="line"><a name="l01408"></a><span class="lineno"> 1408</span>&#160;<span class="preprocessor">#if BIGNUMBER_LIMB_8BIT || BIGNUMBER_LIMB_16BIT</span></div>
+<div class="line"><a name="l01409"></a><span class="lineno"> 1409</span>&#160;<span class="preprocessor"></span>    dlimb_t carry = temp[NUM_LIMBS_BITS(1040)] &gt;&gt; 2;</div>
+<div class="line"><a name="l01410"></a><span class="lineno"> 1410</span>&#160;    <span class="keywordflow">for</span> (uint8_t index = 0; index &lt; NUM_LIMBS_521BIT; ++index) {</div>
+<div class="line"><a name="l01411"></a><span class="lineno"> 1411</span>&#160;        carry += ((dlimb_t)(temp[NUM_LIMBS_BITS(1040) + index + 1])) &lt;&lt; (LIMB_BITS - 2);</div>
+<div class="line"><a name="l01412"></a><span class="lineno"> 1412</span>&#160;        temp2[index] = (limb_t)carry;</div>
+<div class="line"><a name="l01413"></a><span class="lineno"> 1413</span>&#160;        carry &gt;&gt;= LIMB_BITS;</div>
+<div class="line"><a name="l01414"></a><span class="lineno"> 1414</span>&#160;    }</div>
+<div class="line"><a name="l01415"></a><span class="lineno"> 1415</span>&#160;<span class="preprocessor">#elif BIGNUMBER_LIMB_32BIT || BIGNUMBER_LIMB_64BIT</span></div>
+<div class="line"><a name="l01416"></a><span class="lineno"> 1416</span>&#160;<span class="preprocessor"></span>    dlimb_t carry = temp[NUM_LIMBS_BITS(1024)] &gt;&gt; 18;</div>
+<div class="line"><a name="l01417"></a><span class="lineno"> 1417</span>&#160;    <span class="keywordflow">for</span> (uint8_t index = 0; index &lt; NUM_LIMBS_521BIT; ++index) {</div>
+<div class="line"><a name="l01418"></a><span class="lineno"> 1418</span>&#160;        carry += ((dlimb_t)(temp[NUM_LIMBS_BITS(1024) + index + 1])) &lt;&lt; (LIMB_BITS - 18);</div>
+<div class="line"><a name="l01419"></a><span class="lineno"> 1419</span>&#160;        temp2[index] = (limb_t)carry;</div>
+<div class="line"><a name="l01420"></a><span class="lineno"> 1420</span>&#160;        carry &gt;&gt;= LIMB_BITS;</div>
+<div class="line"><a name="l01421"></a><span class="lineno"> 1421</span>&#160;    }</div>
+<div class="line"><a name="l01422"></a><span class="lineno"> 1422</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l01423"></a><span class="lineno"> 1423</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l01424"></a><span class="lineno"> 1424</span>&#160;    <span class="comment">// Multiply (m * r) / 2^1042 by q and subtract it from r.</span></div>
+<div class="line"><a name="l01425"></a><span class="lineno"> 1425</span>&#160;    <span class="comment">// We can ignore the high words of the subtraction result</span></div>
+<div class="line"><a name="l01426"></a><span class="lineno"> 1426</span>&#160;    <span class="comment">// because they will all turn into zero after the subtraction.</span></div>
+<div class="line"><a name="l01427"></a><span class="lineno"> 1427</span>&#160;    <a class="code" href="classBigNumberUtil.html#aacdee1806a239eb9e58753ef1ddb964a">BigNumberUtil::mul_P</a>(temp, temp2, NUM_LIMBS_521BIT,</div>
+<div class="line"><a name="l01428"></a><span class="lineno"> 1428</span>&#160;                         P521_q, NUM_LIMBS_521BIT);</div>
+<div class="line"><a name="l01429"></a><span class="lineno"> 1429</span>&#160;    <a class="code" href="classBigNumberUtil.html#a6618e03bfcb3086961df508b40cc1e67">BigNumberUtil::sub</a>(result, r, temp, NUM_LIMBS_521BIT);</div>
+<div class="line"><a name="l01430"></a><span class="lineno"> 1430</span>&#160;</div>
+<div class="line"><a name="l01431"></a><span class="lineno"> 1431</span>&#160;    <span class="comment">// Perform a trial subtraction of q from the result to reduce it.</span></div>
+<div class="line"><a name="l01432"></a><span class="lineno"> 1432</span>&#160;    <a class="code" href="classBigNumberUtil.html#a00c9cde0b626788a60552a6bc9ce058b">BigNumberUtil::reduceQuick_P</a>(result, result, P521_q, NUM_LIMBS_521BIT);</div>
+<div class="line"><a name="l01433"></a><span class="lineno"> 1433</span>&#160;</div>
+<div class="line"><a name="l01434"></a><span class="lineno"> 1434</span>&#160;    <span class="comment">// Clean up and exit.</span></div>
+<div class="line"><a name="l01435"></a><span class="lineno"> 1435</span>&#160;    clean(temp);</div>
+<div class="line"><a name="l01436"></a><span class="lineno"> 1436</span>&#160;    clean(temp2);</div>
+<div class="line"><a name="l01437"></a><span class="lineno"> 1437</span>&#160;}</div>
+<div class="line"><a name="l01438"></a><span class="lineno"> 1438</span>&#160;</div>
+<div class="line"><a name="l01449"></a><span class="lineno"> 1449</span>&#160;<span class="keywordtype">void</span> P521::mulQ(limb_t *result, <span class="keyword">const</span> limb_t *x, <span class="keyword">const</span> limb_t *y)</div>
+<div class="line"><a name="l01450"></a><span class="lineno"> 1450</span>&#160;{</div>
+<div class="line"><a name="l01451"></a><span class="lineno"> 1451</span>&#160;    limb_t temp[NUM_LIMBS_1042BIT];</div>
+<div class="line"><a name="l01452"></a><span class="lineno"> 1452</span>&#160;    mulNoReduce(temp, x, y);</div>
+<div class="line"><a name="l01453"></a><span class="lineno"> 1453</span>&#160;    reduceQ(result, temp);</div>
+<div class="line"><a name="l01454"></a><span class="lineno"> 1454</span>&#160;    strict_clean(temp);</div>
+<div class="line"><a name="l01455"></a><span class="lineno"> 1455</span>&#160;}</div>
+<div class="line"><a name="l01456"></a><span class="lineno"> 1456</span>&#160;</div>
+<div class="line"><a name="l01465"></a><span class="lineno"> 1465</span>&#160;<span class="keywordtype">void</span> P521::recipQ(limb_t *result, <span class="keyword">const</span> limb_t *x)</div>
+<div class="line"><a name="l01466"></a><span class="lineno"> 1466</span>&#160;{</div>
+<div class="line"><a name="l01467"></a><span class="lineno"> 1467</span>&#160;    <span class="comment">// Bottom 265 bits of q - 2.  The top 256 bits are all-1&#39;s.</span></div>
+<div class="line"><a name="l01468"></a><span class="lineno"> 1468</span>&#160;    <span class="keyword">static</span> limb_t <span class="keyword">const</span> P521_q_m2[] PROGMEM = {</div>
+<div class="line"><a name="l01469"></a><span class="lineno"> 1469</span>&#160;        LIMB_PAIR(0x91386407, 0xbb6fb71e), LIMB_PAIR(0x899c47ae, 0x3bb5c9b8),</div>
+<div class="line"><a name="l01470"></a><span class="lineno"> 1470</span>&#160;        LIMB_PAIR(0xf709a5d0, 0x7fcc0148), LIMB_PAIR(0xbf2f966b, 0x51868783),</div>
+<div class="line"><a name="l01471"></a><span class="lineno"> 1471</span>&#160;        LIMB_PARTIAL(0x1fa)</div>
+<div class="line"><a name="l01472"></a><span class="lineno"> 1472</span>&#160;    };</div>
+<div class="line"><a name="l01473"></a><span class="lineno"> 1473</span>&#160;</div>
+<div class="line"><a name="l01474"></a><span class="lineno"> 1474</span>&#160;    <span class="comment">// Raise x to the power of q - 2, mod q.  We start with the top</span></div>
+<div class="line"><a name="l01475"></a><span class="lineno"> 1475</span>&#160;    <span class="comment">// 256 bits which are all-1&#39;s, using a similar technique to recip().</span></div>
+<div class="line"><a name="l01476"></a><span class="lineno"> 1476</span>&#160;    limb_t t1[NUM_LIMBS_521BIT];</div>
+<div class="line"><a name="l01477"></a><span class="lineno"> 1477</span>&#160;    mulQ(result, x, x);</div>
+<div class="line"><a name="l01478"></a><span class="lineno"> 1478</span>&#160;    mulQ(result, result, x);</div>
+<div class="line"><a name="l01479"></a><span class="lineno"> 1479</span>&#160;    mulQ(result, result, result);</div>
+<div class="line"><a name="l01480"></a><span class="lineno"> 1480</span>&#160;    mulQ(result, result, x);</div>
+<div class="line"><a name="l01481"></a><span class="lineno"> 1481</span>&#160;    mulQ(result, result, result);</div>
+<div class="line"><a name="l01482"></a><span class="lineno"> 1482</span>&#160;    mulQ(result, result, x);</div>
+<div class="line"><a name="l01483"></a><span class="lineno"> 1483</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> power = 4; power &lt;= 128; power &lt;&lt;= 1) {</div>
+<div class="line"><a name="l01484"></a><span class="lineno"> 1484</span>&#160;        mulQ(t1, result, result);</div>
+<div class="line"><a name="l01485"></a><span class="lineno"> 1485</span>&#160;        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> temp = 1; temp &lt; power; ++temp)</div>
+<div class="line"><a name="l01486"></a><span class="lineno"> 1486</span>&#160;            mulQ(t1, t1, t1);</div>
+<div class="line"><a name="l01487"></a><span class="lineno"> 1487</span>&#160;        mulQ(result, result, t1);</div>
+<div class="line"><a name="l01488"></a><span class="lineno"> 1488</span>&#160;    }</div>
+<div class="line"><a name="l01489"></a><span class="lineno"> 1489</span>&#160;    clean(t1);</div>
+<div class="line"><a name="l01490"></a><span class="lineno"> 1490</span>&#160;</div>
+<div class="line"><a name="l01491"></a><span class="lineno"> 1491</span>&#160;    <span class="comment">// Deal with the bottom 265 bits from highest to lowest.  Square for</span></div>
+<div class="line"><a name="l01492"></a><span class="lineno"> 1492</span>&#160;    <span class="comment">// each bit and multiply in x whenever there is a 1 bit.  The timing</span></div>
+<div class="line"><a name="l01493"></a><span class="lineno"> 1493</span>&#160;    <span class="comment">// is based on the publicly-known constant q - 2, not on the value of x.</span></div>
+<div class="line"><a name="l01494"></a><span class="lineno"> 1494</span>&#160;    <span class="keywordtype">size_t</span> bit = 265;</div>
+<div class="line"><a name="l01495"></a><span class="lineno"> 1495</span>&#160;    <span class="keywordflow">while</span> (bit &gt; 0) {</div>
+<div class="line"><a name="l01496"></a><span class="lineno"> 1496</span>&#160;        --bit;</div>
+<div class="line"><a name="l01497"></a><span class="lineno"> 1497</span>&#160;        mulQ(result, result, result);</div>
+<div class="line"><a name="l01498"></a><span class="lineno"> 1498</span>&#160;        <span class="keywordflow">if</span> (pgm_read_limb(&amp;(P521_q_m2[bit / LIMB_BITS])) &amp;</div>
+<div class="line"><a name="l01499"></a><span class="lineno"> 1499</span>&#160;                (((limb_t)1) &lt;&lt; (bit % LIMB_BITS))) {</div>
+<div class="line"><a name="l01500"></a><span class="lineno"> 1500</span>&#160;            mulQ(result, result, x);</div>
+<div class="line"><a name="l01501"></a><span class="lineno"> 1501</span>&#160;        }</div>
+<div class="line"><a name="l01502"></a><span class="lineno"> 1502</span>&#160;    }</div>
+<div class="line"><a name="l01503"></a><span class="lineno"> 1503</span>&#160;}</div>
+<div class="line"><a name="l01504"></a><span class="lineno"> 1504</span>&#160;</div>
+<div class="line"><a name="l01515"></a><span class="lineno"> 1515</span>&#160;<span class="keywordtype">void</span> P521::generateK(uint8_t k[66], <span class="keyword">const</span> uint8_t hm[66],</div>
+<div class="line"><a name="l01516"></a><span class="lineno"> 1516</span>&#160;                     <span class="keyword">const</span> uint8_t x[66], <a class="code" href="classHash.html">Hash</a> *hash, uint64_t count)</div>
+<div class="line"><a name="l01517"></a><span class="lineno"> 1517</span>&#160;{</div>
+<div class="line"><a name="l01518"></a><span class="lineno"> 1518</span>&#160;    <span class="keywordtype">size_t</span> hlen = hash-&gt;<a class="code" href="classHash.html#adcdd30de3e5ecaa2f798c0c5644d9ef8">hashSize</a>();</div>
+<div class="line"><a name="l01519"></a><span class="lineno"> 1519</span>&#160;    uint8_t V[64];</div>
+<div class="line"><a name="l01520"></a><span class="lineno"> 1520</span>&#160;    uint8_t K[64];</div>
+<div class="line"><a name="l01521"></a><span class="lineno"> 1521</span>&#160;    uint8_t marker;</div>
+<div class="line"><a name="l01522"></a><span class="lineno"> 1522</span>&#160;</div>
+<div class="line"><a name="l01523"></a><span class="lineno"> 1523</span>&#160;    <span class="comment">// If for some reason a hash function was supplied with more than</span></div>
+<div class="line"><a name="l01524"></a><span class="lineno"> 1524</span>&#160;    <span class="comment">// 512 bits of output, truncate hash values to the first 512 bits.</span></div>
+<div class="line"><a name="l01525"></a><span class="lineno"> 1525</span>&#160;    <span class="comment">// We cannot support more than this yet.</span></div>
+<div class="line"><a name="l01526"></a><span class="lineno"> 1526</span>&#160;    <span class="keywordflow">if</span> (hlen &gt; 64)</div>
+<div class="line"><a name="l01527"></a><span class="lineno"> 1527</span>&#160;        hlen = 64;</div>
+<div class="line"><a name="l01528"></a><span class="lineno"> 1528</span>&#160;</div>
+<div class="line"><a name="l01529"></a><span class="lineno"> 1529</span>&#160;    <span class="comment">// RFC 6979, Section 3.2, Step a.  Hash the message, reduce modulo q,</span></div>
+<div class="line"><a name="l01530"></a><span class="lineno"> 1530</span>&#160;    <span class="comment">// and produce an octet string the same length as q, bits2octets(H(m)).</span></div>
+<div class="line"><a name="l01531"></a><span class="lineno"> 1531</span>&#160;    <span class="comment">// We support hashes up to 512 bits and q is a 521-bit number, so &quot;hm&quot;</span></div>
+<div class="line"><a name="l01532"></a><span class="lineno"> 1532</span>&#160;    <span class="comment">// is already the bits2octets(H(m)) value that we need.</span></div>
+<div class="line"><a name="l01533"></a><span class="lineno"> 1533</span>&#160;</div>
+<div class="line"><a name="l01534"></a><span class="lineno"> 1534</span>&#160;    <span class="comment">// Steps b and c.  Set V to all-ones and K to all-zeroes.</span></div>
+<div class="line"><a name="l01535"></a><span class="lineno"> 1535</span>&#160;    memset(V, 0x01, hlen);</div>
+<div class="line"><a name="l01536"></a><span class="lineno"> 1536</span>&#160;    memset(K, 0x00, hlen);</div>
+<div class="line"><a name="l01537"></a><span class="lineno"> 1537</span>&#160;</div>
+<div class="line"><a name="l01538"></a><span class="lineno"> 1538</span>&#160;    <span class="comment">// Step d.  K = HMAC_K(V || 0x00 || x || hm).  We make a small</span></div>
+<div class="line"><a name="l01539"></a><span class="lineno"> 1539</span>&#160;    <span class="comment">// modification here to append the count value if it is non-zero.</span></div>
+<div class="line"><a name="l01540"></a><span class="lineno"> 1540</span>&#160;    <span class="comment">// We use this to generate a new k if we have to re-enter this</span></div>
+<div class="line"><a name="l01541"></a><span class="lineno"> 1541</span>&#160;    <span class="comment">// function because the previous one was rejected by sign().</span></div>
+<div class="line"><a name="l01542"></a><span class="lineno"> 1542</span>&#160;    <span class="comment">// This is slightly different to RFC 6979 which says that the</span></div>
+<div class="line"><a name="l01543"></a><span class="lineno"> 1543</span>&#160;    <span class="comment">// loop in step h below should be continued.  That code path is</span></div>
+<div class="line"><a name="l01544"></a><span class="lineno"> 1544</span>&#160;    <span class="comment">// difficult to access, so instead modify K and V in steps d and f.</span></div>
+<div class="line"><a name="l01545"></a><span class="lineno"> 1545</span>&#160;    <span class="comment">// This alternative construction is compatible with the second</span></div>
+<div class="line"><a name="l01546"></a><span class="lineno"> 1546</span>&#160;    <span class="comment">// variant described in section 3.6 of RFC 6979.</span></div>
+<div class="line"><a name="l01547"></a><span class="lineno"> 1547</span>&#160;    hash-&gt;<a class="code" href="classHash.html#adf50359c1f525af884721cc9034e7945">resetHMAC</a>(K, hlen);</div>
+<div class="line"><a name="l01548"></a><span class="lineno"> 1548</span>&#160;    hash-&gt;<a class="code" href="classHash.html#aec9761ee427d122e7450de8df200265c">update</a>(V, hlen);</div>
+<div class="line"><a name="l01549"></a><span class="lineno"> 1549</span>&#160;    marker = 0x00;</div>
+<div class="line"><a name="l01550"></a><span class="lineno"> 1550</span>&#160;    hash-&gt;<a class="code" href="classHash.html#aec9761ee427d122e7450de8df200265c">update</a>(&amp;marker, 1);</div>
+<div class="line"><a name="l01551"></a><span class="lineno"> 1551</span>&#160;    hash-&gt;<a class="code" href="classHash.html#aec9761ee427d122e7450de8df200265c">update</a>(x, 66);</div>
+<div class="line"><a name="l01552"></a><span class="lineno"> 1552</span>&#160;    hash-&gt;<a class="code" href="classHash.html#aec9761ee427d122e7450de8df200265c">update</a>(hm, 66);</div>
+<div class="line"><a name="l01553"></a><span class="lineno"> 1553</span>&#160;    <span class="keywordflow">if</span> (count)</div>
+<div class="line"><a name="l01554"></a><span class="lineno"> 1554</span>&#160;        hash-&gt;<a class="code" href="classHash.html#aec9761ee427d122e7450de8df200265c">update</a>(&amp;count, <span class="keyword">sizeof</span>(count));</div>
+<div class="line"><a name="l01555"></a><span class="lineno"> 1555</span>&#160;    hash-&gt;<a class="code" href="classHash.html#aab42fa5420cc0bda4321a3d3866cfd06">finalizeHMAC</a>(K, hlen, K, hlen);</div>
+<div class="line"><a name="l01556"></a><span class="lineno"> 1556</span>&#160;</div>
+<div class="line"><a name="l01557"></a><span class="lineno"> 1557</span>&#160;    <span class="comment">// Step e.  V = HMAC_K(V)</span></div>
+<div class="line"><a name="l01558"></a><span class="lineno"> 1558</span>&#160;    hash-&gt;<a class="code" href="classHash.html#adf50359c1f525af884721cc9034e7945">resetHMAC</a>(K, hlen);</div>
+<div class="line"><a name="l01559"></a><span class="lineno"> 1559</span>&#160;    hash-&gt;<a class="code" href="classHash.html#aec9761ee427d122e7450de8df200265c">update</a>(V, hlen);</div>
+<div class="line"><a name="l01560"></a><span class="lineno"> 1560</span>&#160;    hash-&gt;<a class="code" href="classHash.html#aab42fa5420cc0bda4321a3d3866cfd06">finalizeHMAC</a>(K, hlen, V, hlen);</div>
+<div class="line"><a name="l01561"></a><span class="lineno"> 1561</span>&#160;</div>
+<div class="line"><a name="l01562"></a><span class="lineno"> 1562</span>&#160;    <span class="comment">// Step f.  K = HMAC_K(V || 0x01 || x || hm)</span></div>
+<div class="line"><a name="l01563"></a><span class="lineno"> 1563</span>&#160;    hash-&gt;<a class="code" href="classHash.html#adf50359c1f525af884721cc9034e7945">resetHMAC</a>(K, hlen);</div>
+<div class="line"><a name="l01564"></a><span class="lineno"> 1564</span>&#160;    hash-&gt;<a class="code" href="classHash.html#aec9761ee427d122e7450de8df200265c">update</a>(V, hlen);</div>
+<div class="line"><a name="l01565"></a><span class="lineno"> 1565</span>&#160;    marker = 0x01;</div>
+<div class="line"><a name="l01566"></a><span class="lineno"> 1566</span>&#160;    hash-&gt;<a class="code" href="classHash.html#aec9761ee427d122e7450de8df200265c">update</a>(&amp;marker, 1);</div>
+<div class="line"><a name="l01567"></a><span class="lineno"> 1567</span>&#160;    hash-&gt;<a class="code" href="classHash.html#aec9761ee427d122e7450de8df200265c">update</a>(x, 66);</div>
+<div class="line"><a name="l01568"></a><span class="lineno"> 1568</span>&#160;    hash-&gt;<a class="code" href="classHash.html#aec9761ee427d122e7450de8df200265c">update</a>(hm, 66);</div>
+<div class="line"><a name="l01569"></a><span class="lineno"> 1569</span>&#160;    <span class="keywordflow">if</span> (count)</div>
+<div class="line"><a name="l01570"></a><span class="lineno"> 1570</span>&#160;        hash-&gt;<a class="code" href="classHash.html#aec9761ee427d122e7450de8df200265c">update</a>(&amp;count, <span class="keyword">sizeof</span>(count));</div>
+<div class="line"><a name="l01571"></a><span class="lineno"> 1571</span>&#160;    hash-&gt;<a class="code" href="classHash.html#aab42fa5420cc0bda4321a3d3866cfd06">finalizeHMAC</a>(K, hlen, K, hlen);</div>
+<div class="line"><a name="l01572"></a><span class="lineno"> 1572</span>&#160;</div>
+<div class="line"><a name="l01573"></a><span class="lineno"> 1573</span>&#160;    <span class="comment">// Step g.  V = HMAC_K(V)</span></div>
+<div class="line"><a name="l01574"></a><span class="lineno"> 1574</span>&#160;    hash-&gt;<a class="code" href="classHash.html#adf50359c1f525af884721cc9034e7945">resetHMAC</a>(K, hlen);</div>
+<div class="line"><a name="l01575"></a><span class="lineno"> 1575</span>&#160;    hash-&gt;<a class="code" href="classHash.html#aec9761ee427d122e7450de8df200265c">update</a>(V, hlen);</div>
+<div class="line"><a name="l01576"></a><span class="lineno"> 1576</span>&#160;    hash-&gt;<a class="code" href="classHash.html#aab42fa5420cc0bda4321a3d3866cfd06">finalizeHMAC</a>(K, hlen, V, hlen);</div>
+<div class="line"><a name="l01577"></a><span class="lineno"> 1577</span>&#160;</div>
+<div class="line"><a name="l01578"></a><span class="lineno"> 1578</span>&#160;    <span class="comment">// Step h.  Generate candidate k values until we find what we want.</span></div>
+<div class="line"><a name="l01579"></a><span class="lineno"> 1579</span>&#160;    <span class="keywordflow">for</span> (;;) {</div>
+<div class="line"><a name="l01580"></a><span class="lineno"> 1580</span>&#160;        <span class="comment">// Step h.1 and h.2.  Generate a string of 66 bytes in length.</span></div>
+<div class="line"><a name="l01581"></a><span class="lineno"> 1581</span>&#160;        <span class="comment">//      T = empty</span></div>
+<div class="line"><a name="l01582"></a><span class="lineno"> 1582</span>&#160;        <span class="comment">//      while (len(T) &lt; 66)</span></div>
+<div class="line"><a name="l01583"></a><span class="lineno"> 1583</span>&#160;        <span class="comment">//          V = HMAC_K(V)</span></div>
+<div class="line"><a name="l01584"></a><span class="lineno"> 1584</span>&#160;        <span class="comment">//          T = T || V</span></div>
+<div class="line"><a name="l01585"></a><span class="lineno"> 1585</span>&#160;        <span class="keywordtype">size_t</span> posn = 0;</div>
+<div class="line"><a name="l01586"></a><span class="lineno"> 1586</span>&#160;        <span class="keywordflow">while</span> (posn &lt; 66) {</div>
+<div class="line"><a name="l01587"></a><span class="lineno"> 1587</span>&#160;            <span class="keywordtype">size_t</span> temp = 66 - posn;</div>
+<div class="line"><a name="l01588"></a><span class="lineno"> 1588</span>&#160;            <span class="keywordflow">if</span> (temp &gt; hlen)</div>
+<div class="line"><a name="l01589"></a><span class="lineno"> 1589</span>&#160;                temp = hlen;</div>
+<div class="line"><a name="l01590"></a><span class="lineno"> 1590</span>&#160;            hash-&gt;<a class="code" href="classHash.html#adf50359c1f525af884721cc9034e7945">resetHMAC</a>(K, hlen);</div>
+<div class="line"><a name="l01591"></a><span class="lineno"> 1591</span>&#160;            hash-&gt;<a class="code" href="classHash.html#aec9761ee427d122e7450de8df200265c">update</a>(V, hlen);</div>
+<div class="line"><a name="l01592"></a><span class="lineno"> 1592</span>&#160;            hash-&gt;<a class="code" href="classHash.html#aab42fa5420cc0bda4321a3d3866cfd06">finalizeHMAC</a>(K, hlen, V, hlen);</div>
+<div class="line"><a name="l01593"></a><span class="lineno"> 1593</span>&#160;            memcpy(k + posn, V, temp);</div>
+<div class="line"><a name="l01594"></a><span class="lineno"> 1594</span>&#160;            posn += temp;</div>
+<div class="line"><a name="l01595"></a><span class="lineno"> 1595</span>&#160;        }</div>
+<div class="line"><a name="l01596"></a><span class="lineno"> 1596</span>&#160;</div>
+<div class="line"><a name="l01597"></a><span class="lineno"> 1597</span>&#160;        <span class="comment">// Step h.3.  k = bits2int(T) and exit the loop if k is not in</span></div>
+<div class="line"><a name="l01598"></a><span class="lineno"> 1598</span>&#160;        <span class="comment">// the range 1 to q - 1.  Note: We have to extract the 521 most</span></div>
+<div class="line"><a name="l01599"></a><span class="lineno"> 1599</span>&#160;        <span class="comment">// significant bits of T, which means shifting it right by seven</span></div>
+<div class="line"><a name="l01600"></a><span class="lineno"> 1600</span>&#160;        <span class="comment">// bits to put it into the correct form.</span></div>
+<div class="line"><a name="l01601"></a><span class="lineno"> 1601</span>&#160;        <span class="keywordflow">for</span> (posn = 65; posn &gt; 0; --posn)</div>
+<div class="line"><a name="l01602"></a><span class="lineno"> 1602</span>&#160;            k[posn] = (k[posn - 1] &lt;&lt; 1) | (k[posn] &gt;&gt; 7);</div>
+<div class="line"><a name="l01603"></a><span class="lineno"> 1603</span>&#160;        k[0] &gt;&gt;= 7;</div>
+<div class="line"><a name="l01604"></a><span class="lineno"> 1604</span>&#160;        <span class="keywordflow">if</span> (<a class="code" href="classP521.html#a5802ebd25142789bb2df930ecd765d39">isValidPrivateKey</a>(k))</div>
+<div class="line"><a name="l01605"></a><span class="lineno"> 1605</span>&#160;            <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l01606"></a><span class="lineno"> 1606</span>&#160;</div>
+<div class="line"><a name="l01607"></a><span class="lineno"> 1607</span>&#160;        <span class="comment">// Generate new K and V values and try again.</span></div>
+<div class="line"><a name="l01608"></a><span class="lineno"> 1608</span>&#160;        <span class="comment">//      K = HMAC_K(V || 0x00)</span></div>
+<div class="line"><a name="l01609"></a><span class="lineno"> 1609</span>&#160;        <span class="comment">//      V = HMAC_K(V)</span></div>
+<div class="line"><a name="l01610"></a><span class="lineno"> 1610</span>&#160;        hash-&gt;<a class="code" href="classHash.html#adf50359c1f525af884721cc9034e7945">resetHMAC</a>(K, hlen);</div>
+<div class="line"><a name="l01611"></a><span class="lineno"> 1611</span>&#160;        hash-&gt;<a class="code" href="classHash.html#aec9761ee427d122e7450de8df200265c">update</a>(V, hlen);</div>
+<div class="line"><a name="l01612"></a><span class="lineno"> 1612</span>&#160;        marker = 0x00;</div>
+<div class="line"><a name="l01613"></a><span class="lineno"> 1613</span>&#160;        hash-&gt;<a class="code" href="classHash.html#aec9761ee427d122e7450de8df200265c">update</a>(&amp;marker, 1);</div>
+<div class="line"><a name="l01614"></a><span class="lineno"> 1614</span>&#160;        hash-&gt;<a class="code" href="classHash.html#aab42fa5420cc0bda4321a3d3866cfd06">finalizeHMAC</a>(K, hlen, K, hlen);</div>
+<div class="line"><a name="l01615"></a><span class="lineno"> 1615</span>&#160;        hash-&gt;<a class="code" href="classHash.html#adf50359c1f525af884721cc9034e7945">resetHMAC</a>(K, hlen);</div>
+<div class="line"><a name="l01616"></a><span class="lineno"> 1616</span>&#160;        hash-&gt;<a class="code" href="classHash.html#aec9761ee427d122e7450de8df200265c">update</a>(V, hlen);</div>
+<div class="line"><a name="l01617"></a><span class="lineno"> 1617</span>&#160;        hash-&gt;<a class="code" href="classHash.html#aab42fa5420cc0bda4321a3d3866cfd06">finalizeHMAC</a>(K, hlen, V, hlen);</div>
+<div class="line"><a name="l01618"></a><span class="lineno"> 1618</span>&#160;    }</div>
+<div class="line"><a name="l01619"></a><span class="lineno"> 1619</span>&#160;</div>
+<div class="line"><a name="l01620"></a><span class="lineno"> 1620</span>&#160;    <span class="comment">// Clean up.</span></div>
+<div class="line"><a name="l01621"></a><span class="lineno"> 1621</span>&#160;    clean(V);</div>
+<div class="line"><a name="l01622"></a><span class="lineno"> 1622</span>&#160;    clean(K);</div>
+<div class="line"><a name="l01623"></a><span class="lineno"> 1623</span>&#160;}</div>
+<div class="line"><a name="l01624"></a><span class="lineno"> 1624</span>&#160;</div>
+<div class="line"><a name="l01637"></a><span class="lineno"> 1637</span>&#160;<span class="keywordtype">void</span> P521::generateK(uint8_t k[66], <span class="keyword">const</span> uint8_t hm[66],</div>
+<div class="line"><a name="l01638"></a><span class="lineno"> 1638</span>&#160;                     <span class="keyword">const</span> uint8_t x[66], uint64_t count)</div>
+<div class="line"><a name="l01639"></a><span class="lineno"> 1639</span>&#160;{</div>
+<div class="line"><a name="l01640"></a><span class="lineno"> 1640</span>&#160;    <a class="code" href="classSHA512.html">SHA512</a> hash;</div>
+<div class="line"><a name="l01641"></a><span class="lineno"> 1641</span>&#160;    generateK(k, hm, x, &amp;hash, count);</div>
+<div class="line"><a name="l01642"></a><span class="lineno"> 1642</span>&#160;}</div>
 <div class="ttc" id="classBigNumberUtil_html_a00c9cde0b626788a60552a6bc9ce058b"><div class="ttname"><a href="classBigNumberUtil.html#a00c9cde0b626788a60552a6bc9ce058b">BigNumberUtil::reduceQuick_P</a></div><div class="ttdeci">static void reduceQuick_P(limb_t *result, const limb_t *x, const limb_t *y, size_t size)</div><div class="ttdoc">Reduces x modulo y using subtraction where y is in program memory. </div><div class="ttdef"><b>Definition:</b> <a href="BigNumberUtil_8cpp_source.html#l00734">BigNumberUtil.cpp:734</a></div></div>
 <div class="ttc" id="classP521_html_ac2e07ce7e846ba180938b41b4a2ae563"><div class="ttname"><a href="classP521.html#ac2e07ce7e846ba180938b41b4a2ae563">P521::eval</a></div><div class="ttdeci">static bool eval(uint8_t result[132], const uint8_t f[66], const uint8_t point[132])</div><div class="ttdoc">Evaluates the curve function. </div><div class="ttdef"><b>Definition:</b> <a href="P521_8cpp_source.html#l00135">P521.cpp:135</a></div></div>
 <div class="ttc" id="classBigNumberUtil_html_aa6904b2727af6b767fe041b1b7f27414"><div class="ttname"><a href="classBigNumberUtil.html#aa6904b2727af6b767fe041b1b7f27414">BigNumberUtil::add</a></div><div class="ttdeci">static limb_t add(limb_t *result, const limb_t *x, const limb_t *y, size_t size)</div><div class="ttdoc">Adds two big numbers. </div><div class="ttdef"><b>Definition:</b> <a href="BigNumberUtil_8cpp_source.html#l00495">BigNumberUtil.cpp:495</a></div></div>
 <div class="ttc" id="classP521_html_ae5b727018648e4a165f504024c4ccc45"><div class="ttname"><a href="classP521.html#ae5b727018648e4a165f504024c4ccc45">P521::generatePrivateKey</a></div><div class="ttdeci">static void generatePrivateKey(uint8_t privateKey[66])</div><div class="ttdoc">Generates a private key for P-521 signing operations. </div><div class="ttdef"><b>Definition:</b> <a href="P521_8cpp_source.html#l00466">P521.cpp:466</a></div></div>
 <div class="ttc" id="classBigNumberUtil_html_af0fa1527647af42b65eda6b0aab982b3"><div class="ttname"><a href="classBigNumberUtil.html#af0fa1527647af42b65eda6b0aab982b3">BigNumberUtil::sub_P</a></div><div class="ttdeci">static limb_t sub_P(limb_t *result, const limb_t *x, const limb_t *y, size_t size)</div><div class="ttdoc">Subtracts one big number from another where one is in program memory. </div><div class="ttdef"><b>Definition:</b> <a href="BigNumberUtil_8cpp_source.html#l00655">BigNumberUtil.cpp:655</a></div></div>
-<div class="ttc" id="classRNGClass_html_a418a833cf18198fd7e5d6dbd78c99c29"><div class="ttname"><a href="classRNGClass.html#a418a833cf18198fd7e5d6dbd78c99c29">RNGClass::rand</a></div><div class="ttdeci">void rand(uint8_t *data, size_t len)</div><div class="ttdoc">Generates random bytes into a caller-supplied buffer. </div><div class="ttdef"><b>Definition:</b> <a href="RNG_8cpp_source.html#l00516">RNG.cpp:516</a></div></div>
+<div class="ttc" id="classRNGClass_html_a418a833cf18198fd7e5d6dbd78c99c29"><div class="ttname"><a href="classRNGClass.html#a418a833cf18198fd7e5d6dbd78c99c29">RNGClass::rand</a></div><div class="ttdeci">void rand(uint8_t *data, size_t len)</div><div class="ttdoc">Generates random bytes into a caller-supplied buffer. </div><div class="ttdef"><b>Definition:</b> <a href="RNG_8cpp_source.html#l00566">RNG.cpp:566</a></div></div>
 <div class="ttc" id="classP521_html_a7b9d4f74cc2d71a488a33ab165537491"><div class="ttname"><a href="classP521.html#a7b9d4f74cc2d71a488a33ab165537491">P521::dh2</a></div><div class="ttdeci">static bool dh2(const uint8_t k[132], uint8_t f[66])</div><div class="ttdoc">Performs phase 2 of an ECDH key exchange using P-521. </div><div class="ttdef"><b>Definition:</b> <a href="P521_8cpp_source.html#l00229">P521.cpp:229</a></div></div>
 <div class="ttc" id="classHash_html"><div class="ttname"><a href="classHash.html">Hash</a></div><div class="ttdoc">Abstract base class for cryptographic hash algorithms. </div><div class="ttdef"><b>Definition:</b> <a href="Hash_8h_source.html#l00029">Hash.h:29</a></div></div>
 <div class="ttc" id="classHash_html_aab42fa5420cc0bda4321a3d3866cfd06"><div class="ttname"><a href="classHash.html#aab42fa5420cc0bda4321a3d3866cfd06">Hash::finalizeHMAC</a></div><div class="ttdeci">virtual void finalizeHMAC(const void *key, size_t keyLen, void *hash, size_t hashLen)=0</div><div class="ttdoc">Finalizes the HMAC hashing process and returns the hash. </div></div>
@@ -1333,7 +1334,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Feb 18 2018 09:12:22 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Apr 2 2018 18:36:52 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>
