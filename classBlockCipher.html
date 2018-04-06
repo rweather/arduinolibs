@@ -101,13 +101,17 @@ Inheritance diagram for BlockCipher:</div>
  <div class="center">
   <img src="classBlockCipher.png" usemap="#BlockCipher_map" alt=""/>
   <map id="BlockCipher_map" name="BlockCipher_map">
-<area href="classAESCommon.html" title="Abstract base class for AES block ciphers. " alt="AESCommon" shape="rect" coords="95,56,180,80"/>
-<area href="classSpeck.html" title="Speck block cipher with a 128-bit block size. " alt="Speck" shape="rect" coords="190,56,275,80"/>
-<area href="classSpeckTiny.html" title="Speck block cipher with a 128-bit block size (tiny-memory version). " alt="SpeckTiny" shape="rect" coords="285,56,370,80"/>
-<area href="classAES128.html" title="AES block cipher with 128-bit keys. " alt="AES128" shape="rect" coords="0,112,85,136"/>
-<area href="classAES192.html" title="AES block cipher with 192-bit keys. " alt="AES192" shape="rect" coords="95,112,180,136"/>
-<area href="classAES256.html" title="AES block cipher with 256-bit keys. " alt="AES256" shape="rect" coords="190,112,275,136"/>
-<area href="classSpeckSmall.html" title="Speck block cipher with a 128-bit block size (small-memory version). " alt="SpeckSmall" shape="rect" coords="285,112,370,136"/>
+<area href="classAESCommon.html" title="Abstract base class for AES block ciphers. " alt="AESCommon" shape="rect" coords="98,56,186,80"/>
+<area href="classAESTiny128.html" title="AES block cipher with 128-bit keys and tiny memory usage. " alt="AESTiny128" shape="rect" coords="294,56,382,80"/>
+<area href="classAESTiny256.html" title="AES block cipher with 256-bit keys and tiny memory usage. " alt="AESTiny256" shape="rect" coords="392,56,480,80"/>
+<area href="classSpeck.html" title="Speck block cipher with a 128-bit block size. " alt="Speck" shape="rect" coords="490,56,578,80"/>
+<area href="classSpeckTiny.html" title="Speck block cipher with a 128-bit block size (tiny-memory version). " alt="SpeckTiny" shape="rect" coords="588,56,676,80"/>
+<area href="classAES128.html" title="AES block cipher with 128-bit keys. " alt="AES128" shape="rect" coords="0,112,88,136"/>
+<area href="classAES192.html" title="AES block cipher with 192-bit keys. " alt="AES192" shape="rect" coords="98,112,186,136"/>
+<area href="classAES256.html" title="AES block cipher with 256-bit keys. " alt="AES256" shape="rect" coords="196,112,284,136"/>
+<area href="classAESSmall128.html" title="AES block cipher with 128-bit keys and reduced memory usage. " alt="AESSmall128" shape="rect" coords="294,112,382,136"/>
+<area href="classAESSmall256.html" title="AES block cipher with 256-bit keys and reduced memory usage. " alt="AESSmall256" shape="rect" coords="392,112,480,136"/>
+<area href="classSpeckSmall.html" title="Speck block cipher with a 128-bit block size (small-memory version). " alt="SpeckSmall" shape="rect" coords="588,112,676,136"/>
 </map>
  </div></div>
 <table class="memberdecls">
@@ -201,7 +205,7 @@ Public Member Functions</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>Returns the size of a block in bytes.</dd></dl>
 <dl class="section see"><dt>See Also</dt><dd><a class="el" href="classBlockCipher.html#afde6004a859e015d877eab3c37042a0f" title="Default size of the key for this block cipher, in bytes. ">keySize()</a>, <a class="el" href="classBlockCipher.html#aed0788b25f6bb2f1bd47d5a5f0c5db33" title="Encrypts a single block using this cipher. ">encryptBlock()</a> </dd></dl>
 
-<p>Implemented in <a class="el" href="classSpeckTiny.html#af8bbd1d1124fd1c4ef1aa167625376a9">SpeckTiny</a>, <a class="el" href="classSpeck.html#a18a3b982a2cbc48befc8d498de08f188">Speck</a>, and <a class="el" href="classAESCommon.html#ae26afdcc6d18e8888974acae16df1413">AESCommon</a>.</p>
+<p>Implemented in <a class="el" href="classAESTiny128.html#ad00941c5ed48c413b30636420fd42a2e">AESTiny128</a>, <a class="el" href="classAESTiny256.html#a3f48f55b7600dfc672acda899928de76">AESTiny256</a>, <a class="el" href="classAESCommon.html#ae26afdcc6d18e8888974acae16df1413">AESCommon</a>, <a class="el" href="classSpeckTiny.html#af8bbd1d1124fd1c4ef1aa167625376a9">SpeckTiny</a>, and <a class="el" href="classSpeck.html#a18a3b982a2cbc48befc8d498de08f188">Speck</a>.</p>
 
 </div>
 </div>
@@ -230,7 +234,7 @@ Public Member Functions</h2></td></tr>
 <p>Security-sensitive information includes key schedules and any temporary state that is used by <a class="el" href="classBlockCipher.html#aed0788b25f6bb2f1bd47d5a5f0c5db33" title="Encrypts a single block using this cipher. ">encryptBlock()</a> or <a class="el" href="classBlockCipher.html#ac3ba2450222aa1ea804ae4881ab6440c" title="Decrypts a single block using this cipher. ">decryptBlock()</a> which is stored in the object itself.</p>
 <dl class="section see"><dt>See Also</dt><dd><a class="el" href="classBlockCipher.html#a9a05307664469777592799c8f77397c4" title="Sets the key to use for future encryption and decryption operations. ">setKey()</a>, <a class="el" href="classBlockCipher.html#aed0788b25f6bb2f1bd47d5a5f0c5db33" title="Encrypts a single block using this cipher. ">encryptBlock()</a>, <a class="el" href="classBlockCipher.html#ac3ba2450222aa1ea804ae4881ab6440c" title="Decrypts a single block using this cipher. ">decryptBlock()</a> </dd></dl>
 
-<p>Implemented in <a class="el" href="classSpeckTiny.html#a303ecc2639459e47c6eeb21991d52ccf">SpeckTiny</a>, <a class="el" href="classSpeck.html#aa3866273282addabb9d3703c41fdc95f">Speck</a>, <a class="el" href="classAESCommon.html#a83e43f7d07e31d90fd7b768a93ecfce6">AESCommon</a>, and <a class="el" href="classSpeckSmall.html#aa93d9f0b5153425dc04e8fb8faff7513">SpeckSmall</a>.</p>
+<p>Implemented in <a class="el" href="classAESSmall128.html#a215b28599d388c2149aba2206d40863d">AESSmall128</a>, <a class="el" href="classAESTiny128.html#a17e56d025f9e55041150953d8561c793">AESTiny128</a>, <a class="el" href="classAESSmall256.html#ac63bf2dff7de8a73ba57f4bb0f1df444">AESSmall256</a>, <a class="el" href="classAESTiny256.html#ae4cac6af2e78cbf399b7f6d0e613a578">AESTiny256</a>, <a class="el" href="classSpeckTiny.html#a303ecc2639459e47c6eeb21991d52ccf">SpeckTiny</a>, <a class="el" href="classAESCommon.html#a83e43f7d07e31d90fd7b768a93ecfce6">AESCommon</a>, <a class="el" href="classSpeck.html#aa3866273282addabb9d3703c41fdc95f">Speck</a>, and <a class="el" href="classSpeckSmall.html#aa93d9f0b5153425dc04e8fb8faff7513">SpeckSmall</a>.</p>
 
 </div>
 </div>
@@ -276,7 +280,7 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section see"><dt>See Also</dt><dd><a class="el" href="classBlockCipher.html#aed0788b25f6bb2f1bd47d5a5f0c5db33" title="Encrypts a single block using this cipher. ">encryptBlock()</a>, <a class="el" href="classBlockCipher.html#a7059a310487c128db034b0ce0ad425a0" title="Size of a single block processed by this cipher, in bytes. ">blockSize()</a> </dd></dl>
 
-<p>Implemented in <a class="el" href="classSpeckTiny.html#a19e54aef7d1b3ef92e8140dd9c308c3c">SpeckTiny</a>, <a class="el" href="classSpeck.html#ad8c040df1c52d2559da8fdb3963d28b4">Speck</a>, <a class="el" href="classAESCommon.html#a95a806adf42f975765ff62907efdc639">AESCommon</a>, and <a class="el" href="classSpeckSmall.html#acced022717603980ecca21b3f953bf51">SpeckSmall</a>.</p>
+<p>Implemented in <a class="el" href="classAESSmall128.html#aabdb20c638b2107b5b5e3e41dc6dae26">AESSmall128</a>, <a class="el" href="classAESTiny128.html#a631c417a0f12c7e43f633c555b950182">AESTiny128</a>, <a class="el" href="classAESSmall256.html#aaba6d59d07d2f40efa8c962375c15888">AESSmall256</a>, <a class="el" href="classAESTiny256.html#abdf72a52c37c060a9089693c118585bc">AESTiny256</a>, <a class="el" href="classSpeckTiny.html#a19e54aef7d1b3ef92e8140dd9c308c3c">SpeckTiny</a>, <a class="el" href="classAESCommon.html#a95a806adf42f975765ff62907efdc639">AESCommon</a>, <a class="el" href="classSpeck.html#ad8c040df1c52d2559da8fdb3963d28b4">Speck</a>, and <a class="el" href="classSpeckSmall.html#acced022717603980ecca21b3f953bf51">SpeckSmall</a>.</p>
 
 </div>
 </div>
@@ -322,7 +326,7 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section see"><dt>See Also</dt><dd><a class="el" href="classBlockCipher.html#ac3ba2450222aa1ea804ae4881ab6440c" title="Decrypts a single block using this cipher. ">decryptBlock()</a>, <a class="el" href="classBlockCipher.html#a7059a310487c128db034b0ce0ad425a0" title="Size of a single block processed by this cipher, in bytes. ">blockSize()</a> </dd></dl>
 
-<p>Implemented in <a class="el" href="classSpeckTiny.html#a5dd2cf40dc48addb6a393e78a58a07c0">SpeckTiny</a>, <a class="el" href="classSpeck.html#af6b8b91929e4b5b2023400688c9437f9">Speck</a>, and <a class="el" href="classAESCommon.html#a2d95f6159abfcd92b5841f9018e44296">AESCommon</a>.</p>
+<p>Implemented in <a class="el" href="classAESTiny128.html#a9e343baf2c3c815f8482222c52ebb3a3">AESTiny128</a>, <a class="el" href="classAESTiny256.html#a36e4ffc85f7d7604d01a5629c185d0ef">AESTiny256</a>, <a class="el" href="classSpeckTiny.html#a5dd2cf40dc48addb6a393e78a58a07c0">SpeckTiny</a>, <a class="el" href="classAESCommon.html#a2d95f6159abfcd92b5841f9018e44296">AESCommon</a>, and <a class="el" href="classSpeck.html#af6b8b91929e4b5b2023400688c9437f9">Speck</a>.</p>
 
 </div>
 </div>
@@ -351,7 +355,7 @@ Public Member Functions</h2></td></tr>
 <p>This value indicates the default, or recommended, size for the key.</p>
 <dl class="section see"><dt>See Also</dt><dd><a class="el" href="classBlockCipher.html#a9a05307664469777592799c8f77397c4" title="Sets the key to use for future encryption and decryption operations. ">setKey()</a>, <a class="el" href="classBlockCipher.html#a7059a310487c128db034b0ce0ad425a0" title="Size of a single block processed by this cipher, in bytes. ">blockSize()</a> </dd></dl>
 
-<p>Implemented in <a class="el" href="classAES256.html#af8ed6412bae6fc78274f60344899366a">AES256</a>, <a class="el" href="classAES192.html#ade28843e51e262b30eb55791c83fd791">AES192</a>, <a class="el" href="classAES128.html#aa871832a156f0ea61b964e489670ae9d">AES128</a>, <a class="el" href="classSpeckTiny.html#a5587909ba48776b01bbd40b339b1262e">SpeckTiny</a>, and <a class="el" href="classSpeck.html#a061e43c1363178cda088c3f46e07d87b">Speck</a>.</p>
+<p>Implemented in <a class="el" href="classAESTiny128.html#a6ff732873f0df88d93c3f7df1fb7a168">AESTiny128</a>, <a class="el" href="classAESTiny256.html#a7b5a2ba4829e79283c53248d3d8a7a06">AESTiny256</a>, <a class="el" href="classAES256.html#af8ed6412bae6fc78274f60344899366a">AES256</a>, <a class="el" href="classAES192.html#ade28843e51e262b30eb55791c83fd791">AES192</a>, <a class="el" href="classAES128.html#aa871832a156f0ea61b964e489670ae9d">AES128</a>, <a class="el" href="classSpeckTiny.html#a5587909ba48776b01bbd40b339b1262e">SpeckTiny</a>, and <a class="el" href="classSpeck.html#a061e43c1363178cda088c3f46e07d87b">Speck</a>.</p>
 
 </div>
 </div>
@@ -399,7 +403,7 @@ Public Member Functions</h2></td></tr>
 <p>Use <a class="el" href="classBlockCipher.html#a6f27d46e9dfa7761d014d828ad5f955b" title="Clears all security-sensitive state from this block cipher. ">clear()</a> or the destructor to remove the key and any other sensitive data from the object once encryption or decryption is complete.</p>
 <dl class="section see"><dt>See Also</dt><dd><a class="el" href="classBlockCipher.html#afde6004a859e015d877eab3c37042a0f" title="Default size of the key for this block cipher, in bytes. ">keySize()</a>, <a class="el" href="classBlockCipher.html#a6f27d46e9dfa7761d014d828ad5f955b" title="Clears all security-sensitive state from this block cipher. ">clear()</a> </dd></dl>
 
-<p>Implemented in <a class="el" href="classAES256.html#a6af085d2d6a730ff1e025f982121bbda">AES256</a>, <a class="el" href="classAES192.html#a4ab37cff19fb05ceef1533ebc5e37cde">AES192</a>, <a class="el" href="classAES128.html#a42d7548eb5084a2c3e2d5aa5f6f98ba4">AES128</a>, <a class="el" href="classSpeckTiny.html#a05180c773b9d26d3b67ff569dc86fc2d">SpeckTiny</a>, <a class="el" href="classSpeck.html#a7a07fc025bd25d832e9899333b5dabef">Speck</a>, and <a class="el" href="classSpeckSmall.html#a3345df135f6530bad475d630ef6c1038">SpeckSmall</a>.</p>
+<p>Implemented in <a class="el" href="classAESSmall128.html#a6ca13e59f88498c8c3da338e76f47de5">AESSmall128</a>, <a class="el" href="classAESTiny128.html#a475b147be367e6053ff64e30bf79694c">AESTiny128</a>, <a class="el" href="classAESSmall256.html#ae7e05119a6183d5f7fc520206f97c0e0">AESSmall256</a>, <a class="el" href="classAESTiny256.html#abc162075b181bfca34144f4eec6deec7">AESTiny256</a>, <a class="el" href="classAES256.html#a6af085d2d6a730ff1e025f982121bbda">AES256</a>, <a class="el" href="classAES192.html#a4ab37cff19fb05ceef1533ebc5e37cde">AES192</a>, <a class="el" href="classAES128.html#a42d7548eb5084a2c3e2d5aa5f6f98ba4">AES128</a>, <a class="el" href="classSpeckTiny.html#a05180c773b9d26d3b67ff569dc86fc2d">SpeckTiny</a>, <a class="el" href="classSpeck.html#a7a07fc025bd25d832e9899333b5dabef">Speck</a>, and <a class="el" href="classSpeckSmall.html#a3345df135f6530bad475d630ef6c1038">SpeckSmall</a>.</p>
 
 </div>
 </div>
@@ -410,7 +414,7 @@ Public Member Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Apr 2 2018 18:36:53 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Apr 7 2018 02:43:14 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

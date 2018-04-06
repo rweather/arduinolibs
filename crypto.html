@@ -93,6 +93,14 @@ Supported Algorithms</h1>
 <li>Post-quantum algorithms: <a class="el" href="classNewHope.html" title="NewHope post-quantum key exchange algorithm. ">NewHope</a> </li>
 <li>Random number generation: <a class="el" href="classRNGClass.html">RNG</a>, <a class="el" href="classTransistorNoiseSource.html" title="Processes the signal from a transistor-based noise source. ">TransistorNoiseSource</a>, <a class="el" href="classRingOscillatorNoiseSource.html" title="Processes the signal from a ring oscillator based noise source. ">RingOscillatorNoiseSource</a></li>
 </ul>
+<p>Reduced memory versions of some algorithms (encryption is slower, but the RAM required for the key schedule is less):</p>
+<ul>
+<li><a class="el" href="classAESTiny128.html" title="AES block cipher with 128-bit keys and tiny memory usage. ">AESTiny128</a>, <a class="el" href="classAESSmall128.html" title="AES block cipher with 128-bit keys and reduced memory usage. ">AESSmall128</a>, <a class="el" href="classAESTiny256.html" title="AES block cipher with 256-bit keys and tiny memory usage. ">AESTiny256</a>, <a class="el" href="classAESSmall256.html" title="AES block cipher with 256-bit keys and reduced memory usage. ">AESSmall256</a> </li>
+<li><a class="el" href="classSpeckTiny.html" title="Speck block cipher with a 128-bit block size (tiny-memory version). ">SpeckTiny</a>, <a class="el" href="classSpeckSmall.html" title="Speck block cipher with a 128-bit block size (small-memory version). ">SpeckSmall</a></li>
+</ul>
+<p>The "tiny" versions only support encryption which makes them suitable for the <a class="el" href="classCTR.html" title="Implementation of the Counter (CTR) mode for 128-bit block ciphers. ">CTR</a>, <a class="el" href="classCFB.html" title="Implementation of the Cipher Feedback (CFB) mode for 128-bit block ciphers. ">CFB</a>, <a class="el" href="classOFB.html" title="Implementation of the Output Feedback (OFB) mode for 128-bit block ciphers. ">OFB</a>, <a class="el" href="classEAX.html" title="Implementation of the EAX authenticated cipher. ">EAX</a>, and <a class="el" href="classGCM.html" title="Implementation of the Galois Counter Mode (GCM). ">GCM</a> block cipher modes but not <a class="el" href="classCBC.html" title="Implementation of the Cipher Block Chaining (CBC) mode for 128-bit block ciphers. ...">CBC</a>. The "small" versions use a little more memory but support both encryptionm and decryption.</p>
+<h1><a class="anchor" id="crypto_optimizations"></a>
+Optimizations</h1>
 <p>All cryptographic algorithms have been optimized for 8-bit Arduino platforms like the Uno. Memory usage is also reduced, particularly for <a class="el" href="classSHA256.html" title="SHA-256 hash algorithm. ">SHA256</a> and <a class="el" href="classSHA512.html" title="SHA-512 hash algorithm. ">SHA512</a> which save 192 and 512 bytes respectively over traditional implementations. For all algorithms, static sbox tables and the like are placed into program memory to further reduce data memory usage.</p>
 <p><a class="el" href="classChaCha.html" title="ChaCha stream cipher. ">ChaCha</a> with 20 rounds and 256-bit keys is the recommended symmetric encryption algorithm because it is twice as fast as <a class="el" href="classAES128.html" title="AES block cipher with 128-bit keys. ">AES128</a>, constant-time, and much more secure. <a class="el" href="classAES128.html" title="AES block cipher with 128-bit keys. ">AES128</a>, <a class="el" href="classAES192.html" title="AES block cipher with 192-bit keys. ">AES192</a>, and <a class="el" href="classAES256.html" title="AES block cipher with 256-bit keys. ">AES256</a> are provided for use in applications where compatibility with other systems is desirable.</p>
 <p>If code size is an issue for your application (for example on very low end Arduino variants), then <a class="el" href="classSpeck.html" title="Speck block cipher with a 128-bit block size. ">Speck</a> on AVR is less than half the code size of <a class="el" href="classChaCha.html" title="ChaCha stream cipher. ">ChaCha</a>, at the cost of more data memory for the state and longer key setup times. The <a class="el" href="classSpeckTiny.html" title="Speck block cipher with a 128-bit block size (tiny-memory version). ">SpeckTiny</a> and <a class="el" href="classSpeckSmall.html" title="Speck block cipher with a 128-bit block size (small-memory version). ">SpeckSmall</a> classes are even smaller at the cost of some performance when encrypting.</p>
@@ -112,11 +120,19 @@ Performance on AVR</h2>
 <tr>
 <td>Encryption Algorithm</td><td align="right">Encryption (per byte)</td><td align="right">Decryption (per byte)</td><td align="right">Key Setup</td><td>State Size (bytes) </td></tr>
 <tr>
-<td><a class="el" href="classAES128.html" title="AES block cipher with 128-bit keys. ">AES128</a> (ECB mode)</td><td align="right">33.28us</td><td align="right">63.18us</td><td align="right">160.00us</td><td align="right">181 </td></tr>
+<td><a class="el" href="classAES128.html" title="AES block cipher with 128-bit keys. ">AES128</a> (ECB mode)</td><td align="right">33.28us</td><td align="right">63.18us</td><td align="right">158.68us</td><td align="right">181 </td></tr>
 <tr>
-<td><a class="el" href="classAES192.html" title="AES block cipher with 192-bit keys. ">AES192</a> (ECB mode)</td><td align="right">39.94us</td><td align="right">76.48us</td><td align="right">166.54us</td><td align="right">213 </td></tr>
+<td><a class="el" href="classAES192.html" title="AES block cipher with 192-bit keys. ">AES192</a> (ECB mode)</td><td align="right">39.94us</td><td align="right">76.48us</td><td align="right">165.34us</td><td align="right">213 </td></tr>
 <tr>
-<td><a class="el" href="classAES256.html" title="AES block cipher with 256-bit keys. ">AES256</a> (ECB mode)</td><td align="right">46.61us</td><td align="right">89.78us</td><td align="right">227.97us</td><td align="right">245 </td></tr>
+<td><a class="el" href="classAES256.html" title="AES block cipher with 256-bit keys. ">AES256</a> (ECB mode)</td><td align="right">46.61us</td><td align="right">89.78us</td><td align="right">217.79us</td><td align="right">245 </td></tr>
+<tr>
+<td><a class="el" href="classAESTiny128.html" title="AES block cipher with 128-bit keys and tiny memory usage. ">AESTiny128</a> (ECB mode)</td><td align="right">40.37us</td><td align="right"></td><td align="right">10.16us</td><td align="right">18 </td></tr>
+<tr>
+<td><a class="el" href="classAESTiny256.html" title="AES block cipher with 256-bit keys and tiny memory usage. ">AESTiny256</a> (ECB mode)</td><td align="right">56.84us</td><td align="right"></td><td align="right">17.20us</td><td align="right">34 </td></tr>
+<tr>
+<td><a class="el" href="classAESSmall128.html" title="AES block cipher with 128-bit keys and reduced memory usage. ">AESSmall128</a> (ECB mode)</td><td align="right">40.37us</td><td align="right">71.36us</td><td align="right">134.22us</td><td align="right">34 </td></tr>
+<tr>
+<td><a class="el" href="classAESSmall256.html" title="AES block cipher with 256-bit keys and reduced memory usage. ">AESSmall256</a> (ECB mode)</td><td align="right">56.84us</td><td align="right">100.55us</td><td align="right">177.73us</td><td align="right">66 </td></tr>
 <tr>
 <td><a class="el" href="classChaCha.html" title="ChaCha stream cipher. ">ChaCha</a> (20 rounds)</td><td align="right">14.87us</td><td align="right">14.88us</td><td align="right">43.74us</td><td align="right">132 </td></tr>
 <tr>
@@ -255,11 +271,19 @@ Performance on ARM</h2>
 <tr>
 <td>Encryption Algorithm</td><td align="right">Encryption (per byte)</td><td align="right">Decryption (per byte)</td><td align="right">Key Setup</td><td>State Size (bytes) </td></tr>
 <tr>
-<td><a class="el" href="classAES128.html" title="AES block cipher with 128-bit keys. ">AES128</a> (ECB mode)</td><td align="right">5.71us</td><td align="right">10.41us</td><td align="right">34.73us</td><td align="right">188 </td></tr>
+<td><a class="el" href="classAES128.html" title="AES block cipher with 128-bit keys. ">AES128</a> (ECB mode)</td><td align="right">6.58us</td><td align="right">11.40us</td><td align="right">38.15us</td><td align="right">188 </td></tr>
 <tr>
-<td><a class="el" href="classAES192.html" title="AES block cipher with 192-bit keys. ">AES192</a> (ECB mode)</td><td align="right">6.87us</td><td align="right">12.57us</td><td align="right">36.51us</td><td align="right">220 </td></tr>
+<td><a class="el" href="classAES192.html" title="AES block cipher with 192-bit keys. ">AES192</a> (ECB mode)</td><td align="right">7.94us</td><td align="right">13.83us</td><td align="right">39.79us</td><td align="right">220 </td></tr>
 <tr>
-<td><a class="el" href="classAES256.html" title="AES block cipher with 256-bit keys. ">AES256</a> (ECB mode)</td><td align="right">8.04us</td><td align="right">14.72</td><td align="right">49.96us</td><td align="right">252 </td></tr>
+<td><a class="el" href="classAES256.html" title="AES block cipher with 256-bit keys. ">AES256</a> (ECB mode)</td><td align="right">9.30us</td><td align="right">16.25us</td><td align="right">49.68us</td><td align="right">252 </td></tr>
+<tr>
+<td><a class="el" href="classAESTiny128.html" title="AES block cipher with 128-bit keys and tiny memory usage. ">AESTiny128</a> (ECB mode)</td><td align="right">7.23us</td><td align="right"></td><td align="right">1.25us</td><td align="right">20 </td></tr>
+<tr>
+<td><a class="el" href="classAESTiny256.html" title="AES block cipher with 256-bit keys and tiny memory usage. ">AESTiny256</a> (ECB mode)</td><td align="right">10.62us</td><td align="right"></td><td align="right">1.43us</td><td align="right">36 </td></tr>
+<tr>
+<td><a class="el" href="classAESSmall128.html" title="AES block cipher with 128-bit keys and reduced memory usage. ">AESSmall128</a> (ECB mode)</td><td align="right">7.23us</td><td align="right">12.33us</td><td align="right">23.44us</td><td align="right">36 </td></tr>
+<tr>
+<td><a class="el" href="classAESSmall256.html" title="AES block cipher with 256-bit keys and reduced memory usage. ">AESSmall256</a> (ECB mode)</td><td align="right">10.62us</td><td align="right">16.92us</td><td align="right">31.88us</td><td align="right">68 </td></tr>
 <tr>
 <td><a class="el" href="classChaCha.html" title="ChaCha stream cipher. ">ChaCha</a> (20 rounds)</td><td align="right">0.87us</td><td align="right">0.88us</td><td align="right">4.96us</td><td align="right">136 </td></tr>
 <tr>
@@ -392,7 +416,7 @@ Performance on ARM</h2>
 </div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Apr 2 2018 18:36:53 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Apr 7 2018 02:43:13 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>
