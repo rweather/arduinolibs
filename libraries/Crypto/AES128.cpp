@@ -24,6 +24,8 @@
 #include "Crypto.h"
 #include <string.h>
 
+#if defined(CRYPTO_AES_DEFAULT) || defined(CRYPTO_DOC)
+
 /**
  * \class AES128 AES.h <AES.h>
  * \brief AES block cipher with 128-bit keys.
@@ -350,3 +352,5 @@ void AESSmall128::clear()
     clean(reverse);
     AESTiny128::clear();
 }
+
+#endif // CRYPTO_AES_DEFAULT

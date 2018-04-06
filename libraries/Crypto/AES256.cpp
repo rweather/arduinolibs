@@ -24,6 +24,8 @@
 #include "Crypto.h"
 #include <string.h>
 
+#if defined(CRYPTO_AES_DEFAULT) || defined(CRYPTO_DOC)
+
 /**
  * \class AES256 AES.h <AES.h>
  * \brief AES block cipher with 256-bit keys.
@@ -395,3 +397,5 @@ void AESSmall256::clear()
     clean(reverse);
     AESTiny256::clear();
 }
+
+#endif // CRYPTO_AES_DEFAULT

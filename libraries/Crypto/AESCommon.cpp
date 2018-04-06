@@ -24,6 +24,8 @@
 #include "Crypto.h"
 #include "utility/ProgMemUtil.h"
 
+#if defined(CRYPTO_AES_DEFAULT) || defined(CRYPTO_DOC)
+
 /**
  * \class AESCommon AES.h <AES.h>
  * \brief Abstract base class for AES block ciphers.
@@ -357,3 +359,5 @@ void AESCommon::applySbox(uint8_t *output, const uint8_t *input)
 }
 
 /** @endcond */
+
+#endif // CRYPTO_AES_DEFAULT

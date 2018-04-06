@@ -25,6 +25,15 @@
 
 #include "BlockCipher.h"
 
+// Determine which AES implementation to export to applications.
+#if defined(ESP32)
+#define CRYPTO_AES_ESP32 1
+#else
+#define CRYPTO_AES_DEFAULT 1
+#endif
+
+#if defined(CRYPTO_AES_DEFAULT) || defined(CRYPTO_DOC)
+
 class AESTiny128;
 class AESTiny256;
 class AESSmall128;
@@ -176,5 +185,72 @@ public:
 private:
     uint8_t reverse[16];
 };
+
+#endif // CRYPTO_AES_DEFAULT
+
+#if defined(CRYPTO_AES_ESP32)
+
+// "hwcrypto/aes.h" includes "rom/aes.h" which defines global enums for
+// AES128, AES192, and AES256.  The enum definitions interfere with the
+// definition of the same-named classes below.  The #define's and #undef's
+// here work around the problem by defining the enums to different names.
+#define AES128 AES128_enum
+#define AES192 AES192_enum
+#define AES256 AES256_enum
+#include "hwcrypto/aes.h"
+#undef AES128
+#undef AES192
+#undef AES256
+
+class AESCommon : public BlockCipher
+{
+public:
+    virtual ~AESCommon();
+
+    size_t blockSize() const;
+    size_t keySize() const;
+
+    bool setKey(const uint8_t *key, size_t len);
+
+    void encryptBlock(uint8_t *output, const uint8_t *input);
+    void decryptBlock(uint8_t *output, const uint8_t *input);
+
+    void clear();
+
+protected:
+    AESCommon(uint8_t keySize);
+
+private:
+    esp_aes_context ctx;
+};
+
+class AES128 : public AESCommon
+{
+public:
+    AES128() : AESCommon(16) {}
+    virtual ~AES128();
+};
+
+class AES192 : public AESCommon
+{
+public:
+    AES192() : AESCommon(24) {}
+    virtual ~AES192();
+};
+
+class AES256 : public AESCommon
+{
+public:
+    AES256() : AESCommon(32) {}
+    virtual ~AES256();
+};
+
+// The ESP32 AES context is so small that it already qualifies as "tiny".
+typedef AES128 AESTiny128;
+typedef AES256 AESTiny256;
+typedef AES128 AESSmall128;
+typedef AES256 AESSmall256;
+
+#endif // CRYPTO_AES_ESP32
 
 #endif
