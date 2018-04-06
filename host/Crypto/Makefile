@@ -67,6 +67,8 @@ SOURCES =   \
 
 SKETCHES = \
 	TestAES/TestAES.ino \
+	TestAESTiny/TestAESTiny.ino \
+	TestAESSmall/TestAESSmall.ino \
 	TestBigNumberUtil/TestBigNumberUtil.ino \
 	TestBLAKE2b/TestBLAKE2b.ino \
 	TestBLAKE2s/TestBLAKE2s.ino \
