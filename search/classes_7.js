@@ -1,4 +1,6 @@
 var searchData=
 [
-  ['hash',['Hash',['../classHash.html',1,'']]]
+  ['newhope',['NewHope',['../classNewHope.html',1,'']]],
+  ['newhopeprivatekey',['NewHopePrivateKey',['../structNewHopePrivateKey.html',1,'']]],
+  ['noisesource',['NoiseSource',['../classNoiseSource.html',1,'']]]
 ];

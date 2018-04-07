@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['alarm_20clock',['Alarm Clock',['../alarm_clock.html',1,'']]]
+  ['arduino_20cryptography_20library',['Arduino Cryptography Library',['../crypto.html',1,'']]]
 ];

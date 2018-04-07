@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['cyan',['Cyan',['../classTerminal.html#a7a03a2e94316da7b2144dad5ba95ac20a12656e5c242667b489e639d399964077',1,'Terminal']]]
+  ['torref',['Torref',['../classNewHope.html#a679601da301134f037c3a5786bd7085fae270e706968a8e01e5c1cb40422b22c6',1,'NewHope']]]
 ];

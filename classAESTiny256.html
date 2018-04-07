@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.6"/>
-<title>ArduinoLibs: AESTiny256 Class Reference</title>
+<title>Arduino Cryptography Library: AESTiny256 Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -22,7 +22,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">ArduinoLibs
+   <div id="projectname">Arduino Cryptography Library
    </div>
   </td>
  </tr>
@@ -38,7 +38,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
-      <li><a href="modules.html"><span>Modules</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -72,7 +71,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(10)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -150,7 +149,7 @@ Public Member Functions</h2></td></tr>
 <p>The companion <a class="el" href="classAESSmall256.html" title="AES block cipher with 256-bit keys and reduced memory usage. ">AESSmall256</a> class supports <a class="el" href="classAESTiny256.html#abdf72a52c37c060a9089693c118585bc" title="Decrypts a single block using this cipher. ">decryptBlock()</a> at the cost of some additional memory and slower <a class="el" href="classAESTiny256.html#abc162075b181bfca34144f4eec6deec7" title="Sets the key to use for future encryption and decryption operations. ">setKey()</a> times.</p>
 <dl class="section see"><dt>See Also</dt><dd><a class="el" href="classAESSmall256.html" title="AES block cipher with 256-bit keys and reduced memory usage. ">AESSmall256</a>, <a class="el" href="classAES256.html" title="AES block cipher with 256-bit keys. ">AES256</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="AES_8h_source.html#l00108">108</a> of file <a class="el" href="AES_8h_source.html">AES.h</a>.</p>
+<p>Definition at line <a class="el" href="AES_8h_source.html#l00117">117</a> of file <a class="el" href="AES_8h_source.html">AES.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a7af85adfdbd0a3bb68ef5a8f76102043"></a>
 <div class="memitem">
@@ -168,7 +167,7 @@ Public Member Functions</h2></td></tr>
 <p>Constructs an AES 256-bit block cipher with no initial key. </p>
 <p>This constructor must be followed by a call to <a class="el" href="classAESTiny256.html#abc162075b181bfca34144f4eec6deec7" title="Sets the key to use for future encryption and decryption operations. ">setKey()</a> before the block cipher can be used for encryption or decryption. </p>
 
-<p>Definition at line <a class="el" href="AES256_8cpp_source.html#l00187">187</a> of file <a class="el" href="AES256_8cpp_source.html">AES256.cpp</a>.</p>
+<p>Definition at line <a class="el" href="AES256_8cpp_source.html#l00189">189</a> of file <a class="el" href="AES256_8cpp_source.html">AES256.cpp</a>.</p>
 
 </div>
 </div>
@@ -199,7 +198,7 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="classBlockCipher.html#a7059a310487c128db034b0ce0ad425a0">BlockCipher</a>.</p>
 
-<p>Definition at line <a class="el" href="AES256_8cpp_source.html#l00200">200</a> of file <a class="el" href="AES256_8cpp_source.html">AES256.cpp</a>.</p>
+<p>Definition at line <a class="el" href="AES256_8cpp_source.html#l00202">202</a> of file <a class="el" href="AES256_8cpp_source.html">AES256.cpp</a>.</p>
 
 </div>
 </div>
@@ -232,7 +231,7 @@ Public Member Functions</h2></td></tr>
 
 <p>Reimplemented in <a class="el" href="classAESSmall256.html#ac63bf2dff7de8a73ba57f4bb0f1df444">AESSmall256</a>.</p>
 
-<p>Definition at line <a class="el" href="AES256_8cpp_source.html#l00275">275</a> of file <a class="el" href="AES256_8cpp_source.html">AES256.cpp</a>.</p>
+<p>Definition at line <a class="el" href="AES256_8cpp_source.html#l00277">277</a> of file <a class="el" href="AES256_8cpp_source.html">AES256.cpp</a>.</p>
 
 </div>
 </div>
@@ -282,7 +281,7 @@ Public Member Functions</h2></td></tr>
 
 <p>Reimplemented in <a class="el" href="classAESSmall256.html#aaba6d59d07d2f40efa8c962375c15888">AESSmall256</a>.</p>
 
-<p>Definition at line <a class="el" href="AES256_8cpp_source.html#l00270">270</a> of file <a class="el" href="AES256_8cpp_source.html">AES256.cpp</a>.</p>
+<p>Definition at line <a class="el" href="AES256_8cpp_source.html#l00272">272</a> of file <a class="el" href="AES256_8cpp_source.html">AES256.cpp</a>.</p>
 
 </div>
 </div>
@@ -330,7 +329,7 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="classBlockCipher.html#aed0788b25f6bb2f1bd47d5a5f0c5db33">BlockCipher</a>.</p>
 
-<p>Definition at line <a class="el" href="AES256_8cpp_source.html#l00224">224</a> of file <a class="el" href="AES256_8cpp_source.html">AES256.cpp</a>.</p>
+<p>Definition at line <a class="el" href="AES256_8cpp_source.html#l00226">226</a> of file <a class="el" href="AES256_8cpp_source.html">AES256.cpp</a>.</p>
 
 </div>
 </div>
@@ -360,7 +359,7 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="classBlockCipher.html#afde6004a859e015d877eab3c37042a0f">BlockCipher</a>.</p>
 
-<p>Definition at line <a class="el" href="AES256_8cpp_source.html#l00209">209</a> of file <a class="el" href="AES256_8cpp_source.html">AES256.cpp</a>.</p>
+<p>Definition at line <a class="el" href="AES256_8cpp_source.html#l00211">211</a> of file <a class="el" href="AES256_8cpp_source.html">AES256.cpp</a>.</p>
 
 </div>
 </div>
@@ -412,7 +411,7 @@ Public Member Functions</h2></td></tr>
 
 <p>Reimplemented in <a class="el" href="classAESSmall256.html#ae7e05119a6183d5f7fc520206f97c0e0">AESSmall256</a>.</p>
 
-<p>Definition at line <a class="el" href="AES256_8cpp_source.html#l00214">214</a> of file <a class="el" href="AES256_8cpp_source.html">AES256.cpp</a>.</p>
+<p>Definition at line <a class="el" href="AES256_8cpp_source.html#l00216">216</a> of file <a class="el" href="AES256_8cpp_source.html">AES256.cpp</a>.</p>
 
 </div>
 </div>
@@ -423,7 +422,7 @@ Public Member Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Apr 7 2018 02:43:14 for ArduinoLibs by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Apr 7 2018 10:23:43 for Arduino Cryptography Library by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

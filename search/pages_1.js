@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['blinking_20led_20example',['Blinking LED Example',['../blink_blink.html',1,'']]]
+  ['generating_20random_20numbers',['Generating random numbers',['../crypto_rng.html',1,'']]]
 ];

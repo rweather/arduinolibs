@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['dot_20matrix_20display_20demo',['Dot Matrix Display Demo',['../dmd_demo.html',1,'']]],
-  ['dumping_20infrared_20remote_20control_20codes',['Dumping Infrared Remote Control Codes',['../ir_dumpir.html',1,'']]]
+  ['small_20memory_20footprint_20new_20hope',['Small Memory Footprint New Hope',['../newhope_small.html',1,'']]]
 ];
