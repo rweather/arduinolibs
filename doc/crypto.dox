@@ -22,7 +22,7 @@
 
 /**
 \file crypto.dox
-\page crypto Cryptographic Library
+\page crypto Arduino Cryptography Library
 
 \section crypto_algorithms Supported Algorithms
 

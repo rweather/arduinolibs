@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Southern Storm Software, Pty Ltd.
+ * Copyright (C) 2018 Southern Storm Software, Pty Ltd.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -24,111 +24,21 @@
 \file mainpage.dox
 \mainpage
 
-This distribution contains a bunch of libraries and example applications
-that I have made for Arduino, covering a variety of tasks from blinking LED's
-to LCD's and RTC-based alarm clocks.  They are distributed under the
-terms of the MIT license, with the source code available from
-<a href="https://github.com/rweather/arduinolibs">github</a>.
+This distribution contains a libraries and example applications to perform
+cryptography operations on Arduino devices.  They are distributed under the
+terms of the MIT license.
+
+See the main \ref crypto "documentation page" for more information on
+the libraries and examples.
+
+This repository used to contain a number of other examples and libraries
+for other areas of Arduino functionality but most users are only interested
+in the cryptography code.  The other projects have been moved to a
+separate <a href="https://github.com/rweather/arduino-projects">repository</a>
+and only the cryptography code remains in this repository.
 
 For more information on these libraries, to report bugs, or to suggest
 improvements, please contact the author Rhys Weatherley via
 <a href="mailto:rhys.weatherley@gmail.com">email</a>.
-
-\section main_LCD LCD Shield
-
-\li LCD class to manage the extended features of the Freetronics
-and DFRobot LCD shields.
-\li Form and Field classes to build simple property sheet UI's on LCD displays.
-\li \ref lcd_hello_world "Hello World" example for the Freetronics LCD shield.
-\li \ref lcd_form "Form" example for LCD displays.
-
-\section main_DMD Freetronics Large Dot Matrix Display (DMD)
-
-\li DMD class to manage the initialize of the display.
-\li Bitmap class to manage drawing to in-memory bitmaps and the DMD display.
-\li \ref dmd_demo "Demo" that shows off various bitmap drawing features.
-\li \ref dmd_running_figure "RunningFigure" example that demonstrates how
-to draw and animate bitmaps.
-\li \ref ir_snake "Snake" game that combines the dot matrix display with
-IRreceiver to make a simple video game.
-
-\section main_BlinkLED BlinkLED Utility Library
-
-\li BlinkLED class that simplifies the process of blinking a LED connected
-to a output pin.
-\li ChaseLEDs class that simplifies the process of performing a LED chase
-over several output pins.
-\li Charlieplex class that manages a matrix of LED's arranged in a
-<a href="http://en.wikipedia.org/wiki/Charlieplexing">Charlieplexing</a>
-arrangement.
-\li \ref blink_blink "Blink" example of using BlinkLED.
-\li \ref blink_cylon "Cylon" example of using ChaseLEDs to simulate
-the Cylon eye effect from Battlestar Galactica.
-\li \ref blink_startrek "StarTrek" example for lighting a starship
-Enterprise model kit.
-\li \ref blink_charlieplex "Charlieplex" example.
-
-\section main_I2C I2C Utility Library
-
-\li I2CMaster abstract class that provides an improved API for implementing an
-I2C master.
-\li SoftI2C class that implements the master side of the I2C protocol
-in software on any arbitrary pair of pins for DATA and CLOCK.
-This class supports both 7-bit and 10-bit I2C addresses.
-\li EEPROM24 class for reading and writing 24LCXX family EEPROM's.
-
-\section main_RTC Realtime Clock Library
-
-\li RTC class that acts as a base for all realtime clock implementations,
-including support for configuring alarms and storing clock settings.
-The default implementation simulates the time and date based on the value of
-<tt>millis()</tt>.
-\li DS1307RTC class that talks to the DS1307 realtime clock chip via I2C.
-\li DS3231RTC class that talks to the DS3231 realtime clock chip via I2C.
-\li DS3232RTC class that talks to the DS3232 realtime clock chip via I2C.
-\li \ref alarm_clock "Alarm Clock" example that uses the DS1307 or DS3232
-realtime clock and the LCD library to implement an alarm clock.
-
-\section main_Crypto Cryptographic Library
-
-\li Block ciphers: AES128, AES192, AES256, Speck
-\li Block cipher modes: CTR, CFB, CBC, OFB, EAX, GCM, XTS
-\li Stream ciphers: ChaCha
-\li Authenticated encryption with associated data (AEAD): ChaChaPoly, EAX, GCM
-\li Hash algorithms: SHA256, SHA512, SHA3_256, SHA3_512, BLAKE2s, BLAKE2b (regular and HMAC modes)
-\li Extendable output functions (XOF's): SHAKE128, SHAKE256
-\li Message authenticators: Poly1305, GHASH, OMAC
-\li Public key algorithms: Curve25519, Ed25519, P521
-\li Post-quantum algorithms: NewHope
-\li Random number generation: \link RNGClass RNG\endlink, TransistorNoiseSource, RingOscillatorNoiseSource
-
-More information can be found on the \ref crypto "Cryptographic Library" page.
-
-\section main_Shell Shell Library
-
-\li Terminal class that extends Stream with functions suitable for
-interfacing to a VT100-compatible terminal program like PuTTY.
-\li Shell class that manages a Unix-like command-line shell for executing
-commands via a serial port or telnet session.  Shell is built on top of
-the functionality of Terminal.
-\li LoginShell class that extends Shell to provide a simple username and
-password login mechanism.
-\li \ref shell_serial "SerialShell" example that shows how to use Shell to
-provide command-line access via a serial port.
-\li \ref shell_telnet "TelnetServer" example that shows how to use
-LoginShell to provide command-line access via the telnet protocol.
-
-\section main_IR Infrared Control Library
-
-\li IRreceiver class that receives incoming RC-5 commands from an
-infrared remote control.
-\li \ref ir_dumpir "DumpIR" example that dumps all incoming RC-5 commands.
-\li \ref ir_snake "Snake" game that combines DMD with an infrared remote
-control to make a simple video game.
-
-\section main_other Other
-
-\li Melody plays a melody on a digital output pin using <tt>tone()</tt>.
-\li \ref power_save "Power saving utility functions"
 
 */
