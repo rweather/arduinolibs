@@ -77,9 +77,7 @@ size_t GCMCommon::tagSize() const
 bool GCMCommon::setKey(const uint8_t *key, size_t len)
 {
     // Set the encryption key for the block cipher.
-    if (!blockCipher->setKey(key, len))
-        return false;
-    return true;
+    return blockCipher->setKey(key, len);
 }
 
 bool GCMCommon::setIV(const uint8_t *iv, size_t len)
@@ -94,6 +92,9 @@ bool GCMCommon::setIV(const uint8_t *iv, size_t len)
         state.counter[15] = 1;
     } else {
         // IV's of other sizes are hashed to produce the counter block.
+        memset(state.nonce, 0, 16);
+        blockCipher->encryptBlock(state.nonce, state.nonce);
+        ghash.reset(state.nonce);
         ghash.update(iv, len);
         ghash.pad();
         uint64_t sizes[2] = {0, htobe64(((uint64_t)len) * 8)};
