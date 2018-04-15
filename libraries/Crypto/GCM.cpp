@@ -79,20 +79,11 @@ bool GCMCommon::setKey(const uint8_t *key, size_t len)
     // Set the encryption key for the block cipher.
     if (!blockCipher->setKey(key, len))
         return false;
-
-    // Construct the hashing key by encrypting a zero block.
-    memset(state.nonce, 0, 16);
-    blockCipher->encryptBlock(state.nonce, state.nonce);
-    ghash.reset(state.nonce);
     return true;
 }
 
 bool GCMCommon::setIV(const uint8_t *iv, size_t len)
 {
-    // Note: We assume that setKey() has already been called to
-    // set the hashing key in the "ghash" object and that the
-    // hashing key itself is still stored in "state.nonce".
-
     // Format the counter block from the IV.
     if (len == 12) {
         // IV's of exactly 96 bits are used directly as the counter block.
@@ -109,7 +100,6 @@ bool GCMCommon::setIV(const uint8_t *iv, size_t len)
         ghash.update(sizes, sizeof(sizes));
         clean(sizes);
         ghash.finalize(state.counter, 16);
-        ghash.reset(state.nonce);
     }
 
     // Reset the GCM object ready to process auth or payload data.
@@ -117,6 +107,11 @@ bool GCMCommon::setIV(const uint8_t *iv, size_t len)
     state.dataSize = 0;
     state.dataStarted = false;
     state.posn = 16;
+
+    // Construct the hashing key by encrypting a zero block.
+    memset(state.nonce, 0, 16);
+    blockCipher->encryptBlock(state.nonce, state.nonce);
+    ghash.reset(state.nonce);
 
     // Replace the hash key in "nonce" with the encrypted counter.
     // This value will be XOR'ed with the final authentication hash
