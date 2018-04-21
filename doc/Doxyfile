@@ -656,6 +656,7 @@ WARN_LOGFILE           =
 # with spaces.
 
 INPUT                  = ../libraries/Crypto \
+                         ../libraries/CryptoLW/src \
                          ../libraries/NewHope \
                          ../libraries/RingOscillatorNoiseSource \
                          ../libraries/TransistorNoiseSource \
