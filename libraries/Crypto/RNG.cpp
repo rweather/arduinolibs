@@ -173,7 +173,7 @@ RNGClass RNG;
 #define RNG_REKEY_BLOCKS    16
 
 // Maximum entropy credit that can be contained in the pool.
-#define RNG_MAX_CREDITS     384
+#define RNG_MAX_CREDITS     384u
 
 /** @cond */
 
@@ -571,7 +571,7 @@ void RNGClass::rand(uint8_t *data, size_t len)
         begin(0);
 
     // Decrease the amount of entropy in the pool.
-    if (len > (credits / 8))
+    if (len > (credits / 8u))
         credits = 0;
     else
         credits -= len * 8;
@@ -662,7 +662,7 @@ bool RNGClass::available(size_t len) const
     if (len >= (RNG_MAX_CREDITS / 8))
         return credits >= RNG_MAX_CREDITS;
     else
-        return len <= (credits / 8);
+        return len <= (credits / 8u);
 }
 
 /**
