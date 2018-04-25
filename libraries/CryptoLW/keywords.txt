@@ -1,1 +1,4 @@
 Acorn128	KEYWORD1
+Speck	KEYWORD1
+SpeckSmall	KEYWORD1
+SpeckTiny	KEYWORD1

@@ -25,6 +25,7 @@ This example runs tests on the XTS implementation to verify correct behaviour.
 */
 
 #include <Crypto.h>
+#include <CryptoLW.h>
 #include <AES.h>
 #include <Speck.h>
 #include <SpeckSmall.h>

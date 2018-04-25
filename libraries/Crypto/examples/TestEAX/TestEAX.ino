@@ -25,6 +25,7 @@ This example runs tests on the EAX implementation to verify correct behaviour.
 */
 
 #include <Crypto.h>
+#include <CryptoLW.h>
 #include <EAX.h>
 #include <AES.h>
 #include <Speck.h>
