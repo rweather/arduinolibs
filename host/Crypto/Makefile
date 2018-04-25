@@ -4,13 +4,16 @@
 TOPDIR = ../..
 SRCDIR = $(TOPDIR)/libraries/Crypto
 SRCDIR2 = $(TOPDIR)/libraries/NewHope
+SRCDIR3 = $(TOPDIR)/libraries/CryptoLW
 
 #VPATH = $(SRCDIR)
 vpath %.cpp $(SRCDIR)
 vpath %.cpp $(SRCDIR2)
+vpath %.cpp $(SRCDIR3)/src
 vpath %.o .
 vpath %.ino $(SRCDIR)/examples
 vpath %.ino $(SRCDIR2)/examples
+vpath %.ino $(SRCDIR3)/examples
 vpath %.sketch .
 
 LIBRARY = libCrypto.a
@@ -18,12 +21,14 @@ LIBRARY = libCrypto.a
 CPPFLAGS = \
 	-I$(TOPDIR)/host/emulation \
 	-I$(TOPDIR)/libraries/Crypto \
+	-I$(TOPDIR)/libraries/CryptoLW/src \
 	-I$(TOPDIR)/libraries/NewHope \
 	-DHOST_BUILD
 
 CXXFLAGS = -g -Wall $(CPPFLAGS)
 
 SOURCES =   \
+	Acorn128.cpp \
 	AES128.cpp \
 	AES192.cpp \
 	AES256.cpp \
@@ -66,6 +71,7 @@ SOURCES =   \
 	XTS.cpp
 
 SKETCHES = \
+	TestAcorn/TestAcorn.ino \
 	TestAES/TestAES.ino \
 	TestAESTiny/TestAESTiny.ino \
 	TestAESSmall/TestAESSmall.ino \

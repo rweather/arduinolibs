@@ -553,7 +553,6 @@ bool Acorn128::setIV(const uint8_t *iv, size_t len)
 
 void Acorn128::encrypt(uint8_t *output, const uint8_t *input, size_t len)
 {
-    uint32_t temp;
     if (!state.authDone) {
         acornPad(&state, CB_1);
         state.authDone = 1;
@@ -580,7 +579,6 @@ void Acorn128::encrypt(uint8_t *output, const uint8_t *input, size_t len)
 
 void Acorn128::decrypt(uint8_t *output, const uint8_t *input, size_t len)
 {
-    uint32_t temp;
     if (!state.authDone) {
         acornPad(&state, CB_1);
         state.authDone = 1;
