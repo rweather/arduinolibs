@@ -99,6 +99,8 @@ size_t Acorn128::tagSize() const
 #define CB_0_BYTE ((uint8_t)0x00)
 #define CB_1_BYTE ((uint8_t)0xFF)
 
+#if defined(CRYPTO_ACORN128_DEFAULT) || defined(CRYPTO_DOC)
+
 // maj() and ch() functions for mixing the state.
 #define maj(x, y, z) (((x) & (y)) ^ ((x) & (z)) ^ ((y) & (z)))
 #define ch(x, y, z)  (((x) & (y)) ^ ((~(x)) & (z)))
@@ -446,13 +448,21 @@ static inline uint32_t acornDecrypt32(Acorn128State *state, uint32_t ciphertext)
     return plaintext;
 }
 
+#elif defined(CRYPTO_ACORN128_AVR)
+
+// Import definitions from Acorn128AVR.cpp
+extern uint32_t acornEncrypt32
+    (Acorn128State *state, uint32_t plaintext, uint32_t ca, uint32_t cb);
+
+#endif // CRYPTO_ACORN128_AVR
+
 /**
  * \brief Adds 256 bits of padding to the Acorn128 state.
  *
  * \param state The state for the Acorn128 cipher.
  * \param cb The cb constant for the padding block.
  */
-static void acornPad(Acorn128State *state, uint32_t cb)
+void acornPad(Acorn128State *state, uint32_t cb)
 {
     acornEncrypt32(state, 1, CA_1, cb);
     acornEncrypt32(state, 0, CA_1, cb);
@@ -539,6 +549,8 @@ bool Acorn128::setIV(const uint8_t *iv, size_t len)
     return true;
 }
 
+#if defined(CRYPTO_ACORN128_DEFAULT) || defined(CRYPTO_DOC)
+
 void Acorn128::encrypt(uint8_t *output, const uint8_t *input, size_t len)
 {
     uint32_t temp;
@@ -615,6 +627,8 @@ void Acorn128::addAuthData(const void *data, size_t len)
         --len;
     }
 }
+
+#endif // CRYPTO_ACORN128_DEFAULT
 
 void Acorn128::computeTag(void *tag, size_t len)
 {

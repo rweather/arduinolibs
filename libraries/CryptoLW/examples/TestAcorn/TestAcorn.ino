@@ -147,7 +147,7 @@ TestVector testVector;
 
 Acorn128 acorn;
 
-byte buffer[MAX_PLAINTEXT_LEN];
+byte buffer[128];
 
 bool testCipher_N(Acorn128 *cipher, const struct TestVector *test, size_t inc)
 {

@@ -119,6 +119,7 @@ Ardunino Mega 2560 running at 16 MHz are similar:
 <tr><td>EAX&lt;AES256&gt;</td><td align="right">97.80us</td><td align="right">97.80us</td><td align="right">1806.57us</td><td align="right">332</td></tr>
 <tr><td>EAX&lt;Speck&gt; (256-bit key)</td><td align="right">25.89us</td><td align="right">25.88us</td><td align="right">690.63us</td><td align="right">362</td></tr>
 <tr><td>EAX&lt;SpeckTiny&gt; (256-bit key)</td><td align="right">78.20us</td><td align="right">78.20us</td><td align="right">1269.19us</td><td align="right">122</td></tr>
+<tr><td>Acorn128</td><td align="right">20.39us</td><td align="right">20.06us</td><td align="right">4817.82us</td><td align="right">60</td></tr>
 <tr><td colspan="5"> </td></tr>
 <tr><td>Hash Algorithm</td><td align="right">Hashing (per byte)</td><td align="right">Finalization</td><td> </td><td>State Size (bytes)</td></tr>
 <tr><td>SHA256</td><td align="right">43.85us</td><td align="right">2841.04us</td><td align="right"> </td><td align="right">107</td></tr>

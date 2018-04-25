@@ -55,6 +55,13 @@ typedef struct
 
 } Acorn128State;
 
+// Determine which Acorn128 implementation to export to applications.
+#if defined(__AVR__)
+#define CRYPTO_ACORN128_AVR 1
+#else
+#define CRYPTO_ACORN128_DEFAULT 1
+#endif
+
 /** @endcond */
 
 class Acorn128 : public AuthenticatedCipher
