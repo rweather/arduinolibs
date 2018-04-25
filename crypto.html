@@ -84,7 +84,7 @@ Supported Algorithms</h1>
 <li>Block ciphers: <a class="el" href="classAES128.html" title="AES block cipher with 128-bit keys. ">AES128</a>, <a class="el" href="classAES192.html" title="AES block cipher with 192-bit keys. ">AES192</a>, <a class="el" href="classAES256.html" title="AES block cipher with 256-bit keys. ">AES256</a>, <a class="el" href="classSpeck.html" title="Speck block cipher with a 128-bit block size. ">Speck</a> </li>
 <li>Block cipher modes: <a class="el" href="classCTR.html" title="Implementation of the Counter (CTR) mode for 128-bit block ciphers. ">CTR</a>, <a class="el" href="classCFB.html" title="Implementation of the Cipher Feedback (CFB) mode for 128-bit block ciphers. ">CFB</a>, <a class="el" href="classCBC.html" title="Implementation of the Cipher Block Chaining (CBC) mode for 128-bit block ciphers. ...">CBC</a>, <a class="el" href="classOFB.html" title="Implementation of the Output Feedback (OFB) mode for 128-bit block ciphers. ">OFB</a>, <a class="el" href="classEAX.html" title="Implementation of the EAX authenticated cipher. ">EAX</a>, <a class="el" href="classGCM.html" title="Implementation of the Galois Counter Mode (GCM). ">GCM</a>, <a class="el" href="classXTS.html" title="Implementation of the XTS mode for 128-bit block ciphers. ">XTS</a> </li>
 <li>Stream ciphers: <a class="el" href="classChaCha.html" title="ChaCha stream cipher. ">ChaCha</a> </li>
-<li>Authenticated encryption with associated data (AEAD): <a class="el" href="classChaChaPoly.html" title="Authenticated cipher based on ChaCha and Poly1305. ">ChaChaPoly</a>, <a class="el" href="classEAX.html" title="Implementation of the EAX authenticated cipher. ">EAX</a>, <a class="el" href="classGCM.html" title="Implementation of the Galois Counter Mode (GCM). ">GCM</a> </li>
+<li>Authenticated encryption with associated data (AEAD): <a class="el" href="classChaChaPoly.html" title="Authenticated cipher based on ChaCha and Poly1305. ">ChaChaPoly</a>, <a class="el" href="classEAX.html" title="Implementation of the EAX authenticated cipher. ">EAX</a>, <a class="el" href="classGCM.html" title="Implementation of the Galois Counter Mode (GCM). ">GCM</a>, <a class="el" href="classAcorn128.html" title="ACORN-128 authenticated cipher. ">Acorn128</a> </li>
 <li><a class="el" href="classHash.html" title="Abstract base class for cryptographic hash algorithms. ">Hash</a> algorithms: <a class="el" href="classSHA256.html" title="SHA-256 hash algorithm. ">SHA256</a>, <a class="el" href="classSHA512.html" title="SHA-512 hash algorithm. ">SHA512</a>, <a class="el" href="classSHA3__256.html" title="SHA3-256 hash algorithm. ">SHA3_256</a>, <a class="el" href="classSHA3__512.html" title="SHA3-512 hash algorithm. ">SHA3_512</a>, <a class="el" href="classBLAKE2s.html" title="BLAKE2s hash algorithm. ">BLAKE2s</a>, <a class="el" href="classBLAKE2b.html" title="BLAKE2b hash algorithm. ">BLAKE2b</a> (regular and HMAC modes) </li>
 <li>Extendable output functions (<a class="el" href="classXOF.html" title="Abstract base class for Extendable-Output Functions (XOFs). ">XOF</a>'s): <a class="el" href="classSHAKE128.html" title="SHAKE Extendable-Output Function (XOF) with 128-bit security. ">SHAKE128</a>, <a class="el" href="classSHAKE256.html" title="SHAKE Extendable-Output Function (XOF) with 256-bit security. ">SHAKE256</a> </li>
 <li>Message authenticators: <a class="el" href="classPoly1305.html" title="Poly1305 message authenticator. ">Poly1305</a>, <a class="el" href="classGHASH.html" title="Implementation of the GHASH message authenticator. ">GHASH</a>, <a class="el" href="classOMAC.html" title="Implementation of the OMAC message authenticator. ">OMAC</a> </li>
@@ -180,6 +180,8 @@ Performance on AVR</h2>
 <td><a class="el" href="classEAX.html" title="Implementation of the EAX authenticated cipher. ">EAX</a>&lt;<a class="el" href="classSpeck.html" title="Speck block cipher with a 128-bit block size. ">Speck</a>&gt; (256-bit key)</td><td align="right">25.89us</td><td align="right">25.88us</td><td align="right">690.63us</td><td align="right">362 </td></tr>
 <tr>
 <td><a class="el" href="classEAX.html" title="Implementation of the EAX authenticated cipher. ">EAX</a>&lt;<a class="el" href="classSpeckTiny.html" title="Speck block cipher with a 128-bit block size (tiny-memory version). ">SpeckTiny</a>&gt; (256-bit key)</td><td align="right">78.20us</td><td align="right">78.20us</td><td align="right">1269.19us</td><td align="right">122 </td></tr>
+<tr>
+<td><a class="el" href="classAcorn128.html" title="ACORN-128 authenticated cipher. ">Acorn128</a></td><td align="right">20.39us</td><td align="right">20.06us</td><td align="right">4817.82us</td><td align="right">60 </td></tr>
 <tr>
 <td colspan="5"></td></tr>
 <tr>
@@ -332,6 +334,8 @@ Performance on ARM</h2>
 <tr>
 <td><a class="el" href="classEAX.html" title="Implementation of the EAX authenticated cipher. ">EAX</a>&lt;<a class="el" href="classSpeckTiny.html" title="Speck block cipher with a 128-bit block size (tiny-memory version). ">SpeckTiny</a>&gt; (256-bit key)</td><td align="right">6.69us</td><td align="right">6.69us</td><td align="right">110.91us</td><td align="right">144 </td></tr>
 <tr>
+<td><a class="el" href="classAcorn128.html" title="ACORN-128 authenticated cipher. ">Acorn128</a></td><td align="right">0.75us</td><td align="right">0.75us</td><td align="right">175.70us</td><td align="right">64 </td></tr>
+<tr>
 <td colspan="5"></td></tr>
 <tr>
 <td><a class="el" href="classHash.html" title="Abstract base class for cryptographic hash algorithms. ">Hash</a> Algorithm</td><td align="right">Hashing (per byte)</td><td align="right">Finalization</td><td></td><td>State Size (bytes) </td></tr>
@@ -415,7 +419,7 @@ Performance on ARM</h2>
 </div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Apr 7 2018 10:23:43 for Arduino Cryptography Library by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Apr 26 2018 06:55:48 for Arduino Cryptography Library by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

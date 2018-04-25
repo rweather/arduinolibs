@@ -161,7 +161,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;<span class="preprocessor">#define RNG_REKEY_BLOCKS    16</span></div>
 <div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;<span class="preprocessor"></span></div>
 <div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;<span class="comment">// Maximum entropy credit that can be contained in the pool.</span></div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;<span class="preprocessor">#define RNG_MAX_CREDITS     384</span></div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;<span class="preprocessor">#define RNG_MAX_CREDITS     384u</span></div>
 <div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;<span class="preprocessor"></span></div>
 <div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;<span class="comment">// Imported from Crypto.cpp.</span></div>
 <div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;<span class="keyword">extern</span> uint8_t crypto_crc8(uint8_t tag, <span class="keyword">const</span> <span class="keywordtype">void</span> *data, <span class="keywordtype">unsigned</span> size);</div>
@@ -486,7 +486,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00571"></a><span class="lineno">  571</span>&#160;        <a class="code" href="classRNGClass.html#a77eb101a225ce541800ac1361a92b1a6">begin</a>(0);</div>
 <div class="line"><a name="l00572"></a><span class="lineno">  572</span>&#160;</div>
 <div class="line"><a name="l00573"></a><span class="lineno">  573</span>&#160;    <span class="comment">// Decrease the amount of entropy in the pool.</span></div>
-<div class="line"><a name="l00574"></a><span class="lineno">  574</span>&#160;    <span class="keywordflow">if</span> (len &gt; (credits / 8))</div>
+<div class="line"><a name="l00574"></a><span class="lineno">  574</span>&#160;    <span class="keywordflow">if</span> (len &gt; (credits / 8u))</div>
 <div class="line"><a name="l00575"></a><span class="lineno">  575</span>&#160;        credits = 0;</div>
 <div class="line"><a name="l00576"></a><span class="lineno">  576</span>&#160;    <span class="keywordflow">else</span></div>
 <div class="line"><a name="l00577"></a><span class="lineno">  577</span>&#160;        credits -= len * 8;</div>
@@ -538,7 +538,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00662"></a><span class="lineno">  662</span>&#160;    <span class="keywordflow">if</span> (len &gt;= (RNG_MAX_CREDITS / 8))</div>
 <div class="line"><a name="l00663"></a><span class="lineno">  663</span>&#160;        <span class="keywordflow">return</span> credits &gt;= RNG_MAX_CREDITS;</div>
 <div class="line"><a name="l00664"></a><span class="lineno">  664</span>&#160;    <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00665"></a><span class="lineno">  665</span>&#160;        <span class="keywordflow">return</span> len &lt;= (credits / 8);</div>
+<div class="line"><a name="l00665"></a><span class="lineno">  665</span>&#160;        <span class="keywordflow">return</span> len &lt;= (credits / 8u);</div>
 <div class="line"><a name="l00666"></a><span class="lineno">  666</span>&#160;}</div>
 <div class="line"><a name="l00667"></a><span class="lineno">  667</span>&#160;</div>
 <div class="line"><a name="l00693"></a><span class="lineno"><a class="line" href="classRNGClass.html#ad99535ea23ae2fec55bdebb8c24def02">  693</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classRNGClass.html#ad99535ea23ae2fec55bdebb8c24def02">RNGClass::stir</a>(<span class="keyword">const</span> uint8_t *data, <span class="keywordtype">size_t</span> len, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> credit)</div>
@@ -815,7 +815,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Apr 7 2018 10:23:43 for Arduino Cryptography Library by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Apr 26 2018 06:55:48 for Arduino Cryptography Library by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>
