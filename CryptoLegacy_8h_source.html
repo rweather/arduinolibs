@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.6"/>
-<title>Arduino Cryptography Library: Cipher.cpp Source File</title>
+<title>Arduino Cryptography Library: CryptoLegacy.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -79,16 +79,16 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_bc0718b08fb2015b8e59c47b2805f60c.html">libraries</a></li><li class="navelem"><a class="el" href="dir_e2ce51835550ba18edf07a8311722290.html">Crypto</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_bc0718b08fb2015b8e59c47b2805f60c.html">libraries</a></li><li class="navelem"><a class="el" href="dir_d12c1dff49c89877a441c648bfd77d9b.html">CryptoLegacy</a></li><li class="navelem"><a class="el" href="dir_775347adf427fba7017dd40c1dad1e7c.html">src</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">Cipher.cpp</div>  </div>
+<div class="title">CryptoLegacy.h</div>  </div>
 </div><!--header-->
 <div class="contents">
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/*</span></div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> * Copyright (C) 2015 Southern Storm Software, Pty Ltd.</span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> * Copyright (C) 2018 Southern Storm Software, Pty Ltd.</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"> *</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> * Permission is hereby granted, free of charge, to any person obtaining a</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment"> * copy of this software and associated documentation files (the &quot;Software&quot;),</span></div>
@@ -109,18 +109,13 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="comment"> * DEALINGS IN THE SOFTWARE.</span></div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="comment"> */</span></div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#include &quot;Cipher.h&quot;</span></div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00041"></a><span class="lineno"><a class="line" href="classCipher.html#a6a61077eca3ccd5900f92ceac58fb09c">   41</a></span>&#160;<a class="code" href="classCipher.html#a6a61077eca3ccd5900f92ceac58fb09c">Cipher::Cipher</a>()</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;{</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;}</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;</div>
-<div class="line"><a name="l00053"></a><span class="lineno"><a class="line" href="classCipher.html#a84bdea765f7e35aa5b5950dd2853a383">   53</a></span>&#160;<a class="code" href="classCipher.html#a84bdea765f7e35aa5b5950dd2853a383">Cipher::~Cipher</a>()</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;{</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;}</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div>
-<div class="ttc" id="classCipher_html_a6a61077eca3ccd5900f92ceac58fb09c"><div class="ttname"><a href="classCipher.html#a6a61077eca3ccd5900f92ceac58fb09c">Cipher::Cipher</a></div><div class="ttdeci">Cipher()</div><div class="ttdoc">Constructs a new cipher object. </div><div class="ttdef"><b>Definition:</b> <a href="Cipher_8cpp_source.html#l00041">Cipher.cpp:41</a></div></div>
-<div class="ttc" id="classCipher_html_a84bdea765f7e35aa5b5950dd2853a383"><div class="ttname"><a href="classCipher.html#a84bdea765f7e35aa5b5950dd2853a383">Cipher::~Cipher</a></div><div class="ttdeci">virtual ~Cipher()</div><div class="ttdoc">Destroys this cipher object. </div><div class="ttdef"><b>Definition:</b> <a href="Cipher_8cpp_source.html#l00053">Cipher.cpp:53</a></div></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#ifndef CRYPTO_LEGACY_H</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define CRYPTO_LEGACY_H</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="comment">// This header exists to make the Arudino IDE add the library to the</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="comment">// include and link paths when the sketch includes &lt;CryptoLegacy.h&gt;.</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
