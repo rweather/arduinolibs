@@ -25,6 +25,7 @@ This example runs tests on the CBC implementation to verify correct behaviour.
 */
 
 #include <Crypto.h>
+#include <CryptoLegacy.h>
 #include <AES.h>
 #include <CBC.h>
 #include <string.h>

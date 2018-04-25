@@ -657,6 +657,7 @@ WARN_LOGFILE           =
 
 INPUT                  = ../libraries/Crypto \
                          ../libraries/CryptoLW/src \
+                         ../libraries/CryptoLegacy/src \
                          ../libraries/NewHope \
                          ../libraries/RingOscillatorNoiseSource \
                          ../libraries/TransistorNoiseSource \

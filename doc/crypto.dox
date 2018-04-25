@@ -24,28 +24,73 @@
 \file crypto.dox
 \page crypto Arduino Cryptography Library
 
-\section crypto_algorithms Supported Algorithms
+\section crypto_algorithms Supported algorithms
 
-\li Block ciphers: AES128, AES192, AES256, Speck
-\li Block cipher modes: CTR, CFB, CBC, OFB, EAX, GCM, XTS
+The library is split into four main sections: core, light-weight, legacy,
+and other.
+
+\subsection crypto_core_algorithms Core algorithms
+
+Core algorithms are found within the "libraries/Crypto" directory
+in the repository:
+
+\li Authenticated encryption with associated data (AEAD): ChaChaPoly, EAX, GCM
+\li Block ciphers: AES128, AES192, AES256
+\li Block cipher modes: CTR, EAX, GCM, XTS
 \li Stream ciphers: ChaCha
-\li Authenticated encryption with associated data (AEAD): ChaChaPoly, EAX, GCM, Acorn128
 \li Hash algorithms: SHA256, SHA512, SHA3_256, SHA3_512, BLAKE2s, BLAKE2b (regular and HMAC modes)
 \li Extendable output functions (XOF's): SHAKE128, SHAKE256
 \li Message authenticators: Poly1305, GHASH, OMAC
 \li Public key algorithms: Curve25519, Ed25519, P521
-\li Post-quantum algorithms: NewHope
-\li Random number generation: \link RNGClass RNG\endlink, TransistorNoiseSource, RingOscillatorNoiseSource
+\li Random number generation: \link RNGClass RNG\endlink
 
 Reduced memory versions of some algorithms (encryption is slower, but the
 RAM required for the key schedule is less):
 
 \li AESTiny128, AESSmall128, AESTiny256, AESSmall256
-\li SpeckTiny, SpeckSmall
 
 The "tiny" versions only support encryption which makes them suitable for
 the CTR, CFB, OFB, EAX, and GCM block cipher modes but not CBC.  The "small"
-versions use a little more memory but support both encryptionm and decryption.
+versions use a little more memory but support both encryption and decryption.
+
+\subsection crpto_lw_algorithms Light-weight algorithms
+
+The algorithms in the "libraries/CryptoLW" directory are new algorithms
+that have been designed for "light-weight" environments where memory and
+CPU resources are constrained:
+
+\li Authenticated encryption with associated data (AEAD): Acorn128
+\li Block ciphers: Speck, SpeckSmall, SpeckTiny
+
+These algorithms are fairly new, but they are ideal for Arduino devices.
+They don't yet appear in any internationally adopted standards yet but any
+algorithms that are adopted into standards later will be moved to the
+core library.  Maybe you'll be the one to create that new standard!
+
+\subsection crypto_legacy_algorithms Legacy algorithms
+
+Legacy algorithms in the "libraries/CryptoLegacy" are those that should
+probably not be used in new protocol designs, but may be required for
+backwards-compatibility with older protocols:
+
+\li Block cipher modes: CFB, CBC, OFB
+
+CBC is included in the legacy list because cryptography experts no longer
+recommend it for use in newer designs.  It was an important mode in the past
+but newer designs should be using authenticated encryption with associated
+data (AEAD) instead.  If you were looking to use CBC in your project,
+then please consider transitioning to one of the AEAD schemes listed above.
+
+Over time, other algorithms may be moved from the core library to legacy.
+
+\subsection crypto_other_algorithms Other algorithms
+
+Other algorithms are provided in the remaining directories under "libraries",
+and consist of algorithms that are either too big for the main library,
+or are dedicated to a special purpose that only some applications will need:
+
+\li Post-quantum algorithms: NewHope
+\li Random number generation: TransistorNoiseSource, RingOscillatorNoiseSource
 
 \section crypto_optimizations Optimizations
 

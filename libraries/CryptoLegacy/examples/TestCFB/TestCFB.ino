@@ -25,6 +25,7 @@ This example runs tests on the CFB implementation to verify correct behaviour.
 */
 
 #include <Crypto.h>
+#include <CryptoLegacy.h>
 #include <AES.h>
 #include <CFB.h>
 #include <string.h>

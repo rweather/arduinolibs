@@ -25,6 +25,8 @@ Recent significant changes to the library
 Apr 2018:
 
 * Acorn128 authenticated cipher (finalist in the CAESAR AEAD competition).
+* Split the library into Crypto (core), CryptoLW (light-weight), and
+  CryptoLegacy (deprecated algorithms).
 * Tiny and small versions of AES for reducing memory requirements.
 * Port the library to ESP8266 and ESP32.
 * Make the RNG class more robust if the app doesn't call begin() or loop().

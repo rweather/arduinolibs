@@ -1,0 +1,22 @@
+{
+    "name": "CryptoLegacy",
+    "version": "0.1.6",
+    "keywords": "CBC,CFB,OFB",
+    "description": "Legacy ciphers for the Arduino Cryptography Library",
+    "authors":
+    {
+        "name": "Rhys Weatherley",
+        "email": "rhys.weatherley@gmail.com",
+        "url": "https://rweather.github.io/arduinolibs/crypto.html"
+    },
+    "export": {
+      "include": "libraries/CryptoLegacy"
+    },
+    "repository":
+    {
+        "type": "git",
+        "url": "https://github.com/rweather/arduinolibs.git"
+    },
+    "frameworks": "arduino",
+    "platforms": "*"
+}

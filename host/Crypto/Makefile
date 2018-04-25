@@ -5,15 +5,18 @@ TOPDIR = ../..
 SRCDIR = $(TOPDIR)/libraries/Crypto
 SRCDIR2 = $(TOPDIR)/libraries/NewHope
 SRCDIR3 = $(TOPDIR)/libraries/CryptoLW
+SRCDIR4 = $(TOPDIR)/libraries/CryptoLegacy
 
 #VPATH = $(SRCDIR)
 vpath %.cpp $(SRCDIR)
 vpath %.cpp $(SRCDIR2)
 vpath %.cpp $(SRCDIR3)/src
+vpath %.cpp $(SRCDIR4)/src
 vpath %.o .
 vpath %.ino $(SRCDIR)/examples
 vpath %.ino $(SRCDIR2)/examples
 vpath %.ino $(SRCDIR3)/examples
+vpath %.ino $(SRCDIR4)/examples
 vpath %.sketch .
 
 LIBRARY = libCrypto.a
@@ -22,6 +25,7 @@ CPPFLAGS = \
 	-I$(TOPDIR)/host/emulation \
 	-I$(TOPDIR)/libraries/Crypto \
 	-I$(TOPDIR)/libraries/CryptoLW/src \
+	-I$(TOPDIR)/libraries/CryptoLegacy/src \
 	-I$(TOPDIR)/libraries/NewHope \
 	-DHOST_BUILD
 
