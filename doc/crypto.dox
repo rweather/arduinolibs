@@ -59,7 +59,7 @@ The algorithms in the "libraries/CryptoLW" directory are new algorithms
 that have been designed for "light-weight" environments where memory and
 CPU resources are constrained:
 
-\li Authenticated encryption with associated data (AEAD): Acorn128
+\li Authenticated encryption with associated data (AEAD): Acorn128, Ascon128
 \li Block ciphers: Speck, SpeckSmall, SpeckTiny
 
 These algorithms are fairly new, but they are ideal for Arduino devices.
@@ -165,6 +165,7 @@ Ardunino Mega 2560 running at 16 MHz are similar:
 <tr><td>EAX&lt;Speck&gt; (256-bit key)</td><td align="right">25.89us</td><td align="right">25.88us</td><td align="right">690.63us</td><td align="right">362</td></tr>
 <tr><td>EAX&lt;SpeckTiny&gt; (256-bit key)</td><td align="right">78.20us</td><td align="right">78.20us</td><td align="right">1269.19us</td><td align="right">122</td></tr>
 <tr><td>Acorn128</td><td align="right">20.39us</td><td align="right">20.06us</td><td align="right">4817.82us</td><td align="right">60</td></tr>
+<tr><td>Ascon128</td><td align="right">42.71us</td><td align="right">43.07us</td><td align="right">738.68us</td><td align="right">60</td></tr>
 <tr><td colspan="5"> </td></tr>
 <tr><td>Hash Algorithm</td><td align="right">Hashing (per byte)</td><td align="right">Finalization</td><td> </td><td>State Size (bytes)</td></tr>
 <tr><td>SHA256</td><td align="right">43.85us</td><td align="right">2841.04us</td><td align="right"> </td><td align="right">107</td></tr>
@@ -253,6 +254,7 @@ All figures are for the Arduino Due running at 84 MHz:
 <tr><td>EAX&lt;Speck&gt; (256-bit key)</td><td align="right">2.80us</td><td align="right">2.80us</td><td align="right">81.63us</td><td align="right">384</td></tr>
 <tr><td>EAX&lt;SpeckTiny&gt; (256-bit key)</td><td align="right">6.69us</td><td align="right">6.69us</td><td align="right">110.91us</td><td align="right">144</td></tr>
 <tr><td>Acorn128</td><td align="right">0.75us</td><td align="right">0.75us</td><td align="right">175.70us</td><td align="right">64</td></tr>
+<tr><td>Ascon128</td><td align="right">3.52us</td><td align="right">3.50us</td><td align="right">51.67us</td><td align="right">72</td></tr>
 <tr><td colspan="5"> </td></tr>
 <tr><td>Hash Algorithm</td><td align="right">Hashing (per byte)</td><td align="right">Finalization</td><td> </td><td>State Size (bytes)</td></tr>
 <tr><td>SHA256</td><td align="right">1.15us</td><td align="right">76.60us</td><td align="right"> </td><td align="right">120</td></tr>

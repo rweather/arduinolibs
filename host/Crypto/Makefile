@@ -37,6 +37,7 @@ SOURCES =   \
 	AES192.cpp \
 	AES256.cpp \
 	AESCommon.cpp \
+	Ascon128.cpp \
 	AuthenticatedCipher.cpp \
 	BigNumberUtil.cpp \
 	BLAKE2b.cpp \
@@ -79,6 +80,7 @@ SKETCHES = \
 	TestAES/TestAES.ino \
 	TestAESTiny/TestAESTiny.ino \
 	TestAESSmall/TestAESSmall.ino \
+	TestAscon/TestAscon.ino \
 	TestBigNumberUtil/TestBigNumberUtil.ino \
 	TestBLAKE2b/TestBLAKE2b.ino \
 	TestBLAKE2s/TestBLAKE2s.ino \

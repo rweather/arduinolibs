@@ -24,7 +24,8 @@ Recent significant changes to the library
 
 Apr 2018:
 
-* Acorn128 authenticated cipher (finalist in the CAESAR AEAD competition).
+* Acorn128 and Ascon128 authenticated ciphers (finalists in the CAESAR AEAD
+  competition in the light-weight category).
 * Split the library into Crypto (core), CryptoLW (light-weight), and
   CryptoLegacy (deprecated algorithms).
 * Tiny and small versions of AES for reducing memory requirements.
