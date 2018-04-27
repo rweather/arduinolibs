@@ -104,7 +104,7 @@ Core algorithms</h2>
 Light-weight algorithms</h2>
 <p>The algorithms in the "libraries/CryptoLW" directory are new algorithms that have been designed for "light-weight" environments where memory and CPU resources are constrained:</p>
 <ul>
-<li>Authenticated encryption with associated data (AEAD): <a class="el" href="classAcorn128.html" title="ACORN-128 authenticated cipher. ">Acorn128</a> </li>
+<li>Authenticated encryption with associated data (AEAD): <a class="el" href="classAcorn128.html" title="ACORN-128 authenticated cipher. ">Acorn128</a>, <a class="el" href="classAscon128.html" title="ASCON-128 authenticated cipher. ">Ascon128</a> </li>
 <li>Block ciphers: <a class="el" href="classSpeck.html" title="Speck block cipher with a 128-bit block size. ">Speck</a>, <a class="el" href="classSpeckSmall.html" title="Speck block cipher with a 128-bit block size (small-memory version). ">SpeckSmall</a>, <a class="el" href="classSpeckTiny.html" title="Speck block cipher with a 128-bit block size (tiny-memory version). ">SpeckTiny</a></li>
 </ul>
 <p>These algorithms are fairly new, but they are ideal for Arduino devices. They don't yet appear in any internationally adopted standards yet but any algorithms that are adopted into standards later will be moved to the core library. Maybe you'll be the one to create that new standard!</p>
@@ -207,6 +207,8 @@ Performance on AVR</h2>
 <td><a class="el" href="classEAX.html" title="Implementation of the EAX authenticated cipher. ">EAX</a>&lt;<a class="el" href="classSpeckTiny.html" title="Speck block cipher with a 128-bit block size (tiny-memory version). ">SpeckTiny</a>&gt; (256-bit key)</td><td align="right">78.20us</td><td align="right">78.20us</td><td align="right">1269.19us</td><td align="right">122 </td></tr>
 <tr>
 <td><a class="el" href="classAcorn128.html" title="ACORN-128 authenticated cipher. ">Acorn128</a></td><td align="right">20.39us</td><td align="right">20.06us</td><td align="right">4817.82us</td><td align="right">60 </td></tr>
+<tr>
+<td><a class="el" href="classAscon128.html" title="ASCON-128 authenticated cipher. ">Ascon128</a></td><td align="right">42.71us</td><td align="right">43.07us</td><td align="right">738.68us</td><td align="right">60 </td></tr>
 <tr>
 <td colspan="5"></td></tr>
 <tr>
@@ -361,6 +363,8 @@ Performance on ARM</h2>
 <tr>
 <td><a class="el" href="classAcorn128.html" title="ACORN-128 authenticated cipher. ">Acorn128</a></td><td align="right">0.75us</td><td align="right">0.75us</td><td align="right">175.70us</td><td align="right">64 </td></tr>
 <tr>
+<td><a class="el" href="classAscon128.html" title="ASCON-128 authenticated cipher. ">Ascon128</a></td><td align="right">3.52us</td><td align="right">3.50us</td><td align="right">51.67us</td><td align="right">72 </td></tr>
+<tr>
 <td colspan="5"></td></tr>
 <tr>
 <td><a class="el" href="classHash.html" title="Abstract base class for cryptographic hash algorithms. ">Hash</a> Algorithm</td><td align="right">Hashing (per byte)</td><td align="right">Finalization</td><td></td><td>State Size (bytes) </td></tr>
@@ -444,7 +448,7 @@ Performance on ARM</h2>
 </div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Apr 26 2018 08:02:04 for Arduino Cryptography Library by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Apr 27 2018 11:07:37 for Arduino Cryptography Library by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

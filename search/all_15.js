@@ -2,6 +2,7 @@ var searchData=
 [
   ['_7eacorn128',['~Acorn128',['../classAcorn128.html#a170c189599a1cf332db5496dd6bc1df4',1,'Acorn128']]],
   ['_7eaescommon',['~AESCommon',['../classAESCommon.html#a8f67970c86c23affb0297fc1bb10fad8',1,'AESCommon']]],
+  ['_7eascon128',['~Ascon128',['../classAscon128.html#a8d8e005b56da6a5b08965e0cf5fa8309',1,'Ascon128']]],
   ['_7eauthenticatedcipher',['~AuthenticatedCipher',['../classAuthenticatedCipher.html#ae52a07be5b7265ea5898529ec21a79e4',1,'AuthenticatedCipher']]],
   ['_7eblake2b',['~BLAKE2b',['../classBLAKE2b.html#ad0287d7284000ff236153e6afa0130f1',1,'BLAKE2b']]],
   ['_7eblake2s',['~BLAKE2s',['../classBLAKE2s.html#a4b3187ecaa3d3c8febfbb40c0f779aa7',1,'BLAKE2s']]],

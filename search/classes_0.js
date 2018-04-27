@@ -9,5 +9,6 @@ var searchData=
   ['aessmall256',['AESSmall256',['../classAESSmall256.html',1,'']]],
   ['aestiny128',['AESTiny128',['../classAESTiny128.html',1,'']]],
   ['aestiny256',['AESTiny256',['../classAESTiny256.html',1,'']]],
+  ['ascon128',['Ascon128',['../classAscon128.html',1,'']]],
   ['authenticatedcipher',['AuthenticatedCipher',['../classAuthenticatedCipher.html',1,'']]]
 ];
