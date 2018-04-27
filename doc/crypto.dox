@@ -63,17 +63,18 @@ CPU resources are constrained:
 \li Block ciphers: Speck, SpeckSmall, SpeckTiny
 
 These algorithms are fairly new, but they are ideal for Arduino devices.
-They don't yet appear in any internationally adopted standards yet but any
+They don't appear in any internationally adopted standards yet but any
 algorithms that are adopted into standards later will be moved to the
 core library.  Maybe you'll be the one to create that new standard!
 
 \subsection crypto_legacy_algorithms Legacy algorithms
 
-Legacy algorithms in the "libraries/CryptoLegacy" are those that should
-probably not be used in new protocol designs, but may be required for
+Legacy algorithms in the "libraries/CryptoLegacy" directory are those that
+should probably not be used in new protocol designs, but may be required for
 backwards-compatibility with older protocols:
 
 \li Block cipher modes: CFB, CBC, OFB
+\li Hash algorithms: SHA1
 
 CBC is included in the legacy list because cryptography experts no longer
 recommend it for use in newer designs.  It was an important mode in the past
@@ -168,6 +169,7 @@ Ardunino Mega 2560 running at 16 MHz are similar:
 <tr><td>Ascon128</td><td align="right">42.71us</td><td align="right">43.07us</td><td align="right">738.68us</td><td align="right">60</td></tr>
 <tr><td colspan="5"> </td></tr>
 <tr><td>Hash Algorithm</td><td align="right">Hashing (per byte)</td><td align="right">Finalization</td><td> </td><td>State Size (bytes)</td></tr>
+<tr><td>SHA1</td><td align="right">21.86us</td><td align="right">1421.86us</td><td align="right"> </td><td align="right">95</td></tr>
 <tr><td>SHA256</td><td align="right">43.85us</td><td align="right">2841.04us</td><td align="right"> </td><td align="right">107</td></tr>
 <tr><td>SHA512</td><td align="right">122.82us</td><td align="right">15953.42us</td><td align="right"> </td><td align="right">211</td></tr>
 <tr><td>SHA3_256</td><td align="right">60.69us</td><td align="right">8180.24us</td><td align="right"> </td><td align="right">205</td></tr>
@@ -176,6 +178,7 @@ Ardunino Mega 2560 running at 16 MHz are similar:
 <tr><td>BLAKE2b</td><td align="right">65.22us</td><td align="right">8375.34us</td><td align="right"> </td><td align="right">211</td></tr>
 <tr><td colspan="5"> </td></tr>
 <tr><td>Authentication Algorithm</td><td align="right">Hashing (per byte)</td><td align="right">Finalization</td><td align="right">Key Setup</td><td>State Size (bytes)</td></tr>
+<tr><td>SHA1 (HMAC mode)</td><td align="right">21.86us</td><td align="right">4290.62us</td><td align="right">1418.49us</td><td align="right">95</td></tr>
 <tr><td>SHA256 (HMAC mode)</td><td align="right">43.85us</td><td align="right">8552.61us</td><td align="right">2836.49us</td><td align="right">107</td></tr>
 <tr><td>BLAKE2s (Keyed mode)</td><td align="right">20.65us</td><td align="right">1335.25us</td><td align="right">1339.51us</td><td align="right">107</td></tr>
 <tr><td>BLAKE2s (HMAC mode)</td><td align="right">20.65us</td><td align="right">4055.56us</td><td align="right">1350.00us</td><td align="right">107</td></tr>
@@ -257,6 +260,7 @@ All figures are for the Arduino Due running at 84 MHz:
 <tr><td>Ascon128</td><td align="right">3.52us</td><td align="right">3.50us</td><td align="right">51.67us</td><td align="right">72</td></tr>
 <tr><td colspan="5"> </td></tr>
 <tr><td>Hash Algorithm</td><td align="right">Hashing (per byte)</td><td align="right">Finalization</td><td> </td><td>State Size (bytes)</td></tr>
+<tr><td>SHA1</td><td align="right">0.94us</td><td align="right">62.34us</td><td align="right"> </td><td align="right">112</td></tr>
 <tr><td>SHA256</td><td align="right">1.15us</td><td align="right">76.60us</td><td align="right"> </td><td align="right">120</td></tr>
 <tr><td>SHA512</td><td align="right">2.87us</td><td align="right">370.37us</td><td align="right"> </td><td align="right">224</td></tr>
 <tr><td>SHA3_256</td><td align="right">5.64us</td><td align="right">735.29us</td><td align="right"> </td><td align="right">224</td></tr>
@@ -265,6 +269,7 @@ All figures are for the Arduino Due running at 84 MHz:
 <tr><td>BLAKE2b</td><td align="right">1.28us</td><td align="right">164.66us</td><td align="right"> </td><td align="right">224</td></tr>
 <tr><td colspan="5"> </td></tr>
 <tr><td>Authentication Algorithm</td><td align="right">Hashing (per byte)</td><td align="right">Finalization</td><td align="right">Key Setup</td><td>State Size (bytes)</td></tr>
+<tr><td>SHA1 (HMAC mode)</td><td align="right">0.94us</td><td align="right">196.74us</td><td align="right">68.06us</td><td align="right">112</td></tr>
 <tr><td>SHA256 (HMAC mode)</td><td align="right">1.15us</td><td align="right">238.98us</td><td align="right">80.44us</td><td align="right">120</td></tr>
 <tr><td>BLAKE2s (Keyed mode)</td><td align="right">0.80us</td><td align="right">53.39us</td><td align="right">55.10us</td><td align="right">120</td></tr>
 <tr><td>BLAKE2s (HMAC mode)</td><td align="right">0.80us</td><td align="right">168.20us</td><td align="right">57.60us</td><td align="right">120</td></tr>
