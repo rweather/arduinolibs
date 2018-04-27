@@ -16,6 +16,7 @@ var searchData=
   ['setnumrounds',['setNumRounds',['../classChaCha.html#a1a0911e0be8f4590d7fb76884d98c541',1,'ChaCha']]],
   ['setsectorsize',['setSectorSize',['../classXTSCommon.html#a7e0aa61628285073545a8f8e0b0d981d',1,'XTSCommon']]],
   ['settweak',['setTweak',['../classXTSCommon.html#a744a533d46078de5ea9723139f74bcdb',1,'XTSCommon']]],
+  ['sha1',['SHA1',['../classSHA1.html',1,'SHA1'],['../classSHA1.html#ad49a5108ffd6996b1133bf41224ff726',1,'SHA1::SHA1()']]],
   ['sha256',['SHA256',['../classSHA256.html',1,'SHA256'],['../classSHA256.html#ab672831c542df07ff03ded25760feec2',1,'SHA256::SHA256()']]],
   ['sha3_5f256',['SHA3_256',['../classSHA3__256.html',1,'SHA3_256'],['../classSHA3__256.html#ac091b276c6d80a981fa64a9e8c68ca87',1,'SHA3_256::SHA3_256()']]],
   ['sha3_5f512',['SHA3_512',['../classSHA3__512.html',1,'SHA3_512'],['../classSHA3__512.html#a5f8bc4180e9d19597f499468098a82a4',1,'SHA3_512::SHA3_512()']]],

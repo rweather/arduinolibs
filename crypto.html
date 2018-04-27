@@ -107,12 +107,13 @@ Light-weight algorithms</h2>
 <li>Authenticated encryption with associated data (AEAD): <a class="el" href="classAcorn128.html" title="ACORN-128 authenticated cipher. ">Acorn128</a>, <a class="el" href="classAscon128.html" title="ASCON-128 authenticated cipher. ">Ascon128</a> </li>
 <li>Block ciphers: <a class="el" href="classSpeck.html" title="Speck block cipher with a 128-bit block size. ">Speck</a>, <a class="el" href="classSpeckSmall.html" title="Speck block cipher with a 128-bit block size (small-memory version). ">SpeckSmall</a>, <a class="el" href="classSpeckTiny.html" title="Speck block cipher with a 128-bit block size (tiny-memory version). ">SpeckTiny</a></li>
 </ul>
-<p>These algorithms are fairly new, but they are ideal for Arduino devices. They don't yet appear in any internationally adopted standards yet but any algorithms that are adopted into standards later will be moved to the core library. Maybe you'll be the one to create that new standard!</p>
+<p>These algorithms are fairly new, but they are ideal for Arduino devices. They don't appear in any internationally adopted standards yet but any algorithms that are adopted into standards later will be moved to the core library. Maybe you'll be the one to create that new standard!</p>
 <h2><a class="anchor" id="crypto_legacy_algorithms"></a>
 Legacy algorithms</h2>
-<p>Legacy algorithms in the "libraries/CryptoLegacy" are those that should probably not be used in new protocol designs, but may be required for backwards-compatibility with older protocols:</p>
+<p>Legacy algorithms in the "libraries/CryptoLegacy" directory are those that should probably not be used in new protocol designs, but may be required for backwards-compatibility with older protocols:</p>
 <ul>
-<li>Block cipher modes: <a class="el" href="classCFB.html" title="Implementation of the Cipher Feedback (CFB) mode for 128-bit block ciphers. ">CFB</a>, <a class="el" href="classCBC.html" title="Implementation of the Cipher Block Chaining (CBC) mode for 128-bit block ciphers. ...">CBC</a>, <a class="el" href="classOFB.html" title="Implementation of the Output Feedback (OFB) mode for 128-bit block ciphers. ">OFB</a></li>
+<li>Block cipher modes: <a class="el" href="classCFB.html" title="Implementation of the Cipher Feedback (CFB) mode for 128-bit block ciphers. ">CFB</a>, <a class="el" href="classCBC.html" title="Implementation of the Cipher Block Chaining (CBC) mode for 128-bit block ciphers. ...">CBC</a>, <a class="el" href="classOFB.html" title="Implementation of the Output Feedback (OFB) mode for 128-bit block ciphers. ">OFB</a> </li>
+<li><a class="el" href="classHash.html" title="Abstract base class for cryptographic hash algorithms. ">Hash</a> algorithms: <a class="el" href="classSHA1.html" title="SHA-1 hash algorithm. ">SHA1</a></li>
 </ul>
 <p><a class="el" href="classCBC.html" title="Implementation of the Cipher Block Chaining (CBC) mode for 128-bit block ciphers. ...">CBC</a> is included in the legacy list because cryptography experts no longer recommend it for use in newer designs. It was an important mode in the past but newer designs should be using authenticated encryption with associated data (AEAD) instead. If you were looking to use <a class="el" href="classCBC.html" title="Implementation of the Cipher Block Chaining (CBC) mode for 128-bit block ciphers. ...">CBC</a> in your project, then please consider transitioning to one of the AEAD schemes listed above.</p>
 <p>Over time, other algorithms may be moved from the core library to legacy.</p>
@@ -214,6 +215,8 @@ Performance on AVR</h2>
 <tr>
 <td><a class="el" href="classHash.html" title="Abstract base class for cryptographic hash algorithms. ">Hash</a> Algorithm</td><td align="right">Hashing (per byte)</td><td align="right">Finalization</td><td></td><td>State Size (bytes) </td></tr>
 <tr>
+<td><a class="el" href="classSHA1.html" title="SHA-1 hash algorithm. ">SHA1</a></td><td align="right">21.86us</td><td align="right">1421.86us</td><td align="right"></td><td align="right">95 </td></tr>
+<tr>
 <td><a class="el" href="classSHA256.html" title="SHA-256 hash algorithm. ">SHA256</a></td><td align="right">43.85us</td><td align="right">2841.04us</td><td align="right"></td><td align="right">107 </td></tr>
 <tr>
 <td><a class="el" href="classSHA512.html" title="SHA-512 hash algorithm. ">SHA512</a></td><td align="right">122.82us</td><td align="right">15953.42us</td><td align="right"></td><td align="right">211 </td></tr>
@@ -229,6 +232,8 @@ Performance on AVR</h2>
 <td colspan="5"></td></tr>
 <tr>
 <td>Authentication Algorithm</td><td align="right">Hashing (per byte)</td><td align="right">Finalization</td><td align="right">Key Setup</td><td>State Size (bytes) </td></tr>
+<tr>
+<td><a class="el" href="classSHA1.html" title="SHA-1 hash algorithm. ">SHA1</a> (HMAC mode)</td><td align="right">21.86us</td><td align="right">4290.62us</td><td align="right">1418.49us</td><td align="right">95 </td></tr>
 <tr>
 <td><a class="el" href="classSHA256.html" title="SHA-256 hash algorithm. ">SHA256</a> (HMAC mode)</td><td align="right">43.85us</td><td align="right">8552.61us</td><td align="right">2836.49us</td><td align="right">107 </td></tr>
 <tr>
@@ -369,6 +374,8 @@ Performance on ARM</h2>
 <tr>
 <td><a class="el" href="classHash.html" title="Abstract base class for cryptographic hash algorithms. ">Hash</a> Algorithm</td><td align="right">Hashing (per byte)</td><td align="right">Finalization</td><td></td><td>State Size (bytes) </td></tr>
 <tr>
+<td><a class="el" href="classSHA1.html" title="SHA-1 hash algorithm. ">SHA1</a></td><td align="right">0.94us</td><td align="right">62.34us</td><td align="right"></td><td align="right">112 </td></tr>
+<tr>
 <td><a class="el" href="classSHA256.html" title="SHA-256 hash algorithm. ">SHA256</a></td><td align="right">1.15us</td><td align="right">76.60us</td><td align="right"></td><td align="right">120 </td></tr>
 <tr>
 <td><a class="el" href="classSHA512.html" title="SHA-512 hash algorithm. ">SHA512</a></td><td align="right">2.87us</td><td align="right">370.37us</td><td align="right"></td><td align="right">224 </td></tr>
@@ -384,6 +391,8 @@ Performance on ARM</h2>
 <td colspan="5"></td></tr>
 <tr>
 <td>Authentication Algorithm</td><td align="right">Hashing (per byte)</td><td align="right">Finalization</td><td align="right">Key Setup</td><td>State Size (bytes) </td></tr>
+<tr>
+<td><a class="el" href="classSHA1.html" title="SHA-1 hash algorithm. ">SHA1</a> (HMAC mode)</td><td align="right">0.94us</td><td align="right">196.74us</td><td align="right">68.06us</td><td align="right">112 </td></tr>
 <tr>
 <td><a class="el" href="classSHA256.html" title="SHA-256 hash algorithm. ">SHA256</a> (HMAC mode)</td><td align="right">1.15us</td><td align="right">238.98us</td><td align="right">80.44us</td><td align="right">120 </td></tr>
 <tr>
@@ -448,7 +457,7 @@ Performance on ARM</h2>
 </div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Apr 27 2018 11:07:37 for Arduino Cryptography Library by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Apr 27 2018 12:01:32 for Arduino Cryptography Library by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>
