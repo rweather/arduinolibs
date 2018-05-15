@@ -52,15 +52,15 @@
 #endif
 #include <string.h>
 
-// Throw an error if there is no built-in hardware random number source.
+// Throw a warning if there is no built-in hardware random number source.
 // If this happens, then you need to do one of two things:
 //    1. Edit RNG.cpp to add your platform's hardware TRNG.
 //    2. Provide a proper noise source like TransistorNoiseSource
-//       in your sketch and then comment out the #error line below.
+//       in your sketch and then comment out the #warning line below.
 #if !defined(RNG_DUE_TRNG) && \
     !defined(RNG_WATCHDOG) && \
     !defined(RNG_WORD_TRNG)
-#error "no hardware random number source detected for this platform"
+#warning "no hardware random number source detected for this platform"
 #endif
 
 /**
