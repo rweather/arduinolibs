@@ -22,6 +22,12 @@ improvements, please contact the author Rhys Weatherley via
 Recent significant changes to the library
 -----------------------------------------
 
+XXX 2018:
+
+* KeyRing for storing key pairs and other key material in EEPROM or Flash.
+* Add better functions to Curve25519 and Ed25519 for generating key pairs.
+* Noise and NoiseLink protocols.
+
 Apr 2018:
 
 * Acorn128 and Ascon128 authenticated ciphers (finalists in the CAESAR AEAD

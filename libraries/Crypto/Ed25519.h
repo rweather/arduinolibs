@@ -32,11 +32,15 @@ public:
     static void sign(uint8_t signature[64], const uint8_t privateKey[32],
                      const uint8_t publicKey[32], const void *message,
                      size_t len);
+    static void sign(uint8_t signature[64], const uint8_t keyPair[64],
+                     const void *message, size_t len);
     static bool verify(const uint8_t signature[64], const uint8_t publicKey[32],
                        const void *message, size_t len);
 
     static void generatePrivateKey(uint8_t privateKey[32]);
     static void derivePublicKey(uint8_t publicKey[32], const uint8_t privateKey[32]);
+
+    static void generateKeyPair(uint8_t keyPair[64]);
 
 private:
     // Constructor and destructor are private - cannot instantiate this class.
@@ -67,5 +71,11 @@ private:
 
     static void deriveKeys(SHA512 *hash, limb_t *a, const uint8_t privateKey[32]);
 };
+
+inline void Ed25519::sign(uint8_t signature[64], const uint8_t keyPair[64],
+                          const void *message, size_t len)
+{
+    sign(signature, keyPair, keyPair + 32, message, len);
+}
 
 #endif

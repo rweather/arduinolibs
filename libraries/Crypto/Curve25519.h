@@ -35,6 +35,8 @@ public:
     static void dh1(uint8_t k[32], uint8_t f[32]);
     static bool dh2(uint8_t k[32], uint8_t f[32]);
 
+    static void generateKeyPair(uint8_t keyPair[64]);
+
 #if defined(TEST_CURVE25519_FIELD_OPS)
 public:
 #else

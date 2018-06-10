@@ -6,12 +6,14 @@ SRCDIR = $(TOPDIR)/libraries/Crypto
 SRCDIR2 = $(TOPDIR)/libraries/NewHope
 SRCDIR3 = $(TOPDIR)/libraries/CryptoLW
 SRCDIR4 = $(TOPDIR)/libraries/CryptoLegacy
+SRCDIR5 = $(TOPDIR)/libraries/NoiseProtocol
 
 #VPATH = $(SRCDIR)
 vpath %.cpp $(SRCDIR)
 vpath %.cpp $(SRCDIR2)
 vpath %.cpp $(SRCDIR3)/src
 vpath %.cpp $(SRCDIR4)/src
+vpath %.cpp $(SRCDIR5)/src
 vpath %.o .
 vpath %.ino $(SRCDIR)/examples
 vpath %.ino $(SRCDIR2)/examples
@@ -27,6 +29,7 @@ CPPFLAGS = \
 	-I$(TOPDIR)/libraries/CryptoLW/src \
 	-I$(TOPDIR)/libraries/CryptoLegacy/src \
 	-I$(TOPDIR)/libraries/NewHope \
+	-I$(TOPDIR)/libraries/NoiseProtocol \
 	-DHOST_BUILD
 
 CXXFLAGS = -g -Wall $(CPPFLAGS)
@@ -58,6 +61,7 @@ SOURCES =   \
 	GHASH.cpp \
 	Hash.cpp \
 	KeccakCore.cpp \
+	KeyRing.cpp \
         NewHope.cpp \
 	NoiseSource.cpp \
 	OFB.cpp \
@@ -75,6 +79,39 @@ SOURCES =   \
 	SpeckTiny.cpp \
 	XOF.cpp \
 	XTS.cpp
+
+SOURCES += \
+	NoiseCipherState_AESGCM.cpp \
+	NoiseCipherState_ChaChaPoly.cpp \
+	NoiseCipherState.cpp \
+	NoiseDHState_Curve25519.cpp \
+	NoiseDHState.cpp \
+	NoiseHandshakeState.cpp \
+	Noise_IK_25519_AESGCM_SHA256.cpp \
+	Noise_IK_25519_ChaChaPoly_BLAKE2s.cpp \
+	Noise_IK_25519_ChaChaPoly_SHA256.cpp \
+	Noise_IK.cpp \
+	NoiseNamespace.cpp \
+	Noise_NNpsk0_25519_AESGCM_SHA256.cpp \
+	Noise_NNpsk0_25519_ChaChaPoly_BLAKE2s.cpp \
+	Noise_NNpsk0_25519_ChaChaPoly_SHA256.cpp \
+	Noise_NNpsk0.cpp \
+	Noise_Pipes_25519_AESGCM_SHA256.cpp \
+        Noise_Pipes_25519_ChaChaPoly_BLAKE2s.cpp \
+	Noise_Pipes_25519_ChaChaPoly_SHA256.cpp \
+	NoiseProtocolDescriptor.cpp \
+	NoiseSymmetricState_AESGCM_SHA256.cpp \
+	NoiseSymmetricState_ChaChaPoly_BLAKE2s.cpp \
+	NoiseSymmetricState_ChaChaPoly_SHA256.cpp \
+	NoiseSymmetricState.cpp \
+	Noise_XX_25519_AESGCM_SHA256.cpp \
+	Noise_XX_25519_ChaChaPoly_BLAKE2s.cpp \
+	Noise_XX_25519_ChaChaPoly_SHA256.cpp \
+	Noise_XX.cpp \
+	Noise_XXfallback_25519_AESGCM_SHA256.cpp \
+	Noise_XXfallback_25519_ChaChaPoly_BLAKE2s.cpp \
+	Noise_XXfallback_25519_ChaChaPoly_SHA256.cpp \
+	Noise_XXfallback.cpp
 
 SKETCHES = \
 	TestAcorn/TestAcorn.ino \

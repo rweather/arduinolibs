@@ -64,6 +64,19 @@
  * }
  * \endcode
  *
+ * As an alternative, the private and public components of the key pair
+ * can be generated as a single 64-byte value:
+ *
+ * \code
+ * uint8_t keyPair[64];
+ * Ed25519::generateKeyPair(keyPair);
+ * Ed25519::sign(signature, keyPair, message, N);
+ * \endcode
+ *
+ * The 64-byte key pair consists of the 32-byte private key followed by
+ * the 32-byte public key.  This should be compatible with other libraries
+ * that produce and use 64-byte Ed25519 key values.
+ *
  * \note The public functions in this class need a substantial amount of
  * stack space to store intermediate results while the curve function is
  * being evaluated.  About 1.5k of free stack space is recommended for safety.
@@ -174,6 +187,18 @@ void Ed25519::sign(uint8_t signature[64], const uint8_t privateKey[32],
 }
 
 /**
+ * \fn void Ed25519::sign(uint8_t signature[64], const uint8_t keyPair[64], const void *message, size_t len)
+ * \brief Signs a message using a specific Ed25519 key pair.
+ *
+ * \param signature The signature value.
+ * \param keyPair The key pair to use to sign the message.
+ * \param message Points to the message to be signed.
+ * \param len The length of the \a message to be signed.
+ *
+ * \sa verify(), generateKeyPair()
+ */
+
+/**
  * \brief Verifies a signature using a specific Ed25519 public key.
  *
  * \param signature The signature value to be verified.
@@ -269,6 +294,20 @@ void Ed25519::derivePublicKey(uint8_t publicKey[32], const uint8_t privateKey[32
     // Clean up and exit.
     clean(a);
     clean(ptA);
+}
+
+/**
+ * \brief Generatea a key pair for the Ed25519 algorithm.
+ *
+ * \param keyPair Buffer that returns the key pair, consisting of the
+ * 32-byte private key followed by the 32-byte public key.
+ *
+ * \sa sign()
+ */
+void Ed25519::generateKeyPair(uint8_t keyPair[64])
+{
+    generatePrivateKey(keyPair);
+    derivePublicKey(keyPair + 32, keyPair);
 }
 
 /**

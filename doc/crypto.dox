@@ -43,6 +43,7 @@ in the repository:
 \li Message authenticators: Poly1305, GHASH, OMAC
 \li Public key algorithms: Curve25519, Ed25519, P521
 \li Random number generation: \link RNGClass RNG\endlink
+\li Storage of key pairs and other key material in EEPROM or Flash: KeyRing
 
 Reduced memory versions of some algorithms (encryption is slower, but the
 RAM required for the key schedule is less):

@@ -661,6 +661,7 @@ INPUT                  = ../libraries/Crypto \
                          ../libraries/NewHope \
                          ../libraries/RingOscillatorNoiseSource \
                          ../libraries/TransistorNoiseSource \
+                         ../libraries/NoiseProtocol/src \
                          .
 
 # This tag can be used to specify the character encoding of the source files
