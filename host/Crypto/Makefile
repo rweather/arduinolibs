@@ -133,6 +133,7 @@ SKETCHES = \
 	TestEd25519/TestEd25519.ino \
 	TestGCM/TestGCM.ino \
 	TestGHASH/TestGHASH.ino \
+	TestKeyRing/TestKeyRing.ino \
 	TestNewHope/TestNewHope.ino \
 	TestOFB/TestOFB.ino \
 	TestP521/TestP521.ino \

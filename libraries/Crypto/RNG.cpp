@@ -300,30 +300,7 @@ RNGClass::~RNGClass()
 
 #if defined(RNG_DUE_TRNG)
 
-// Find the flash memory of interest.  Allow for the possibility
-// of other SAM-based Arduino variants in the future.
-#if defined(IFLASH1_ADDR)
-#define RNG_FLASH_ADDR      IFLASH1_ADDR
-#define RNG_FLASH_SIZE      IFLASH1_SIZE
-#define RNG_FLASH_PAGE_SIZE IFLASH1_PAGE_SIZE
-#define RNG_EFC             EFC1
-#elif defined(IFLASH0_ADDR)
-#define RNG_FLASH_ADDR      IFLASH0_ADDR
-#define RNG_FLASH_SIZE      IFLASH0_SIZE
-#define RNG_FLASH_PAGE_SIZE IFLASH0_PAGE_SIZE
-#define RNG_EFC             EFC0
-#else
-#define RNG_FLASH_ADDR      IFLASH_ADDR
-#define RNG_FLASH_SIZE      IFLASH_SIZE
-#define RNG_FLASH_PAGE_SIZE IFLASH_PAGE_SIZE
-#define RNG_EFC             EFC
-#endif
-
-// Address of the flash page to use for saving the seed on the Due.
-// All SAM variants have a page size of 256 bytes or greater so there is
-// plenty of room for the 48 byte seed in the last page of flash memory.
-#define RNG_SEED_ADDR (RNG_FLASH_ADDR + RNG_FLASH_SIZE - RNG_FLASH_PAGE_SIZE)
-#define RNG_SEED_PAGE ((RNG_FLASH_SIZE / RNG_FLASH_PAGE_SIZE) - 1)
+#include "utility/SamFlashUtil.h"
 
 // Stir in the unique identifier for the Arduino Due's CPU.
 // This function must be in RAM because programs running out of
@@ -335,36 +312,23 @@ static void stirUniqueIdentifier(void)
     uint32_t id[4];
 
     // Start Read Unique Identifier.
-    RNG_EFC->EEFC_FCR = (0x5A << 24) | EFC_FCMD_STUI;
-    while ((RNG_EFC->EEFC_FSR & EEFC_FSR_FRDY) != 0)
+    SAM_EFC->EEFC_FCR = (0x5A << 24) | EFC_FCMD_STUI;
+    while ((SAM_EFC->EEFC_FSR & EEFC_FSR_FRDY) != 0)
         ;   // do nothing until FRDY falls.
 
     // Read the identifier.
-    id[0] = *((const uint32_t *)RNG_FLASH_ADDR);
-    id[1] = *((const uint32_t *)(RNG_FLASH_ADDR + 4));
-    id[2] = *((const uint32_t *)(RNG_FLASH_ADDR + 8));
-    id[3] = *((const uint32_t *)(RNG_FLASH_ADDR + 12));
+    id[0] = *((const uint32_t *)SAM_FLASH_ADDR);
+    id[1] = *((const uint32_t *)(SAM_FLASH_ADDR + 4));
+    id[2] = *((const uint32_t *)(SAM_FLASH_ADDR + 8));
+    id[3] = *((const uint32_t *)(SAM_FLASH_ADDR + 12));
 
     // Stop Read Unique Identifier.
-    RNG_EFC->EEFC_FCR = (0x5A << 24) | EFC_FCMD_SPUI;
-    while ((RNG_EFC->EEFC_FSR & EEFC_FSR_FRDY) == 0)
+    SAM_EFC->EEFC_FCR = (0x5A << 24) | EFC_FCMD_SPUI;
+    while ((SAM_EFC->EEFC_FSR & EEFC_FSR_FRDY) == 0)
         ;   // do nothing until FRDY rises.
 
     // Stir the unique identifier into the entropy pool.
     RNG.stir((uint8_t *)id, sizeof(id));
-}
-
-// Erases the flash page containing the seed and then writes the new seed.
-// It is assumed the seed has already been loaded into the latch registers.
-__attribute__((section(".ramfunc")))
-static void eraseAndWriteSeed()
-{
-    // Execute the "Erase and Write Page" command.
-    RNG_EFC->EEFC_FCR = (0x5A << 24) | (RNG_SEED_PAGE << 8) | EFC_FCMD_EWP;
-
-    // Wait for the FRDY bit to be raised.
-    while ((RNG_EFC->EEFC_FSR & EEFC_FSR_FRDY) == 0)
-        ;   // do nothing until FRDY rises.
 }
 
 #endif
@@ -775,12 +739,15 @@ void RNGClass::save()
                       crypto_crc8('S', stream, SEED_SIZE - 1));
 #elif defined(RNG_DUE_TRNG)
     unsigned posn;
+    crypto_sam_flash_init();
+    crypto_sam_unlock_page(RNG_SEED_PAGE);
     ((uint32_t *)(RNG_SEED_ADDR))[0] = crypto_crc8('S', stream, SEED_SIZE);
     for (posn = 0; posn < 12; ++posn)
         ((uint32_t *)(RNG_SEED_ADDR))[posn + 1] = stream[posn];
-    for (posn = 13; posn < (RNG_FLASH_PAGE_SIZE / 4); ++posn)
+    for (posn = 13; posn < (SAM_FLASH_PAGE_SIZE / 4); ++posn)
         ((uint32_t *)(RNG_SEED_ADDR))[posn + 13] = 0xFFFFFFFF;
-    eraseAndWriteSeed();
+    crypto_sam_erase_and_write(RNG_SEED_PAGE);
+    crypto_sam_lock_page(RNG_SEED_PAGE);
 #elif defined(RNG_ESP_NVS)
     // Save the seed into ESP non-volatile storage (NVS).
     nvs_handle handle = 0;
@@ -920,9 +887,12 @@ void RNGClass::destroy()
     for (int posn = 0; posn < SEED_SIZE; ++posn)
         eeprom_write_byte((uint8_t *)(address + posn), 0xFF);
 #elif defined(RNG_DUE_TRNG)
-    for (unsigned posn = 0; posn < (RNG_FLASH_PAGE_SIZE / 4); ++posn)
+    crypto_sam_flash_init();
+    crypto_sam_unlock_page(RNG_SEED_PAGE);
+    for (unsigned posn = 0; posn < (SAM_FLASH_PAGE_SIZE / 4); ++posn)
         ((uint32_t *)(RNG_SEED_ADDR))[posn] = 0xFFFFFFFF;
-    eraseAndWriteSeed();
+    crypto_sam_erase_and_write(RNG_SEED_PAGE);
+    crypto_sam_lock_page(RNG_SEED_PAGE);
 #elif defined(RNG_ESP_NVS)
     nvs_handle handle = 0;
     if (nvs_open("rng", NVS_READWRITE, &handle) == 0) {

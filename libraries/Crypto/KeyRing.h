@@ -26,40 +26,38 @@
 #include <inttypes.h>
 #include <stddef.h>
 
-class KeyRing
+class KeyRingClass
 {
-private:
-    KeyRing() {}
-    ~KeyRing() {}
-
 public:
-    static bool setLocalKeyPair
-        (uint16_t id, const void *pair, size_t size);
-    static size_t getLocalKeyPair
-        (uint16_t id, void *pair, size_t maxSize);
-    static size_t getLocalKeyPairSize(uint16_t id);
-    static void removeLocalKeyPair(uint16_t id);
+    KeyRingClass();
+    ~KeyRingClass();
 
-    static bool setRemotePublicKey
-        (uint16_t id, const void *key, size_t size);
-    static size_t getRemotePublicKey
-        (uint16_t id, void *key, size_t maxSize);
-    static size_t getRemotePublicKeySize(uint16_t id);
-    static void removeRemotePublicKey(uint16_t id);
+    void begin();
+    void begin(const void *key, size_t size);
+    void begin(const char *passphrase);
+    void end();
 
-    static bool setSharedSymmetricKey
-        (uint16_t id, const void *key, size_t size);
-    static size_t getSharedSymmetricKey
-        (uint16_t id, void *key, size_t maxSize);
-    static size_t getSharedSymmetricKeySize(uint16_t id);
-    static void removeSharedSymmetricKey(uint16_t id);
+    bool setLocalKeyPair(uint16_t id, const void *pair, size_t size);
+    size_t getLocalKeyPair(uint16_t id, void *pair, size_t maxSize);
+    size_t getLocalKeyPairSize(uint16_t id);
+    void removeLocalKeyPair(uint16_t id);
 
-    static bool setOtherData
-        (uint16_t id, const void *data, size_t size);
-    static size_t getOtherData
-        (uint16_t id, void *data, size_t maxSize);
-    static size_t getOtherDataSize(uint16_t id);
-    static void removeOtherData(uint16_t id);
+    bool setRemotePublicKey(uint16_t id, const void *key, size_t size);
+    size_t getRemotePublicKey(uint16_t id, void *key, size_t maxSize);
+    size_t getRemotePublicKeySize(uint16_t id);
+    void removeRemotePublicKey(uint16_t id);
+
+    bool setSharedSymmetricKey(uint16_t id, const void *key, size_t size);
+    size_t getSharedSymmetricKey(uint16_t id, void *key, size_t maxSize);
+    size_t getSharedSymmetricKeySize(uint16_t id);
+    void removeSharedSymmetricKey(uint16_t id);
+
+    bool setOtherData(uint16_t id, const void *data, size_t size);
+    size_t getOtherData(uint16_t id, void *data, size_t maxSize);
+    size_t getOtherDataSize(uint16_t id);
+    void removeOtherData(uint16_t id);
+
+    void removeAll();
 
     static const uint16_t LocalCurve25519Default = 0x4301;  // 'C', 0x01
     static const uint16_t RemoteCurve25519Default = 0x6301; // 'c', 0x01
@@ -68,96 +66,117 @@ public:
     static const uint16_t RemoteEd25519Default = 0x6501;    // 'e', 0x01
 
 private:
-    static bool set(uint16_t id, uint8_t type, const void *data, size_t size);
-    static size_t get(uint16_t id, uint8_t type, void *data, size_t maxSize);
-    static size_t getSize(uint16_t id, uint8_t type);
-    static void remove(uint16_t id, uint8_t type);
+    static const size_t ChunkSize = 36;
+
+    uint8_t k[16];
+
+    void (*crypt)(uint8_t k[16], uint8_t chunk[ChunkSize],
+                  unsigned posn, bool encrypt);
+
+    bool set(uint16_t id, uint8_t type, const void *data, size_t size);
+    size_t get(uint16_t id, uint8_t type, void *data, size_t maxSize);
+    size_t getSize(uint16_t id, uint8_t type);
+    void remove(uint16_t id, uint8_t type);
+
+    void readStart(unsigned &posn);
+    bool readChunk(unsigned &posn, uint8_t chunk[ChunkSize], unsigned &actual);
+    bool readChunk
+        (unsigned &posn, uint8_t chunk[ChunkSize], uint16_t id,
+         uint8_t type, bool setMode, bool decrypt);
+
+    bool writeChunk(unsigned posn, uint8_t chunk[ChunkSize]);
+    bool writeExtraChunk(unsigned& posn, uint8_t chunk[ChunkSize]);
+    bool eraseChunk(unsigned &posn);
+
+    void readWriteEnd();
 };
 
-inline bool KeyRing::setLocalKeyPair
+extern KeyRingClass KeyRing;
+
+inline bool KeyRingClass::setLocalKeyPair
     (uint16_t id, const void *pair, size_t size)
 {
     return set(id, 0, pair, size);
 }
 
-inline size_t KeyRing::getLocalKeyPair
+inline size_t KeyRingClass::getLocalKeyPair
     (uint16_t id, void *pair, size_t maxSize)
 {
     return get(id, 0, pair, maxSize);
 }
 
-inline size_t KeyRing::getLocalKeyPairSize(uint16_t id)
+inline size_t KeyRingClass::getLocalKeyPairSize(uint16_t id)
 {
     return getSize(id, 0);
 }
 
-inline void KeyRing::removeLocalKeyPair(uint16_t id)
+inline void KeyRingClass::removeLocalKeyPair(uint16_t id)
 {
     remove(id, 0);
 }
 
-inline bool KeyRing::setRemotePublicKey
+inline bool KeyRingClass::setRemotePublicKey
     (uint16_t id, const void *key, size_t size)
 {
     return set(id, 1, key, size);
 }
 
-inline size_t KeyRing::getRemotePublicKey
+inline size_t KeyRingClass::getRemotePublicKey
     (uint16_t id, void *key, size_t maxSize)
 {
     return get(id, 1, key, maxSize);
 }
 
-inline size_t KeyRing::getRemotePublicKeySize(uint16_t id)
+inline size_t KeyRingClass::getRemotePublicKeySize(uint16_t id)
 {
     return getSize(id, 1);
 }
 
-inline void KeyRing::removeRemotePublicKey(uint16_t id)
+inline void KeyRingClass::removeRemotePublicKey(uint16_t id)
 {
     remove(id, 1);
 }
 
-inline bool KeyRing::setSharedSymmetricKey
+inline bool KeyRingClass::setSharedSymmetricKey
     (uint16_t id, const void *key, size_t size)
 {
     return set(id, 2, key, size);
 }
 
-inline size_t KeyRing::getSharedSymmetricKey
+inline size_t KeyRingClass::getSharedSymmetricKey
     (uint16_t id, void *key, size_t maxSize)
 {
     return get(id, 2, key, maxSize);
 }
 
-inline size_t KeyRing::getSharedSymmetricKeySize(uint16_t id)
+inline size_t KeyRingClass::getSharedSymmetricKeySize(uint16_t id)
 {
     return getSize(id, 2);
 }
 
-inline void KeyRing::removeSharedSymmetricKey(uint16_t id)
+inline void KeyRingClass::removeSharedSymmetricKey(uint16_t id)
 {
     remove(id, 2);
 }
 
-inline bool KeyRing::setOtherData
+inline bool KeyRingClass::setOtherData
     (uint16_t id, const void *data, size_t size)
 {
     return set(id, 3, data, size);
 }
 
-inline size_t KeyRing::getOtherData
+inline size_t KeyRingClass::getOtherData
     (uint16_t id, void *data, size_t maxSize)
 {
     return get(id, 3, data, maxSize);
 }
 
-inline size_t KeyRing::getOtherDataSize(uint16_t id)
+inline size_t KeyRingClass::getOtherDataSize(uint16_t id)
 {
     return getSize(id, 3);
 }
 
-inline void KeyRing::removeOtherData(uint16_t id)
+inline void KeyRingClass::removeOtherData(uint16_t id)
 {
     remove(id, 3);
 }
