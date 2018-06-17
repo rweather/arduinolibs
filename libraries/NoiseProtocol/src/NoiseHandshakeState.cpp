@@ -632,8 +632,10 @@ void NoiseHandshakeState::write_ee(NoiseHandshakeState::Packet &packet)
  */
 void NoiseHandshakeState::write_es(NoiseHandshakeState::Packet &packet)
 {
-    if (!dhState()->hasParameter(Noise::RemoteStaticPublicKey)) {
-        // We don't have a remote static key.  It probably should have
+    if (!dhState()->hasParameter
+            (pty == Noise::Initiator ? Noise::RemoteStaticPublicKey
+                                     : Noise::LocalStaticPublicKey)) {
+        // We don't have the relevent static key.  It probably should have
         // been provided ahead of time when the handshake started.
         packet.error = true;
         return;
@@ -657,8 +659,10 @@ void NoiseHandshakeState::write_es(NoiseHandshakeState::Packet &packet)
  */
 void NoiseHandshakeState::write_se(NoiseHandshakeState::Packet &packet)
 {
-    if (!dhState()->hasParameter(Noise::LocalStaticPrivateKey)) {
-        // We don't have a local static key.  It probably should have
+    if (!dhState()->hasParameter
+            (pty == Noise::Initiator ? Noise::LocalStaticPublicKey
+                                     : Noise::RemoteStaticPublicKey)) {
+        // We don't have a relevant static key.  It probably should have
         // been provided ahead of time when the handshake started.
         packet.error = true;
         return;
@@ -744,7 +748,7 @@ void NoiseHandshakeState::read_s(NoiseHandshakeState::Packet &packet)
         int size = symmetricState()->decryptAndHash
             (s, len, packet.data + packet.posn, fullLen);
         if (size > 0) {
-            packet.posn += size;
+            packet.posn += fullLen;
             if (!dhState()->setParameter(Noise::RemoteStaticPublicKey, s, len))
                 packet.error = true;
         } else {
@@ -803,6 +807,28 @@ void NoiseHandshakeState::read_s(NoiseHandshakeState::Packet &packet)
  *
  * \sa write_ss()
  */
+
+/**
+ * \brief Hashes a public key from the pre-message.
+ *
+ * \param packet The handshake packet that is being processed.
+ * \param initiator The public key to hash if party() is Noise::Initiator.
+ * \param responder The public key to hash if party() is Noise::Responder.
+ *
+ * The handshake will fail if the required key is not present.
+ *
+ * This function should be called within the subclass's writeTokens() and
+ * readTokens() implementations when message number 0 is processed.
+ */
+void NoiseHandshakeState::premessage
+    (NoiseHandshakeState::Packet &packet,
+     Noise::Parameter initiator, Noise::Parameter responder)
+{
+    if (pty == Noise::Responder)
+        initiator = responder;
+    if (!dhState()->hashPublicKey(symmetricState(), initiator))
+        packet.error = true;
+}
 
 /**
  * \fn void NoiseHandshakeState::setState(Noise::HandshakeState state)

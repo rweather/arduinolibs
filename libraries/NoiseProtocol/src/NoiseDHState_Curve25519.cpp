@@ -458,7 +458,7 @@ bool NoiseDHState_Curve25519::hashPublicKey
     case Noise::RemoteStatic25519PublicKey:
         if (!(st.flags & HAVE_25519_REMOTE_STATIC_PUBLIC))
             break;
-        sym->mixHash(st.re, sizeof(st.re));
+        sym->mixHash(st2.rs, sizeof(st2.rs));
         return true;
     default:
         return NoiseDHState_Curve25519_EphemOnly::hashPublicKey(sym, id);

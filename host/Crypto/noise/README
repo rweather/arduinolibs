@@ -1,0 +1,8 @@
+
+The test vectors in this directory come from the cacophony Noise
+implementation:
+
+https://github.com/centromere/cacophony
+https://raw.githubusercontent.com/centromere/cacophony/master/vectors/cacophony.txt
+
+Only those vectors that are relevant to the Arduino Noise library are included.

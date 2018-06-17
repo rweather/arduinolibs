@@ -1,5 +1,5 @@
 
-.PHONY: all clean check
+.PHONY: all clean check noise-check
 
 TOPDIR = ../..
 SRCDIR = $(TOPDIR)/libraries/Crypto
@@ -29,10 +29,11 @@ CPPFLAGS = \
 	-I$(TOPDIR)/libraries/CryptoLW/src \
 	-I$(TOPDIR)/libraries/CryptoLegacy/src \
 	-I$(TOPDIR)/libraries/NewHope \
-	-I$(TOPDIR)/libraries/NoiseProtocol \
+	-I$(TOPDIR)/libraries/NoiseProtocol/src \
 	-DHOST_BUILD
 
 CXXFLAGS = -g -Wall $(CPPFLAGS)
+CCFLAGS  = -g -Wall $(CPPFLAGS)
 
 SOURCES =   \
 	Acorn128.cpp \
@@ -149,12 +150,23 @@ SKETCHES = \
 	TestSpeck/TestSpeck.ino \
 	TestXTS/TestXTS.ino \
 
+TSTPROG1 = noise/test-vector
+TSTPROG1_SOURCES = \
+	noise/json-reader.cpp \
+	noise/test-vector.cpp
+TSTPROG1_OBJECTS = $(patsubst %.cpp,%.o,$(TSTPROG1_SOURCES))
+
+DEP_SOURCES = $(SOURCES) $(TSTPROG1_SOURCES)
+
 OBJECTS = $(patsubst %.cpp,%.o,$(SOURCES))
-DEPS    = $(patsubst %.cpp,.depend/%.d,$(SOURCES))
+DEPS    = $(patsubst %.cpp,.depend/%.d,$(DEP_SOURCES))
 
 SKETCH_OUTPUTS = $(patsubst %.ino,%.sketch,$(SKETCHES))
 
-all: $(LIBRARY)
+all: $(LIBRARY) $(TSTPROG1)
+
+$(TSTPROG1): $(TSTPROG1_OBJECTS) $(LIBRARY)
+	$(CXX) $(CXXFLAGS) -o $@ $(TSTPROG1_OBJECTS) -L. -lCrypto
 
 $(LIBRARY): $(OBJECTS)
 	$(RM) $(LIBRARY)
@@ -163,13 +175,17 @@ $(LIBRARY): $(OBJECTS)
 clean:
 	$(RM) $(OBJECTS) $(LIBRARY)
 	$(RM) $(SKETCH_OUTPUTS)
+	$(RM) $(TSTPROG1) $(TSTPROG1_OBJECTS)
 	$(RM) -r .depend Test*
 
-check: all $(SKETCH_OUTPUTS)
+check: $(LIBRARY) $(SKETCH_OUTPUTS)
 	@for sketch in $(SKETCH_OUTPUTS); do \
 		echo Running $$sketch; \
 		$$sketch | grep -i fail; \
 	done; exit 0
+
+noise-check: $(TSTPROG1)
+	@$(TSTPROG1) noise/test-vectors.txt
 
 %.o: %.cpp
 	$(CXX) $(CXXFLAGS) -o $@ -c $<

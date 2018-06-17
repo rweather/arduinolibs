@@ -107,6 +107,10 @@ protected:
     void read_se(NoiseHandshakeState::Packet &packet) { write_se(packet); }
     void read_ss(NoiseHandshakeState::Packet &packet) { write_ss(packet); }
 
+    void premessage
+        (NoiseHandshakeState::Packet &packet,
+         Noise::Parameter initiator, Noise::Parameter responder);
+
     void setState(Noise::HandshakeState state) { st = state; }
 
 private:

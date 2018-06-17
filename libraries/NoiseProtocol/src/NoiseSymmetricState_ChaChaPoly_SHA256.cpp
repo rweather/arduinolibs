@@ -126,6 +126,7 @@ int NoiseSymmetricState_ChaChaPoly_SHA256::encryptAndHash
         uint64_t iv = htole64(st.n);
         cipher.setKey(st.key, 32);
         cipher.setIV((const uint8_t *)&iv, sizeof(iv));
+        cipher.addAuthData(st.h, sizeof(st.h));
         cipher.encrypt(output, input, inputSize);
         cipher.computeTag(output + inputSize, 16);
         mixHash(output, inputSize + 16);
@@ -148,11 +149,12 @@ int NoiseSymmetricState_ChaChaPoly_SHA256::decryptAndHash
         if (inputSize < 16 || outputSize < (inputSize - 16))
             return -1;
         outputSize = inputSize - 16;
-        mixHash(input, inputSize);
         ChaChaPoly cipher;
         uint64_t iv = htole64(st.n);
         cipher.setKey(st.key, 32);
         cipher.setIV((const uint8_t *)&iv, sizeof(iv));
+        cipher.addAuthData(st.h, sizeof(st.h));
+        mixHash(input, inputSize);
         cipher.decrypt(output, input, outputSize);
         if (cipher.checkTag(input + outputSize, 16)) {
             ++st.n;

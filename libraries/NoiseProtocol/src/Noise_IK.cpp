@@ -54,6 +54,8 @@ void NoiseHandshakeState_IK::writeTokens
     (NoiseHandshakeState::Packet &packet, uint8_t msgnum)
 {
     if (msgnum == 0) {
+        premessage(packet, Noise::RemoteStaticPublicKey,
+                   Noise::LocalStaticPublicKey);
         write_e(packet);
         write_es(packet);
         write_s(packet);
@@ -70,6 +72,8 @@ void NoiseHandshakeState_IK::readTokens
     (NoiseHandshakeState::Packet &packet, uint8_t msgnum)
 {
     if (msgnum == 0) {
+        premessage(packet, Noise::RemoteStaticPublicKey,
+                   Noise::LocalStaticPublicKey);
         read_e(packet);
         read_es(packet);
         read_s(packet);

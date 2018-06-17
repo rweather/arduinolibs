@@ -69,12 +69,6 @@ bool NoiseHandshakeState_XXfallback::startFallback
     // Start the new handshake.
     start(party, prologue, prologueLen);
 
-    // Hash the initiator's ephemeral public key from the pre-message.
-    if (party == Noise::Initiator)
-        thisDH->hashPublicKey(symmetricState(), Noise::LocalEphemPublicKey);
-    else
-        thisDH->hashPublicKey(symmetricState(), Noise::RemoteEphemPublicKey);
-
     // The responder writes first in a XXfallback handshake.
     setState(party == Noise::Initiator ? Noise::Read : Noise::Write);
     return true;
@@ -91,6 +85,8 @@ void NoiseHandshakeState_XXfallback::writeTokens
     (NoiseHandshakeState::Packet &packet, uint8_t msgnum)
 {
     if (msgnum == 0) {
+        premessage(packet, Noise::LocalEphemPublicKey,
+                   Noise::RemoteEphemPublicKey);
         write_e(packet);
         write_ee(packet);
         write_s(packet);
@@ -106,6 +102,8 @@ void NoiseHandshakeState_XXfallback::readTokens
     (NoiseHandshakeState::Packet &packet, uint8_t msgnum)
 {
     if (msgnum == 0) {
+        premessage(packet, Noise::LocalEphemPublicKey,
+                   Noise::RemoteEphemPublicKey);
         read_e(packet);
         read_ee(packet);
         read_s(packet);
