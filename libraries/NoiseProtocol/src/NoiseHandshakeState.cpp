@@ -99,37 +99,6 @@ void NoiseHandshakeState::start
 }
 
 /**
- * \brief Starts a fallback handshake for the local party.
- *
- * \param fallbackFrom The previous failed handshake from which certain
- * parameters are copied to start the new handshake.
- * \param party Noise::Initiator or Noise::Responder.
- * to identity the local party.
- * \param prologue Points to the prologue string, or NULL if no prologue.
- * \param prologueLen Length of the prologue string, or 0 if no prologue.
- *
- * \return Returns true if the handshake started, false if there are
- * insufficient parameters in \a fallbackFrom to start the new handshake,
- * or false if the handshake coes not implement a fallback protocol.
- *
- * This function should be followed by calls to write() and read() to
- * process the packets in the handshake.  Once the handshake has completed,
- * the application should call split() to obtain the cipher objects to use
- * to encrypt and decrypt transport messages.
- *
- * \note The application must call this function instead of start() for
- * fallback handshakes.  Calling start() directly from the application
- * will not start the handshake correctly.
- */
-bool NoiseHandshakeState::startFallback
-    (const NoiseHandshakeState *fallbackFrom, Noise::Party party,
-     const void *prologue, size_t prologueLen)
-{
-    // Default implementation does not support fallback.
-    return false;
-}
-
-/**
  * \fn Noise::Party NoiseHandshakeState::party() const
  * \brief Gets the identity of this party to the handshake.
  *

@@ -209,23 +209,6 @@ NoiseDHState::~NoiseDHState()
  */
 
 /**
- * \fn bool NoiseDHState::fallback(Noise::Party, const NoiseDHState *from)
- * \brief Copies parameters from another DH object to perform a fallback.
- *
- * \param party The party to the new fallback handshake, Noise::Initiator
- * or Noise::Responder.
- * \param from DH object for the previous failed handshake.
- *
- * \return Returns false if there are insufficient parameters in \a from
- * to perform a fallback or the DH algorithms do not match.  Returns true
- * if fallback is possible.
- *
- * This function copies the initiator's ephemeral keys and the local
- * static key pair from a failed handshake into this DH object to
- * initialize the new handshake.
- */
-
-/**
  * \fn void NoiseDHState::clear()
  * \brief Clears all sensitive data from this object.
  */

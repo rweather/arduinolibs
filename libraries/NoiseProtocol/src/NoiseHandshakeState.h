@@ -35,9 +35,6 @@ public:
 
     virtual void start
         (Noise::Party party, const void *prologue = 0, size_t prologueLen = 0);
-    virtual bool startFallback
-        (const NoiseHandshakeState *fallbackFrom, Noise::Party party,
-         const void *prologue = 0, size_t prologueLen = 0);
 
     Noise::Party party() const { return pty; }
     Noise::HandshakeState state() const { return st; }

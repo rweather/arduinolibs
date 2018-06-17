@@ -50,8 +50,6 @@ public:
     void se(uint8_t *sharedKey);
     void ss(uint8_t *sharedKey);
 
-    bool fallback(Noise::Party party, const NoiseDHState *from);
-
     void clear();
 
 private:
@@ -82,8 +80,6 @@ public:
     void es(uint8_t *sharedKey);
     void se(uint8_t *sharedKey);
     void ss(uint8_t *sharedKey);
-
-    bool fallback(Noise::Party party, const NoiseDHState *from);
 
     void clear();
 

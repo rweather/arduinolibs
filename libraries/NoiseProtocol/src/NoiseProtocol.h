@@ -33,16 +33,8 @@
 #include "Noise_NNpsk0_25519_ChaChaPoly_BLAKE2s.h"
 #include "Noise_NNpsk0_25519_ChaChaPoly_SHA256.h"
 
-#include "Noise_Pipes_25519_AESGCM_SHA256.h"
-#include "Noise_Pipes_25519_ChaChaPoly_BLAKE2s.h"
-#include "Noise_Pipes_25519_ChaChaPoly_SHA256.h"
-
 #include "Noise_XX_25519_AESGCM_SHA256.h"
 #include "Noise_XX_25519_ChaChaPoly_BLAKE2s.h"
 #include "Noise_XX_25519_ChaChaPoly_SHA256.h"
-
-#include "Noise_XXfallback_25519_AESGCM_SHA256.h"
-#include "Noise_XXfallback_25519_ChaChaPoly_BLAKE2s.h"
-#include "Noise_XXfallback_25519_ChaChaPoly_SHA256.h"
 
 #endif

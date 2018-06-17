@@ -261,28 +261,6 @@ void NoiseDHState_Curve25519_EphemOnly::ss(uint8_t *sharedKey)
     memset(sharedKey, 0, 32);
 }
 
-bool NoiseDHState_Curve25519_EphemOnly::fallback
-    (Noise::Party party, const NoiseDHState *from)
-{
-    // Copy the initiator's ephemeral key into this object.
-    st.flags &= ~(HAVE_25519_LOCAL_EPHEM_PUBLIC |
-                  HAVE_25519_LOCAL_EPHEM_PRIVATE |
-                  HAVE_25519_REMOTE_EPHEM_PUBLIC);
-    if (party == Noise::Initiator) {
-        if (from->getParameter(Noise::LocalEphem25519PrivateKey, st.le, 32) != 32)
-            return false;
-        if (from->getParameter(Noise::LocalEphem25519PublicKey, st.lf, 32) != 32)
-            return false;
-        st.flags |= HAVE_25519_LOCAL_EPHEM_PUBLIC |
-                    HAVE_25519_LOCAL_EPHEM_PRIVATE;
-    } else {
-        if (from->getParameter(Noise::RemoteEphem25519PublicKey, st.re, 32) != 32)
-            return false;
-        st.flags |= HAVE_25519_REMOTE_EPHEM_PUBLIC;
-    }
-    return true;
-}
-
 void NoiseDHState_Curve25519_EphemOnly::clear()
 {
     clean(st);
@@ -479,27 +457,6 @@ void NoiseDHState_Curve25519::se(uint8_t *sharedKey)
 void NoiseDHState_Curve25519::ss(uint8_t *sharedKey)
 {
     Curve25519::eval(sharedKey, st2.ls, st2.rs);
-}
-
-bool NoiseDHState_Curve25519::fallback
-    (Noise::Party party, const NoiseDHState *from)
-{
-    // Copy the initiator's ephemeral key into this object.
-    if (!NoiseDHState_Curve25519_EphemOnly::fallback(party, from))
-        return false;
-
-    // Copy the local static Curve25519 key into this object.
-    // Don't do this if we already have a local static key because
-    // we may be changing to a new key for the fallback handshake.
-    if (!(st.flags & HAVE_25519_LOCAL_STATIC_PRIVATE)) {
-        if (from->getParameter(Noise::LocalStatic25519PrivateKey, st2.ls, 32) != 32)
-            return false;
-        if (from->getParameter(Noise::LocalStatic25519PublicKey, st2.lp, 32) != 32)
-            return false;
-        st.flags |= HAVE_25519_LOCAL_STATIC_PUBLIC |
-                    HAVE_25519_LOCAL_STATIC_PRIVATE;
-    }
-    return true;
 }
 
 void NoiseDHState_Curve25519::clear()

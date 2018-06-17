@@ -35,9 +35,6 @@ public:
 
     virtual NoiseHandshakeState *createHandshake() const = 0;
 
-    virtual const NoiseProtocolDescriptor *abbreviatedDescriptor() const;
-    virtual const NoiseProtocolDescriptor *fallbackDescriptor() const;
-
 protected:
     explicit NoiseProtocolDescriptor(const char *name, const char *alias = 0)
         : protoName(name), protoAlias(alias) {}

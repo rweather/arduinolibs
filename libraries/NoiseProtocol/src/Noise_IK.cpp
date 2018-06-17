@@ -29,9 +29,11 @@
  * The "IK" pattern provides mutual authentication of the two communicating
  * parties, with the identifying key for the initiating party sent during
  * the handshake.  The identifying key for the responding party is assumed
- * to already be known to the initiator.  If the responding party's key
- * changes, then the application will need to transition to "XXfallback"
- * to discover the new key.
+ * to already be known to the initiator before the handshake starts.
+ *
+ * If the responding party's key changes, then the initiator will need to
+ * retry with another protocol like "XX" to discover the new key.  At present,
+ * we do not support "XXfallback" / Noise Pipes.
  *
  * This class provides the core "IK" functionality.  Subclasses provide
  * implementations of "IK" that use specific algorithms, such as

@@ -97,9 +97,6 @@ SOURCES += \
 	Noise_NNpsk0_25519_ChaChaPoly_BLAKE2s.cpp \
 	Noise_NNpsk0_25519_ChaChaPoly_SHA256.cpp \
 	Noise_NNpsk0.cpp \
-	Noise_Pipes_25519_AESGCM_SHA256.cpp \
-        Noise_Pipes_25519_ChaChaPoly_BLAKE2s.cpp \
-	Noise_Pipes_25519_ChaChaPoly_SHA256.cpp \
 	NoiseProtocolDescriptor.cpp \
 	NoiseSymmetricState_AESGCM_SHA256.cpp \
 	NoiseSymmetricState_ChaChaPoly_BLAKE2s.cpp \
@@ -108,11 +105,7 @@ SOURCES += \
 	Noise_XX_25519_AESGCM_SHA256.cpp \
 	Noise_XX_25519_ChaChaPoly_BLAKE2s.cpp \
 	Noise_XX_25519_ChaChaPoly_SHA256.cpp \
-	Noise_XX.cpp \
-	Noise_XXfallback_25519_AESGCM_SHA256.cpp \
-	Noise_XXfallback_25519_ChaChaPoly_BLAKE2s.cpp \
-	Noise_XXfallback_25519_ChaChaPoly_SHA256.cpp \
-	Noise_XXfallback.cpp
+	Noise_XX.cpp
 
 SKETCHES = \
 	TestAcorn/TestAcorn.ino \

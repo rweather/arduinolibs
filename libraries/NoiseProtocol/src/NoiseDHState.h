@@ -55,8 +55,6 @@ public:
     virtual void se(uint8_t *sharedKey) = 0;
     virtual void ss(uint8_t *sharedKey) = 0;
 
-    virtual bool fallback(Noise::Party party, const NoiseDHState *from) = 0;
-
     virtual void clear() = 0;
 
 protected:

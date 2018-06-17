@@ -215,13 +215,6 @@ static NoiseHandshakeState *create_handshake(const char *protocol)
     if (!strcmp(protocol, "Noise_XX_25519_ChaChaPoly_SHA256"))
         return new NoiseHandshakeState_XX_25519_ChaChaPoly_SHA256();
 
-    if (!strcmp(protocol, "Noise_XXfallback_25519_AESGCM_SHA256"))
-        return new NoiseHandshakeState_XXfallback_25519_AESGCM_SHA256();
-    if (!strcmp(protocol, "Noise_XXfallback_25519_ChaChaPoly_BLAKE2s"))
-        return new NoiseHandshakeState_XXfallback_25519_ChaChaPoly_BLAKE2s();
-    if (!strcmp(protocol, "Noise_XXfallback_25519_ChaChaPoly_SHA256"))
-        return new NoiseHandshakeState_XXfallback_25519_ChaChaPoly_SHA256();
-
     fail(protocol);
     return 0;
 }

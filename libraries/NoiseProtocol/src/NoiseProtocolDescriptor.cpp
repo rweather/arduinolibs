@@ -75,39 +75,3 @@ NoiseProtocolDescriptor::~NoiseProtocolDescriptor()
  *
  * \return A new handshake object for the protocol.
  */
-
-/**
- * \brief Returns the descriptor for the abbreviated protocol, if any.
- *
- * \return Returns a pointer to the abbreviated protocol descriptor, or NULL
- * if this protocol does not have an abbreviated version.
- *
- * This function and fallbackDescriptor() to intended to help implement
- * fallback-using protocols like Noise Pipes.  In the case of Noise Pipes,
- * the full protocol would be XX, the abbreviated protocol would be IK,
- * and the fallback protocol would XXfallback.
- *
- * The abbreviated protocol should be selected if a remote static public
- * key is available when the handshake starts.  Otherwise the full protocol
- * should be used to discover the remote static public key dynamically.
- *
- * \sa fallbackDescriptor()
- */
-const NoiseProtocolDescriptor *NoiseProtocolDescriptor::abbreviatedDescriptor() const
-{
-    return 0;
-}
-
-/**
- * \brief Returns the descriptor for the fallback protocol, if any.
- *
- * \return Returns a pointer to the fallback protocol descriptor, or NULL
- * if it is not possible to fall back from the abbreviated protocol to
- * another protocol.  The default implementation returns NULL.
- *
- * \sa abbreviatedDescriptor()
- */
-const NoiseProtocolDescriptor *NoiseProtocolDescriptor::fallbackDescriptor() const
-{
-    return 0;
-}
