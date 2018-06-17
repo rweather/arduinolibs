@@ -77,11 +77,11 @@ int NoiseCipherState_AESGCM::decryptPacket
         return -1;
     uint8_t iv[12];
     noiseAESGCMFormatIV(iv, n);
-    cipher.setIV((const uint8_t *)&iv, sizeof(iv));
-    cipher.decrypt((uint8_t *)output, (const uint8_t *)input, outputSize);
-    if (cipher.checkTag(((const uint8_t *)input) + outputSize, 16)) {
+    cipher.setIV(iv, sizeof(iv));
+    cipher.decrypt((uint8_t *)output, (const uint8_t *)input, inputSize - 16);
+    if (cipher.checkTag(((const uint8_t *)input) + inputSize - 16, 16)) {
         ++n;
-        return outputSize;
+        return inputSize - 16;
     }
     memset(output, 0, outputSize); // Destroy the output if the tag is invalid.
     return -1;

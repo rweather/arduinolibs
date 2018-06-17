@@ -226,23 +226,21 @@ static NoiseHandshakeState *create_handshake(const char *protocol)
  */
 static void test_connection(const TestVector *vec)
 {
-    NoiseHandshakeState *initiator = 0;
-    NoiseHandshakeState *responder = 0;
+    NoiseHandshakeState *initiator;
+    NoiseHandshakeState *responder;
     NoiseHandshakeState *send;
     NoiseHandshakeState *recv;
-#if 0
     NoiseCipherState *c1init;
     NoiseCipherState *c2init;
     NoiseCipherState *c1resp;
     NoiseCipherState *c2resp;
     NoiseCipherState *csend;
     NoiseCipherState *crecv;
-#endif
     uint8_t message[MAX_MESSAGE_SIZE];
     uint8_t payload[MAX_MESSAGE_SIZE];
     int result;
     size_t index;
-    //size_t mac_len;
+    size_t mac_len;
     Noise::Party role;
 
     /* Create the two ends of the connection */
@@ -338,72 +336,58 @@ static void test_connection(const TestVector *vec)
                        vec->messages[index].payload_len);
     }
 
-#if 0
     /* Handshake finished.  Check the handshake hash values */
-#if 0
     if (vec->handshake_hash_len) {
         memset(payload, 0xAA, sizeof(payload));
-        compare(noise_handshakestate_get_handshake_hash
-                    (initiator, payload, vec->handshake_hash_len),
-                NOISE_ERROR_NONE);
+        verify(initiator->getHandshakeHash(payload, vec->handshake_hash_len));
         compare_blocks("handshake_hash", payload, vec->handshake_hash_len,
                        vec->handshake_hash, vec->handshake_hash_len);
         memset(payload, 0xAA, sizeof(payload));
-        compare(noise_handshakestate_get_handshake_hash
-                    (responder, payload, vec->handshake_hash_len),
-                NOISE_ERROR_NONE);
+        verify(responder->getHandshakeHash(payload, vec->handshake_hash_len));
         compare_blocks("handshake_hash", payload, vec->handshake_hash_len,
                        vec->handshake_hash, vec->handshake_hash_len);
     }
-#endif
 
     /* Now handle the data transport */
-    compare(noise_handshakestate_split(initiator, &c1init, &c2init),
-            NOISE_ERROR_NONE);
-    compare(noise_handshakestate_split(responder, &c2resp, &c1resp),
-            NOISE_ERROR_NONE);
-    mac_len = noise_cipherstate_get_mac_length(c1init);
+    verify(initiator->split(&c1init, &c2init));
+    verify(responder->split(&c2resp, &c1resp));
+    mac_len = 16;
     for (; index < vec->num_messages; ++index) {
-        if (role == NOISE_ROLE_INITIATOR) {
+        if (role == Noise::Initiator) {
             /* Send on the initiator, receive on the responder */
             csend = c1init;
             crecv = c1resp;
-            if (!is_one_way)
-                role = NOISE_ROLE_RESPONDER;
+            role = Noise::Responder;
         } else {
             /* Send on the responder, receive on the initiator */
             csend = c2resp;
             crecv = c2init;
-            role = NOISE_ROLE_INITIATOR;
+            role = Noise::Initiator;
         }
         verify(sizeof(message) >= (vec->messages[index].payload_len + mac_len));
-        memcpy(message, vec->messages[index].payload,
-               vec->messages[index].payload_len);
-        noise_buffer_set_inout(mbuf, message, vec->messages[index].payload_len,
-                               sizeof(message));
-        compare(noise_cipherstate_encrypt(csend, &mbuf),
-                NOISE_ERROR_NONE);
-        compare_blocks("ciphertext", mbuf.data, mbuf.size,
+        verify(sizeof(payload) >= (vec->messages[index].payload_len + mac_len));
+        result = csend->encryptPacket
+            (message, sizeof(message),
+             vec->messages[index].payload, vec->messages[index].payload_len);
+        verify(result >= 0);
+        compare_blocks("ciphertext", message, (size_t)result,
                        vec->messages[index].ciphertext,
                        vec->messages[index].ciphertext_len);
-        compare(noise_cipherstate_decrypt(crecv, &mbuf),
-                NOISE_ERROR_NONE);
-        compare_blocks("plaintext", mbuf.data, mbuf.size,
+        result = crecv->decryptPacket
+            (payload, sizeof(payload), message, result);
+        verify(result >= 0);
+        compare_blocks("plaintext", payload, (size_t)result,
                        vec->messages[index].payload,
                        vec->messages[index].payload_len);
     }
-#endif
 
     /* Clean up */
     delete initiator;
     delete responder;
-
-#if 0
-    compare(noise_cipherstate_free(c1init), NOISE_ERROR_NONE);
-    compare(noise_cipherstate_free(c2init), NOISE_ERROR_NONE);
-    compare(noise_cipherstate_free(c1resp), NOISE_ERROR_NONE);
-    compare(noise_cipherstate_free(c2resp), NOISE_ERROR_NONE);
-#endif
+    delete c1init;
+    delete c2init;
+    delete c1resp;
+    delete c2resp;
 }
 
 /**

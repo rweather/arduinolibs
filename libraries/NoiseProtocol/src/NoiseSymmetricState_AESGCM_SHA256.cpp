@@ -174,16 +174,15 @@ int NoiseSymmetricState_AESGCM_SHA256::decryptAndHash
     if (st.hasKey) {
         if (inputSize < 16 || outputSize < (inputSize - 16))
             return -1;
-        outputSize = inputSize - 16;
         uint8_t iv[12];
         noiseAESGCMFormatIV(iv, st.n);
         cipher.setIV(iv, sizeof(iv));
         cipher.addAuthData(st.h, sizeof(st.h));
         mixHash(input, inputSize);
-        cipher.decrypt(output, input, outputSize);
-        if (cipher.checkTag(input + outputSize, 16)) {
+        cipher.decrypt(output, input, inputSize -16);
+        if (cipher.checkTag(input + inputSize - 16, 16)) {
             ++st.n;
-            return outputSize;
+            return inputSize -16;
         }
         memset(output, 0, outputSize); // Destroy output if tag is incorrect.
         return -1;

@@ -353,7 +353,7 @@ int NoiseHandshakeState::read
  * \return Returns true if the cipher objects were split out, or false if
  * state() is not NoiseHandshakeState::Split.
  *
- * If \a tx or \a rx are NULL, the the respective cipher object will not
+ * If \a tx or \a rx are NULL, then the respective cipher object will not
  * be created.  This is useful for one-way patterns.
  *
  * The application is responsible for destroying the \a tx and \a rx
