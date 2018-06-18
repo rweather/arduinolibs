@@ -1,0 +1,22 @@
+{
+    "name": "NoiseProtocol",
+    "version": "0.2.0",
+    "keywords": "NoiseClient,NoiseServer",
+    "description": "Noise protocol for creating secure sessions",
+    "authors":
+    {
+        "name": "Rhys Weatherley",
+        "email": "rhys.weatherley@gmail.com",
+        "url": "https://rweather.github.io/arduinolibs/crypto.html"
+    },
+    "export": {
+      "include": "libraries/NoiseProtocol"
+    },
+    "repository":
+    {
+        "type": "git",
+        "url": "https://github.com/rweather/arduinolibs.git"
+    },
+    "frameworks": "arduino",
+    "platforms": "*"
+}
