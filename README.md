@@ -24,6 +24,7 @@ Recent significant changes to the library
 
 XXX 2018:
 
+* Problem with BLAKE2s and BLAKE2b HMAC mode when the data was zero-length.
 * KeyRing for storing key pairs and other key material in EEPROM or Flash.
 * Add better functions to Curve25519 and Ed25519 for generating key pairs.
 * Noise and NoiseLink protocols.

@@ -240,7 +240,7 @@ void BLAKE2b::resetHMAC(const void *key, size_t keyLen)
 {
     formatHMACKey(state.m, key, keyLen, 0x36);
     state.lengthLow += 128;
-    processChunk(0);
+    state.chunkSize = 128;
 }
 
 void BLAKE2b::finalizeHMAC(const void *key, size_t keyLen, void *hash, size_t hashLen)
@@ -249,7 +249,7 @@ void BLAKE2b::finalizeHMAC(const void *key, size_t keyLen, void *hash, size_t ha
     finalize(temp, sizeof(temp));
     formatHMACKey(state.m, key, keyLen, 0x5C);
     state.lengthLow += 128;
-    processChunk(0);
+    state.chunkSize = 128;
     update(temp, sizeof(temp));
     finalize(hash, hashLen);
     clean(temp);
