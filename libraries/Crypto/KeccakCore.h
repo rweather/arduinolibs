@@ -49,6 +49,8 @@ public:
 
     void setHMACKey(const void *key, size_t len, uint8_t pad, size_t hashSize);
 
+    void copyFrom(const KeccakCore &other);
+
 private:
     struct {
         uint64_t A[5][5];

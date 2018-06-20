@@ -43,6 +43,8 @@ public:
     void resetHMAC(const void *key, size_t keyLen);
     void finalizeHMAC(const void *key, size_t keyLen, void *hash, size_t hashLen);
 
+    void copyFrom(const SHA1 &other);
+
 private:
     struct {
         uint32_t h[5];

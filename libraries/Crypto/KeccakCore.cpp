@@ -319,6 +319,21 @@ void KeccakCore::setHMACKey(const void *key, size_t len, uint8_t pad, size_t has
 }
 
 /**
+ * \brief Copies the entire Keccak state from another object.
+ *
+ * \param other The other object to copy the state from.
+ *
+ * This function is intended for scenarios where the application needs to
+ * finalize the state to get an intermediate hash value, but must then
+ * continue hashing new data into the original state.
+ */
+void KeccakCore::copyFrom(const KeccakCore &other)
+{
+    state = other.state;
+    _blockSize = other._blockSize;
+}
+
+/**
  * \brief Transform the state with the KECCAK-p sponge function with b = 1600.
  */
 void KeccakCore::keccakp()

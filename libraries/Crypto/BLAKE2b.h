@@ -46,6 +46,8 @@ public:
     void resetHMAC(const void *key, size_t keyLen);
     void finalizeHMAC(const void *key, size_t keyLen, void *hash, size_t hashLen);
 
+    void copyFrom(const BLAKE2b &other);
+
 private:
     struct {
         uint64_t h[8];

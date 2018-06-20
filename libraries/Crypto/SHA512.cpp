@@ -159,6 +159,40 @@ void SHA512::finalizeHMAC(const void *key, size_t keyLen, void *hash, size_t has
 }
 
 /**
+ * \brief Copies the entire hash state from another object.
+ *
+ * \param other The other object to copy the state from.
+ *
+ * This function is intended for scenarios where the application needs to
+ * finalize the state to get an intermediate hash value, but must then
+ * continue hashing new data into the original state.
+ *
+ * In the following example, h1 will be the hash over data1 and h2 will
+ * be the hash over data1 concatenated with data2:
+ *
+ * \code
+ * // Hash the initial data.
+ * SHA512 hash1;
+ * hash1.update(data1, sizeof(data1));
+ *
+ * // Copy the hash state and finalize to create h1.
+ * SHA512 hash2;
+ * hash2.copyFrom(hash1);
+ * hash2.finalize(h1, sizeof(h1));
+ *
+ * // Continue adding data to the original unfinalized hash.
+ * hash1.update(data2, sizeof(data2));
+ *
+ * // Get the final hash value h2.
+ * hash1.finalize(h2, sizeof(h2));
+ * \endcode
+ */
+void SHA512::copyFrom(const SHA512 &other)
+{
+    state = other.state;
+}
+
+/**
  * \brief Processes a single 1024-bit chunk with the core SHA-512 algorithm.
  *
  * Reference: http://en.wikipedia.org/wiki/SHA-2

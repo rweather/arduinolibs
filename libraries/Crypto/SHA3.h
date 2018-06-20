@@ -44,6 +44,8 @@ public:
     void resetHMAC(const void *key, size_t keyLen);
     void finalizeHMAC(const void *key, size_t keyLen, void *hash, size_t hashLen);
 
+    void copyFrom(const SHA3_256 &other);
+
 private:
     KeccakCore core;
 };
@@ -65,6 +67,8 @@ public:
 
     void resetHMAC(const void *key, size_t keyLen);
     void finalizeHMAC(const void *key, size_t keyLen, void *hash, size_t hashLen);
+
+    void copyFrom(const SHA3_512 &other);
 
 private:
     KeccakCore core;
