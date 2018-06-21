@@ -40,13 +40,6 @@ private:
     NoiseDHState_Curve25519 dh;
 };
 
-class Noise_XX_25519_ChaChaPoly_BLAKE2s : public NoiseProtocolDescriptor
-{
-public:
-    Noise_XX_25519_ChaChaPoly_BLAKE2s();
-    virtual ~Noise_XX_25519_ChaChaPoly_BLAKE2s();
-
-    NoiseHandshakeState *createHandshake() const;
-};
+extern const NoiseProtocolDescriptor Noise_XX_25519_ChaChaPoly_BLAKE2s;
 
 #endif

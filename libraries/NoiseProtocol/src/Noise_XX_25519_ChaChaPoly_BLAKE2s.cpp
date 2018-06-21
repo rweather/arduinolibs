@@ -46,16 +46,17 @@ NoiseHandshakeState_XX_25519_ChaChaPoly_BLAKE2s::~NoiseHandshakeState_XX_25519_C
 {
 }
 
-Noise_XX_25519_ChaChaPoly_BLAKE2s::Noise_XX_25519_ChaChaPoly_BLAKE2s()
-    : NoiseProtocolDescriptor(Noise_XX_25519_ChaChaPoly_BLAKE2s_Name, "3")
-{
-}
-
-Noise_XX_25519_ChaChaPoly_BLAKE2s::~Noise_XX_25519_ChaChaPoly_BLAKE2s()
-{
-}
-
-NoiseHandshakeState *Noise_XX_25519_ChaChaPoly_BLAKE2s::createHandshake() const
+static NoiseHandshakeState *Noise_XX_25519_ChaChaPoly_BLAKE2s_createHandshake()
 {
     return new NoiseHandshakeState_XX_25519_ChaChaPoly_BLAKE2s();
 }
+
+/**
+ * \brief Protocol descriptor for "Noise_XX_25519ChaChaPoly_BLAKE2s".
+ */
+const NoiseProtocolDescriptor Noise_XX_25519_ChaChaPoly_BLAKE2s = {
+    NOISE_PROTOCOL_NEEDS_LOCAL_STATIC,
+    Noise_XX_25519_ChaChaPoly_BLAKE2s_Name,
+    "3",
+    Noise_XX_25519_ChaChaPoly_BLAKE2s_createHandshake
+};

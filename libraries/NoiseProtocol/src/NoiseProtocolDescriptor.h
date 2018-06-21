@@ -25,23 +25,29 @@
 
 class NoiseHandshakeState;
 
-class NoiseProtocolDescriptor
+/** Noise Protocol needs a local static key pair to connect */
+#define NOISE_PROTOCOL_NEEDS_LOCAL_STATIC   0x0001
+/** Noise protocol needs a remote static public key to connect */
+#define NOISE_PROTOCOL_NEEDS_REMOTE_STATIC  0x0002
+/** Noise protocol needs a pre-shared symmetric key to connect */
+#define NOISE_PROTOCOL_NEEDS_PSK            0x0004
+
+/**
+ * \brief Structure that provides metadata for Noise protocols.
+ */
+struct NoiseProtocolDescriptor
 {
-public:
-    virtual ~NoiseProtocolDescriptor();
+    /** Flags that define the properties and required keys for the protocol */
+    unsigned flags;
 
-    const char *protocolName() const { return protoName; }
-    const char *protocolAlias() const { return protoAlias; }
+    /** Full Noise protocol name; e.g. "Noise_XX_25519_ChaChaPoly_BLAKE2s" */
+    const char *protocolName;
 
-    virtual NoiseHandshakeState *createHandshake() const = 0;
+    /** NoiseTinyLink alias for the protocol, or NULL if no alias */
+    const char *protocolAlias;
 
-protected:
-    explicit NoiseProtocolDescriptor(const char *name, const char *alias = 0)
-        : protoName(name), protoAlias(alias) {}
-
-private:
-    const char *protoName;
-    const char *protoAlias;
+    /** Function that creates a handshake instance for the protocol */
+    NoiseHandshakeState *(*createHandshake)();
 };
 
 #endif

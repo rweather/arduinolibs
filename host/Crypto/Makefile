@@ -98,7 +98,6 @@ SOURCES += \
 	Noise_NNpsk0_25519_ChaChaPoly_SHA256.cpp \
 	Noise_NNpsk0.cpp \
 	NoiseProtobufs.cpp \
-	NoiseProtocolDescriptor.cpp \
 	NoiseSymmetricState_AESGCM_SHA256.cpp \
 	NoiseSymmetricState_ChaChaPoly_BLAKE2s.cpp \
 	NoiseSymmetricState_ChaChaPoly_SHA256.cpp \

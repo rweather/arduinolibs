@@ -49,4 +49,6 @@ public:
     NoiseHandshakeState *createHandshake() const;
 };
 
+extern const NoiseProtocolDescriptor Noise_NNpsk0_25519_ChaChaPoly_SHA256;
+
 #endif

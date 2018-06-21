@@ -46,16 +46,17 @@ NoiseHandshakeState_IK_25519_AESGCM_SHA256::~NoiseHandshakeState_IK_25519_AESGCM
 {
 }
 
-Noise_IK_25519_AESGCM_SHA256::Noise_IK_25519_AESGCM_SHA256()
-    : NoiseProtocolDescriptor(Noise_IK_25519_AESGCM_SHA256_Name)
-{
-}
-
-Noise_IK_25519_AESGCM_SHA256::~Noise_IK_25519_AESGCM_SHA256()
-{
-}
-
-NoiseHandshakeState *Noise_IK_25519_AESGCM_SHA256::createHandshake() const
+static NoiseHandshakeState *Noise_IK_25519_AESGCM_SHA256_createHandshake()
 {
     return new NoiseHandshakeState_IK_25519_AESGCM_SHA256();
 }
+
+/**
+ * \brief Protocol descriptor for "Noise_IK_25519_AESGCM_SHA256".
+ */
+const NoiseProtocolDescriptor Noise_IK_25519_AESGCM_SHA256 = {
+    NOISE_PROTOCOL_NEEDS_LOCAL_STATIC | NOISE_PROTOCOL_NEEDS_REMOTE_STATIC,
+    Noise_IK_25519_AESGCM_SHA256_Name,
+    0,
+    Noise_IK_25519_AESGCM_SHA256_createHandshake
+};

@@ -46,16 +46,17 @@ NoiseHandshakeState_NNpsk0_25519_ChaChaPoly_SHA256::~NoiseHandshakeState_NNpsk0_
 {
 }
 
-Noise_NNpsk0_25519_ChaChaPoly_SHA256::Noise_NNpsk0_25519_ChaChaPoly_SHA256()
-    : NoiseProtocolDescriptor(Noise_NNpsk0_25519_ChaChaPoly_SHA256_Name)
-{
-}
-
-Noise_NNpsk0_25519_ChaChaPoly_SHA256::~Noise_NNpsk0_25519_ChaChaPoly_SHA256()
-{
-}
-
-NoiseHandshakeState *Noise_NNpsk0_25519_ChaChaPoly_SHA256::createHandshake() const
+static NoiseHandshakeState *Noise_NNpsk0_25519_ChaChaPoly_SHA256_createHandshake()
 {
     return new NoiseHandshakeState_NNpsk0_25519_ChaChaPoly_SHA256();
 }
+
+/**
+ * \brief Protocol descriptor for "Noise_NNps0_25519_ChaChaPoly_SHA256".
+ */
+const NoiseProtocolDescriptor Noise_NNpsk0_25519_ChaChaPoly_SHA256 = {
+    NOISE_PROTOCOL_NEEDS_PSK,
+    Noise_NNpsk0_25519_ChaChaPoly_SHA256_Name,
+    0,
+    Noise_NNpsk0_25519_ChaChaPoly_SHA256_createHandshake
+};

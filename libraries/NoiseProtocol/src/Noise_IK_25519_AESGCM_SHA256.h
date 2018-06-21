@@ -39,13 +39,6 @@ private:
     NoiseDHState_Curve25519 dh;
 };
 
-class Noise_IK_25519_AESGCM_SHA256 : public NoiseProtocolDescriptor
-{
-public:
-    Noise_IK_25519_AESGCM_SHA256();
-    virtual ~Noise_IK_25519_AESGCM_SHA256();
-
-    NoiseHandshakeState *createHandshake() const;
-};
+extern const NoiseProtocolDescriptor Noise_IK_25519_AESGCM_SHA256;
 
 #endif
