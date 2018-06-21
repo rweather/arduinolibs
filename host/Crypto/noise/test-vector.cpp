@@ -250,8 +250,8 @@ static void test_connection(const TestVector *vec)
     /* Should be able to start the handshake now on both sides */
     initiator->start
         (Noise::Initiator, vec->init_prologue, vec->init_prologue_len);
-    responder->start
-        (Noise::Responder, vec->resp_prologue, vec->resp_prologue_len);
+    responder->start(Noise::Responder);
+    responder->addPrologue(vec->resp_prologue, vec->resp_prologue_len);
     compare(initiator->state(), Noise::Write);
     compare(responder->state(), Noise::Read);
 

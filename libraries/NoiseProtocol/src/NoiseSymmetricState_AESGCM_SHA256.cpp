@@ -22,7 +22,6 @@
 
 #include "NoiseSymmetricState_AESGCM_SHA256.h"
 #include "NoiseCipherState_AESGCM.h"
-#include "SHA256.h"
 #include "Crypto.h"
 #include <string.h>
 
@@ -38,6 +37,7 @@ NoiseSymmetricState_AESGCM_SHA256::NoiseSymmetricState_AESGCM_SHA256()
 {
     st.n = 0;
     st.hasKey = false;
+    st.inPrologue = false;
 }
 
 /**
@@ -56,12 +56,15 @@ void NoiseSymmetricState_AESGCM_SHA256::initialize
         memcpy(st.h, protocolName, len);
         memset(st.h + len, 0, 32 - len);
     } else {
-        SHA256 hash;
+        hash.reset();
         hash.update(protocolName, len);
         hash.finalize(st.h, 32);
     }
     memcpy(st.ck, st.h, 32);
     st.hasKey = false;
+    hash.reset();
+    hash.update(st.h, sizeof(st.h));
+    st.inPrologue = true;
 }
 
 bool NoiseSymmetricState_AESGCM_SHA256::hasKey() const
@@ -69,10 +72,20 @@ bool NoiseSymmetricState_AESGCM_SHA256::hasKey() const
     return st.hasKey;
 }
 
+bool NoiseSymmetricState_AESGCM_SHA256::mixPrologue
+    (const void *data, size_t size)
+{
+    if (!st.inPrologue)
+        return false;
+    hash.update(data, size);
+    return true;
+}
+
 void NoiseSymmetricState_AESGCM_SHA256::mixKey
     (const void *data, size_t size)
 {
     uint8_t key[32];
+    endPrologue();
     hmac(key, st.ck, data, size, 0);
     hmac(st.ck, key, 0, 0, 1);
     hmac(key, key, st.ck, 32, 2);
@@ -85,7 +98,8 @@ void NoiseSymmetricState_AESGCM_SHA256::mixKey
 void NoiseSymmetricState_AESGCM_SHA256::mixHash
     (const void *data, size_t size)
 {
-    SHA256 hash;
+    endPrologue();
+    hash.reset();
     hash.update(st.h, sizeof(st.h));
     hash.update(data, size);
     hash.finalize(st.h, sizeof(st.h));
@@ -96,6 +110,7 @@ void NoiseSymmetricState_AESGCM_SHA256::mixKeyAndHash
 {
     uint8_t key[32];
     uint8_t temph[32];
+    endPrologue();
     hmac(key, st.ck, data, size, 0);
     hmac(st.ck, key, 0, 0, 1);
     hmac(temph, key, st.ck, 32, 2);
@@ -111,6 +126,7 @@ void NoiseSymmetricState_AESGCM_SHA256::mixKeyAndHash
 void NoiseSymmetricState_AESGCM_SHA256::getHandshakeHash
     (void *data, size_t size)
 {
+    endPrologue();
     if (size <= 32) {
         memcpy(data, st.h, size);
     } else {
@@ -146,6 +162,7 @@ int NoiseSymmetricState_AESGCM_SHA256::encryptAndHash
     (uint8_t *output, size_t outputSize,
      const uint8_t *input, size_t inputSize)
 {
+    endPrologue();
     if (st.hasKey) {
         if (outputSize < 16 || (outputSize - 16) < inputSize)
             return -1;
@@ -171,6 +188,7 @@ int NoiseSymmetricState_AESGCM_SHA256::decryptAndHash
     (uint8_t *output, size_t outputSize,
      const uint8_t *input, size_t inputSize)
 {
+    endPrologue();
     if (st.hasKey) {
         if (inputSize < 16 || outputSize < (inputSize - 16))
             return -1;
@@ -200,6 +218,7 @@ void NoiseSymmetricState_AESGCM_SHA256::split
 {
     uint8_t k1[32];
     uint8_t k2[32];
+    endPrologue();
     hmac(k2, st.ck, 0, 0, 0);
     hmac(k1, k2, 0, 0, 1);
     hmac(k2, k2, k1, 32, 2);
@@ -213,16 +232,24 @@ void NoiseSymmetricState_AESGCM_SHA256::split
 
 void NoiseSymmetricState_AESGCM_SHA256::clear()
 {
+    cipher.clear();
+    hash.clear();
     clean(st);
     st.n = 0;
     st.hasKey = false;
+    st.inPrologue = false;
+}
+
+void NoiseSymmetricState_AESGCM_SHA256::doEndPrologue()
+{
+    st.inPrologue = false;
+    hash.finalize(st.h, sizeof(st.h));
 }
 
 void NoiseSymmetricState_AESGCM_SHA256::hmac
     (uint8_t *output, const uint8_t *key,
      const void *data, size_t size, uint8_t tag)
 {
-    SHA256 hash;
     hash.resetHMAC(key, 32);
     hash.update(data, size);
     if (tag != 0)

@@ -33,8 +33,8 @@ class NoiseHandshakeState
 public:
     virtual ~NoiseHandshakeState();
 
-    virtual void start
-        (Noise::Party party, const void *prologue = 0, size_t prologueLen = 0);
+    void start(Noise::Party party, const void *prologue = 0, size_t prologueLen = 0);
+    bool addPrologue(const void *prologue, size_t prologueLen);
 
     Noise::Party party() const { return pty; }
     Noise::HandshakeState state() const { return st; }

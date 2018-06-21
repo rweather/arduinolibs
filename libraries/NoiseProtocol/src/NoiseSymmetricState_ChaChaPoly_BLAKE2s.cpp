@@ -23,7 +23,6 @@
 #include "NoiseSymmetricState_ChaChaPoly_BLAKE2s.h"
 #include "NoiseCipherState_ChaChaPoly.h"
 #include "ChaChaPoly.h"
-#include "BLAKE2s.h"
 #include "Crypto.h"
 #include "utility/EndianUtil.h"
 #include <string.h>
@@ -40,6 +39,7 @@ NoiseSymmetricState_ChaChaPoly_BLAKE2s::NoiseSymmetricState_ChaChaPoly_BLAKE2s()
 {
     st.n = 0;
     st.hasKey = false;
+    st.inPrologue = false;
 }
 
 /**
@@ -58,12 +58,15 @@ void NoiseSymmetricState_ChaChaPoly_BLAKE2s::initialize
         memcpy(st.h, protocolName, len);
         memset(st.h + len, 0, 32 - len);
     } else {
-        BLAKE2s hash;
+        hash.reset();
         hash.update(protocolName, len);
         hash.finalize(st.h, 32);
     }
     memcpy(st.ck, st.h, 32);
     st.hasKey = false;
+    hash.reset();
+    hash.update(st.h, sizeof(st.h));
+    st.inPrologue = true;
 }
 
 bool NoiseSymmetricState_ChaChaPoly_BLAKE2s::hasKey() const
@@ -71,9 +74,19 @@ bool NoiseSymmetricState_ChaChaPoly_BLAKE2s::hasKey() const
     return st.hasKey;
 }
 
+bool NoiseSymmetricState_ChaChaPoly_BLAKE2s::mixPrologue
+    (const void *data, size_t size)
+{
+    if (!st.inPrologue)
+        return false;
+    hash.update(data, size);
+    return true;
+}
+
 void NoiseSymmetricState_ChaChaPoly_BLAKE2s::mixKey
     (const void *data, size_t size)
 {
+    endPrologue();
     hmac(st.key, st.ck, data, size, 0);
     hmac(st.ck, st.key, 0, 0, 1);
     hmac(st.key, st.key, st.ck, 32, 2);
@@ -84,7 +97,8 @@ void NoiseSymmetricState_ChaChaPoly_BLAKE2s::mixKey
 void NoiseSymmetricState_ChaChaPoly_BLAKE2s::mixHash
     (const void *data, size_t size)
 {
-    BLAKE2s hash;
+    endPrologue();
+    hash.reset();
     hash.update(st.h, sizeof(st.h));
     hash.update(data, size);
     hash.finalize(st.h, sizeof(st.h));
@@ -94,6 +108,7 @@ void NoiseSymmetricState_ChaChaPoly_BLAKE2s::mixKeyAndHash
     (const void *data, size_t size)
 {
     uint8_t temph[32];
+    endPrologue();
     hmac(st.key, st.ck, data, size, 0);
     hmac(st.ck, st.key, 0, 0, 1);
     hmac(temph, st.key, st.ck, 32, 2);
@@ -107,6 +122,7 @@ void NoiseSymmetricState_ChaChaPoly_BLAKE2s::mixKeyAndHash
 void NoiseSymmetricState_ChaChaPoly_BLAKE2s::getHandshakeHash
     (void *data, size_t size)
 {
+    endPrologue();
     if (size <= 32) {
         memcpy(data, st.h, size);
     } else {
@@ -119,6 +135,7 @@ int NoiseSymmetricState_ChaChaPoly_BLAKE2s::encryptAndHash
     (uint8_t *output, size_t outputSize,
      const uint8_t *input, size_t inputSize)
 {
+    endPrologue();
     if (st.hasKey) {
         if (outputSize < 16 || (outputSize - 16) < inputSize)
             return -1;
@@ -145,6 +162,7 @@ int NoiseSymmetricState_ChaChaPoly_BLAKE2s::decryptAndHash
     (uint8_t *output, size_t outputSize,
      const uint8_t *input, size_t inputSize)
 {
+    endPrologue();
     if (st.hasKey) {
         if (inputSize < 16 || outputSize < (inputSize - 16))
             return -1;
@@ -175,6 +193,7 @@ void NoiseSymmetricState_ChaChaPoly_BLAKE2s::split
 {
     uint8_t k1[32];
     uint8_t k2[32];
+    endPrologue();
     hmac(k2, st.ck, 0, 0, 0);
     hmac(k1, k2, 0, 0, 1);
     hmac(k2, k2, k1, 32, 2);
@@ -188,16 +207,23 @@ void NoiseSymmetricState_ChaChaPoly_BLAKE2s::split
 
 void NoiseSymmetricState_ChaChaPoly_BLAKE2s::clear()
 {
+    hash.clear();
     clean(st);
     st.n = 0;
     st.hasKey = false;
+    st.inPrologue = false;
+}
+
+void NoiseSymmetricState_ChaChaPoly_BLAKE2s::doEndPrologue()
+{
+    st.inPrologue = false;
+    hash.finalize(st.h, sizeof(st.h));
 }
 
 void NoiseSymmetricState_ChaChaPoly_BLAKE2s::hmac
     (uint8_t *output, const uint8_t *key,
      const void *data, size_t size, uint8_t tag)
 {
-    BLAKE2s hash;
     hash.resetHMAC(key, 32);
     hash.update(data, size);
     if (tag != 0)

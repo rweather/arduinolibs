@@ -39,6 +39,8 @@ public:
     virtual bool hasKey() const = 0;
     virtual size_t macLen() const;
 
+    virtual bool mixPrologue(const void *data, size_t size) = 0;
+
     virtual void mixKey(const void *data, size_t size) = 0;
     virtual void mixHash(const void *data, size_t size) = 0;
     virtual void mixKeyAndHash(const void *data, size_t size) = 0;

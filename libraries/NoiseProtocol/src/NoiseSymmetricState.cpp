@@ -73,6 +73,20 @@ size_t NoiseSymmetricState::macLen() const
 }
 
 /**
+ * \fn bool NoiseSymmetricState::mixPrologue(const void *data, size_t size)
+ * \brief Mixes input data into the prologue.
+ *
+ * \param data Points to the data to be mixed in.
+ * \param size Number of bytes to mix in.
+ *
+ * \return Returns true if the data was mixed, or false if the prologue
+ * phase has ended (or never began).
+ *
+ * This function must be called just after initialize and before any
+ * other mixing or encryption operation.
+ */
+
+/**
  * \fn void NoiseSymmetricState::mixKey(const void *data, size_t size)
  * \brief Mixes input data into the chaining key.
  *

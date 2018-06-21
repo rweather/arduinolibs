@@ -26,6 +26,7 @@
 #include "NoiseSymmetricState.h"
 #include "AES.h"
 #include "GCM.h"
+#include "SHA256.h"
 
 class NoiseSymmetricState_AESGCM_SHA256 : public NoiseSymmetricState
 {
@@ -36,6 +37,8 @@ public:
     void initialize(const char *protocolName);
 
     bool hasKey() const;
+
+    bool mixPrologue(const void *data, size_t size);
 
     void mixKey(const void *data, size_t size);
     void mixHash(const void *data, size_t size);
@@ -56,15 +59,20 @@ public:
 
 private:
     GCM<AES256> cipher;
+    SHA256 hash;
     struct {
         uint8_t ck[32];
         uint8_t h[32];
         uint64_t n;
         bool hasKey;
+        bool inPrologue;
     } st;
 
-    static void hmac(uint8_t *output, const uint8_t *key,
-                     const void *data, size_t size, uint8_t tag);
+    void doEndPrologue();
+    void endPrologue() { if (st.inPrologue) doEndPrologue(); }
+
+    void hmac(uint8_t *output, const uint8_t *key,
+              const void *data, size_t size, uint8_t tag);
 };
 
 #endif

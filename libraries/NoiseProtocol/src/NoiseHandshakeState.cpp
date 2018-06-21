@@ -85,7 +85,11 @@ NoiseHandshakeState::~NoiseHandshakeState()
  * the application should call split() to obtain the cipher objects to use
  * to encrypt and decrypt transport messages.
  *
- * \sa state(), write(), read(), split()
+ * If the prologue is split into multiple sections, then start() can be
+ * followed by calls to addPrologue() to add the additional sections
+ * prior to calling write() or read() for the first time.
+ *
+ * \sa state(), write(), read(), split(), addPrologue()
  */
 void NoiseHandshakeState::start
     (Noise::Party party, const void *prologue, size_t prologueLen)
@@ -95,7 +99,26 @@ void NoiseHandshakeState::start
     msgnum = 0;
     removeKeys();
     symmetricState()->initialize(protoName);
-    symmetricState()->mixHash(prologue, prologueLen);
+    symmetricState()->mixPrologue(prologue, prologueLen);
+}
+
+/**
+ * \brief Adds additional prologue data to the handshake.
+ *
+ * \param prologue Points to the additional prologue data.
+ * \param prologueLen Length of the prologue additional data in bytes.
+ *
+ * \return Returns true if the data was added, or false if the handshake
+ * is not in the state just after start().  Once the first write() or read()
+ * occurs, no further prologue data can be added.
+ *
+ * \sa start()
+ */
+bool NoiseHandshakeState::addPrologue(const void *prologue, size_t prologueLen)
+{
+    if (st != Noise::Write && st != Noise::Read)
+        return false;
+    return symmetricState()->mixPrologue(prologue, prologueLen);
 }
 
 /**
