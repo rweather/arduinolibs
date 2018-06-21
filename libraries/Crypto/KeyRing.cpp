@@ -196,6 +196,17 @@ KeyRingClass KeyRing;
  * primary remote device that this device will be communicating with.
  */
 
+/**
+ * \var KeyRingClass::EthernetMACAddress
+ * \brief Identifier for storing a generated MAC address into the other
+ * data section of the key ring.
+ *
+ * When using the Arduino Ethernet library, the MAC address needs to be
+ * provided in the sketch.  This identifier provides a convenient place
+ * to store the MAC address if you want to generate it randomly instead
+ * of specifying a fixed value.
+ */
+
 /** @cond mantis8 */
 
 // 32-bit version of Mantis-8, extracted from the Skinny-C repository:

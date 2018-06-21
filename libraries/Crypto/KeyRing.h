@@ -65,6 +65,8 @@ public:
     static const uint16_t LocalEd25519Default = 0x4501;     // 'E', 0x01
     static const uint16_t RemoteEd25519Default = 0x6501;    // 'e', 0x01
 
+    static const uint16_t EthernetMACAddress = 0x4D01;      // 'M', 0x01
+
 private:
     static const size_t ChunkSize = 36;
 
