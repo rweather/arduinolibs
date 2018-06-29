@@ -56,6 +56,7 @@ static NoiseHandshakeState *Noise_NNpsk0_25519_AESGCM_SHA256_createHandshake()
  */
 const NoiseProtocolDescriptor Noise_NNpsk0_25519_AESGCM_SHA256 = {
     NOISE_PROTOCOL_NEEDS_PSK,
+    NOISE_PROTOCOL_NEEDS_PSK,
     Noise_NNpsk0_25519_AESGCM_SHA256_Name,
     0,
     Noise_NNpsk0_25519_AESGCM_SHA256_createHandshake

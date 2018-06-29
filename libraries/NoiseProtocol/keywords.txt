@@ -1,2 +1,6 @@
 NoiseClient	KEYWORD1
+NoiseEthernetClient	KEYWORD1
+NoiseWiFiClient	KEYWORD1
 NoiseServer	KEYWORD1
+NoiseEthernetServer	KEYWORD1
+NoiseWiFiServer	KEYWORD1

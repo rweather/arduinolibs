@@ -37,8 +37,13 @@ class NoiseHandshakeState;
  */
 struct NoiseProtocolDescriptor
 {
-    /** Flags that define the properties and required keys for the protocol */
-    unsigned flags;
+    /** Flags that define the properties and required keys for the protocol
+     *  when the handshake is created from the initiator side. */
+    unsigned short initiatorFlags;
+
+    /** Flags that define the properties and required keys for the protocol
+     *  when the handshake is created from the responder side. */
+    unsigned short responderFlags;
 
     /** Full Noise protocol name; e.g. "Noise_XX_25519_ChaChaPoly_BLAKE2s" */
     const char *protocolName;

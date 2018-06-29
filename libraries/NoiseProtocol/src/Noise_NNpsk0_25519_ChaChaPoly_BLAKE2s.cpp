@@ -56,6 +56,7 @@ static NoiseHandshakeState *Noise_NNpsk0_25519_ChaChaPoly_BLAKE2s_createHandshak
  */
 const NoiseProtocolDescriptor Noise_NNpsk0_25519_ChaChaPoly_BLAKE2s = {
     NOISE_PROTOCOL_NEEDS_PSK,
+    NOISE_PROTOCOL_NEEDS_PSK,
     Noise_NNpsk0_25519_ChaChaPoly_BLAKE2s_Name,
     0,
     Noise_NNpsk0_25519_ChaChaPoly_BLAKE2s_createHandshake

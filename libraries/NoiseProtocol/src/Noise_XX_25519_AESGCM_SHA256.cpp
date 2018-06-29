@@ -56,6 +56,7 @@ static NoiseHandshakeState *Noise_XX_25519_AESGCM_SHA256_createHandshake()
  */
 const NoiseProtocolDescriptor Noise_XX_25519_AESGCM_SHA256 = {
     NOISE_PROTOCOL_NEEDS_LOCAL_STATIC,
+    NOISE_PROTOCOL_NEEDS_LOCAL_STATIC,
     Noise_XX_25519_AESGCM_SHA256_Name,
     "1",
     Noise_XX_25519_AESGCM_SHA256_createHandshake

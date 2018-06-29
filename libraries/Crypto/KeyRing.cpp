@@ -197,6 +197,11 @@ KeyRingClass KeyRing;
  */
 
 /**
+ * \var KeyRingClass::PreSharedKeyDefault
+ * \brief Identifier for the default pre-shared symmetric key for the device.
+ */
+
+/**
  * \var KeyRingClass::EthernetMACAddress
  * \brief Identifier for storing a generated MAC address into the other
  * data section of the key ring.

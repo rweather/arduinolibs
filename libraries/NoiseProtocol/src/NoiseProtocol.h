@@ -37,4 +37,7 @@
 #include "Noise_XX_25519_ChaChaPoly_BLAKE2s.h"
 #include "Noise_XX_25519_ChaChaPoly_SHA256.h"
 
+#include "NoiseClient.h"
+#include "NoiseServer.h"
+
 #endif

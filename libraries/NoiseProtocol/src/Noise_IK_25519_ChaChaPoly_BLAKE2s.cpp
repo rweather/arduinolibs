@@ -56,6 +56,7 @@ static NoiseHandshakeState *Noise_IK_25519_ChaChaPoly_BLAKE2s_createHandshake()
  */
 const NoiseProtocolDescriptor Noise_IK_25519_ChaChaPoly_BLAKE2s = {
     NOISE_PROTOCOL_NEEDS_LOCAL_STATIC | NOISE_PROTOCOL_NEEDS_REMOTE_STATIC,
+    NOISE_PROTOCOL_NEEDS_LOCAL_STATIC,
     Noise_IK_25519_ChaChaPoly_BLAKE2s_Name,
     0,
     Noise_IK_25519_ChaChaPoly_BLAKE2s_createHandshake

@@ -1,7 +1,7 @@
 {
     "name": "NoiseProtocol",
     "version": "0.2.0",
-    "keywords": "NoiseClient,NoiseServer",
+    "keywords": "NoiseClient,NoiseServer,NoiseEthernetClient,NoiseEthernetServer,NoiseWiFiClient,NoiseWiFiServer",
     "description": "Noise protocol for creating secure sessions",
     "authors":
     {

@@ -23,8 +23,10 @@
 #ifndef NOISE_NAMESPACE_h
 #define NOISE_NAMESPACE_h
 
-#include <inttypes.h>
-
+/**
+ * \namespace Noise
+ * \brief Common definitions for the Noise protocol.
+ */
 namespace Noise
 {
     /**
@@ -75,6 +77,28 @@ namespace Noise
         LocalEphem25519PrivateKey  = 205, /**< Local ephemeral Curve25519 private key */
         LocalEphem25519PublicKey   = 206, /**< Local ephemeral Curve25519 public key */
         RemoteEphem25519PublicKey  = 207  /**< Remote ephemeral Curve25519 public key */
+    };
+
+    /**
+     * \brief Type of padding to apply to plaintext before encryption.
+     */
+    enum Padding
+    {
+        NoPadding,      /**< No padding */
+        ZeroPadding,    /**< Pad with zeroes to the maximum length */
+        RandomPadding   /**< Pad with random data to the maximum length */
+    };
+
+    /**
+     * \brief Status of a NoiseClient connection.
+     */
+    enum ConnectionStatus
+    {
+        Closed,         /**< Connection is closed or session hasn't started */
+        Connecting,     /**< Connecting, handshake is not complete yet */
+        Connected,      /**< Connected, ready to transmit/receive data */
+        Closing,        /**< Connection is closing, but still unread data */
+        HandshakeFailed /**< Failed to establish a secure connection */
     };
 
 }; // namespace Noise
