@@ -33,7 +33,7 @@
  */
 
 /**
- * \brief Constructs a SHA-256 hash object.
+ * \brief Constructs a SHA-224 hash object.
  */
 SHA224::SHA224()
 {
