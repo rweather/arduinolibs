@@ -27,7 +27,7 @@
  * \class Hash Hash.h <Hash.h>
  * \brief Abstract base class for cryptographic hash algorithms.
  *
- * \sa SHA256, SHA3_256, BLAKE2s
+ * \sa SHA224, SHA256, SHA3_256, BLAKE2s
  */
 
 /**

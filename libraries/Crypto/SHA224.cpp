@@ -20,38 +20,41 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-#ifndef CRYPTO_SHA256_h
-#define CRYPTO_SHA256_h
+#include "SHA224.h"
+#include "Crypto.h"
 
-#include "Hash.h"
+/**
+ * \class SHA224 SHA224.h <SHA224.h>
+ * \brief SHA-224 hash algorithm.
+ *
+ * Reference: http://en.wikipedia.org/wiki/SHA-2
+ *
+ * \sa SHA256, SHA512, SHA3_256, BLAKE2s
+ */
 
-class SHA256 : public Hash
+/**
+ * \brief Constructs a SHA-256 hash object.
+ */
+SHA224::SHA224()
 {
-public:
-    SHA256();
-    virtual ~SHA256();
+    reset();
+}
 
-    size_t hashSize() const;
-    size_t blockSize() const;
+size_t SHA224::hashSize() const
+{
+    return 28;
+}
 
-    void reset();
-    void update(const void *data, size_t len);
-    void finalize(void *hash, size_t len);
-
-    void clear();
-
-    void resetHMAC(const void *key, size_t keyLen);
-    void finalizeHMAC(const void *key, size_t keyLen, void *hash, size_t hashLen);
-
-protected:
-    struct {
-        uint32_t h[8];
-        uint32_t w[16];
-        uint64_t length;
-        uint8_t chunkSize;
-    } state;
-
-    void processChunk();
-};
-
-#endif
+void SHA224::reset()
+{
+    state.h[0] = 0xc1059ed8;
+    state.h[1] = 0x367cd507;
+    state.h[2] = 0x3070dd17;
+    state.h[3] = 0xf70e5939;
+    state.h[4] = 0xffc00b31;
+    state.h[5] = 0x68581511;
+    state.h[6] = 0x64f98fa7;
+    state.h[7] = 0xbefa4fa4;
+    state.chunkSize = 0;
+    state.length = 0;
+}

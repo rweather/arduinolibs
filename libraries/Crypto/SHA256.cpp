@@ -33,7 +33,7 @@
  *
  * Reference: http://en.wikipedia.org/wiki/SHA-2
  *
- * \sa SHA512, SHA3_256, BLAKE2s
+ * \sa SHA224, SHA512, SHA3_256, BLAKE2s
  */
 
 /**
@@ -125,8 +125,9 @@ void SHA256::finalize(void *hash, size_t len)
         state.w[posn] = htobe32(state.h[posn]);
 
     // Copy the hash to the caller's return buffer.
-    if (len > 32)
-        len = 32;
+    size_t maxHashSize = hashSize();
+    if (len > maxHashSize)
+        len = maxHashSize;
     memcpy(hash, state.w, len);
 }
 
@@ -150,7 +151,7 @@ void SHA256::finalizeHMAC(const void *key, size_t keyLen, void *hash, size_t has
     formatHMACKey(state.w, key, keyLen, 0x5C);
     state.length += 64 * 8;
     processChunk();
-    update(temp, sizeof(temp));
+    update(temp, hashSize());
     finalize(hash, hashLen);
     clean(temp);
 }
