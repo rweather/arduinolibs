@@ -67,6 +67,7 @@ SOURCES =   \
         RNG_host.cpp \
 	SHA1.cpp \
 	SHA256.cpp \
+	SHA384.cpp \
 	SHA3.cpp \
 	SHA512.cpp \
 	SHAKE.cpp \
@@ -103,6 +104,7 @@ SKETCHES = \
 	TestPoly1305/TestPoly1305.ino \
 	TestSHA1/TestSHA1.ino \
 	TestSHA256/TestSHA256.ino \
+	TestSHA384/TestSHA384.ino \
 	TestSHA3_256/TestSHA3_256.ino \
 	TestSHA3_512/TestSHA3_512.ino \
 	TestSHA512/TestSHA512.ino \

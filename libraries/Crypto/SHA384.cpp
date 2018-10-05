@@ -20,43 +20,42 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-#ifndef CRYPTO_SHA512_h
-#define CRYPTO_SHA512_h
+#include "SHA384.h"
+#include "Crypto.h"
+#include "utility/ProgMemUtil.h"
 
-#include "Hash.h"
 
-class Ed25519;
+/**
+ * \class SHA384 SHA384.h <SHA384.h>
+ * \brief SHA-384 hash algorithm.
+ *
+ * Reference: http://en.wikipedia.org/wiki/SHA-2
+ *
+ * \sa SHA256, SHA512, SHA3_256, BLAKE2s
+ */
 
-class SHA512 : public Hash
+/**
+ * \brief Constructs a SHA-384 hash object.
+ */
+SHA384::SHA384()
 {
-public:
-    SHA512();
-    virtual ~SHA512();
+    reset();
+}
 
-    size_t hashSize() const;
-    size_t blockSize() const;
+size_t SHA384::hashSize() const
+{
+    return 48;
+}
 
-    void reset();
-    void update(const void *data, size_t len);
-    void finalize(void *hash, size_t len);
-
-    void clear();
-
-    void resetHMAC(const void *key, size_t keyLen);
-    void finalizeHMAC(const void *key, size_t keyLen, void *hash, size_t hashLen);
-
-protected:
-    struct {
-        uint64_t h[8];
-        uint64_t w[16];
-        uint64_t lengthLow;
-        uint64_t lengthHigh;
-        uint8_t chunkSize;
-    } state;
-
-    void processChunk();
-
-    friend class Ed25519;
-};
-
-#endif
+void SHA384::reset()
+{
+    static uint64_t const hashStart[8] PROGMEM = {
+        0xcbbb9d5dc1059ed8ULL, 0x629a292a367cd507ULL, 0x9159015a3070dd17ULL,
+        0x152fecd8f70e5939ULL, 0x67332667ffc00b31ULL, 0x8eb44a8768581511ULL,
+        0xdb0c2e0d64f98fa7ULL, 0x47b5481dbefa4fa4ULL
+    };
+    memcpy_P(state.h, hashStart, sizeof(hashStart));
+    state.chunkSize = 0;
+    state.lengthLow = 0;
+    state.lengthHigh = 0;
+}

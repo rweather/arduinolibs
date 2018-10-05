@@ -128,8 +128,9 @@ void SHA512::finalize(void *hash, size_t len)
         state.w[posn] = htobe64(state.h[posn]);
 
     // Copy the hash to the caller's return buffer.
-    if (len > 64)
-        len = 64;
+    size_t maxHashSize = hashSize();
+    if (len > maxHashSize)
+        len = maxHashSize;
     memcpy(hash, state.w, len);
 }
 
@@ -153,7 +154,7 @@ void SHA512::finalizeHMAC(const void *key, size_t keyLen, void *hash, size_t has
     formatHMACKey(state.w, key, keyLen, 0x5C);
     state.lengthLow += 128 * 8;
     processChunk();
-    update(temp, sizeof(temp));
+    update(temp, hashSize());
     finalize(hash, hashLen);
     clean(temp);
 }

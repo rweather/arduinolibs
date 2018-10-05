@@ -33,7 +33,7 @@
  *
  * Reference: http://en.wikipedia.org/wiki/SHA-2
  *
- * \sa SHA512, SHA3_256, BLAKE2s
+ * \sa SHA384, SHA512, SHA3_256, BLAKE2s
  */
 
 /**
