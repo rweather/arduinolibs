@@ -24,8 +24,8 @@
 #include "NoiseSource.h"
 #include "ChaCha.h"
 #include "Crypto.h"
-#include "utility/ProgMemUtil.h"
 #include <Arduino.h>
+#include "utility/ProgMemUtil.h"
 #if defined (__arm__) && defined (__SAM3X8E__)
 // The Arduino Due does not have any EEPROM natively on the main chip.
 // However, it does have a TRNG and flash memory.
@@ -571,7 +571,7 @@ void RNGClass::rand(uint8_t *data, size_t len)
         begin(0);
 
     // Decrease the amount of entropy in the pool.
-    if (len > (credits / 8u))
+    if ( (uint16_t)len > (credits / 8))
         credits = 0;
     else
         credits -= len * 8;
@@ -662,7 +662,7 @@ bool RNGClass::available(size_t len) const
     if (len >= (RNG_MAX_CREDITS / 8))
         return credits >= RNG_MAX_CREDITS;
     else
-        return len <= (credits / 8u);
+        return (uint16_t)len <= (credits / 8);
 }
 
 /**
@@ -695,7 +695,7 @@ void RNGClass::stir(const uint8_t *data, size_t len, unsigned int credit)
     // Increase the entropy credit.
     if ((credit / 8) >= len && len)
         credit = len * 8;
-    if ((RNG_MAX_CREDITS - credits) > credit)
+    if ((uint16_t)(RNG_MAX_CREDITS - credits) > credit)
         credits += credit;
     else
         credits = RNG_MAX_CREDITS;

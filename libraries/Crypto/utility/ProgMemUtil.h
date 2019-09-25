@@ -42,11 +42,21 @@
 #else
 #include <string.h>
 #define PROGMEM
-#define pgm_read_byte(x)    (*(x))
-#define pgm_read_word(x)    (*(x))
-#define pgm_read_dword(x)   (*(x))
-#define pgm_read_qword(x)   (*(x))
-#define memcpy_P(d,s,l)     memcpy((d), (s), (l))
+#ifndef pgm_read_byte
+# define pgm_read_byte(x)    (*(x))
+#endif
+#ifndef pgm_read_word
+# define pgm_read_word(x)    (*(x))
+#endif
+#ifndef pgm_read_dword
+# define pgm_read_dword(x)   (*(x))
+#endif
+#ifndef pgm_read_qword
+# define pgm_read_qword(x)   (*(x))
+#endif
+#ifndef memcpy_P
+# define memcpy_P(d,s,l)     memcpy((d), (s), (l))
+#endif
 #endif
 
 #endif
