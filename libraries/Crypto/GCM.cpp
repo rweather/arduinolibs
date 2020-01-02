@@ -302,7 +302,7 @@ void GCMCommon::clear()
  * gcm.setKey(key, sizeof(key));
  * gcm.setIV(iv, sizeof(iv));
  * gcm.addAuthData(adata, sizeof(adata));
- * gcm.decrypt(ciphertext, plaintext, sizeof(plaintext));
+ * gcm.decrypt(plaintext, ciphertext, sizeof(ciphertext));
  * if (!gcm.checkTag(tag, sizeof(tag))) {
  *     // The data was invalid - do not use it.
  *     ...
