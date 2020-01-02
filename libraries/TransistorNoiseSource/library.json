@@ -1,7 +1,7 @@
 {
     "name": "TransistorNoiseSource",
     "version": "0.2.0",
-    "keywords": "TransistorNoiseSource"
+    "keywords": "TransistorNoiseSource",
     "description": "Transisitor noise source for the Arduino Cryptography Library",
     "authors":
     {
