@@ -6,7 +6,7 @@ This distribution contains a libraries and example applications to perform
 cryptography operations on Arduino devices.  They are distributed under the
 terms of the MIT license.
 
-The [documentation](http://rweather.github.com/arduinolibs/crypto.html)
+The [documentation](http://rweather.github.io/arduinolibs/crypto.html)
 contains more information on the libraries and examples.
 
 This repository used to contain a number of other examples and libraries
