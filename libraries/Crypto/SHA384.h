@@ -20,43 +20,19 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-#ifndef CRYPTO_SHA512_h
-#define CRYPTO_SHA512_h
+#ifndef CRYPTO_SHA384_h
+#define CRYPTO_SHA384_h
 
-#include "Hash.h"
+#include "SHA512.h"
 
-class Ed25519;
-
-class SHA512 : public Hash
+class SHA384 : public SHA512
 {
 public:
-    SHA512();
-    virtual ~SHA512();
+    SHA384();
 
     size_t hashSize() const;
-    size_t blockSize() const;
 
     void reset();
-    void update(const void *data, size_t len);
-    void finalize(void *hash, size_t len);
-
-    void clear();
-
-    void resetHMAC(const void *key, size_t keyLen);
-    void finalizeHMAC(const void *key, size_t keyLen, void *hash, size_t hashLen);
-
-protected:
-    struct {
-        uint64_t h[8];
-        uint64_t w[16];
-        uint64_t lengthLow;
-        uint64_t lengthHigh;
-        uint8_t chunkSize;
-    } state;
-
-    void processChunk();
-
-    friend class Ed25519;
 };
 
 #endif

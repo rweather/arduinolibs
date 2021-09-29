@@ -32,7 +32,7 @@
  *
  * Reference: http://en.wikipedia.org/wiki/SHA-1
  *
- * \sa SHA256, SHA512
+ * \sa SHA256, SHA384, SHA512
  */
 
 /**
