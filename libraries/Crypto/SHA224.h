@@ -20,38 +20,19 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-#ifndef CRYPTO_SHA256_h
-#define CRYPTO_SHA256_h
+#ifndef CRYPTO_SHA224_h
+#define CRYPTO_SHA224_h
 
-#include "Hash.h"
+#include "SHA256.h"
 
-class SHA256 : public Hash
+class SHA224 : public SHA256
 {
 public:
-    SHA256();
-    virtual ~SHA256();
+    SHA224();
 
     size_t hashSize() const;
-    size_t blockSize() const;
 
     void reset();
-    void update(const void *data, size_t len);
-    void finalize(void *hash, size_t len);
-
-    void clear();
-
-    void resetHMAC(const void *key, size_t keyLen);
-    void finalizeHMAC(const void *key, size_t keyLen, void *hash, size_t hashLen);
-
-protected:
-    struct {
-        uint32_t h[8];
-        uint32_t w[16];
-        uint64_t length;
-        uint8_t chunkSize;
-    } state;
-
-    void processChunk();
 };
 
 #endif
