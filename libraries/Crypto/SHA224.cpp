@@ -33,6 +33,16 @@
  */
 
 /**
+ * \var SHA224::HASH_SIZE
+ * \brief Constant for the size of the hash output of SHA224.
+ */
+
+/**
+ * \var SHA224::BLOCK_SIZE
+ * \brief Constant for the block size of SHA224.
+ */
+
+/**
  * \brief Constructs a SHA-224 hash object.
  */
 SHA224::SHA224()

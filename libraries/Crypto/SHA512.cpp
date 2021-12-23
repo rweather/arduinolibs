@@ -37,6 +37,16 @@
  */
 
 /**
+ * \var SHA512::HASH_SIZE
+ * \brief Constant for the size of the hash output of SHA512.
+ */
+
+/**
+ * \var SHA512::BLOCK_SIZE
+ * \brief Constant for the block size of SHA512.
+ */
+
+/**
  * \brief Constructs a SHA-512 hash object.
  */
 SHA512::SHA512()

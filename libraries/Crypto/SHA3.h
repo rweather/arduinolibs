@@ -44,6 +44,9 @@ public:
     void resetHMAC(const void *key, size_t keyLen);
     void finalizeHMAC(const void *key, size_t keyLen, void *hash, size_t hashLen);
 
+    static const size_t HASH_SIZE  = 32;
+    static const size_t BLOCK_SIZE = 136;
+
 private:
     KeccakCore core;
 };
@@ -65,6 +68,9 @@ public:
 
     void resetHMAC(const void *key, size_t keyLen);
     void finalizeHMAC(const void *key, size_t keyLen, void *hash, size_t hashLen);
+
+    static const size_t HASH_SIZE  = 64;
+    static const size_t BLOCK_SIZE = 72;
 
 private:
     KeccakCore core;

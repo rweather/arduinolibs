@@ -37,6 +37,16 @@
  */
 
 /**
+ * \var SHA256::HASH_SIZE
+ * \brief Constant for the size of the hash output of SHA256.
+ */
+
+/**
+ * \var SHA256::BLOCK_SIZE
+ * \brief Constant for the block size of SHA256.
+ */
+
+/**
  * \brief Constructs a SHA-256 hash object.
  */
 SHA256::SHA256()

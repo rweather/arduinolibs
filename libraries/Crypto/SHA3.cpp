@@ -33,6 +33,16 @@
  */
 
 /**
+ * \var SHA3_256::HASH_SIZE
+ * \brief Constant for the size of the hash output of SHA3-256.
+ */
+
+/**
+ * \var SHA3_256::BLOCK_SIZE
+ * \brief Constant for the block size of SHA3-256.
+ */
+
+/**
  * \brief Constructs a new SHA3-256 hash object.
  */
 SHA3_256::SHA3_256()
@@ -102,6 +112,16 @@ void SHA3_256::finalizeHMAC(const void *key, size_t keyLen, void *hash, size_t h
  * Reference: http://en.wikipedia.org/wiki/SHA-3
  *
  * \sa SHA3_256
+ */
+
+/**
+ * \var SHA3_512::HASH_SIZE
+ * \brief Constant for the size of the hash output of SHA3-512.
+ */
+
+/**
+ * \var SHA3_512::BLOCK_SIZE
+ * \brief Constant for the block size of SHA3-512.
  */
 
 /**

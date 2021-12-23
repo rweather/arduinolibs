@@ -70,6 +70,16 @@
  */
 
 /**
+ * \var BLAKE2s::HASH_SIZE
+ * \brief Constant for the size of the hash output of BLAKE2s.
+ */
+
+/**
+ * \var BLAKE2s::BLOCK_SIZE
+ * \brief Constant for the block size of BLAKE2s.
+ */
+
+/**
  * \brief Constructs a BLAKE2s hash object.
  */
 BLAKE2s::BLAKE2s()

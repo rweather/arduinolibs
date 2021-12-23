@@ -35,6 +35,16 @@
  */
 
 /**
+ * \var SHA384::HASH_SIZE
+ * \brief Constant for the size of the hash output of SHA384.
+ */
+
+/**
+ * \var SHA384::BLOCK_SIZE
+ * \brief Constant for the block size of SHA384.
+ */
+
+/**
  * \brief Constructs a SHA-384 hash object.
  */
 SHA384::SHA384()

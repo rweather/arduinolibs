@@ -33,6 +33,8 @@ public:
     size_t hashSize() const;
 
     void reset();
+
+    static const size_t HASH_SIZE = 28;
 };
 
 #endif

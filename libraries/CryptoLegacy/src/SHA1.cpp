@@ -36,6 +36,16 @@
  */
 
 /**
+ * \var SHA1::HASH_SIZE
+ * \brief Constant for the size of the hash output of SHA1.
+ */
+
+/**
+ * \var SHA1::BLOCK_SIZE
+ * \brief Constant for the block size of SHA1.
+ */
+
+/**
  * \brief Constructs a SHA-1 hash object.
  */
 SHA1::SHA1()
