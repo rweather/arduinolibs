@@ -48,4 +48,14 @@ protected:
     void formatHMACKey(void *block, const void *key, size_t len, uint8_t pad);
 };
 
+template <typename T> void hmac
+    (void *out, size_t outLen, const void *key, size_t keyLen,
+     const void *data, size_t dataLen)
+{
+    T context;
+    context.resetHMAC(key, keyLen);
+    context.update(data, dataLen);
+    context.finalizeHMAC(key, keyLen, out, outLen);
+}
+
 #endif

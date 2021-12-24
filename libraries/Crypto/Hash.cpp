@@ -178,3 +178,25 @@ void Hash::formatHMACKey(void *block, const void *key, size_t len, uint8_t pad)
         --len;
     }
 }
+
+/**
+ * \fn void hmac<T>(void *out, size_t outLen, const void *key, size_t keyLen, const void *data, size_t dataLen)
+ * \brief All-in-one convenience function for computing HMAC values.
+ *
+ * \param out Points to the buffer to receive the output HMAC value.
+ * \param outLen Length of the buffer to receive the output HMAC value.
+ * \param key Points to the HMAC key for the hashing process.
+ * \param keyLen Length of the HMAC \a key in bytes.
+ * \param data Points to the data to hash under the HMAC \a key.
+ * \param dataLen Length of the input \a data in bytes.
+ *
+ * This is a convenience function for computing a HMAC value over a block
+ * of input data under a given key.  The template argument T must be the
+ * name of a class that inherits from Hash.  The following example
+ * computes a HMAC value using the SHA256 hash algorithm:
+ *
+ * \code
+ * uint8_t out[SHA256::HASH_SIZE];
+ * hmac<SHA256>(out, sizeof(out), key, keyLen, data, dataLen);
+ * \endcode
+ */

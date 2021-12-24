@@ -198,6 +198,13 @@ void testHMAC(Hash *hash, const struct TestHashVector *test)
     hash->update(test->data, strlen(test->data));
     hash->finalizeHMAC(test->key, strlen(test->key), result, sizeof(result));
 
+    // If the first test passed, then try the all-in-one function too.
+    if (!memcmp(result, test->hash, HASH_SIZE)) {
+        memset(result, 0xAA, sizeof(result));
+        hmac<SHA256>(result, HASH_SIZE, test->key, strlen(test->key),
+                     test->data, strlen(test->data));
+    }
+
     if (!memcmp(result, test->hash, HASH_SIZE))
         Serial.println("Passed");
     else
