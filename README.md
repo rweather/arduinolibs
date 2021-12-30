@@ -22,6 +22,11 @@ improvements, please contact the author Rhys Weatherley via
 Recent significant changes to the library
 -----------------------------------------
 
+Jan 2022:
+
+* All-in-one hmac() function in Hash.h for simplified HMAC computations.
+* New API for the HKDF hash-based key derivation function.
+
 Apr 2018:
 
 * Acorn128 and Ascon128 authenticated ciphers (finalists in the CAESAR AEAD

@@ -57,6 +57,7 @@ SOURCES =   \
 	GF128.cpp \
 	GHASH.cpp \
 	Hash.cpp \
+        HKDF.cpp \
 	KeccakCore.cpp \
         NewHope.cpp \
 	NoiseSource.cpp \
@@ -96,6 +97,7 @@ SKETCHES = \
 	TestCurve25519Math/TestCurve25519Math.ino \
 	TestEAX/TestEAX.ino \
 	TestEd25519/TestEd25519.ino \
+	TestHKDF/TestHKDF.ino \
 	TestGCM/TestGCM.ino \
 	TestGHASH/TestGHASH.ino \
 	TestNewHope/TestNewHope.ino \
