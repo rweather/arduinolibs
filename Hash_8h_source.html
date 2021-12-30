@@ -137,7 +137,17 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classHash.html#ab6f40c9af91dc3d738d9fcce59af63cc">formatHMACKey</a>(<span class="keywordtype">void</span> *block, <span class="keyword">const</span> <span class="keywordtype">void</span> *key, <span class="keywordtype">size_t</span> len, uint8_t pad);</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;};</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <span class="keywordtype">void</span> hmac</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    (<span class="keywordtype">void</span> *out, <span class="keywordtype">size_t</span> outLen, <span class="keyword">const</span> <span class="keywordtype">void</span> *key, <span class="keywordtype">size_t</span> keyLen,</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;     <span class="keyword">const</span> <span class="keywordtype">void</span> *data, <span class="keywordtype">size_t</span> dataLen)</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;{</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    T context;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    context.resetHMAC(key, keyLen);</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    context.update(data, dataLen);</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    context.finalizeHMAC(key, keyLen, out, outLen);</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;}</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="ttc" id="classHash_html_a4e4297812e3483410556830fe5d47bdf"><div class="ttname"><a href="classHash.html#a4e4297812e3483410556830fe5d47bdf">Hash::blockSize</a></div><div class="ttdeci">virtual size_t blockSize() const =0</div><div class="ttdoc">Size of the internal block used by the hash algorithm. </div></div>
 <div class="ttc" id="classHash_html_a4a959469433cd9348ab7f3ac6228bb34"><div class="ttname"><a href="classHash.html#a4a959469433cd9348ab7f3ac6228bb34">Hash::clear</a></div><div class="ttdeci">virtual void clear()=0</div><div class="ttdoc">Clears the hash state, removing all sensitive data, and then resets the hash ready for a new hashing ...</div></div>
 <div class="ttc" id="classHash_html_af482880ad75b67a09d2dcb5e86244d80"><div class="ttname"><a href="classHash.html#af482880ad75b67a09d2dcb5e86244d80">Hash::Hash</a></div><div class="ttdeci">Hash()</div><div class="ttdoc">Constructs a new hash object. </div><div class="ttdef"><b>Definition:</b> <a href="Hash_8cpp_source.html#l00036">Hash.cpp:36</a></div></div>
@@ -153,7 +163,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Apr 27 2018 12:01:32 for Arduino Cryptography Library by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Dec 31 2021 08:27:21 for Arduino Cryptography Library by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

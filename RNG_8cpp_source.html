@@ -113,8 +113,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#include &quot;NoiseSource.h&quot;</span></div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &quot;ChaCha.h&quot;</span></div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &quot;Crypto.h&quot;</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#include &quot;utility/ProgMemUtil.h&quot;</span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;Arduino.h&gt;</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#include &lt;Arduino.h&gt;</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &quot;utility/ProgMemUtil.h&quot;</span></div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#if defined (__arm__) &amp;&amp; defined (__SAM3X8E__)</span></div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor"></span><span class="comment">// The Arduino Due does not have any EEPROM natively on the main chip.</span></div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="comment">// However, it does have a TRNG and flash memory.</span></div>
@@ -141,15 +141,15 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#include &lt;string.h&gt;</span></div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="comment">// Throw an error if there is no built-in hardware random number source.</span></div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="comment">// Throw a warning if there is no built-in hardware random number source.</span></div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="comment">// If this happens, then you need to do one of two things:</span></div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="comment">//    1. Edit RNG.cpp to add your platform&#39;s hardware TRNG.</span></div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="comment">//    2. Provide a proper noise source like TransistorNoiseSource</span></div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="comment">//       in your sketch and then comment out the #error line below.</span></div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="comment">//       in your sketch and then comment out the #warning line below.</span></div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="preprocessor">#if !defined(RNG_DUE_TRNG) &amp;&amp; \</span></div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="preprocessor">    !defined(RNG_WATCHDOG) &amp;&amp; \</span></div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="preprocessor">    !defined(RNG_WORD_TRNG)</span></div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#error &quot;no hardware random number source detected for this platform&quot;</span></div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#warning &quot;no hardware random number source detected for this platform&quot;</span></div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="preprocessor"></span></div>
 <div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;<a class="code" href="classRNGClass.html">RNGClass</a> RNG;</div>
@@ -486,7 +486,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00571"></a><span class="lineno">  571</span>&#160;        <a class="code" href="classRNGClass.html#a77eb101a225ce541800ac1361a92b1a6">begin</a>(0);</div>
 <div class="line"><a name="l00572"></a><span class="lineno">  572</span>&#160;</div>
 <div class="line"><a name="l00573"></a><span class="lineno">  573</span>&#160;    <span class="comment">// Decrease the amount of entropy in the pool.</span></div>
-<div class="line"><a name="l00574"></a><span class="lineno">  574</span>&#160;    <span class="keywordflow">if</span> (len &gt; (credits / 8u))</div>
+<div class="line"><a name="l00574"></a><span class="lineno">  574</span>&#160;    <span class="keywordflow">if</span> ( (uint16_t)len &gt; (credits / 8))</div>
 <div class="line"><a name="l00575"></a><span class="lineno">  575</span>&#160;        credits = 0;</div>
 <div class="line"><a name="l00576"></a><span class="lineno">  576</span>&#160;    <span class="keywordflow">else</span></div>
 <div class="line"><a name="l00577"></a><span class="lineno">  577</span>&#160;        credits -= len * 8;</div>
@@ -538,7 +538,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00662"></a><span class="lineno">  662</span>&#160;    <span class="keywordflow">if</span> (len &gt;= (RNG_MAX_CREDITS / 8))</div>
 <div class="line"><a name="l00663"></a><span class="lineno">  663</span>&#160;        <span class="keywordflow">return</span> credits &gt;= RNG_MAX_CREDITS;</div>
 <div class="line"><a name="l00664"></a><span class="lineno">  664</span>&#160;    <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00665"></a><span class="lineno">  665</span>&#160;        <span class="keywordflow">return</span> len &lt;= (credits / 8u);</div>
+<div class="line"><a name="l00665"></a><span class="lineno">  665</span>&#160;        <span class="keywordflow">return</span> (uint16_t)len &lt;= (credits / 8);</div>
 <div class="line"><a name="l00666"></a><span class="lineno">  666</span>&#160;}</div>
 <div class="line"><a name="l00667"></a><span class="lineno">  667</span>&#160;</div>
 <div class="line"><a name="l00693"></a><span class="lineno"><a class="line" href="classRNGClass.html#ad99535ea23ae2fec55bdebb8c24def02">  693</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classRNGClass.html#ad99535ea23ae2fec55bdebb8c24def02">RNGClass::stir</a>(<span class="keyword">const</span> uint8_t *data, <span class="keywordtype">size_t</span> len, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> credit)</div>
@@ -546,7 +546,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00695"></a><span class="lineno">  695</span>&#160;    <span class="comment">// Increase the entropy credit.</span></div>
 <div class="line"><a name="l00696"></a><span class="lineno">  696</span>&#160;    <span class="keywordflow">if</span> ((credit / 8) &gt;= len &amp;&amp; len)</div>
 <div class="line"><a name="l00697"></a><span class="lineno">  697</span>&#160;        credit = len * 8;</div>
-<div class="line"><a name="l00698"></a><span class="lineno">  698</span>&#160;    <span class="keywordflow">if</span> ((RNG_MAX_CREDITS - credits) &gt; credit)</div>
+<div class="line"><a name="l00698"></a><span class="lineno">  698</span>&#160;    <span class="keywordflow">if</span> ((uint16_t)(RNG_MAX_CREDITS - credits) &gt; credit)</div>
 <div class="line"><a name="l00699"></a><span class="lineno">  699</span>&#160;        credits += credit;</div>
 <div class="line"><a name="l00700"></a><span class="lineno">  700</span>&#160;    <span class="keywordflow">else</span></div>
 <div class="line"><a name="l00701"></a><span class="lineno">  701</span>&#160;        credits = RNG_MAX_CREDITS;</div>
@@ -815,7 +815,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Apr 27 2018 12:01:32 for Arduino Cryptography Library by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Dec 31 2021 08:27:21 for Arduino Cryptography Library by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

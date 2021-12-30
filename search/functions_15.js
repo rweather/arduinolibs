@@ -14,6 +14,8 @@ var searchData=
   ['_7egcmcommon',['~GCMCommon',['../classGCMCommon.html#a0d3e1525d91adbbdcd5ac27793817112',1,'GCMCommon']]],
   ['_7eghash',['~GHASH',['../classGHASH.html#ae7f63a587adf1aa1ffcdc0a6e20584fd',1,'GHASH']]],
   ['_7ehash',['~Hash',['../classHash.html#a4e4b4797dda8678aaed058bae155813e',1,'Hash']]],
+  ['_7ehkdf',['~HKDF',['../classHKDF.html#a4e7a3e8438a772403ecf678e7ce948eb',1,'HKDF']]],
+  ['_7ehkdfcommon',['~HKDFCommon',['../classHKDFCommon.html#ab3dee056c8b15a16a025698e367e61b0',1,'HKDFCommon']]],
   ['_7ekeccakcore',['~KeccakCore',['../classKeccakCore.html#a4579e3a9b24f1d615fa8d660c23e77a4',1,'KeccakCore']]],
   ['_7enoisesource',['~NoiseSource',['../classNoiseSource.html#a4eca1e894a5d719fb9bf4df34a791cdb',1,'NoiseSource']]],
   ['_7eofbcommon',['~OFBCommon',['../classOFBCommon.html#aae7435157e51bf977d3481e94e17ae01',1,'OFBCommon']]],

@@ -8,5 +8,5 @@ var searchData=
   ['encryptsector',['encryptSector',['../classXTSCommon.html#a8bf1cbd4c1a5422a3cf285fe995fe0e7',1,'XTSCommon']]],
   ['eval',['eval',['../classCurve25519.html#a2e4b7dd83a019b32c76584c99bfda21a',1,'Curve25519::eval()'],['../classP521.html#ac2e07ce7e846ba180938b41b4a2ae563',1,'P521::eval()']]],
   ['extend',['extend',['../classSHAKE.html#ac3fe37617644e3498d40a86e846562fb',1,'SHAKE::extend()'],['../classXOF.html#a1bb311f04dae8465c1489a4f033703cd',1,'XOF::extend()']]],
-  ['extract',['extract',['../classKeccakCore.html#aad83ece853c0cc15fcab947fdcba924f',1,'KeccakCore']]]
+  ['extract',['extract',['../classHKDFCommon.html#a97382e279b5cc736f67e4cbe3fe5a630',1,'HKDFCommon::extract()'],['../classKeccakCore.html#aad83ece853c0cc15fcab947fdcba924f',1,'KeccakCore::extract()']]]
 ];

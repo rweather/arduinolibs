@@ -197,7 +197,7 @@ class GCM&lt; T &gt;</h3>
 <div class="line">gcm.<a class="code" href="classGCMCommon.html#a397c5dddde828c59eb63367385aec562">setKey</a>(key, <span class="keyword">sizeof</span>(key));</div>
 <div class="line">gcm.<a class="code" href="classGCMCommon.html#a2545135fe42c832e40e057b603824524">setIV</a>(iv, <span class="keyword">sizeof</span>(iv));</div>
 <div class="line">gcm.<a class="code" href="classGCMCommon.html#ad926e980ae2d61c10c9bf82813154a25">addAuthData</a>(adata, <span class="keyword">sizeof</span>(adata));</div>
-<div class="line">gcm.<a class="code" href="classGCMCommon.html#a60912d3ab5766aa68dc9b3111ac2c0d7">decrypt</a>(ciphertext, plaintext, <span class="keyword">sizeof</span>(plaintext));</div>
+<div class="line">gcm.<a class="code" href="classGCMCommon.html#a60912d3ab5766aa68dc9b3111ac2c0d7">decrypt</a>(plaintext, ciphertext, <span class="keyword">sizeof</span>(ciphertext));</div>
 <div class="line"><span class="keywordflow">if</span> (!gcm.<a class="code" href="classGCMCommon.html#a70229be2fe2274c4109fe7511481075a">checkTag</a>(tag, <span class="keyword">sizeof</span>(tag))) {</div>
 <div class="line">    <span class="comment">// The data was invalid - do not use it.</span></div>
 <div class="line">    ...</div>
@@ -222,7 +222,7 @@ class GCM&lt; T &gt;</h3>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Apr 27 2018 12:01:32 for Arduino Cryptography Library by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Dec 31 2021 08:27:21 for Arduino Cryptography Library by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>
