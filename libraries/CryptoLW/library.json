@@ -1,6 +1,6 @@
 {
     "name": "CryptoLW",
-    "version": "0.2.0",
+    "version": "0.3.0",
     "keywords": "Acorn128,Ascon128,Speck,SpeckSmall,SpeckTiny",
     "description": "Light-weight ciphers for the Arduino Cryptography Library",
     "authors":

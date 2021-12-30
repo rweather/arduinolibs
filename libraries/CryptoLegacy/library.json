@@ -1,6 +1,6 @@
 {
     "name": "CryptoLegacy",
-    "version": "0.2.0",
+    "version": "0.3.0",
     "keywords": "CBC,CFB,OFB,SHA1",
     "description": "Legacy ciphers for the Arduino Cryptography Library",
     "authors":
