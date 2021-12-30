@@ -26,6 +26,7 @@ Jan 2022:
 
 * All-in-one hmac() function in Hash.h for simplified HMAC computations.
 * New API for the HKDF hash-based key derivation function.
+* Make the ESP32 version of AES less dependent on include file locations.
 
 Apr 2018:
 

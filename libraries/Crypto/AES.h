@@ -190,17 +190,15 @@ private:
 
 #if defined(CRYPTO_AES_ESP32)
 
-// "hwcrypto/aes.h" includes "rom/aes.h" which defines global enums for
-// AES128, AES192, and AES256.  The enum definitions interfere with the
-// definition of the same-named classes below.  The #define's and #undef's
-// here work around the problem by defining the enums to different names.
-#define AES128 AES128_enum
-#define AES192 AES192_enum
-#define AES256 AES256_enum
-#include "hwcrypto/aes.h"
-#undef AES128
-#undef AES192
-#undef AES256
+// The esp32 SDK keeps moving where aes.h is located, so we have to
+// declare the API functions ourselves and make the context opaque.
+//
+// About the only thing the various SDK versions agree on is that the
+// first byte is the length of the key in bytes.
+//
+// Some versions of esp-idf have a 33 byte AES context, and others 34.
+// Allocate up to 40 to make space for future expansion.
+#define CRYPTO_ESP32_CONTEXT_SIZE 40
 
 class AESCommon : public BlockCipher
 {
@@ -221,7 +219,7 @@ protected:
     AESCommon(uint8_t keySize);
 
 private:
-    esp_aes_context ctx;
+    uint8_t ctx[CRYPTO_ESP32_CONTEXT_SIZE];
 };
 
 class AES128 : public AESCommon
