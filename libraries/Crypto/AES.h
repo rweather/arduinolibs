@@ -190,6 +190,8 @@ private:
 
 #if defined(CRYPTO_AES_ESP32)
 
+/** @cond aes_esp_rename */
+
 // The esp32 SDK keeps moving where aes.h is located, so we have to
 // declare the API functions ourselves and make the context opaque.
 //
@@ -200,13 +202,18 @@ private:
 // Allocate up to 40 to make space for future expansion.
 #define CRYPTO_ESP32_CONTEXT_SIZE 40
 
-// Some of the esp-idf system headers define macros for AES128,
+// Some of the esp-idf system headers define enumerations for AES128,
 // AES192, and AES256 to identify the hardware-accelerated algorithms.
-// Undefine those macros if they have already been defined so that
-// they don't conflict with the class names below.
+// These can cause conflicts with the names we use in our library.
+// Define our class names to something else to work around esp-idf.
 #undef AES128
 #undef AES192
 #undef AES256
+#define AES128 AES128_ESP
+#define AES192 AES192_ESP
+#define AES256 AES256_ESP
+
+/** @endcond */
 
 class AESCommon : public BlockCipher
 {
