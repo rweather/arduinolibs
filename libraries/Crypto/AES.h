@@ -200,6 +200,14 @@ private:
 // Allocate up to 40 to make space for future expansion.
 #define CRYPTO_ESP32_CONTEXT_SIZE 40
 
+// Some of the esp-idf system headers define macros for AES128,
+// AES192, and AES256 to identify the hardware-accelerated algorithms.
+// Undefine those macros if they have already been defined so that
+// they don't conflict with the class names below.
+#undef AES128
+#undef AES192
+#undef AES256
+
 class AESCommon : public BlockCipher
 {
 public:
