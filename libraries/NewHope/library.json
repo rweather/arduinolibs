@@ -1,6 +1,6 @@
 {
     "name": "NewHope",
-    "version": "0.3.0",
+    "version": "0.4.0",
     "keywords": "NewHope",
     "description": "Post-Quantum NewHope algorithm for the Arduino Cryptography Library",
     "authors":

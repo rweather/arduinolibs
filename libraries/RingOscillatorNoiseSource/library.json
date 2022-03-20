@@ -1,6 +1,6 @@
 {
     "name": "RingOscillatorNoiseSource",
-    "version": "0.3.0",
+    "version": "0.4.0",
     "keywords": "RingOscillatorNoiseSource",
     "description": "Ring oscillator noise source for the Arduino Cryptography Library",
     "authors":
