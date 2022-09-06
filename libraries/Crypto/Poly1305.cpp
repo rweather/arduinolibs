@@ -166,7 +166,7 @@ void Poly1305::update(const void *data, size_t len)
 /**
  * \brief Finalizes the authentication process and returns the token.
  *
- * \param nonce Points to the 16-bit nonce to combine with the token.
+ * \param nonce Points to the 16-byte nonce to combine with the token.
  * \param token The buffer to return the token value in.
  * \param len The length of the \a token buffer between 0 and 16.
  *
