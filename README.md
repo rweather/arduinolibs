@@ -24,7 +24,7 @@ Recent significant changes to the library
 
 Feb 2023:
 
-* NIST has selected ASCON as the winner of the Lightweight Cryptography
+NIST has selected ASCON as the winner of the Lightweight Cryptography
 Competition.  This repository has an older implementation of ASCON-128
 which should be compatible with the final winning version.  Let me know
 if you have any issues.
