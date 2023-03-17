@@ -31,11 +31,13 @@
 // However, it does have a TRNG and flash memory.
 #define RNG_DUE_TRNG 1
 #elif defined(__AVR__)
-#define RNG_EEPROM 1        // Use EEPROM to save the seed.
-#define RNG_WATCHDOG 1      // Harvest entropy from watchdog jitter.
 #include <avr/eeprom.h>
 #include <avr/wdt.h>
 #include <avr/io.h>
+#define RNG_EEPROM 1        // Use EEPROM to save the seed.
+#if defined(TCNT1L) || defined(TCNT0L) || defined(TCNT0)
+#define RNG_WATCHDOG 1      // Harvest entropy from watchdog jitter.
+#endif
 #define RNG_EEPROM_ADDRESS (E2END + 1 - RNGClass::SEED_SIZE)
 #elif defined(ESP8266)
 // ESP8266 does not have EEPROM but it does have SPI flash memory.
