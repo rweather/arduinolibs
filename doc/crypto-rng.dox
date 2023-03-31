@@ -103,6 +103,9 @@ if an external noise source is not available or practical.  Entropy
 accumulates very slowly and it could take several minutes before the state
 is sufficiently random for safe use.
 
+On newer AVR chips, Custom Configurable Logic (CCL) is used to generate
+an unstable clock source which is sampled by the more predictable RTC timer.
+
 For security-critical applications it is very important to combine the
 built-in entropy sources with an external noise source.
 

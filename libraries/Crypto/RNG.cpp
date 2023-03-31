@@ -35,9 +35,23 @@
 #include <avr/wdt.h>
 #include <avr/io.h>
 #define RNG_EEPROM 1        // Use EEPROM to save the seed.
-#if defined(TCNT1L) || defined(TCNT0L) || defined(TCNT0)
+#if defined(MEGATINYCORE) || defined(LOGIC_H) // If device is Modern AVR with CCL
+/* This is a highly unconventional use of Configurable Custom Logic to
+ * create an incredibly unstable clock. The speed that this clock runs
+ * is highly dependant on CPU frequency, temperature and other factors.
+ * Attempting to determine the speed of this clock at any point in time
+ * with an oscilliscope results in a reading that bounces uncontrollably.
+ * Since we have CCL counting at a very unpredictable rate, it cannot
+ * be known what the value will be whem the Real Time Counter is triggered.
+ *
+ * Thanks to Spence Konde for the design of the unstable CCL Clock and
+ * Brad Bock for implementing it for random number generation.
+ */
+#define RNG_CCL 1           // Harvest entropy from Configurable Custom Logic.
+#elif defined(TCNT1L) || defined(TCNT0L) || defined(TCNT0)
 #define RNG_WATCHDOG 1      // Harvest entropy from watchdog jitter.
 #endif
+
 #define RNG_EEPROM_ADDRESS (E2END + 1 - RNGClass::SEED_SIZE)
 #elif defined(ESP8266)
 // ESP8266 does not have EEPROM but it does have SPI flash memory.
@@ -61,7 +75,8 @@
 //       in your sketch and then comment out the #warning line below.
 #if !defined(RNG_DUE_TRNG) && \
     !defined(RNG_WATCHDOG) && \
-    !defined(RNG_WORD_TRNG)
+    !defined(RNG_WORD_TRNG) && \
+    !defined(RNG_CCL)
 #warning "no hardware random number source detected for this platform"
 #endif
 
@@ -248,7 +263,40 @@ ISR(WDT_vect)
     ++outBits;
 }
 
-#endif // RNG_WATCHDOG
+#elif defined(RNG_CCL)
+
+// Helper macros for specific 32-bit shift counts.
+#define leftShift3(value)   ((value) << 3)
+#define leftShift10(value)  ((value) << 10)
+#define leftShift15(value)  ((value) << 15)
+#define rightShift6(value)  ((value) >> 6)
+#define rightShift11(value) ((value) >> 11)
+
+static uint32_t volatile hash = 0;
+static uint8_t volatile outBits = 0;
+
+// Interrupt to keep this incredibly unstable CCL Clock going
+ISR(TCB0_INT_vect)
+{
+    uint8_t temp = TCB0.INTFLAGS;
+    if (temp & 1) {
+        VPORTA.IN |= 2;
+    }
+    TCB0.INTFLAGS=temp;
+}
+
+// Overflow Interrupt from the stable Real Time Counter
+ISR(RTC_CNT_vect)
+{
+    RTC_INTFLAGS = RTC_OVF_bm; // Clear the flag
+    unsigned char value = (TCB0.CNT); // Value of CCL Counter
+    hash += value;
+    hash += leftShift10(hash);
+    hash ^= rightShift6(hash);
+    ++outBits;
+}
+
+#endif
 
 /** @endcond */
 
@@ -295,6 +343,9 @@ RNGClass::~RNGClass()
 
     // Re-enable interrupts.  The watchdog should be stopped.
     sei();
+#elif defined(RNG_CCL)
+    CCL.CTRLA = 0x00; // disable CCL
+    RTC.CTRLA = 0x00; // disable RTC
 #endif
     clean(block);
     clean(stream);
@@ -493,6 +544,47 @@ void RNGClass::begin(const char *tag)
 
     // Re-enable interrupts.  The watchdog should be running.
     sei();
+#elif defined(RNG_CCL)
+    // CCL Setup
+    //VPORTA.DIR |= 0x80; // LUT1 comes screaming out of PA7
+    VPORTA.DIR |= 0x02; // disable CCL output
+    CCL.LUT1CTRLB=0x03; //INSEL0 = 3 (Event A)
+    CCL.TRUTH1 = 0x11;
+    CCL.LUT1CTRLA = 0x01;  // enable, output to pin with 0x41 (for debugging - 0x01 without output on a pin.
+    EVSYS.CHANNEL0 = EVSYS_CHANNEL0_CCL_LUT1_gc; //Set EVSYS to use output of LUT1 as Channel0.
+    EVSYS.USERCCLLUT1A = EVSYS_USER_CHANNEL0_gc;
+    EVSYS.USERTCB0COUNT = EVSYS_USER_CHANNEL0_gc;
+    TCB0.CTRLB = 0;
+    TCB0.CCMP = 255; // this is the number the timer counts up to
+    TCB0.INTCTRL = 1;
+    TCB0.INTFLAGS = 3;
+    TCB0.CTRLA = 0x0F; //enable with event clock
+
+    // Enable CCL
+    CCL.CTRLA = 0x01;
+
+    // RTC Setup
+    RTC.CLKSEL = RTC_CLKSEL_INT32K_gc;  // Select 32.768kHZ Internal Clock
+    while (RTC.STATUS > 0); // wait for register
+    uint8_t CCL_SAMPLE_PERIOD;
+#if(F_CPU > 4000000)
+    CCL_SAMPLE_PERIOD = 2;
+#elif(F_CPU == 4000000)
+    CCL_SAMPLE_PERIOD = 5;
+#elif(F_CPU == 2000000)
+    CCL_SAMPLE_PERIOD = 9;
+#elif(F_CPU == 1000000)
+    CCL_SAMPLE_PERIOD = 16;
+#else
+    #error "Chip frequency not supported"
+#endif
+    RTC.PER = CCL_SAMPLE_PERIOD;
+    RTC.INTCTRL |= RTC_OVF_bm; // enable overflow interrupt
+
+    // Enable RTC
+    RTC.CTRLA = RTC_PRESCALER_DIV1_gc // no prescaler
+              | RTC_RTCEN_bm          // RTC timer enabled
+              | RTC_RUNSTDBY_bm;      // enabled in standby
 #endif
 
     // Re-save the seed to obliterate the previous value and to ensure
@@ -887,6 +979,33 @@ void RNGClass::loop()
     } else {
         sei();
     }
+#elif defined(RNG_CCL)
+    if (outBits >= 32) {
+        uint32_t value = hash;
+        hash = 0;
+        outBits = 0;
+
+        // Final steps of the Jenkin's one-at-a-time hash function.
+        // https://en.wikipedia.org/wiki/Jenkins_hash_function
+        value += leftShift3(value);
+        value ^= rightShift11(value);
+        value += leftShift15(value);
+
+        // Credit 4 bits of entropy for each byte of input.
+        credits += 4;
+        if (credits > RNG_MAX_CREDITS)
+            credits = RNG_MAX_CREDITS;
+
+        // XOR the word with the state.  Stir once we accumulate 48 bytes,
+        block[4 + trngPosn] ^= value;
+        if (++trngPosn >= 12) {
+            trngPosn = 0;
+            trngPending = 0;
+            stir(0, 0, 0);
+        } else {
+            trngPending = 1;
+        }
+    }
 #endif
 
     // Save the seed if the auto-save timer has expired.
@@ -1001,6 +1120,21 @@ void RNGClass::mixTRNG()
         block[4] ^= value;
     } else {
         sei();
+    }
+#elif defined(RNG_CCL)
+    if (outBits >= 32) {
+        uint32_t value = hash;
+        hash = 0;
+        outBits = 0;
+
+        // Final steps of the Jenkin's one-at-a-time hash function.
+        // https://en.wikipedia.org/wiki/Jenkins_hash_function
+        value += leftShift3(value);
+        value ^= rightShift11(value);
+        value += leftShift15(value);
+
+        // XOR the word with the state.
+        block[4] ^= value;
     }
 #endif
 }
