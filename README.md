@@ -22,6 +22,12 @@ improvements, please contact the author Rhys Weatherley via
 Recent significant changes to the library
 -----------------------------------------
 
+Apr 2023:
+
+Brad Bock contributed a RNG back end for newer AVR chips that uses
+Custom Configurable Logic (CCL) to generate an unstable clock source
+instead of using the CPU watchdog as on older AVR chips.
+
 Feb 2023:
 
 NIST has selected ASCON as the winner of the Lightweight Cryptography
