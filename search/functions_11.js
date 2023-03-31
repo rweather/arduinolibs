@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['tagsize',['tagSize',['../classAuthenticatedCipher.html#a50c9de15b1ac1f3079dcfef626238759',1,'AuthenticatedCipher::tagSize()'],['../classChaChaPoly.html#a086c2aea395ab31136ebe7805591fd0a',1,'ChaChaPoly::tagSize()'],['../classEAXCommon.html#a8804341b21f752a5b8178a3bdb123fd9',1,'EAXCommon::tagSize()'],['../classGCMCommon.html#a935f343858e98ee331706daf43e34805',1,'GCMCommon::tagSize()'],['../classAcorn128.html#a75c8953cea6b9cd59aa5034dfe739889',1,'Acorn128::tagSize()'],['../classAscon128.html#aae49ea7143e32dcf2081b870edba3843',1,'Ascon128::tagSize()']]],
-  ['transistornoisesource',['TransistorNoiseSource',['../classTransistorNoiseSource.html#a05bab61c301a5397021048c95ca3107d',1,'TransistorNoiseSource']]],
-  ['tweaksize',['tweakSize',['../classXTSCommon.html#afb3ebf14c7879bcbc92e3d6cc70b19a9',1,'XTSCommon']]]
+  ['tagsize_405',['tagSize',['../classAuthenticatedCipher.html#a50c9de15b1ac1f3079dcfef626238759',1,'AuthenticatedCipher::tagSize()'],['../classChaChaPoly.html#a84777412fc4ada59c8ada33a4817c26f',1,'ChaChaPoly::tagSize()'],['../classEAXCommon.html#a5c3d04268b3ced494ade839b6d6bdb59',1,'EAXCommon::tagSize()'],['../classGCMCommon.html#a37d4497f58b0455fb44b41db6600521f',1,'GCMCommon::tagSize()'],['../classAcorn128.html#a97f3379958562585c1ab3f855e939d2b',1,'Acorn128::tagSize()'],['../classAscon128.html#a5ee57d23994c279f37097a28d7c94e50',1,'Ascon128::tagSize()']]],
+  ['transistornoisesource_406',['TransistorNoiseSource',['../classTransistorNoiseSource.html#a05bab61c301a5397021048c95ca3107d',1,'TransistorNoiseSource']]],
+  ['tweaksize_407',['tweakSize',['../classXTSCommon.html#a314c8c3a71e02ac91f2d4a8000e93738',1,'XTSCommon']]]
 ];

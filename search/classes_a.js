@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['ringoscillatornoisesource',['RingOscillatorNoiseSource',['../classRingOscillatorNoiseSource.html',1,'']]],
-  ['rngclass',['RNGClass',['../classRNGClass.html',1,'']]]
+  ['ringoscillatornoisesource_247',['RingOscillatorNoiseSource',['../classRingOscillatorNoiseSource.html',1,'']]],
+  ['rngclass_248',['RNGClass',['../classRNGClass.html',1,'']]]
 ];
