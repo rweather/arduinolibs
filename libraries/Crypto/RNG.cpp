@@ -546,7 +546,7 @@ void RNGClass::begin(const char *tag)
     sei();
 #elif defined(RNG_CCL)
     // CCL Setup
-    //VPORTA.DIR |= 0x80; // LUT1 comes screaming out of PA7
+    VPORTA.DIR |= 0x80; // LUT1 comes screaming out of PA7
     VPORTA.DIR |= 0x02; // disable CCL output
     CCL.LUT1CTRLB=0x03; //INSEL0 = 3 (Event A)
     CCL.TRUTH1 = 0x11;
