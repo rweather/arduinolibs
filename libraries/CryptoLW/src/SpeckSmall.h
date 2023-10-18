@@ -24,6 +24,7 @@
 #define CRYPTO_SPECK_SMALL_H
 
 #include "SpeckTiny.h"
+#include "Inludes.h"
 
 class SpeckSmall : public SpeckTiny
 {

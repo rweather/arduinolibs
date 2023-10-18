@@ -24,6 +24,7 @@
 #define CRYPTO_ACORN128_H
 
 #include "AuthenticatedCipher.h"
+#include "Inludes.h"
 
 /** @cond acorn128_state */
 
