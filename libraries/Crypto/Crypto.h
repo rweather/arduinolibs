@@ -25,16 +25,7 @@
 
 #include <inttypes.h>
 #include <stddef.h>
-
-void clean(void *dest, size_t size);
-
-template <typename T>
-inline void clean(T &var)
-{
-    clean(&var, sizeof(T));
-}
-
-bool secure_compare(const void *data1, const void *data2, size_t len);
+#include "Inludes.h"
 
 #if defined(ESP8266)
 extern "C" void system_soft_wdt_feed(void);

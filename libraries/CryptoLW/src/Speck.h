@@ -24,6 +24,7 @@
 #define CRYPTO_SPECK_H
 
 #include "BlockCipher.h"
+#include "Inludes.h"
 
 class Speck : public BlockCipher
 {
