@@ -173,7 +173,9 @@
  *
  * \sa RNGClass
  */
+#ifndef RNG
 RNGClass RNG;
+#endif
 
 /**
  * \var RNGClass::SEED_SIZE

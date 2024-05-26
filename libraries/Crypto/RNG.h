@@ -69,6 +69,10 @@ private:
     void mixTRNG();
 };
 
+/* the STM32 tolkit defines its own RNG symbol, incompatible with the
+   Crypto library: https://github.com/stm32duino/Arduino_Core_STM32 */
+#ifndef RNG
 extern RNGClass RNG;
+#endif
 
 #endif
