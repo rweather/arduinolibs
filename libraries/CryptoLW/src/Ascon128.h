@@ -24,6 +24,7 @@
 #define CRYPTO_ASCON128_H
 
 #include "AuthenticatedCipher.h"
+#include "Inludes.h"
 
 class Ascon128 : public AuthenticatedCipher
 {

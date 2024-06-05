@@ -24,6 +24,7 @@
 #define CRYPTO_SPECK_TINY_H
 
 #include "BlockCipher.h"
+#include "Inludes.h"
 
 class SpeckSmall;
 
